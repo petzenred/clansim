@@ -132,7 +132,7 @@ def self_update(
     progress_bar: UIUpdateProgressBar = None,
     announce_restart_callback: callable = None,
 ):
-    print("Updating Clangen...")
+    print("Updating ClanSim...")
 
     platform_name = determine_platform_name()
 

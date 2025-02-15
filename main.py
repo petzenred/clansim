@@ -7,7 +7,7 @@
 
 
 This file is the main file for the game.
-It also contains the main pygame loop
+It also contains the main pygame loop.
 It first sets up logging, then loads the version hash from version.ini (if it exists), then loads the cats and clan.
 It then loads the settings, and then loads the start screen.
 
@@ -46,25 +46,23 @@ if not getattr(sys, "frozen", False):
 
     if isMissing:
         print(
-            """You are missing some requirements to run clangen!
+            """You are missing some requirements to run ClanSim!
                 
                 Please look at the "README.md" file for instructions on how to install them.
                 """
         )
 
-        print(
-            "If you are still having issues, please ask for help in the clangen discord server: https://discord.gg/clangen"
-        )
         sys.exit(1)
 
     del requiredModules
     del isMissing
 del find_spec
 
+from definitions import CLANSIM_VERSION_NUMBER
 from scripts.housekeeping.log_cleanup import prune_logs
 from scripts.housekeeping.stream_duplexer import UnbufferedStreamDuplexer
 from scripts.housekeeping.datadir import get_log_dir, setup_data_dir
-from scripts.housekeeping.version import get_version_info, VERSION_NAME
+from scripts.housekeeping.version import get_version_info
 
 try:
     directory = os.path.dirname(__file__)
@@ -97,7 +95,7 @@ formatter = logging.Formatter(
 
 # Logging for file
 timestr = time.strftime("%Y%m%d_%H%M%S")
-log_file_name = get_log_dir() + f"/clangen_{timestr}.log"
+log_file_name = get_log_dir() + f"/clansim_{timestr}.log"
 file_handler = logging.FileHandler(log_file_name)
 file_handler.setFormatter(formatter)
 # Only log errors to file
@@ -105,6 +103,9 @@ file_handler.setLevel(logging.ERROR)
 # Logging for console
 stream_handler = logging.StreamHandler()
 stream_handler.setFormatter(formatter)
+# Log debugging statements to console
+#stream_handler.setLevel(logging.DEBUG)
+
 logging.root.addHandler(file_handler)
 logging.root.addHandler(stream_handler)
 
@@ -135,12 +136,12 @@ if os.environ.get("CODESPACES"):
         + f".{os.environ.get('GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN')}"
         + "/?autoconnect=true&reconnect=true&password=clangen&resize=scale"
     )
-    print("(use clangen in fullscreen mode for best results)")
+    print("(use ClanSim in fullscreen mode for best results)")
     print("")
 
 if get_version_info().is_source_build:
     print("Running on source code")
-    if get_version_info().version_number == VERSION_NAME:
+    if get_version_info().version_number == CLANSIM_VERSION_NUMBER:
         print("Failed to get git commit hash, using hardcoded version number instead.")
         print(
             "Hey testers! We recommend you use git to clone the repository, as it makes things easier for everyone."
@@ -151,7 +152,7 @@ if get_version_info().is_source_build:
 else:
     print("Running on PyInstaller build")
 
-print("Version Name: ", VERSION_NAME)
+print("Version Name: ", CLANSIM_VERSION_NUMBER)
 print("Running on commit " + get_version_info().version_number)
 
 import pygame_gui

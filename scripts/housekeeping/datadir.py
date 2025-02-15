@@ -1,6 +1,7 @@
 import os
 import platform
 
+import definitions
 from scripts.housekeeping.version import get_version_info
 
 
@@ -32,8 +33,8 @@ def get_data_dir():
     from platformdirs import user_data_dir
 
     if get_version_info().is_dev():
-        return user_data_dir("ClanGenBeta", "ClanGen")
-    return user_data_dir("ClanGen", "ClanGen")
+        return user_data_dir(definitions.APP_NAME_BETA, definitions.APP_AUTHOR)
+    return user_data_dir(definitions.APP_NAME_DEFAULT, definitions.APP_AUTHOR)
 
 
 def get_log_dir():
