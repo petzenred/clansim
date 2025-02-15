@@ -1,5 +1,3 @@
-<!-- scripts/screens/TODO.md -->
-
 # TODO
 `scripts/screens/TODO`
 
@@ -30,6 +28,9 @@
   - [ ] StartScreen -> MainMenuScreen
   - [ ] SwitchClanScreen -> 
   - [ ] WarriorDenScreen -> 
+- [ ] update screen names in other scripts
+  - [ ] `/scripts/game_structure/audio.py`
+- [ ] which screen lets you choose an accessory? or do tabs work differently
 - [ ] reorganize screens
   - [ ] main menu screens
     - MainMenuScreen

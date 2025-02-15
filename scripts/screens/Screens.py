@@ -42,7 +42,7 @@ class Screens:
 
     active_bg: Optional[str] = None
 
-    def change_screen(self, new_screen):
+    def change_screen(self, new_screen: str):
         """Use this function when switching screens.
         It will handle keeping track of the last screen and cur screen.
         Last screen must be tracked to ensure a clear transition between screens."""
@@ -54,7 +54,6 @@ class Screens:
         # This keeps track of the last list-like screen for the back button on cat profiles
         if self.name in ["camp screen", "list screen", "events screen"]:
             game.last_screen_forProfile = self.name
-
 
         if new_screen not in [
             "list screen",
