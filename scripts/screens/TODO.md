@@ -1,0 +1,65 @@
+<!-- scripts/screens/TODO.md -->
+
+# TODO
+`scripts/screens/TODO`
+
+- [ ] add logger debugging statements
+- [ ] rename screens for clarity
+  - [ ] AllegiancesScreen -> ClanAllegiancesScreen
+  - [ ] CeremonyScreen -> LeaderCeremonyScreen
+  - [ ] ChangeGenderScreen -> SpecifyGenderScreen
+  - [ ] ChooseAdoptiveParentScreen -> 
+  - [ ] ChooseMateScreen -> 
+  - [ ] ChooseMentorScreen -> 
+  - [ ] ClanScreen -> 
+  - [ ] ClanSettingsScreen -> 
+  - [ ] ClearingScreen -> ClanClearingScreen
+  - [ ] EventsScreen -> ClanEventsScreen
+  - [ ] FamilyTreeScreen -> 
+  - [ ] LeaderDenScreen -> 
+  - [ ] ListScreen -> ClanMembers
+  - [ ] MakeClanScreen -> NewClanScreen
+  - [ ] MedDenScreen -> 
+  - [ ] MediationScreen -> 
+  - [ ] PatrolScreen -> ClanPatrolScreen
+  - [ ] ProfileScreen -> 
+  - [ ] RelationshipScreen -> RelationshipsScreen
+  - [ ] RoleScreen -> ChooseRoleScreen
+  - [ ] SettingsScreen -> MainSettingsScreen
+  - [ ] SpriteInspectScreen -> InspectSpriteScreen
+  - [ ] StartScreen -> MainMenuScreen
+  - [ ] SwitchClanScreen -> 
+  - [ ] WarriorDenScreen -> 
+- [ ] reorganize screens
+  - [ ] main menu screens
+    - MainMenuScreen
+    - MainSettingsScreen
+    - NewClanScreen
+    - SwitchClanScreen
+  - [ ] den screens
+    - LeaderDenScreen
+    - MedDenScreen
+    - WarriorDenScreen
+  - [ ] profile screens
+    - ProfileScreen
+    - ChooseAdoptiveParentScreen
+    - ChooseMateScreen
+    - ChooseMentorScreen
+    - ChooseRoleScreen
+    - MediationScreen
+    - SpecifyGenderScreen
+    - FamilyTreeScreen
+    - InspectSpriteScreen
+    - LeaderCeremonyScreen
+    - RelationshipsScreen
+  - [ ] Clan screens
+    - ClanAllegiancesScreen
+    - ClanClearingScreen
+    - ClanEventsScreen
+    - ClanMembersScreen
+    - ClanPatrolScreen
+    - ClanSettingsScreen
+  - debugging
+    - [ ] EClanventsScreen calls change_screen() twice
+    - [ ] ClanMembers calls change_screen() twice
+    - [ ] MainMenuScreen calls queueing music twice
