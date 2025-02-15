@@ -1,18 +1,25 @@
-[tool.poetry]
-name = "clangen"
-version = "0.7.9"
-description = "Fan-edit of the warrior cat clangen game"
+[project]
+name = "clansim"
+version = "0.1.0"
+description = "Fan edit of the warrior cat game ClanGen(erator)"
 license = "MPL-2.0"
-authors = [
-    "Sablesteel <noemail@null.com>"
-]
 readme = "README.md"
+requires-python = ">=3.9,<3.13"
+authors = [
+    { name = "Red Petzen", email = "<noemail@null.com>" },
+]
+maintainers = [
+    { name = "Red Petzen", email = "<noemail@null.com>" },
+]
+keywords = [ "warriorcats", "fanedit", "game", "pygame" ]
+
+[project.urls]
 homepage = "https://clangen.io"
-repository = "https://github.com/ClanGenOfficial/clangen"
-keywords = ["warriorcats", "fanedit", "game", "pygame"]
+repository = "https://github.com/petzenred/clansim"
+
+[tool.poetry]
 
 [tool.poetry.dependencies]
-python = ">=3.8,<3.13"
 pygame-ce = "^2.2.1"
 ujson = "^5.7.0"
 pygame-gui = "0.6.12"
@@ -21,7 +28,7 @@ pypresence = { version = "^4.2.1", optional = true }
 pgpy = "^0.6.0"
 requests = "^2.28.2"
 strenum = "^0.4.10"
-black = { version = "^23.0", python = ">=3.8," }
+black = "24.3.0"
 
 [tool.poetry.group.test]
 optional = true
