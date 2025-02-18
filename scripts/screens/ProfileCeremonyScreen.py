@@ -14,7 +14,7 @@ from ..game_structure.screen_settings import MANAGER
 from ..ui.generate_button import ButtonStyles, get_button_dict
 
 
-class CeremonyScreen(Screens):
+class ProfileCeremonyScreen(Screens):
     def __init__(self, name=None):
         super().__init__(name)
         self.back_button = None

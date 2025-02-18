@@ -26,7 +26,7 @@ from ..ui.generate_box import BoxStyles, get_box
 from ..ui.generate_button import get_button_dict, ButtonStyles
 
 
-class RoleScreen(Screens):
+class ProfileRoleScreen(Screens):
     the_cat = None
     selected_cat_elements = {}
     buttons = {}

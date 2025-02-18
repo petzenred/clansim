@@ -6,6 +6,36 @@ import pygame_gui
 import ujson
 from pygame_gui.core import ObjectID
 
+from definitions import (
+    MAIN_MENU_SCREEN_NAME,
+    MAIN_SETTINGS_SCREEN_NAME,
+    NEW_CLAN_SCREEN_NAME,
+    SWITCH_CLAN_SCREEN_NAME,
+
+    PROFILE_SCREEN_NAME,
+    PROFILE_ADOPT_SCREEN_NAME,
+    PROFILE_CEREMONY_SCREEN_NAME,
+    PROFILE_FAMILY_SCREEN_NAME,
+    PROFILE_GENDER_SCREEN_NAME,
+    PROFILE_MATE_SCREEN_NAME,
+    PROFILE_MEDIATION_SCREEN_NAME,
+    PROFILE_MENTOR_SCREEN_NAME,
+    PROFILE_RELATIONSHIPS_SCREEN_NAME,
+    PROFILE_ROLE_SCREEN_NAME,
+    PROFILE_SPRITE_INSPECT_SCREEN_NAME,
+
+    CLAN_ALLEGIANCES_SCREEN_NAME,
+    CLAN_CAMP_SCREEN_NAME,
+    CLAN_FRESHKILL_SCREEN_NAME,
+    CLAN_EVENTS_SCREEN_NAME,
+    CLAN_MEMBERS_SCREEN_NAME,
+    CLAN_PATROL_SCREEN_NAME,
+    CLAN_SETTINGS_SCREEN_NAME,
+
+    MED_DEN_SCREEN_NAME,
+    LEADER_DEN_SCREEN_NAME,
+    WARRIOR_DEN_SCREEN_NAME
+)
 import scripts.game_structure.screen_settings
 import scripts.screens.screens_core.screens_core
 from scripts.cat.cats import Cat
@@ -27,6 +57,9 @@ from scripts.utility import (
     get_current_season,
 )
 
+import logging
+
+logger = logging.getLogger(__name__)
 
 class Screens:
     name = None
@@ -47,27 +80,29 @@ class Screens:
         It will handle keeping track of the last screen and cur screen.
         Last screen must be tracked to ensure a clear transition between screens."""
 
+        logger.debug(f"Switching to new screen: {new_screen}")
+
         music_manager.check_music(new_screen)
         # self.exit_screen()
         game.last_screen_forupdate = self.name
 
         # This keeps track of the last list-like screen for the back button on cat profiles
-        if self.name in ["camp screen", "list screen", "events screen"]:
+        if self.name in [CLAN_CAMP_SCREEN_NAME, CLAN_MEMBERS_SCREEN_NAME, CLAN_EVENTS_SCREEN_NAME]:
             game.last_screen_forProfile = self.name
 
         if new_screen not in [
-            "list screen",
-            "profile screen",
-            "sprite inspect screen",
-            "ceremony screen",
-            "role screen",
-            "choose mate screen",
-            "choose mentor screen",
-            "choose adoptive parent screen",
-            "relationship screen",
-            "see kits screen",
-            "mediation screen",
-            "change gender screen"
+            CLAN_MEMBERS_SCREEN_NAME,
+            PROFILE_SCREEN_NAME,
+            PROFILE_SPRITE_INSPECT_SCREEN_NAME,
+            PROFILE_CEREMONY_SCREEN_NAME,
+            PROFILE_ROLE_SCREEN_NAME,
+            PROFILE_MATE_SCREEN_NAME,
+            PROFILE_MENTOR_SCREEN_NAME,
+            PROFILE_ADOPT_SCREEN_NAME,
+            PROFILE_RELATIONSHIPS_SCREEN_NAME,
+            PROFILE_FAMILY_SCREEN_NAME,
+            PROFILE_MEDIATION_SCREEN_NAME,
+            PROFILE_GENDER_SCREEN_NAME
             ]:
             game.last_list_forProfile = None
             self.current_group = "clan"
@@ -81,7 +116,7 @@ class Screens:
             if game.clan.clan_settings["moons and seasons"]:
                 x_shift = 1358
                 y_shift = 70
-                if new_screen == 'events screen':
+                if new_screen == CLAN_EVENTS_SCREEN_NAME:
                     x_shift = 0
                     y_shift = 0
             else:
@@ -100,6 +135,7 @@ class Screens:
         self.bg_transition_time = 5
         self.name = name
         if name is not None:
+            self.name = name.value
             game.all_screens[name] = self
 
         # Place to store the loading window(s)
@@ -232,12 +268,12 @@ class Screens:
             if name == 'dens':
                 if (
                     game.clan.clan_settings["moons and seasons"]
-                    and game.switches["cur_screen"] == "events screen"
+                    and game.switches["cur_screen"] == CLAN_EVENTS_SCREEN_NAME
                 ):
                     button.show()
                 elif (
                     not game.clan.clan_settings["moons and seasons"]
-                    and game.switches["cur_screen"] != "camp screen"
+                    and game.switches["cur_screen"] != CLAN_CAMP_SCREEN_NAME
                 ):
                     button.show()
                 button.hide()
@@ -304,11 +340,11 @@ class Screens:
         """This is a short-up to deal with menu button presses.
         This will fail if event.type != pygame_gui.UI_BUTTON_START_PRESS"""
         if event.ui_element == Screens.menu_buttons["events_screen"]:
-            self.change_screen("events screen")
+            self.change_screen(CLAN_EVENTS_SCREEN_NAME)
         elif event.ui_element == Screens.menu_buttons["camp_screen"]:
-            self.change_screen("camp screen")
+            self.change_screen(CLAN_CAMP_SCREEN_NAME)
         elif event.ui_element == Screens.menu_buttons["catlist_screen"]:
-            self.change_screen("list screen")
+            self.change_screen(CLAN_MEMBERS_SCREEN_NAME)
         elif event.ui_element == Screens.menu_buttons["patrol_screen"]:
             self.change_screen("patrol screen")
         elif event.ui_element == Screens.menu_buttons["main_menu"]:
@@ -526,12 +562,12 @@ class Screens:
         """Updates the moons and seasons widget."""
         if (
             game.clan.clan_settings["moons and seasons"]
-            and game.switches["cur_screen"] != "events screen"
+            and game.switches["cur_screen"] != CLAN_EVENTS_SCREEN_NAME
         ):
             cls.menu_buttons["moons_n_seasons_arrow"].kill()
             cls.menu_buttons["moons_n_seasons"].kill()
             if game.switches["moon&season_open"]:
-                if cls.name == "events screen":
+                if cls.name == CLAN_EVENTS_SCREEN_NAME:
                     cls.close_moon_and_season()
                 else:
                     cls.open_moon_and_season()
@@ -615,7 +651,7 @@ class Screens:
             "",
             object_id="#arrow_mns_closed_button",
         )
-        if cls.name == "events screen":
+        if cls.name == CLAN_EVENTS_SCREEN_NAME:
             cls.menu_buttons["moons_n_seasons_arrow"].kill()
 
         cls.menu_buttons["moons_n_seasons"] = pygame_gui.elements.UIScrollingContainer(

@@ -33,7 +33,7 @@ from scripts.utility import (
 )
 
 
-class EventsScreen(Screens):
+class ClanEventsScreen(Screens):
     current_display = "all events"
     selected_display = "all events"
 

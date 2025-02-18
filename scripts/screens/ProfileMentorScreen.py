@@ -27,7 +27,7 @@ from ..ui.generate_button import get_button_dict, ButtonStyles
 from ..ui.icon import Icon
 
 
-class ChooseMentorScreen(Screens):
+class ProfileMentorScreen(Screens):
     selected_mentor: Optional[Cat] = None
     current_page = 1
     apprentice_details = {}

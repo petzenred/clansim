@@ -45,7 +45,7 @@ has_checked_for_update = False
 update_available = False
 
 
-class StartScreen(Screens):
+class MainMenuScreen(Screens):
     """
     TODO: DOCS
     """

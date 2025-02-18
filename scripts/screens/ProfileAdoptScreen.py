@@ -28,7 +28,7 @@ from ..ui.generate_button import get_button_dict, ButtonStyles
 from ..ui.icon import Icon
 
 
-class ChooseAdoptiveParentScreen(Screens):
+class ProfileAdoptScreen(Screens):
     def __init__(self, name=None):
         super().__init__(name)
         self.next_cat = None

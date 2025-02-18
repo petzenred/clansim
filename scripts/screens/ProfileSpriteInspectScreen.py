@@ -20,7 +20,7 @@ from ..game_structure.windows import SaveAsImage
 from ..ui.generate_button import get_button_dict, ButtonStyles
 
 
-class SpriteInspectScreen(Screens):
+class ProfileSpriteInspectScreen(Screens):
     cat_life_stages = ["newborn", "kitten", "adolescent", "adult", "senior"]
 
     def __init__(self, name=None):
@@ -246,7 +246,7 @@ class SpriteInspectScreen(Screens):
             current_life_stage = self.the_cat.age
 
         self.valid_life_stages = []
-        for life_stage in SpriteInspectScreen.cat_life_stages:
+        for life_stage in ProfileSpriteInspectScreen.cat_life_stages:
             self.valid_life_stages.append(life_stage)
             if life_stage == current_life_stage:
                 break

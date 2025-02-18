@@ -29,7 +29,7 @@ from ..ui.generate_button import get_button_dict, ButtonStyles
 from ..ui.icon import Icon
 
 
-class ChooseMateScreen(Screens):
+class ProfileMateScreen(Screens):
     def __init__(self, name=None):
         super().__init__(name)
         self.list_frame_image = None

@@ -26,7 +26,7 @@ from ..ui.generate_button import get_button_dict, ButtonStyles
 from ..ui.icon import Icon
 
 
-class FamilyTreeScreen(Screens):
+class ProfileFamilyScreen(Screens):
     # Page numbers for siblings and offspring
 
     def __init__(self, name=None):

@@ -32,7 +32,7 @@ from ..ui.generate_button import ButtonStyles, get_button_dict
 from ..ui.icon import Icon
 
 
-class MakeClanScreen(Screens):
+class NewClanScreen(Screens):
     # UI images
     ui_images = {
         "clan_frame": pygame.image.load(
@@ -91,7 +91,7 @@ class MakeClanScreen(Screens):
     # used in symbol screen only - parent container is in element dict
     text = {}
 
-    def __init__(self, name="make_clan_screen"):
+    def __init__(self, name="new_clan_screen"):
         super().__init__(name)
         # current page for symbol choosing
         self.current_page = 1
@@ -2224,4 +2224,4 @@ class MakeClanScreen(Screens):
         )
 
 
-make_clan_screen = MakeClanScreen()
+make_clan_screen = NewClanScreen()

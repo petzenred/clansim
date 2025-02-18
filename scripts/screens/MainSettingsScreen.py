@@ -33,7 +33,7 @@ with open("resources/gamesettings.json", "r", encoding="utf-8") as f:
     settings_dict = ujson.load(f)
 
 
-class SettingsScreen(Screens):
+class MainSettingsScreen(Screens):
     """
     TODO: DOCS
     """

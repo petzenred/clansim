@@ -33,7 +33,7 @@ from ..ui.generate_button import get_button_dict, ButtonStyles
 from ..ui.icon import Icon
 
 
-class RelationshipScreen(Screens):
+class ProfileRelationshipsScreen(Screens):
     checkboxes = {}  # To hold the checkboxes.
     focus_cat_elements = {}
     relation_list_elements = {}

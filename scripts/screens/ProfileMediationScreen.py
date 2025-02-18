@@ -27,7 +27,7 @@ from ..ui.generate_button import get_button_dict, ButtonStyles
 from ..ui.icon import Icon
 
 
-class MediationScreen(Screens):
+class ProfileMediationScreen(Screens):
     def __init__(self, name=None):
         super().__init__(name)
         self.back_button = None

@@ -1,32 +1,35 @@
 # TODO
 `scripts/screens/TODO`
 
-- [ ] add logger debugging statements
+- [ ] replace print() debugging statements with the logger
 - [ ] rename screens for clarity
-  - [ ] AllegiancesScreen -> ClanAllegiancesScreen
-  - [ ] CeremonyScreen -> LeaderCeremonyScreen
-  - [ ] ChangeGenderScreen -> SpecifyGenderScreen
-  - [ ] ChooseAdoptiveParentScreen -> 
-  - [ ] ChooseMateScreen -> 
-  - [ ] ChooseMentorScreen -> 
-  - [ ] ClanScreen -> 
-  - [ ] ClanSettingsScreen -> 
-  - [ ] ClearingScreen -> ClanClearingScreen
-  - [ ] EventsScreen -> ClanEventsScreen
-  - [ ] FamilyTreeScreen -> 
-  - [ ] LeaderDenScreen -> 
-  - [ ] ListScreen -> ClanMembers
-  - [ ] MakeClanScreen -> NewClanScreen
-  - [ ] MedDenScreen -> 
-  - [ ] MediationScreen -> 
-  - [ ] PatrolScreen -> ClanPatrolScreen
-  - [ ] ProfileScreen -> 
-  - [ ] RelationshipScreen -> RelationshipsScreen
-  - [ ] RoleScreen -> ChooseRoleScreen
-  - [ ] SettingsScreen -> MainSettingsScreen
-  - [ ] SpriteInspectScreen -> InspectSpriteScreen
-  - [ ] StartScreen -> MainMenuScreen
+  - [x] StartScreen -> MainMenuScreen
+  - [x] SettingsScreen -> MainSettingsScreen
+  - [x] MakeClanScreen -> NewClanScreen
   - [ ] SwitchClanScreen -> 
+  - 
+  - [x] ClanScreen -> ClanCampScreen
+  - [x] AllegiancesScreen -> ClanAllegiancesScreen
+  - [ ] ClanSettingsScreen -> 
+  - [x] ClearingScreen -> ClanFreshkillScreen
+  - [x] EventsScreen -> ClanEventsScreen
+  - [x] ListScreen -> ClanMembersScreen
+  - [x] PatrolScreen -> ClanPatrolScreen
+  - 
+  - [ ] ProfileScreen -> 
+  - [x] CeremonyScreen -> ProfileCeremonyScreen
+  - [x] ChangeGenderScreen -> ProfileGenderScreen
+  - [x] ChooseAdoptiveParentScreen -> ProfileAdoptScreen
+  - [x] ChooseMateScreen -> ProfileMateScreen
+  - [x] ChooseMentorScreen -> ProfileMentorScreen
+  - [x] FamilyTreeScreen -> ProfileFamilyScreen
+  - [x] RelationshipScreen -> ProfileRelationshipsScreen
+  - [x] RoleScreen -> ProfileRoleScreen
+  - [x] SpriteInspectScreen -> ProfileInspectSpriteScreen
+  - [x] MediationScreen -> ProfileMediationScreen
+  - 
+  - [ ] LeaderDenScreen -> 
+  - [ ] MedDenScreen -> 
   - [ ] WarriorDenScreen -> 
 - [ ] update screen names in other scripts
   - [ ] `/scripts/game_structure/audio.py`
@@ -43,24 +46,25 @@
     - WarriorDenScreen
   - [ ] profile screens
     - ProfileScreen
-    - ChooseAdoptiveParentScreen
-    - ChooseMateScreen
-    - ChooseMentorScreen
-    - ChooseRoleScreen
-    - MediationScreen
-    - SpecifyGenderScreen
-    - FamilyTreeScreen
-    - InspectSpriteScreen
-    - LeaderCeremonyScreen
-    - RelationshipsScreen
+    - ProfileAdoptScreen
+    - ProfileMateScreen
+    - ProfileMentorScreen
+    - ProfileRoleScreen
+    - ProfileMediationScreen
+    - ProfileGenderScreen
+    - ProfileFamilyScreen
+    - ProfileInspectSpriteScreen
+    - ProfileCeremonyScreen
+    - ProfileRelationshipsScreen
   - [ ] Clan screens
+    - ClanCampScreen
     - ClanAllegiancesScreen
-    - ClanClearingScreen
+    - ClanFreshkillScreen
     - ClanEventsScreen
     - ClanMembersScreen
     - ClanPatrolScreen
     - ClanSettingsScreen
   - debugging
-    - [ ] EClanventsScreen calls change_screen() twice
-    - [ ] ClanMembers calls change_screen() twice
+    - [ ] ClanEventsScreen calls change_screen() twice
+    - [ ] ClanMembersScreen calls change_screen() twice
     - [ ] MainMenuScreen calls queueing music twice

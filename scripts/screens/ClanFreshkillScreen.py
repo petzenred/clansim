@@ -30,7 +30,7 @@ with open("resources/clansettings.json", "r", encoding="utf-8") as f:
     settings_dict = ujson.load(f)
 
 
-class ClearingScreen(Screens):
+class ClanFreshkillScreen(Screens):
     cat_buttons = {}
     conditions_hover = {}
     cat_names = []

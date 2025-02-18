@@ -28,7 +28,7 @@ from ..ui.generate_button import get_button_dict, ButtonStyles
 from ..ui.icon import Icon
 
 
-class PatrolScreen(Screens):
+class ClanPatrolScreen(Screens):
     current_patrol = []
     patrol_stage = "choose_cats"  # Can be 'choose_cats', 'patrol_events' or 'patrol_complete'. Controls the stage of patrol.
     patrol_screen = "patrol_cats"  # Can be "patrol_cats" or "skills". Controls the tab on the select_cats stage

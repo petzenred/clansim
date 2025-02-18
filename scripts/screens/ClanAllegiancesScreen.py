@@ -16,7 +16,7 @@ from scripts.utility import (
 from .Screens import Screens
 
 
-class AllegiancesScreen(Screens):
+class ClanAllegiancesScreen(Screens):
     allegiance_list = []
 
     def __init__(self, name=None):

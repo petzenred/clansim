@@ -31,7 +31,7 @@ from ..game_structure.windows import PronounCreation
 from ..ui.generate_button import get_button_dict, ButtonStyles
 
 
-class ChangeGenderScreen(Screens):
+class ProfileGenderScreen(Screens):
     def __init__(self, name=None):
         super().__init__(name)
         self.pronouns_dict = None

@@ -21,7 +21,7 @@ from scripts.ui.icon import Icon
 from scripts.utility import ui_scale, get_text_box_theme, ui_scale_value
 
 
-class ListScreen(Screens):
+class ClanMembersScreen(Screens):
     current_page = 1
     previous_search_text = ""
     clan_name = "ErrorClan"
