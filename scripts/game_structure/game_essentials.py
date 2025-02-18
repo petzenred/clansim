@@ -6,6 +6,11 @@ from shutil import move as shutil_move
 import pygame
 import ujson
 
+from definitions import (
+MAIN_MENU_SCREEN_NAME,
+CLAN_MEMBERS_SCREEN_NAME
+)
+
 from scripts.event_class import Single_Event
 from scripts.game_structure.screen_settings import toggle_fullscreen
 from scripts.housekeeping.datadir import get_save_dir, get_temp_dir
@@ -46,8 +51,8 @@ class Game:
     sub_tab_list = ["life events", "user notes"]
 
     # Keeping track of various last screen for various purposes
-    last_screen_forupdate = "start screen"
-    last_screen_forProfile = "list screen"
+    last_screen_forupdate = MAIN_MENU_SCREEN_NAME
+    last_screen_forProfile = CLAN_MEMBERS_SCREEN_NAME
     last_list_forProfile = None
 
     # down = pygame.image.load("resources/images/buttons/arrow_down.png").convert_alpha()
@@ -85,7 +90,7 @@ class Game:
         "re_roll": False,
         "roll_count": 0,
         "event": None,
-        "cur_screen": "start screen",
+        "cur_screen": MAIN_MENU_SCREEN_NAME,
         "naming_text": "",
         "timeskip": False,
         "mate": None,
@@ -94,7 +99,7 @@ class Game:
         "setting": None,
         "save_settings": False,
         "list_page": 1,
-        "last_screen": "start screen",
+        "last_screen": MAIN_MENU_SCREEN_NAME,
         "events_left": 0,
         "save_clan": False,
         "saved_clan": False,
@@ -187,7 +192,7 @@ class Game:
 
     is_close_menu_open = False
 
-    def __init__(self, current_screen="start screen"):
+    def __init__(self, current_screen=MAIN_MENU_SCREEN_NAME):
         self.current_screen = current_screen
         self.clicked = False
         self.keyspressed = []
@@ -356,7 +361,7 @@ class Game:
 
             SaveError(traceback.format_exc())
             if currentscreen is not None:
-                currentscreen.change_screen("start screen")
+                currentscreen.change_screen(MAIN_MENU_SCREEN_NAME)
 
     def load_settings(self):
         """Load settings that user has saved from previous use"""

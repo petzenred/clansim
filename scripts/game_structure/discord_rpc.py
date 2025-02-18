@@ -11,18 +11,28 @@ import asyncio
 import threading
 from time import time
 
+from definitions import (
+MAIN_MENU_SCREEN_NAME,
+NEW_CLAN_SCREEN_NAME,
+PROFILE_MEDIATION_SCREEN_NAME,
+CLAN_PATROL_SCREEN_NAME,
+PROFILE_SCREEN_NAME,
+PROFILE_CEREMONY_SCREEN_NAME,
+MED_DEN_SCREEN_NAME
+)
+
 from scripts.game_structure.game_essentials import game
 
 status_dict = {
-    "start screen": "At the start screen",
-    "make clan screen": "Making a Clan",
-    "mediation screen": "Mediating a dispute",
-    "patrol screen": "On a patrol",
-    "profile screen": "Viewing a cat's profile",
-    "ceremony screen": "Holding a ceremony",
+    MAIN_MENU_SCREEN_NAME: "At the start screen",
+    NEW_CLAN_SCREEN_NAME: "Making a Clan",
+    PROFILE_MEDIATION_SCREEN_NAME: "Mediating a dispute",
+    CLAN_PATROL_SCREEN_NAME: "On a patrol",
+    PROFILE_SCREEN_NAME: "Viewing a cat's profile",
+    PROFILE_CEREMONY_SCREEN_NAME: "Holding a ceremony",
     "starclan screen": "Viewing StarClan",
     "dark forest screen": "Viewing the Dark Forest",
-    "med den screen": "In the medicine den",
+    MED_DEN_SCREEN_NAME: "In the medicine den",
 }
 
 

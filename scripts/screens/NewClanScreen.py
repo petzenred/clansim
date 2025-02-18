@@ -8,6 +8,7 @@ import pygame_gui
 from pygame_gui.core import ObjectID
 
 import scripts.screens.screens_core.screens_core
+from definitions import MAIN_MENU_SCREEN_NAME, CLAN_CAMP_SCREEN_NAME
 from scripts.cat.cats import create_example_cats, create_cat, Cat
 from scripts.cat.names import names
 from scripts.clan import Clan
@@ -167,7 +168,7 @@ class NewClanScreen(Screens):
             self.mute_button_pressed(event)
 
             if event.ui_element == self.main_menu:
-                self.change_screen("start screen")
+                self.change_screen(MAIN_MENU_SCREEN_NAME)
             if self.sub_screen == "game mode":
                 self.handle_game_mode_event(event)
             elif self.sub_screen == "name clan":
@@ -197,7 +198,7 @@ class NewClanScreen(Screens):
             elif self.sub_screen == "saved screen" and (
                 event.key == pygame.K_RETURN or event.key == pygame.K_RIGHT
             ):
-                self.change_screen("start screen")
+                self.change_screen(MAIN_MENU_SCREEN_NAME)
 
     def handle_game_mode_event(self, event):
         """Handle events for the game mode screen"""
@@ -233,7 +234,7 @@ class NewClanScreen(Screens):
 
     def handle_game_mode_key(self, event):
         if event.key == pygame.K_ESCAPE:
-            self.change_screen("start screen")
+            self.change_screen(MAIN_MENU_SCREEN_NAME)
         elif event.key == pygame.K_DOWN:
             if self.game_mode == "classic":
                 self.game_mode = "expanded"
@@ -279,7 +280,7 @@ class NewClanScreen(Screens):
 
     def handle_name_clan_key(self, event):
         if event.key == pygame.K_ESCAPE:
-            self.change_screen("start screen")
+            self.change_screen(MAIN_MENU_SCREEN_NAME)
         elif event.key == pygame.K_LEFT:
             if not self.elements["name_entry"].is_focused:
                 self.clan_name = ""
@@ -558,7 +559,7 @@ class NewClanScreen(Screens):
 
     def handle_saved_clan_event(self, event):
         if event.ui_element == self.elements["continue"]:
-            self.change_screen("camp screen")
+            self.change_screen(CLAN_CAMP_SCREEN_NAME)
 
     def exit_screen(self):
         self.main_menu.kill()

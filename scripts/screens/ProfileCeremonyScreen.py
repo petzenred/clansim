@@ -3,6 +3,7 @@
 import pygame
 import pygame_gui
 
+from definitions import PROFILE_SCREEN_NAME
 from scripts.cat.cats import Cat
 from scripts.game_structure.game_essentials import game
 from scripts.game_structure.ui_elements import UISurfaceImageButton
@@ -95,11 +96,11 @@ class ProfileCeremonyScreen(Screens):
     def handle_event(self, event):
         if event.type == pygame_gui.UI_BUTTON_START_PRESS:
             if event.ui_element == self.back_button:
-                self.change_screen("profile screen")
+                self.change_screen(PROFILE_SCREEN_NAME)
             else:
                 self.mute_button_pressed(event)
 
         elif event.type == pygame.KEYDOWN and game.settings["keybinds"]:
             if event.key == pygame.K_ESCAPE:
-                self.change_screen("profile screen")
+                self.change_screen(PROFILE_SCREEN_NAME)
         return

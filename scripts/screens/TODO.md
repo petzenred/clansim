@@ -68,3 +68,4 @@
     - [ ] ClanEventsScreen calls change_screen() twice
     - [ ] ClanMembersScreen calls change_screen() twice
     - [ ] MainMenuScreen calls queueing music twice
+  - [ ] change names for sub screens to match large screens

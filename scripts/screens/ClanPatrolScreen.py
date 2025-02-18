@@ -5,6 +5,7 @@ import i18n
 import pygame
 import pygame_gui
 
+from definitions import CLAN_MEMBERS_SCREEN_NAME, CLAN_CAMP_SCREEN_NAME
 from scripts.cat.cats import Cat
 from scripts.game_structure.game_essentials import game
 from scripts.game_structure.ui_elements import (
@@ -87,7 +88,7 @@ class ClanPatrolScreen(Screens):
 
         elif event.type == pygame.KEYDOWN and game.settings["keybinds"]:
             if event.key == pygame.K_LEFT:
-                self.change_screen("list screen")
+                self.change_screen(CLAN_MEMBERS_SCREEN_NAME)
             # elif event.key == pygame.K_RIGHT:
             # self.change_screen('list screen')
 
@@ -289,7 +290,7 @@ class ClanPatrolScreen(Screens):
             self.open_choose_cats_screen()
         elif event.ui_element == self.elements["clan_return"]:
             self.in_progress_data = None
-            self.change_screen("camp screen")
+            self.change_screen(CLAN_CAMP_SCREEN_NAME)
 
     def screen_switches(self):
         super().screen_switches()
@@ -787,7 +788,7 @@ class ClanPatrolScreen(Screens):
 
         if self.display_text is None:
             # No patrol events were found.
-            self.change_screen("camp screen")
+            self.change_screen(CLAN_CAMP_SCREEN_NAME)
             return
 
         # Layout images

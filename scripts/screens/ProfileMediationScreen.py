@@ -5,6 +5,7 @@ import i18n
 import pygame.transform
 import pygame_gui.elements
 
+from definitions import PROFILE_SCREEN_NAME
 from scripts.cat.cats import Cat
 from scripts.game_structure import image_cache
 from scripts.game_structure.game_essentials import game
@@ -50,7 +51,7 @@ class ProfileMediationScreen(Screens):
             self.mute_button_pressed(event)
 
             if event.ui_element == self.back_button:
-                self.change_screen("profile screen")
+                self.change_screen(PROFILE_SCREEN_NAME)
             elif event.ui_element == self.last_med:
                 self.selected_mediator -= 1
                 self.update_mediator_info()

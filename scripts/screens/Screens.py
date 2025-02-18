@@ -135,7 +135,6 @@ class Screens:
         self.bg_transition_time = 5
         self.name = name
         if name is not None:
-            self.name = name.value
             game.all_screens[name] = self
 
         # Place to store the loading window(s)

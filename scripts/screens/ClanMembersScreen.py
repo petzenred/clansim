@@ -6,6 +6,7 @@ import pygame
 import pygame_gui
 from pygame_gui.core import ObjectID
 
+from definitions import PROFILE_SCREEN_NAME, CLAN_PATROL_SCREEN_NAME, CLAN_CAMP_SCREEN_NAME
 from scripts.cat.cats import Cat
 from scripts.game_structure.game_essentials import game
 from scripts.game_structure.screen_settings import game_screen_size, MANAGER
@@ -261,7 +262,7 @@ class ClanMembersScreen(Screens):
             elif element in self.cat_display.cat_sprites.values():
                 game.switches["cat"] = element.return_cat_id()
                 game.last_list_forProfile = self.current_group
-                self.change_screen("profile screen")
+                self.change_screen(PROFILE_SCREEN_NAME)
 
             # MENU BUTTONS
             else:
@@ -272,9 +273,9 @@ class ClanMembersScreen(Screens):
             if self.cat_list_bar_elements["search_bar_entry"].is_focused:
                 return
             if event.key == pygame.K_LEFT:
-                self.change_screen("camp screen")
+                self.change_screen(CLAN_CAMP_SCREEN_NAME)
             elif event.key == pygame.K_RIGHT:
-                self.change_screen("patrol screen")
+                self.change_screen(CLAN_PATROL_SCREEN_NAME)
 
     def screen_switches(self):
         super().screen_switches()

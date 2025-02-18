@@ -6,6 +6,17 @@ import pygame
 import pygame_gui
 from pygame_gui.core import ObjectID
 
+from definitions import (
+    MAIN_MENU_SCREEN_NAME,
+    PROFILE_SCREEN_NAME,
+    MED_DEN_SCREEN_NAME,
+    WARRIOR_DEN_SCREEN_NAME,
+    LEADER_DEN_SCREEN_NAME,
+    CLAN_FRESHKILL_SCREEN_NAME,
+    CLAN_EVENTS_SCREEN_NAME,
+    CLAN_MEMBERS_SCREEN_NAME
+)
+
 from scripts.cat.cats import Cat
 from scripts.game_structure import image_cache
 from scripts.game_structure.game_essentials import (
@@ -68,10 +79,10 @@ class ClanCampScreen(Screens):
                     self.update_buttons_and_text()
                 except RuntimeError:
                     SaveError(traceback.format_exc())
-                    self.change_screen("start screen")
+                    self.change_screen(MAIN_MENU_SCREEN_NAME)
             if event.ui_element in self.cat_buttons:
                 game.switches["cat"] = event.ui_element.return_cat_id()
-                self.change_screen("profile screen")
+                self.change_screen(PROFILE_SCREEN_NAME)
             if event.ui_element == self.label_toggle:
                 if game.clan.clan_settings["den labels"]:
                     game.clan.clan_settings["den labels"] = False
@@ -79,23 +90,23 @@ class ClanCampScreen(Screens):
                     game.clan.clan_settings["den labels"] = True
                 self.update_buttons_and_text()
             if event.ui_element == self.med_den_label:
-                self.change_screen("med den screen")
+                self.change_screen(MED_DEN_SCREEN_NAME)
             else:
                 self.menu_button_pressed(event)
             if event.ui_element == self.clearing_label:
-                self.change_screen("clearing screen")
+                self.change_screen(CLAN_FRESHKILL_SCREEN_NAME)
             else:
                 self.menu_button_pressed(event)
             if event.ui_element == self.warrior_den_label:
-                self.change_screen("warrior den screen")
+                self.change_screen(WARRIOR_DEN_SCREEN_NAME)
             if event.ui_element == self.leader_den_label:
-                self.change_screen("leader den screen")
+                self.change_screen(LEADER_DEN_SCREEN_NAME)
 
         elif event.type == pygame.KEYDOWN and game.settings["keybinds"]:
             if event.key == pygame.K_RIGHT:
-                self.change_screen("list screen")
+                self.change_screen(CLAN_MEMBERS_SCREEN_NAME)
             elif event.key == pygame.K_LEFT:
-                self.change_screen("events screen")
+                self.change_screen(CLAN_EVENTS_SCREEN_NAME)
             elif event.key == pygame.K_SPACE:
                 self.save_button_saving_state.show()
                 self.save_button.disable()

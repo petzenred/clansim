@@ -10,6 +10,7 @@ import pygame
 import pygame_gui
 import ujson
 
+from definitions import MAIN_MENU_SCREEN_NAME
 from scripts.game_structure.discord_rpc import _DiscordRPC
 from scripts.game_structure.game_essentials import game
 from scripts.game_structure.ui_elements import (
@@ -132,7 +133,7 @@ class MainSettingsScreen(Screens):
             self.mute_button_pressed(event)
 
             if event.ui_element == self.main_menu_button:
-                self.change_screen("start screen")
+                self.change_screen(MAIN_MENU_SCREEN_NAME)
                 return
             if event.ui_element == self.fullscreen_toggle:
                 game.switch_setting("fullscreen")
@@ -173,7 +174,7 @@ class MainSettingsScreen(Screens):
 
         elif event.type == pygame.KEYDOWN and game.settings["keybinds"]:
             if event.key == pygame.K_ESCAPE:
-                self.change_screen("start screen")
+                self.change_screen(MAIN_MENU_SCREEN_NAME)
             elif event.key == pygame.K_RIGHT:
                 if self.sub_menu == "general":
                     self.open_info_screen()
@@ -497,7 +498,7 @@ class MainSettingsScreen(Screens):
         )
 
     def open_info_screen(self):
-        """Open's info screen"""
+        """Opens info screen"""
         self.enable_all_menu_buttons()
         self.info_button.disable()
         self.clear_sub_settings_buttons_and_text()

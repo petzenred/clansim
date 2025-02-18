@@ -5,13 +5,13 @@ import pygame
 import pygame_gui
 import ujson
 
+from definitions import (
+    MAIN_MENU_SCREENS, CREATION_SCREENS
+)
 from scripts.game_structure.game_essentials import game
 from scripts.game_structure.ui_elements import CatButton, UISpriteButton
 
 logger = logging.getLogger(__name__)
-
-menu_screens = ["settings screen", "start screen", "switch clan screen"]
-creation_screens = ["make clan screen"]
 
 
 class MusicManager:
@@ -26,8 +26,8 @@ class MusicManager:
         self.current_track = None
         self.queued_track = None
 
-        
         self.load_playlists()
+
     def load_playlists(self):
         self.playlists = {}
         # loading playlists
@@ -51,35 +51,35 @@ class MusicManager:
             return
 
         self.biome_playlist = self.get_biome_music()
-        # print(f"biome playlist is {self.biome_playlist}, current playlist is {self.current_playlist}")
-        # print(f"screen is {screen}")
-        # print(f"menu playlist is {self.playlists['menu_playlist']}")
+        logger.debug(f"biome playlist is {self.biome_playlist}, current playlist is {self.current_playlist}")
+        logger.debug(f"screen is {screen}")
+        logger.debug(f"menu playlist is {self.playlists['menu_playlist']}")
 
-        # menu screen
+        # main menu screens
         if (
-            screen in menu_screens
+            screen in MAIN_MENU_SCREENS
             and self.current_playlist != self.playlists["menu_playlist"]
         ):
-            # print("menu screen")
+            logger.debug("main menu screens")
             self.fade_out_music()
             self.play_playlist(self.playlists["menu_playlist"])
 
-        # clan creation screen
+        # clan creation screens
         elif (
-            screen in creation_screens
+            screen in CREATION_SCREENS
             and self.current_playlist != self.playlists["creation_playlist"]
         ):
-            # print("creation screen")
+            logger.debug("creation screens")
             self.fade_out_music()
             self.play_playlist(self.playlists["creation_playlist"])
 
         # other screens
         elif (
-            screen not in menu_screens
-            and screen not in creation_screens
+            screen not in MAIN_MENU_SCREENS
+            and screen not in CREATION_SCREENS
             and self.current_playlist != self.biome_playlist
         ):
-            # print("biome screen")
+            logger.debug("biome screens")
             self.fade_out_music()
             self.play_playlist(self.biome_playlist)
 
@@ -109,7 +109,7 @@ class MusicManager:
         pygame.mixer.music.load(self.current_track)
         pygame.mixer.music.set_volume(self.volume)
         pygame.mixer.music.play(loops, fade_ms=1000)
-        # print(f"playing music:{self.current_track}")
+        logger.debug(f"playing music:{self.current_track}")
 
     def queue_music(self):
         """
@@ -123,12 +123,12 @@ class MusicManager:
         # otherwise we pick a new track and queue it
         if self.current_track and self.number_of_tracks > 1:
             playlist_copy = self.current_playlist.copy()
-            # print(f"playlist: {playlist_copy}, removing track: {self.current_track}")
+            logger.debug(f"playlist: {playlist_copy}, removing track: {self.current_track}")
             playlist_copy.remove(
                 self.current_track
             )  # don't want to repeat current track, so we take it out
             options = playlist_copy
-            # print(f"final list: {options}")
+            logger.debug(f"final list: {options}")
         else:
             options = self.current_playlist
 

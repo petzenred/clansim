@@ -7,6 +7,7 @@ from pygame_gui.core import ObjectID
 from pygame_gui.elements import UIImage
 
 import scripts.game_structure.screen_settings
+from definitions import MAIN_MENU_SCREEN_NAME
 from scripts.clan import Clan
 from scripts.game_structure.game_essentials import (
     game,
@@ -41,7 +42,7 @@ class SwitchClanScreen(Screens):
             self.mute_button_pressed(event)
 
             if event.ui_element == self.main_menu:
-                self.change_screen("start screen")
+                self.change_screen(MAIN_MENU_SCREEN_NAME)
             elif event.ui_element == self.next_page_button:
                 self.page += 1
                 self.update_page()
@@ -66,7 +67,7 @@ class SwitchClanScreen(Screens):
 
         elif event.type == pygame.KEYDOWN and game.settings["keybinds"]:
             if event.key == pygame.K_ESCAPE:
-                self.change_screen("start screen")
+                self.change_screen(MAIN_MENU_SCREEN_NAME)
 
     def exit_screen(self):
         """

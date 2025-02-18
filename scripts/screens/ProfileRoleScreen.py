@@ -6,6 +6,7 @@ import i18n
 import pygame
 import pygame_gui
 
+from definitions import PROFILE_SCREEN_NAME
 from scripts.cat.cats import Cat
 from scripts.game_structure import image_cache
 from scripts.game_structure.game_essentials import game
@@ -38,7 +39,7 @@ class ProfileRoleScreen(Screens):
             self.mute_button_pressed(event)
 
             if event.ui_element == self.back_button:
-                self.change_screen("profile screen")
+                self.change_screen(PROFILE_SCREEN_NAME)
             elif event.ui_element == self.next_cat_button:
                 if isinstance(Cat.fetch_cat(self.next_cat), Cat):
                     game.switches["cat"] = self.next_cat
@@ -88,7 +89,7 @@ class ProfileRoleScreen(Screens):
 
         elif event.type == pygame.KEYDOWN and game.settings["keybinds"]:
             if event.key == pygame.K_ESCAPE:
-                self.change_screen("profile screen")
+                self.change_screen(PROFILE_SCREEN_NAME)
             elif event.key == pygame.K_RIGHT:
                 game.switches["cat"] = self.next_cat
                 self.update_selected_cat()

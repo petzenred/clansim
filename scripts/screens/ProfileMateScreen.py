@@ -4,6 +4,7 @@ import i18n
 import pygame.transform
 import pygame_gui.elements
 
+from definitions import PROFILE_SCREEN_NAME
 from scripts.cat.cats import Cat
 from scripts.game_structure import image_cache
 from scripts.game_structure.game_essentials import (
@@ -107,7 +108,7 @@ class ProfileMateScreen(Screens):
             # Cat buttons list
             if event.ui_element == self.back_button:
                 self.selected_mate_index = 0
-                self.change_screen("profile screen")
+                self.change_screen(PROFILE_SCREEN_NAME)
             elif event.ui_element == self.toggle_mate:
                 if self.work_thread is not None and self.work_thread.is_alive():
                     return
@@ -186,7 +187,7 @@ class ProfileMateScreen(Screens):
                     return
 
                 game.switches["cat"] = event.ui_element.cat_object.ID
-                self.change_screen("profile screen")
+                self.change_screen(PROFILE_SCREEN_NAME)
 
     def screen_switches(self):
         """Sets up the elements that are always on the page"""

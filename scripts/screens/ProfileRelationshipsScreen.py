@@ -4,6 +4,7 @@ import i18n
 import pygame.transform
 import pygame_gui.elements
 
+from definitions import PROFILE_SCREEN_NAME
 from scripts.cat.cats import Cat
 from scripts.game_structure import image_cache
 from scripts.game_structure.game_essentials import (
@@ -76,13 +77,13 @@ class ProfileRelationshipsScreen(Screens):
                 self.inspect_cat = event.ui_element.return_cat_object()
                 self.update_inspected_relation()
             elif event.ui_element == self.back_button:
-                self.change_screen("profile screen")
+                self.change_screen(PROFILE_SCREEN_NAME)
             elif event.ui_element == self.switch_focus_button:
                 game.switches["cat"] = self.inspect_cat.ID
                 self.update_focus_cat()
             elif event.ui_element == self.view_profile_button:
                 game.switches["cat"] = self.inspect_cat.ID
-                self.change_screen("profile screen")
+                self.change_screen(PROFILE_SCREEN_NAME)
             elif event.ui_element == self.next_cat_button:
                 if isinstance(Cat.fetch_cat(self.next_cat), Cat):
                     game.switches["cat"] = self.next_cat

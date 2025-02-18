@@ -24,6 +24,13 @@ import pygame_gui
 from pygame_gui.core import ObjectID
 from requests.exceptions import RequestException, Timeout
 
+from definitions import (
+    CLAN_CAMP_SCREEN_NAME,
+    MAIN_MENU_SCREEN_NAME,
+    MAIN_SETTINGS_SCREEN_NAME,
+    NEW_CLAN_SCREEN_NAME,
+    SWITCH_CLAN_SCREEN_NAME
+)
 from scripts.cat.cats import Cat
 from scripts.game_structure import image_cache
 from scripts.game_structure.audio import music_manager
@@ -71,10 +78,10 @@ class MainMenuScreen(Screens):
         if event.type == pygame_gui.UI_BUTTON_START_PRESS:
             self.mute_button_pressed(event)
             screens = {
-                self.continue_button: "camp screen",
-                self.switch_clan_button: "switch clan screen",
-                self.new_clan_button: "make clan screen",
-                self.settings_button: "settings screen",
+                self.continue_button: CLAN_CAMP_SCREEN_NAME,
+                self.switch_clan_button: SWITCH_CLAN_SCREEN_NAME,
+                self.new_clan_button: NEW_CLAN_SCREEN_NAME,
+                self.settings_button: MAIN_SETTINGS_SCREEN_NAME,
             }
             if event.ui_element in screens and not self.error_open:
                 self.change_screen(screens[event.ui_element])
@@ -132,7 +139,7 @@ class MainMenuScreen(Screens):
             if (
                 event.key == pygame.K_RETURN or event.key == pygame.K_SPACE
             ) and self.continue_button.is_enabled:
-                self.change_screen("camp screen")
+                self.change_screen(CLAN_CAMP_SCREEN_NAME)
 
     # def on_use(self):
     #     """
@@ -166,7 +173,7 @@ class MainMenuScreen(Screens):
 
         # start menu music if it isn't already playing
         # this is the only screen that has to check its own music, other screens handle that in the screen change
-        music_manager.check_music("start screen")
+        music_manager.check_music(MAIN_MENU_SCREEN_NAME)
 
         bg = pygame.image.load("resources/images/menu.png").convert()
         if game.settings["dark mode"]:

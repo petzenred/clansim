@@ -88,39 +88,43 @@ sys.stderr = UnbufferedStreamDuplexer(sys.stderr, stderr_file)
 
 # Setup logging
 import logging
+from utils.logger import logger_setup
 
-formatter = logging.Formatter(
-    "%(name)s - %(levelname)s - %(filename)s / %(funcName)s / %(lineno)d - %(message)s"
-)
+logger_setup(logging.DEBUG)
 
-# Logging for file
-timestr = time.strftime("%Y%m%d_%H%M%S")
-log_file_name = get_log_dir() + f"/clansim_{timestr}.log"
-file_handler = logging.FileHandler(log_file_name)
-file_handler.setFormatter(formatter)
-# Only log errors to file
-file_handler.setLevel(logging.ERROR)
-# Logging for console
-stream_handler = logging.StreamHandler()
-stream_handler.setFormatter(formatter)
-# Log debugging statements to console
-#stream_handler.setLevel(logging.DEBUG)
-
-logging.root.addHandler(file_handler)
-logging.root.addHandler(stream_handler)
-
-prune_logs(logs_to_keep=10, retain_empty_logs=False)
-
-
-def log_crash(logtype, value, tb):
-    """
-    Log uncaught exceptions to file
-    """
-    logging.critical("Uncaught exception", exc_info=(logtype, value, tb))
-    sys.__excepthook__(type, value, tb)
-
-
-sys.excepthook = log_crash
+#
+# formatter = logging.Formatter(
+#     "%(name)s - %(levelname)s - %(filename)s / %(funcName)s / %(lineno)d - %(message)s"
+# )
+#
+# # Logging for file
+# timestr = time.strftime("%Y%m%d_%H%M%S")
+# log_file_name = get_log_dir() + f"/clansim_{timestr}.log"
+# file_handler = logging.FileHandler(log_file_name)
+# file_handler.setFormatter(formatter)
+# # Only log errors to file
+# file_handler.setLevel(logging.ERROR)
+# # Logging for console
+# stream_handler = logging.StreamHandler()
+# stream_handler.setFormatter(formatter)
+# # Log debugging statements to console
+# #stream_handler.setLevel(logging.DEBUG)
+#
+# logging.root.addHandler(file_handler)
+# logging.root.addHandler(stream_handler)
+#
+# prune_logs(logs_to_keep=10, retain_empty_logs=False)
+#
+#
+# def log_crash(logtype, value, tb):
+#     """
+#     Log uncaught exceptions to file
+#     """
+#     logging.critical("Uncaught exception", exc_info=(logtype, value, tb))
+#     sys.__excepthook__(type, value, tb)
+#
+#
+# sys.excepthook = log_crash
 
 # if user is developing in a github codespace
 if os.environ.get("CODESPACES"):
@@ -182,6 +186,12 @@ for module_name, module in list(sys.modules.items()):
             reload(module)
 
 # Load game
+from definitions import (
+    MAIN_MENU_SCREEN_NAME,
+    SWITCH_CLAN_SCREEN_NAME,
+    MAIN_SETTINGS_SCREEN_NAME,
+    NEW_CLAN_SCREEN_NAME
+)
 from scripts.game_structure.audio import sound_manager, music_manager
 from scripts.game_structure.load_cat import load_cats, version_convert
 from scripts.game_structure.windows import SaveCheck
@@ -311,7 +321,7 @@ except pygame.error:
     print("Failed to initialize sound. Sound will be disabled.")
     music_manager.audio_disabled = True
     music_manager.muted = True
-AllScreens.start_screen.screen_switches()
+AllScreens.main_menu_screen.screen_switches()
 
 # dev screen info now lives in scripts/screens/screens_core
 
@@ -347,11 +357,11 @@ while 1:
             if (
                 game.switches["cur_screen"]
                 in [
-                    "start screen",
-                    "switch clan screen",
-                    "settings screen",
+                    MAIN_MENU_SCREEN_NAME,
+                    SWITCH_CLAN_SCREEN_NAME,
+                    MAIN_SETTINGS_SCREEN_NAME,
                     "info screen",
-                    "make clan screen",
+                    NEW_CLAN_SCREEN_NAME,
                 ]
                 or not game.clan
             ):

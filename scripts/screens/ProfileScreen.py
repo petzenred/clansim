@@ -9,6 +9,20 @@ import pygame
 import pygame_gui
 import ujson
 
+from definitions import (
+    PROFILE_SCREEN_NAME,
+    PROFILE_ADOPT_SCREEN_NAME,
+    PROFILE_CEREMONY_SCREEN_NAME,
+    PROFILE_FAMILY_SCREEN_NAME,
+    PROFILE_GENDER_SCREEN_NAME,
+    PROFILE_MATE_SCREEN_NAME,
+    PROFILE_MEDIATION_SCREEN_NAME,
+    PROFILE_MENTOR_SCREEN_NAME,
+    PROFILE_RELATIONSHIPS_SCREEN_NAME,
+    PROFILE_ROLE_SCREEN_NAME,
+    PROFILE_SPRITE_INSPECT_SCREEN_NAME, MED_DEN_SCREEN_NAME,
+)
+
 from scripts.cat.cats import Cat, BACKSTORIES
 from ..cat.enums import CatAgeEnum
 from scripts.cat.pelts import Pelt
@@ -172,7 +186,7 @@ class ProfileScreen(Screens):
                     print("invalid next cat", self.previous_cat)
             elif event.ui_element == self.inspect_button:
                 self.close_current_tab()
-                self.change_screen("sprite inspect screen")
+                self.change_screen(PROFILE_SPRITE_INSPECT_SCREEN_NAME)
             elif event.ui_element == self.relations_tab_button:
                 self.toggle_relations_tab()
             elif event.ui_element == self.roles_tab_button:
@@ -195,14 +209,14 @@ class ProfileScreen(Screens):
                     "leader_ceremony" in self.profile_elements
                     and event.ui_element == self.profile_elements["leader_ceremony"]
             ):
-                self.change_screen("ceremony screen")
+                self.change_screen(PROFILE_CEREMONY_SCREEN_NAME)
             elif event.ui_element == self.profile_elements["med_den"]:
-                self.change_screen("med den screen")
+                self.change_screen(MED_DEN_SCREEN_NAME)
             elif (
                     "mediation" in self.profile_elements
                     and event.ui_element == self.profile_elements["mediation"]
             ):
-                self.change_screen("mediation screen")
+                self.change_screen(PROFILE_MEDIATION_SCREEN_NAME)
             elif event.ui_element == self.profile_elements["favourite_button"]:
                 self.the_cat.favourite = not self.the_cat.favourite
                 self.profile_elements["favourite_button"].change_object_id(
@@ -239,26 +253,26 @@ class ProfileScreen(Screens):
         # Relations Tab
         if self.open_tab == "relations":
             if event.ui_element == self.family_tree_button:
-                self.change_screen("family tree screen")
+                self.change_screen(PROFILE_FAMILY_SCREEN_NAME)
             elif event.ui_element == self.see_relationships_button:
-                self.change_screen("relationship screen")
+                self.change_screen(PROFILE_RELATIONSHIPS_SCREEN_NAME)
             elif event.ui_element == self.choose_mate_button:
-                self.change_screen("choose mate screen")
+                self.change_screen(PROFILE_MATE_SCREEN_NAME)
             elif event.ui_element == self.change_adoptive_parent_button:
-                self.change_screen("choose adoptive parent screen")
+                self.change_screen(PROFILE_ADOPT_SCREEN_NAME)
 
         # Roles Tab
         elif self.open_tab == "roles":
             if event.ui_element == self.manage_roles:
-                self.change_screen("role screen")
+                self.change_screen(PROFILE_ROLE_SCREEN_NAME)
             elif event.ui_element == self.change_mentor_button:
-                self.change_screen("choose mentor screen")
+                self.change_screen(PROFILE_MENTOR_SCREEN_NAME)
         # Personal Tab
         elif self.open_tab == "personal":
             if event.ui_element == self.change_name_button:
                 ChangeCatName(self.the_cat)
             elif event.ui_element == self.specify_gender_button:
-                self.change_screen("change gender screen")
+                self.change_screen(PROFILE_GENDER_SCREEN_NAME)
             # when button is pressed...
             elif event.ui_element == self.cis_trans_button:
                 # if the cat is anything besides m/f/transm/transf then turn them back to cis
@@ -491,7 +505,7 @@ class ProfileScreen(Screens):
 
         self.hide_mute_buttons()  # no space for mute button on this screen
         self.hide_menu_buttons()  # Menu buttons don't appear on the profile screen
-        if game.last_screen_forProfile == "med den screen":
+        if game.last_screen_forProfile == MED_DEN_SCREEN_NAME:
             self.toggle_conditions_tab()
 
         self.set_cat_location_bg(self.the_cat)

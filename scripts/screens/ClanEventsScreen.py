@@ -4,6 +4,10 @@ import i18n
 import pygame
 import pygame_gui
 
+from definitions import (
+
+    CLAN_EVENTS_SCREEN_NAME, PROFILE_SCREEN_NAME, CLAN_PATROL_SCREEN_NAME, CLAN_CAMP_SCREEN_NAME)
+
 from scripts.cat.cats import Cat
 from scripts.event_class import Single_Event
 from scripts.events import events_class
@@ -135,7 +139,7 @@ class ClanEventsScreen(Screens):
             elif element in self.cat_profile_buttons:
                 self.save_scroll_position()
                 game.switches["cat"] = element.cat_id
-                self.change_screen("profile screen")
+                self.change_screen(PROFILE_SCREEN_NAME)
             else:
                 self.save_scroll_position()
                 self.menu_button_pressed(event)
@@ -146,10 +150,10 @@ class ClanEventsScreen(Screens):
             if event.type == pygame.KEYDOWN:
                 # LEFT ARROW
                 if event.key == pygame.K_LEFT:
-                    self.change_screen("patrol screen")
+                    self.change_screen(CLAN_PATROL_SCREEN_NAME)
                 # RIGHT ARROW
                 elif event.key == pygame.K_RIGHT:
-                    self.change_screen("camp screen")
+                    self.change_screen(CLAN_CAMP_SCREEN_NAME)
                 # DOWN AND UP ARROW
                 elif event.key == pygame.K_DOWN or event.key == pygame.K_UP:
                     self.handle_tab_select(event.key)
@@ -727,7 +731,7 @@ class ClanEventsScreen(Screens):
         game.switches["saved_scroll_positions"] = {}
 
         if get_living_clan_cat_count(Cat) == 0:
-            GameOver("events screen")
+            GameOver(CLAN_EVENTS_SCREEN_NAME)
 
         self.update_display_events_lists()
 

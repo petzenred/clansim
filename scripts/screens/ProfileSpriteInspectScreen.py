@@ -4,6 +4,7 @@ import i18n
 import pygame
 import pygame_gui
 
+from definitions import PROFILE_SCREEN_NAME
 from scripts.cat.cats import Cat
 from scripts.game_structure.game_essentials import game
 from scripts.game_structure.ui_elements import UIImageButton, UISurfaceImageButton
@@ -55,7 +56,7 @@ class ProfileSpriteInspectScreen(Screens):
             self.mute_button_pressed(event)
 
             if event.ui_element == self.back_button:
-                self.change_screen("profile screen")
+                self.change_screen(PROFILE_SCREEN_NAME)
             elif event.ui_element == self.next_cat_button:
                 if isinstance(Cat.fetch_cat(self.next_cat), Cat):
                     game.switches["cat"] = self.next_cat

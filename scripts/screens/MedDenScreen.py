@@ -4,6 +4,7 @@ import i18n
 import pygame
 import pygame_gui
 
+from definitions import PROFILE_SCREEN_NAME
 from scripts.cat.cats import Cat
 from scripts.clan_resources.herb.herb_supply import MESSAGES
 from scripts.game_structure.game_essentials import game
@@ -112,11 +113,11 @@ class MedDenScreen(Screens):
             elif event.ui_element in self.cat_buttons.values():
                 cat = event.ui_element.return_cat_object()
                 game.switches["cat"] = cat.ID
-                self.change_screen("profile screen")
+                self.change_screen(PROFILE_SCREEN_NAME)
             elif event.ui_element == self.med_cat:
                 cat = event.ui_element.return_cat_object()
                 game.switches["cat"] = cat.ID
-                self.change_screen("profile screen")
+                self.change_screen(PROFILE_SCREEN_NAME)
             elif event.ui_element == self.cats_tab:
                 self.open_tab = "cats"
                 self.cats_tab.disable()
