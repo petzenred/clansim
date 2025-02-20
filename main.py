@@ -49,7 +49,7 @@ if not getattr(sys, "frozen", False):
             """You are missing some requirements to run ClanSim!
                 
                 Please look at the "README.md" file for instructions on how to install them.
-                """
+            """
         )
 
         sys.exit(1)
@@ -58,8 +58,7 @@ if not getattr(sys, "frozen", False):
     del isMissing
 del find_spec
 
-from definitions import CLANSIM_VERSION_NUMBER
-from scripts.housekeeping.log_cleanup import prune_logs
+import definitions
 from scripts.housekeeping.stream_duplexer import UnbufferedStreamDuplexer
 from scripts.housekeeping.datadir import get_log_dir, setup_data_dir
 from scripts.housekeeping.version import get_version_info
@@ -76,7 +75,7 @@ if os.path.exists("auto-updated"):
     os.remove("auto-updated")
     shutil.rmtree("Downloads", ignore_errors=True)
     print("Update Complete!")
-    print("New version: " + get_version_info().version_number)
+    print(f"New version: {get_version_info().version_number}")
 
 setup_data_dir()
 timestr = time.strftime("%Y%m%d_%H%M%S")
@@ -88,9 +87,10 @@ sys.stderr = UnbufferedStreamDuplexer(sys.stderr, stderr_file)
 
 # Setup logging
 import logging
-from utils.logger import logger_setup
+from utils.logger_utils import logger_setup
 
 logger_setup(logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 #
 # formatter = logging.Formatter(
@@ -128,36 +128,36 @@ logger_setup(logging.DEBUG)
 
 # if user is developing in a github codespace
 if os.environ.get("CODESPACES"):
-    print("")
-    print("Github codespace user!!! Sorry, but sound *may* not work :(")
-    print(
+    logger.info("")
+    logger.info("Github codespace user!!! Sorry, but sound *may* not work :(")
+    logger.info(
         "SDL_AUDIODRIVER is dsl. This is to avoid ALSA errors, but it may disable sound."
     )
-    print("")
-    print("Web VNC:")
-    print(
+    logger.info("")
+    logger.info("Web VNC:")
+    logger.info(
         f"https://{os.environ.get('CODESPACE_NAME')}-6080"
         + f".{os.environ.get('GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN')}"
         + "/?autoconnect=true&reconnect=true&password=clangen&resize=scale"
     )
-    print("(use ClanSim in fullscreen mode for best results)")
-    print("")
+    logger.info("(use ClanSim in fullscreen mode for best results)")
+    logger.info("")
 
 if get_version_info().is_source_build:
-    print("Running on source code")
-    if get_version_info().version_number == CLANSIM_VERSION_NUMBER:
-        print("Failed to get git commit hash, using hardcoded version number instead.")
-        print(
+    logger.info("Running on source code")
+    if get_version_info().version_number == definitions.CLANSIM_VERSION_NUMBER:
+        logger.info("Failed to get git commit hash, using hardcoded version number instead.")
+        logger.info(
             "Hey testers! We recommend you use git to clone the repository, as it makes things easier for everyone."
         )  # pylint: disable=line-too-long
-        print(
+        logger.info(
             "There are instructions at https://discord.com/channels/1003759225522110524/1054942461178421289/1078170877117616169"
         )  # pylint: disable=line-too-long
 else:
-    print("Running on PyInstaller build")
+    logger.info("Running on PyInstaller build")
 
-print("Version Name: ", CLANSIM_VERSION_NUMBER)
-print("Running on commit " + get_version_info().version_number)
+logger.info(f"Version Name: {definitions.CLANSIM_VERSION_NUMBER}")
+logger.info(f"Running on commit {get_version_info().version_number}")
 
 import pygame_gui
 from scripts.game_structure.monkeypatch import translate
@@ -186,12 +186,6 @@ for module_name, module in list(sys.modules.items()):
             reload(module)
 
 # Load game
-from definitions import (
-    MAIN_MENU_SCREEN_NAME,
-    SWITCH_CLAN_SCREEN_NAME,
-    MAIN_SETTINGS_SCREEN_NAME,
-    NEW_CLAN_SCREEN_NAME
-)
 from scripts.game_structure.audio import sound_manager, music_manager
 from scripts.game_structure.load_cat import load_cats, version_convert
 from scripts.game_structure.windows import SaveCheck
@@ -318,7 +312,7 @@ pygame.mixer.pre_init(buffer=44100)
 try:
     pygame.mixer.init()
 except pygame.error:
-    print("Failed to initialize sound. Sound will be disabled.")
+    logger.info("Failed to initialize sound. Sound will be disabled.")
     music_manager.audio_disabled = True
     music_manager.muted = True
 AllScreens.main_menu_screen.screen_switches()
@@ -357,11 +351,11 @@ while 1:
             if (
                 game.switches["cur_screen"]
                 in [
-                    MAIN_MENU_SCREEN_NAME,
-                    SWITCH_CLAN_SCREEN_NAME,
-                    MAIN_SETTINGS_SCREEN_NAME,
+                    definitions.MAIN_MENU_SCREEN_NAME,
+                    definitions.SWITCH_CLAN_SCREEN_NAME,
+                    definitions.MAIN_SETTINGS_SCREEN_NAME,
                     "info screen",
-                    NEW_CLAN_SCREEN_NAME,
+                    definitions.NEW_CLAN_SCREEN_NAME,
                 ]
                 or not game.clan
             ):
@@ -376,15 +370,15 @@ while 1:
             if MANAGER.visual_debug_active:
                 _ = pygame.mouse.get_pos()
                 if game.settings["fullscreen"]:
-                    print(f"(x: {_[0]}, y: {_[1]})")
+                    logger.info(f"(x: {_[0]}, y: {_[1]})")
                 else:
-                    print(f"(x: {_[0] * screen_scale}, y: {_[1] * screen_scale})")
+                    logger.info(f"(x: {_[0] * screen_scale}, y: {_[1] * screen_scale})")
                 del _
 
         # F2 turns toggles visual debug mode for pygame_gui, allowed for easier bug fixes.
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_F2:
-                MANAGER.print_layer_debug()
+                MANAGER.logger.info_layer_debug()
             elif event.key == pygame.K_F3:
                 debug_mode.toggle_debug_mode()
                 # debugmode.toggle_console()

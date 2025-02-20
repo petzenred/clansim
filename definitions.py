@@ -5,6 +5,8 @@ APP_NAME_DEFAULT = "ClanSim"
 APP_NAME_BETA = "ClanSimBeta"
 APP_AUTHOR = "ClanSim"
 
+TIMESTR_FORMAT = "%Y%m%d_%H%M%S"
+
 
 # This is saved in the Clan save-file, and is used for save-file conversion.
 CLANSIM_SAVE_VERSION_NUMBER = 0
