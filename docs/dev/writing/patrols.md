@@ -155,7 +155,7 @@ How to make sure your patrol_id is unique:
 | "desert"      | appears in the desert biome      |
 | "any"         | appears in any biome             |
 
-Please have a look at the [full biome differences list](index.md#clangen-biomes) when thinking about writing patrols. 
+Please have a look at the [full biome differences list](clangen-biomes.md) when thinking about writing patrols. 
 
 
 ***

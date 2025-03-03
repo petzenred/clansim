@@ -143,7 +143,7 @@ How to make sure your event_id is unique:
 !!! todo "TODO"
     add a table listing various camps
 
-Please have a look at the [full biome differences list](index.md#clangen-biomes) when thinking about writing patrols. 
+Please have a look at the [full biome differences list](clangen-biomes.md) when thinking about writing patrols. 
 
 ### season:list[str]
 >List of seasons in which the event may occur.

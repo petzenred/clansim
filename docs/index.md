@@ -8,7 +8,7 @@ This wiki is intended to document the intended behavior of implemented systems a
 
     Information on ClanGen from a developer standpoint.
 
-- _[User-Guides](user-guides/index.md)_
+- _[User Guides](user-guides/index.md)_
 
     User-created guides on a variety of topics.
 
