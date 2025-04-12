@@ -63,7 +63,7 @@ from scripts.utility import (
 )
 
 if TYPE_CHECKING:
-    from scripts.screens.Screens import Screens
+    from scripts.screens.BaseScreen import BaseScreen
 
 
 class SymbolFilterWindow(UIWindow):
@@ -2129,7 +2129,7 @@ class SelectFocusClans(UIWindow):
 
 
 class ConfirmDisplayChanges(UIMessageWindow):
-    def __init__(self, source_screen: "Screens"):
+    def __init__(self, source_screen: "BaseScreen"):
         super().__init__(
             ui_scale(pygame.Rect((275, 270), (250, 160))),
             "This is a test!",

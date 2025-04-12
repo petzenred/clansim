@@ -33,11 +33,11 @@ from scripts.utility import (
     ui_scale_dimensions,
     get_current_season,
 )
-from .Screens import Screens
+from .BaseScreen import BaseScreen
 from ..ui.generate_button import ButtonStyles, get_button_dict
 
 
-class ClanCampScreen(Screens):
+class ClanCampScreen(BaseScreen):
     max_sprites_displayed = (
         400  # we don't want 100,000 sprites rendering at once. 400 is enough.
     )

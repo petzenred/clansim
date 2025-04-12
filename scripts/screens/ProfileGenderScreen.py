@@ -25,14 +25,14 @@ from scripts.utility import (
 )
 from scripts.game_structure.localization import load_lang_resource
 from scripts.utility import ui_scale
-from .Screens import Screens
+from .BaseScreen import BaseScreen
 from ..game_structure import localization as pronouns
 from ..game_structure.screen_settings import MANAGER
 from ..game_structure.windows import PronounCreation
 from ..ui.generate_button import get_button_dict, ButtonStyles
 
 
-class ProfileGenderScreen(Screens):
+class ProfileGenderScreen(BaseScreen):
     def __init__(self, name=None):
         super().__init__(name)
         self.pronouns_dict = None

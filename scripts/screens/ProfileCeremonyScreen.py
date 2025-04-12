@@ -9,13 +9,13 @@ from scripts.game_structure.game_essentials import game
 from scripts.game_structure.ui_elements import UISurfaceImageButton
 from scripts.utility import get_text_box_theme
 from scripts.utility import ui_scale
-from .Screens import Screens
+from .BaseScreen import BaseScreen
 from ..cat.history import History
 from ..game_structure.screen_settings import MANAGER
 from ..ui.generate_button import ButtonStyles, get_button_dict
 
 
-class ProfileCeremonyScreen(Screens):
+class ProfileCeremonyScreen(BaseScreen):
     def __init__(self, name=None):
         super().__init__(name)
         self.back_button = None

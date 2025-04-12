@@ -21,7 +21,7 @@ from scripts.game_structure.ui_elements import (
     CatButton,
 )
 from scripts.game_structure.windows import GameOver
-from scripts.screens.Screens import Screens
+from scripts.screens.BaseScreen import BaseScreen
 from scripts.ui.generate_box import BoxStyles, get_box
 from scripts.ui.generate_button import get_button_dict, ButtonStyles
 from scripts.ui.icon import Icon
@@ -37,7 +37,7 @@ from scripts.utility import (
 )
 
 
-class ClanEventsScreen(Screens):
+class ClanEventsScreen(BaseScreen):
     current_display = "all events"
     selected_display = "all events"
 

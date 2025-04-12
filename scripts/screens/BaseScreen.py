@@ -61,7 +61,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-class Screens:
+class BaseScreen:
     name = None
     game_screen = screen
     last_screen = ""
@@ -126,7 +126,7 @@ class Screens:
             x_shift = 0
             y_shift = 0
         
-        Screens.mns_ui_offset(x_shift, y_shift)
+        BaseScreen.mns_ui_offset(x_shift, y_shift)
 
     def __init__(self, name=None):
         self.active_blur_bg = None
@@ -223,14 +223,14 @@ class Screens:
 
     def screen_switches(self):
         """Runs when this screen is switched to."""
-        Screens.hide_mute_buttons()
-        Screens.hide_menu_buttons()
-        Screens.menu_buttons = scripts.screens.screens_core.screens_core.menu_buttons
-        Screens.game_frame = scripts.screens.screens_core.screens_core.game_frame
+        BaseScreen.hide_mute_buttons()
+        BaseScreen.hide_menu_buttons()
+        BaseScreen.menu_buttons = scripts.screens.screens_core.screens_core.menu_buttons
+        BaseScreen.game_frame = scripts.screens.screens_core.screens_core.game_frame
         try:
-            Screens.update_heading_text(game.clan.name + "Clan")
+            BaseScreen.update_heading_text(game.clan.name + "Clan")
         except AttributeError:
-            Screens.update_heading_text("DebugClan")
+            BaseScreen.update_heading_text("DebugClan")
         if self.active_bg is None or "default" in self.active_bg:
             self.set_bg(None)
         self.bg_transition = True
@@ -297,14 +297,14 @@ class Screens:
         """this hides the mute buttons, so they are no longer visible
         or interact-able. It does not delete the buttons from memory."""
 
-        Screens.menu_buttons["mute_button"].hide()
-        Screens.menu_buttons["unmute_button"].hide()
+        BaseScreen.menu_buttons["mute_button"].hide()
+        BaseScreen.menu_buttons["unmute_button"].hide()
 
     @classmethod
     def show_mute_buttons(cls):
         """This shows all mute buttons, and makes them interact-able."""
 
-        if music_manager.muted or music_manager.audio_disabled:
+        if music_manager.muted_f or music_manager.audio_disabled_f:
             cls.menu_buttons["unmute_button"].show()
             cls.menu_buttons["mute_button"].hide()
         else:
@@ -314,13 +314,13 @@ class Screens:
     def mute_button_pressed(self, event):
         """This is a short-up to deal with mute button presses.
         This will fail if event.type != pygame_gui.UI_BUTTON_START_PRESS"""
-        if event.ui_element == Screens.menu_buttons["mute_button"]:
+        if event.ui_element == BaseScreen.menu_buttons["mute_button"]:
             music_manager.mute_music()
-            Screens.show_mute_buttons()
+            BaseScreen.show_mute_buttons()
             return True
-        elif event.ui_element == Screens.menu_buttons["unmute_button"]:
+        elif event.ui_element == BaseScreen.menu_buttons["unmute_button"]:
             out = music_manager.unmute_music(self.name)
-            Screens.show_mute_buttons()
+            BaseScreen.show_mute_buttons()
             return out
         else:
             return False
@@ -338,38 +338,38 @@ class Screens:
     def menu_button_pressed(self, event):
         """This is a short-up to deal with menu button presses.
         This will fail if event.type != pygame_gui.UI_BUTTON_START_PRESS"""
-        if event.ui_element == Screens.menu_buttons["events_screen"]:
+        if event.ui_element == BaseScreen.menu_buttons["events_screen"]:
             self.change_screen(CLAN_EVENTS_SCREEN_NAME)
-        elif event.ui_element == Screens.menu_buttons["camp_screen"]:
+        elif event.ui_element == BaseScreen.menu_buttons["camp_screen"]:
             self.change_screen(CLAN_CAMP_SCREEN_NAME)
-        elif event.ui_element == Screens.menu_buttons["catlist_screen"]:
+        elif event.ui_element == BaseScreen.menu_buttons["catlist_screen"]:
             self.change_screen(CLAN_MEMBERS_SCREEN_NAME)
-        elif event.ui_element == Screens.menu_buttons["patrol_screen"]:
+        elif event.ui_element == BaseScreen.menu_buttons["patrol_screen"]:
             self.change_screen("patrol screen")
-        elif event.ui_element == Screens.menu_buttons["main_menu"]:
+        elif event.ui_element == BaseScreen.menu_buttons["main_menu"]:
             SaveCheck(
-                game.switches["cur_screen"], True, Screens.menu_buttons["main_menu"]
+                game.switches["cur_screen"], True, BaseScreen.menu_buttons["main_menu"]
             )
-        elif event.ui_element == Screens.menu_buttons["allegiances"]:
+        elif event.ui_element == BaseScreen.menu_buttons["allegiances"]:
             self.change_screen("allegiances screen")
-        elif event.ui_element == Screens.menu_buttons["clan_settings"]:
+        elif event.ui_element == BaseScreen.menu_buttons["clan_settings"]:
             self.change_screen("clan settings screen")
-        elif event.ui_element == Screens.menu_buttons["moons_n_seasons_arrow"]:
+        elif event.ui_element == BaseScreen.menu_buttons["moons_n_seasons_arrow"]:
             if game.switches["moon&season_open"]:
                 game.switches["moon&season_open"] = False
             else:
                 game.switches["moon&season_open"] = True
             self.update_moon_and_season()
-        elif event.ui_element == Screens.menu_buttons["dens"]:
+        elif event.ui_element == BaseScreen.menu_buttons["dens"]:
             self.update_dens()
 
-        elif event.ui_element == Screens.menu_buttons["lead_den"]:
+        elif event.ui_element == BaseScreen.menu_buttons["lead_den"]:
             self.change_screen("leader den screen")
-        elif event.ui_element == Screens.menu_buttons["clearing"]:
+        elif event.ui_element == BaseScreen.menu_buttons["clearing"]:
             self.change_screen("clearing screen")
-        elif event.ui_element == Screens.menu_buttons["med_cat_den"]:
+        elif event.ui_element == BaseScreen.menu_buttons["med_cat_den"]:
             self.change_screen("med den screen")
-        elif event.ui_element == Screens.menu_buttons["warrior_den"]:
+        elif event.ui_element == BaseScreen.menu_buttons["warrior_den"]:
             self.change_screen("warrior den screen")
 
     @classmethod

@@ -44,7 +44,7 @@ from scripts.utility import (
     shorten_text_to_fit,
     ui_scale_offset,
     adjust_list_text, )
-from .Screens import Screens
+from .BaseScreen import BaseScreen
 from ..cat.history import History
 from ..game_structure.localization import get_new_pronouns
 from ..game_structure.screen_settings import MANAGER
@@ -103,7 +103,7 @@ def backstory_text(cat):
 # ---------------------------------------------------------------------------- #
 #                               Profile Screen                                 #
 # ---------------------------------------------------------------------------- #
-class ProfileScreen(Screens):
+class ProfileScreen(BaseScreen):
     # UI Images
     conditions_tab = image_cache.load_image(
         "resources/images/conditions_tab_backdrop.png"

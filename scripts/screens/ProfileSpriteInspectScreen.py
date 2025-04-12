@@ -15,13 +15,13 @@ from scripts.utility import (
     ui_scale_offset,
     get_text_box_theme, )
 from scripts.utility import ui_scale
-from .Screens import Screens
+from .BaseScreen import BaseScreen
 from ..game_structure.screen_settings import MANAGER
 from ..game_structure.windows import SaveAsImage
 from ..ui.generate_button import get_button_dict, ButtonStyles
 
 
-class ProfileSpriteInspectScreen(Screens):
+class ProfileSpriteInspectScreen(BaseScreen):
     cat_life_stages = ["newborn", "kitten", "adolescent", "adult", "senior"]
 
     def __init__(self, name=None):

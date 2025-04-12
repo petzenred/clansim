@@ -23,14 +23,14 @@ from scripts.utility import (
     ui_scale_offset,
     shorten_text_to_fit,
 )
-from .Screens import Screens
+from .BaseScreen import BaseScreen
 from ..game_structure.screen_settings import MANAGER
 from ..ui.generate_box import BoxStyles, get_box
 from ..ui.generate_button import get_button_dict, ButtonStyles
 from ..ui.icon import Icon
 
 
-class ProfileMateScreen(Screens):
+class ProfileMateScreen(BaseScreen):
     def __init__(self, name=None):
         super().__init__(name)
         self.list_frame_image = None

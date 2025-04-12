@@ -16,13 +16,13 @@ from scripts.game_structure.ui_elements import (
     UICatListDisplay,
     UISurfaceImageButton,
 )
-from scripts.screens.Screens import Screens
+from scripts.screens.BaseScreen import BaseScreen
 from scripts.ui.generate_button import ButtonStyles, get_button_dict
 from scripts.ui.icon import Icon
 from scripts.utility import ui_scale, get_text_box_theme, ui_scale_value
 
 
-class ClanMembersScreen(Screens):
+class ClanMembersScreen(BaseScreen):
     current_page = 1
     previous_search_text = ""
     clan_name = "ErrorClan"

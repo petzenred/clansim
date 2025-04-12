@@ -20,7 +20,7 @@ from scripts.utility import (
     shorten_text_to_fit,
     ui_scale_dimensions,
 )
-from .Screens import Screens
+from .BaseScreen import BaseScreen
 from ..game_structure import image_cache
 from ..game_structure.propagating_thread import PropagatingThread
 from ..game_structure.screen_settings import MANAGER
@@ -29,7 +29,7 @@ from ..ui.generate_button import get_button_dict, ButtonStyles
 from ..ui.icon import Icon
 
 
-class ClanPatrolScreen(Screens):
+class ClanPatrolScreen(BaseScreen):
     current_patrol = []
     patrol_stage = "choose_cats"  # Can be 'choose_cats', 'patrol_events' or 'patrol_complete'. Controls the stage of patrol.
     patrol_screen = "patrol_cats"  # Can be "patrol_cats" or "skills". Controls the tab on the select_cats stage

@@ -18,7 +18,7 @@ from scripts.utility import (
     ui_scale_dimensions,
     ui_scale_offset,
 )  # pylint: disable=redefined-builtin
-from .Screens import Screens
+from .BaseScreen import BaseScreen
 from ..game_structure.screen_settings import MANAGER, toggle_fullscreen
 from ..housekeeping.datadir import get_data_dir
 from ..housekeeping.version import get_version_info
@@ -30,7 +30,7 @@ with open("resources/clansettings.json", "r", encoding="utf-8") as f:
     settings_dict = ujson.load(f)
 
 
-class ClanSettingsScreen(Screens):
+class ClanSettingsScreen(BaseScreen):
     """
     Screen handles all Clan-specific settings
     """
@@ -195,7 +195,7 @@ class ClanSettingsScreen(Screens):
             anchors={
                 "bottom": "bottom",
                 "right": "right",
-                "right_target": Screens.menu_buttons["mute_button"],
+                "right_target": BaseScreen.menu_buttons["mute_button"],
             },
         )
         del screentext, rect

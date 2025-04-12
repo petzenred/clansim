@@ -7,7 +7,7 @@ import ujson
 from scripts.housekeeping.datadir import get_save_dir
 
 if TYPE_CHECKING:
-    from scripts.screens.Screens import Screens
+    from scripts.screens.BaseScreen import BaseScreen
 
 from math import floor
 from typing import Optional, Tuple
@@ -35,7 +35,7 @@ display_change_in_progress = False  # this acts as a lock to ensure we don't end
 
 def set_display_mode(
     fullscreen=None,
-    source_screen: Optional["Screens"] = None,
+    source_screen: Optional["BaseScreen"] = None,
     show_confirm_dialog=True,
     ingame_switch=True,
 ):
@@ -143,14 +143,14 @@ def set_display_mode(
             scripts.debug_console.debug_mode.rebuild_console()
 
             screen_name = source_screen.name.replace(" ", "_")
-            new_screen: "Screens" = getattr(AllScreens, screen_name)
+            new_screen: "BaseScreen" = getattr(AllScreens, screen_name)
             new_screen.screen_switches()
             if ingame_switch:
                 new_screen.display_change_load(curr_variable_dict)
     if curr_variable_dict is not None and show_confirm_dialog:
         from scripts.screens.all_screens import AllScreens
 
-        new_screen: "Screens" = getattr(
+        new_screen: "BaseScreen" = getattr(
             AllScreens, game.switches["cur_screen"].replace(" ", "_")
         )
         new_screen.display_change_load(curr_variable_dict)
@@ -246,7 +246,7 @@ def determine_screen_scale(x, y, ingame_switch):
 
 def toggle_fullscreen(
     fullscreen: Optional[bool] = None,
-    source_screen: Optional["Screens"] = None,
+    source_screen: Optional["BaseScreen"] = None,
     show_confirm_dialog: bool = True,
     ingame_switch: bool = True,
 ):

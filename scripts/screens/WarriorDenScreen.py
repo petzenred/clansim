@@ -9,7 +9,7 @@ from scripts.game_structure.game_essentials import game
 from scripts.game_structure.screen_settings import MANAGER
 from scripts.game_structure.ui_elements import UIImageButton, UISurfaceImageButton
 from scripts.game_structure.windows import SelectFocusClans
-from scripts.screens.Screens import Screens
+from scripts.screens.BaseScreen import BaseScreen
 from scripts.ui.generate_button import ButtonStyles, get_button_dict
 from scripts.utility import (
     ui_scale,
@@ -22,7 +22,7 @@ with open("resources/clansettings.json", "r", encoding="utf-8") as f:
     settings_dict = ujson.load(f)
 
 
-class WarriorDenScreen(Screens):
+class WarriorDenScreen(BaseScreen):
     """
     The screen to change the focus of the Clan, which gives bonuses.
     """

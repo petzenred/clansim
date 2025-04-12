@@ -20,14 +20,14 @@ from scripts.utility import (
     ui_scale_dimensions,
     adjust_list_text,
 )
-from .Screens import Screens
+from .BaseScreen import BaseScreen
 from ..game_structure.screen_settings import MANAGER
 from ..ui.generate_box import BoxStyles, get_box
 from ..ui.generate_button import get_button_dict, ButtonStyles
 from ..ui.icon import Icon
 
 
-class ProfileFamilyScreen(Screens):
+class ProfileFamilyScreen(BaseScreen):
     # Page numbers for siblings and offspring
 
     def __init__(self, name=None):

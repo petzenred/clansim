@@ -13,10 +13,10 @@ from scripts.utility import (
     adjust_list_text,
     event_text_adjust,
 )
-from .Screens import Screens
+from .BaseScreen import BaseScreen
 
 
-class ClanAllegiancesScreen(Screens):
+class ClanAllegiancesScreen(BaseScreen):
     allegiance_list = []
 
     def __init__(self, name=None):

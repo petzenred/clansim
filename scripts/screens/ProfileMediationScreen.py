@@ -21,14 +21,14 @@ from scripts.utility import (
     shorten_text_to_fit,
     ui_scale_dimensions,
 )
-from .Screens import Screens
+from .BaseScreen import BaseScreen
 from ..game_structure.screen_settings import MANAGER
 from ..ui.generate_box import get_box, BoxStyles
 from ..ui.generate_button import get_button_dict, ButtonStyles
 from ..ui.icon import Icon
 
 
-class ProfileMediationScreen(Screens):
+class ProfileMediationScreen(BaseScreen):
     def __init__(self, name=None):
         super().__init__(name)
         self.back_button = None

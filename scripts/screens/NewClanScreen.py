@@ -24,7 +24,7 @@ from scripts.game_structure.ui_elements import (
 from scripts.events_module.patrol.patrol import Patrol
 from scripts.utility import get_text_box_theme, ui_scale, ui_scale_blit, ui_scale_offset
 from scripts.utility import ui_scale_dimensions
-from .Screens import Screens
+from .BaseScreen import BaseScreen
 from ..cat.sprites import sprites
 from ..game_structure.screen_settings import MANAGER, screen
 from ..game_structure.windows import SymbolFilterWindow
@@ -33,7 +33,7 @@ from ..ui.generate_button import ButtonStyles, get_button_dict
 from ..ui.icon import Icon
 
 
-class NewClanScreen(Screens):
+class NewClanScreen(BaseScreen):
     # UI images
     ui_images = {
         "clan_frame": pygame.image.load(

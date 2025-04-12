@@ -49,7 +49,7 @@ from .ClanPatrolScreen import ClanPatrolScreen
 from .ProfileScreen import ProfileScreen
 from .ProfileRelationshipsScreen import ProfileRelationshipsScreen
 from .ProfileRoleScreen import ProfileRoleScreen
-from .Screens import Screens
+from .BaseScreen import BaseScreen
 from .MainSettingsScreen import MainSettingsScreen
 from .ProfileSpriteInspectScreen import ProfileSpriteInspectScreen
 from .MainMenuScreen import MainMenuScreen
@@ -77,7 +77,7 @@ BUTTONS:
 
 
 class AllScreens:
-    screens = Screens()
+    screens = BaseScreen()
 
     main_menu_screen = MainMenuScreen(MAIN_MENU_SCREEN_NAME)
     main_settings_screen = MainSettingsScreen(MAIN_SETTINGS_SCREEN_NAME)
@@ -110,7 +110,7 @@ class AllScreens:
     
     @classmethod
     def rebuild_all_screens(cls):
-        cls.screens = Screens()
+        cls.screens = BaseScreen()
 
         cls.main_menu_screen = MainMenuScreen(MAIN_MENU_SCREEN_NAME)
         cls.main_settings_screen = MainSettingsScreen(MAIN_SETTINGS_SCREEN_NAME)

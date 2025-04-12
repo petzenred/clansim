@@ -19,7 +19,7 @@ from scripts.utility import (
     shorten_text_to_fit,
     ui_scale_dimensions,
 )
-from .Screens import Screens
+from .BaseScreen import BaseScreen
 from scripts.events_module.short.condition_events import Condition_Events
 from ..game_structure.screen_settings import MANAGER
 from ..ui.generate_box import BoxStyles, get_box
@@ -30,7 +30,7 @@ with open("resources/clansettings.json", "r", encoding="utf-8") as f:
     settings_dict = ujson.load(f)
 
 
-class ClanFreshkillScreen(Screens):
+class ClanFreshkillScreen(BaseScreen):
     cat_buttons = {}
     conditions_hover = {}
     cat_names = []

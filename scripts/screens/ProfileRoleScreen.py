@@ -21,13 +21,13 @@ from scripts.utility import (
     ui_scale,
     adjust_list_text,
 )
-from .Screens import Screens
+from .BaseScreen import BaseScreen
 from ..game_structure.screen_settings import MANAGER
 from ..ui.generate_box import BoxStyles, get_box
 from ..ui.generate_button import get_button_dict, ButtonStyles
 
 
-class ProfileRoleScreen(Screens):
+class ProfileRoleScreen(BaseScreen):
     the_cat = None
     selected_cat_elements = {}
     buttons = {}

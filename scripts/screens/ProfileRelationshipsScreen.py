@@ -26,7 +26,7 @@ from scripts.utility import (
     ui_scale_offset,
     event_text_adjust,
 )
-from .Screens import Screens
+from .BaseScreen import BaseScreen
 from ..cat_relations.relationship import Relationship
 from ..game_structure.screen_settings import MANAGER, screen
 from ..ui.generate_box import get_box, BoxStyles
@@ -34,7 +34,7 @@ from ..ui.generate_button import get_button_dict, ButtonStyles
 from ..ui.icon import Icon
 
 
-class ProfileRelationshipsScreen(Screens):
+class ProfileRelationshipsScreen(BaseScreen):
     checkboxes = {}  # To hold the checkboxes.
     focus_cat_elements = {}
     relation_list_elements = {}

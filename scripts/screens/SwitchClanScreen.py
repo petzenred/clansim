@@ -21,7 +21,7 @@ from scripts.utility import (
     ui_scale_value,
     ui_scale_offset,
 )
-from .Screens import Screens
+from .BaseScreen import BaseScreen
 from ..game_structure.screen_settings import MANAGER
 from ..ui.generate_button import get_button_dict, ButtonStyles
 from ..ui.icon import Icon
@@ -29,7 +29,7 @@ from ..ui.icon import Icon
 logger = logging.getLogger(__name__)
 
 
-class SwitchClanScreen(Screens):
+class SwitchClanScreen(BaseScreen):
     """
     TODO: DOCS
     """

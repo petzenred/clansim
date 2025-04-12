@@ -40,7 +40,7 @@ from scripts.game_structure.game_essentials import (
 from scripts.game_structure.ui_elements import UIImageButton, UISurfaceImageButton
 from scripts.game_structure.windows import UpdateAvailablePopup, ChangelogPopup
 from scripts.utility import ui_scale, quit, ui_scale_dimensions
-from .Screens import Screens
+from .BaseScreen import BaseScreen
 from ..game_structure.screen_settings import MANAGER
 from ..housekeeping.datadir import get_data_dir, get_cache_dir
 from ..housekeeping.update import has_update, UpdateChannel, get_latest_version_number
@@ -52,7 +52,7 @@ has_checked_for_update = False
 update_available = False
 
 
-class MainMenuScreen(Screens):
+class MainMenuScreen(BaseScreen):
     """
     TODO: DOCS
     """
@@ -189,7 +189,7 @@ class MainMenuScreen(Screens):
 
         # Make those unslightly menu button hide away
         self.hide_menu_buttons()
-        Screens.show_mute_buttons()
+        BaseScreen.show_mute_buttons()
 
         # Create buttons
 
