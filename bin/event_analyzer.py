@@ -1,11 +1,18 @@
+# event_analyzer.py -
+
 import json
 import os
 from typing import MutableMapping
 
+from definitions import *
 import ujson
+
+import logging
+logger = logging.getLogger(__name__)
 
 # Please don't mind this truly horrifying list of global variables.
 # Lord have mercy on my soul
+
 missing = "[tag missing]"
 indent = "    "
 
@@ -16,21 +23,21 @@ event_flat = {}
 
 valid_records = {
     "location": {
-        "any": [],
-        "beach": {},
-        "desert": {},
-        "forest": {},
-        "mountainous": {},
-        "plains": {},
-        "wetlands": {},
+        BIOME_ANY: [],
+        BIOME_BEACH: {},
+        BIOME_DESERT: {},
+        BIOME_FOREST: {},
+        BIOME_MOUNTAIN: {},
+        BIOME_PLAINS: {},
+        BIOME_WETLANDS: {},
     },
     "weight": {},
     "season": {
-        "any": [],
-        "newleaf": [],
-        "greenleaf": [],
-        "leaf-fall": [],
-        "leaf-bare": [],
+        SEASON_ANY: [],
+        SEASON_SPRING: [],
+        SEASON_SUMMER: [],
+        SEASON_AUTUMN: [],
+        SEASON_WINTER: [],
     },
     "sub_type": {
         "war": [],
@@ -538,11 +545,49 @@ type_subtype = {
     "misc": ["war", "murder_reveal", "accessory", "ceremony", "romance"],
 }
 
+class EventAnalyzer:
+    """
+
+    TODO
+        - __init__
+        - event_analysis
+        - ea_init
+        - ea_split
+        - ea_add_records
+        - ea_add_records_with_subtype
+        - ea_add_record
+        - ea_validate_record
+        - ea_invalid_record
+        - ea_handle_cat
+        - ea_problems
+        - ea_overview
+        - ea_overview_cat
+        - ea_group_report
+        - ea_subgroup_report
+        - ea_sort_subgroup
+        - ea_intersection
+        - flatten
+        - ea_header
+        - pa_dashes
+        - ea_dump_records
+        - ea_help
+    """
+
+    all_ids: dict
+    dupe_ids: list
+    event_flat: dict
+
+    def __init__(self):
+
+        self.all_ids = {}
+        self.dupe_ids = []
+        self.event_flat = {}
+        return
 
 def event_analysis(directory: str = None, blacklist: list[str] = None):
     global all_ids
     ea_header(
-        "Event analyzer\nv0.1",
+        "Event analyzer v0.1",
         "For finding gaps in our current offering",
         trailing_newline=False,
     )
@@ -569,11 +614,8 @@ def event_analysis(directory: str = None, blacklist: list[str] = None):
     # ea_overview(len(all_ids))
 
     running = True
-    print(
-        'Welcome! You may want to start by checking the overview ("o") or problems ("p") reports.'
-    )
+    logger.info('Welcome! You may want to start by checking the overview ("o") or problems ("p") reports.')
     while running:
-        print("\n")
         cmd = input(
             'Please type a request. To view the list of commands, type "help" or "h".\n\n'
         )
@@ -591,7 +633,7 @@ def event_analysis(directory: str = None, blacklist: list[str] = None):
                 else:
                     ea_intersection(cmd_parts[1], cmd_parts[2])
             else:
-                print("Intersect failed - check you have input the commands correctly.")
+                logger.warning("Intersection failed - check you have input the commands correctly.")
         elif cmd_key in ["overview", "o"]:
             if len(cmd_parts) == 1:
                 ea_overview(len(all_ids))
@@ -613,20 +655,20 @@ def event_analysis(directory: str = None, blacklist: list[str] = None):
                 elif cmd_parts[1] in ["accessory"]:
                     ea_overview(len(all_ids), "accessory")
                 else:
-                    print("Overview failed - invalid argument.")
+                    logger.warning("Overview failed - invalid argument.")
             else:
-                print("Overview failed - check you have input the commands correctly.")
+                logger.warning("Overview failed - check you have input the commands correctly.")
         elif cmd_key in ["problems", "p"]:
             ea_problems()
         elif cmd_key in ["quit", "q"]:
-            print("Goodbye!")
+            logger.info("Goodbye!")
             running = False
         else:
-            print("Command not recognised.")
+            logger.warning("Command not recognised.")
 
 
 def ea_init(directory, blacklist) -> list:
-    print("Preparing...")
+    logger.info("Preparing...")
     with open(
         "../resources/dicts/conditions/injuries.json", "r", encoding="utf-8"
     ) as f:
@@ -636,9 +678,9 @@ def ea_init(directory, blacklist) -> list:
     ]
 
     all_history = history_scarrable + history_lethal
-    print("OK\n")
+    logger.info("OK")
 
-    print("Gathering events...")
+    logger.info("Gathering events...")
     all_data = []
 
     # used to hide/ignore invalid or undesirable json files
@@ -655,7 +697,7 @@ def ea_init(directory, blacklist) -> list:
             with open(filepath, "r", encoding="utf-8") as f:
                 data = json.load(f)
                 all_data.extend(data)
-    print(f"OK\n")
+    logger.info(f"OK")
     return all_data
 
 
@@ -794,8 +836,8 @@ def ea_split(events):
                     "history" not in event
                     and len(set(all_history).intersection(set(injury["injuries"]))) > 0
                 ):
-                    print("Magical wound with no history!")
-                    print(event_id)
+                    logger.warning("Magical wound with no history!")
+                    logger.warning(event_id)
                     ea_invalid_record(
                         event_id, missing, invalid_records["injury"]["history"]
                     )
@@ -1073,7 +1115,7 @@ def ea_problems():
         no_injury_errors = False
 
     if no_injury_errors:
-        print("No errors found :)")
+        logger.info("No errors found :)")
 
     ea_header("m_c Errors", trailing_newline=False, big=True)
     no_mc_errors = True
@@ -1124,7 +1166,7 @@ def ea_problems():
         no_mc_errors = False
 
     if no_mc_errors:
-        print("No errors found :)")
+        logger.info("No errors found :)")
 
     ea_header("r_c Errors", trailing_newline=False, big=True)
     no_rc_errors = True
@@ -1175,46 +1217,44 @@ def ea_problems():
         no_rc_errors = False
 
     if no_rc_errors:
-        print("No errors found :)")
+        logger.info("No errors found :)")
 
-    print("Returning to main program.")
+    logger.info("Returning to main program.")
 
 
 def ea_overview(count, subview="all"):
     ea_header("General Overview", big=True, trailing_newline=True)
-    print(f"Total number of events: {count}\n")
-    print(
-        "NB: Breakdown numbers will probably total to more than this as each event can have multiple of each group!!"
-    )
+    logger.info(f"Total number of events: {count}")
+    logger.info("NB: Breakdown numbers will probably total to more than this as each event can have multiple of each "
+            "group!!")
 
     if subview in ["all", "location"]:
-        print("Breakdown by location:")
+        logger.info("Breakdown by location:")
         ea_subgroup_report(valid_records["location"], True)
 
     if subview in ["all", "season"]:
-        print("\nBreakdown by season:")
+        logger.info("Breakdown by season:")
         ea_group_report(valid_records["season"])
 
     if subview in ["all", "subtype"]:
-        print("\nBreakdown by sub-type:")
+        logger.info("Breakdown by sub-type:")
         ea_group_report(valid_records["sub_type"])
 
     if subview in ["all", "tags"]:
-        print("\nBreakdown by tags:")
+        logger.info("Breakdown by tags:")
         ea_subgroup_report(valid_records["tags"], True)
 
     if subview in ["all", "accessory"]:
-        print("\nBreakdown by accessory gained:")
+        logger.info("Breakdown by accessory gained:")
         ea_subgroup_report(valid_records["new_accessory"])
-    print("Returning to main program.")
+    logger.info("Returning to main program.")
 
 
 def ea_overview_cat(count, cat="m_c"):
     ea_header("M_C Overview", big=True, trailing_newline=True)
-    print(f"Total number of events: {count}\n")
-    print(
-        "NB: Breakdown numbers will probably total to more than this as each event can have multiple of each group!!"
-    )
+    logger.info(f"Total number of events: {count}")
+    logger.info("NB: Breakdown numbers will probably total to more than this as each event can have multiple of each "
+                "group!!")
 
     running = True
     while running:
@@ -1222,45 +1262,46 @@ def ea_overview_cat(count, cat="m_c"):
             '\nType a category name to view breakdown ("h" to view a full list), or "q" to quit.\n'
         )
         if cmd == "age":
-            print("\nBreakdown by age:")
+            logger.info("Breakdown by age:")
             ea_group_report(valid_records[cat]["age"], True)
         elif cmd == "status":
-            print("\nBreakdown by status:")
+            logger.info("Breakdown by status:")
             ea_group_report(valid_records[cat]["status"], True)
         elif cmd == "relationship_status":
-            print("\nBreakdown by relationship_status:")
+            logger.info("Breakdown by relationship_status:")
             ea_subgroup_report(valid_records[cat]["relationship_status"], True)
         elif cmd == "skill":
-            print("\nBreakdown by skill:")
+            logger.info("Breakdown by skill:")
             ea_subgroup_report(valid_records[cat]["skill"], True, is_skill=True)
         elif cmd == "not_skill":
-            print("\nBreakdown by not_skill:")
+            logger.info("Breakdown by not_skill:")
             ea_subgroup_report(valid_records[cat]["not_skill"], True, is_skill=True)
         elif cmd == "trait":
-            print("\nBreakdown by trait:")
+            logger.info("Breakdown by trait:")
             ea_subgroup_report(valid_records[cat]["trait"], True)
         elif cmd == "not_trait":
-            print("\nBreakdown by not_trait:")
+            logger.info("Breakdown by not_trait:")
             ea_subgroup_report(valid_records[cat]["not_trait"], True)
         elif cmd == "backstory":
-            print("\nBreakdown by backstory:")
+            logger.info("Breakdown by backstory:")
             ea_subgroup_report(valid_records[cat]["backstory"], True)
         elif cmd == "dies":
-            print("\nBreakdown by backstory:")
+            logger.info("Breakdown by backstory:")
             ea_group_report(valid_records[cat]["dies"], True)
         elif cmd in ["help", "h"]:
-            print(
-                "Valid categories:\n\nage\nstatus\nrelationship_status\nskill\nnot_skill\ntrait\nnot_trait\nbackstory\ndies"
+            logger.info(
+                "Valid categories:\tage\tstatus\trelationship_status"
+                "\tskill\tnot_skill\ttrait\tnot_trait\tbackstory\tdies"
             )
         elif cmd in ["quit", "q"]:
-            print("Returning to main program.")
+            logger.info("Returning to main program.")
             running = False
 
 
 def ea_group_report(records, detailed=False):
     output = dict(sorted(records.items(), key=lambda x: len(x[1]), reverse=True))
     for name, group in output.items():
-        print(f"{indent}{name}: {len(group)}")
+        logger.info(f"{indent}{name}: {len(group)}")
 
 
 def ea_subgroup_report(records, detailed=False, is_skill=False):
@@ -1277,15 +1318,13 @@ def ea_subgroup_report(records, detailed=False, is_skill=False):
         )
         if groupcount == 0:
             continue
-        print(f"{indent}{name}: {groupcount}")
+        logger.info(f"{indent}{name}: {groupcount}")
         if name == "any" or not detailed or not isinstance(group, dict):
             continue
         for name_sub, subgroup in group.items():
             if len(subgroup) == 0:
                 continue
-            print(
-                f"{indent}{indent}{indent}{name_sub}{'+' if is_skill else ''}: {len(subgroup)}"
-            )
+            logger.info(f"{indent}{indent}{indent}{name_sub}{'+' if is_skill else ''}: {len(subgroup)}")
 
 
 def ea_sort_subgroup(group):
@@ -1304,7 +1343,7 @@ def ea_intersection(group1: str, group2: str, detailed=False):
         try:
             dict1 = dict1[key]
         except KeyError:
-            print(f"{key} invalid in {dict1}, check spelling and retry.")
+            logger.exception(f"{key} invalid in {dict1}, check spelling and retry.")
             return
 
     dict2 = valid_records
@@ -1312,19 +1351,17 @@ def ea_intersection(group1: str, group2: str, detailed=False):
         try:
             dict2 = dict2[key]
         except KeyError:
-            print(f"{key} invalid in {dict2}, check spelling and retry.")
+            logger.exception(f"{key} invalid in {dict2}, check spelling and retry.")
             return
 
     intersection = list(set(dict1) & set(dict2))
 
-    print(
-        f"There are {len(intersection)} events that match \"{group1.replace('.', ' -> ')}\" "
-        + f"and \"{group2.replace('.', ' -> ')}\".\n\n"
-    )
+    logger.info(f"There are {len(intersection)} events that match \"{group1.replace('.', ' -> ')}\" "
+                f"and \"{group2.replace('.', ' -> ')}\".")
 
     if detailed is not False:
         for record in intersection:
-            print(record)
+            logger.info(record)
 
 
 def flatten(dictionary, parent_key="", separator="."):
@@ -1342,7 +1379,6 @@ def flatten(dictionary, parent_key="", separator="."):
 #   UTILITIES
 # -------------
 
-
 def ea_header(
     title: str = None,
     normal_text: str = None,
@@ -1351,68 +1387,66 @@ def ea_header(
     big=False,
 ):
     if leading_newline:
-        print("")
+        logger.info("")
     pa_dashes(big)
     if title is not None:
-        print(title.upper())
+        logger.info(title.upper())
         if normal_text is not None:
-            print("")
+            logger.info("")
     if normal_text is not None:
-        print(normal_text)
+        logger.info(normal_text)
     pa_dashes(big)
     if trailing_newline:
-        print("")
+        logger.info("")
 
 
 def pa_dashes(big=False):
     if big:
-        print("-----------------------------------------------------")
+        logger.info("-----------------------------------------------------")
         return
-    print("--------------------------")
+    logger.info("--------------------------")
 
 
 def ea_dump_records(records):
     if isinstance(records, list):
         for item in records:
-            print(item)
+            logger.info(item)
         return
 
     elif isinstance(records, dict):
         for name, record in records.items():
             if not record:
                 continue
-            print(name)
+            logger.info(name)
             for item in record:
-                print(indent + item)
+                logger.info(indent + item)
 
 
 def ea_help():
     ea_header("Help", big=True)
-    print(
-        '"help"/"h": Prints a list of commands in the tool (you\'re reading it currently!)'
-    )
-    print(
-        '"intersect"/"i" [group1] [group2]:  Prints the number of events that are in BOTH input groups.\n'
+    logger.info('"help"/"h": prints a list of commands in the tool (you\'re reading it currently!)')
+    logger.info(
+        '"intersect"/"i" [group1] [group2]:  prints the number of events that are in BOTH input groups.\n'
         + f"{indent}{indent}{indent}"
         + 'Use dot notation (e.g. season.any). Optional argument "id" to '
         + "print a list of matching event IDs."
     )
-    print('"details"/"d" [group]: Prints every event ID matching that tag.')
-    print(
-        '"overview"/"o" [type]: Prints an overview of events, broken down in broad categories. Accepted types:'
+    logger.info('"details"/"d" [group]: prints every event ID matching that tag.')
+    logger.info(
+        '"overview"/"o" [type]: prints an overview of events, broken down in broad categories. Accepted types:'
     )
-    print(f'{indent}{indent}{indent}"g" - general (all except m_c and r_c)')
-    print(f'{indent}{indent}{indent}"location" - location')
-    print(f'{indent}{indent}{indent}"season" - season')
-    print(f'{indent}{indent}{indent}"subtype" - subtype')
-    print(f'{indent}{indent}{indent}"tags" - tags')
-    print(f'{indent}{indent}{indent}"accessory" - accessories')
-    print(f'{indent}{indent}{indent}"m" - m_c tags (opens submenu)')
-    print(f'{indent}{indent}{indent}"r" - r_c tags (opens submenu)')
-    print(
-        '"problems"/"p": Prints a list of all errors identified by the tool, broken down by category.'
+    logger.info(f'{indent}{indent}{indent}"g" - general (all except m_c and r_c)')
+    logger.info(f'{indent}{indent}{indent}"location" - location')
+    logger.info(f'{indent}{indent}{indent}"season" - season')
+    logger.info(f'{indent}{indent}{indent}"subtype" - subtype')
+    logger.info(f'{indent}{indent}{indent}"tags" - tags')
+    logger.info(f'{indent}{indent}{indent}"accessory" - accessories')
+    logger.info(f'{indent}{indent}{indent}"m" - m_c tags (opens submenu)')
+    logger.info(f'{indent}{indent}{indent}"r" - r_c tags (opens submenu)')
+    logger.info(
+        '"problems"/"p": prints a list of all errors identified by the tool, broken down by category.'
     )
-    print('"quit"/"q": Quit the tool.')
+    logger.info('"quit"/"q": Quit the tool.')
 
 
 if __name__ == "__main__":
