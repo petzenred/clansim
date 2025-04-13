@@ -74,79 +74,101 @@ MAIN_MENU_SCREENS = [MAIN_SETTINGS_SCREEN_NAME, MAIN_MENU_SCREEN_NAME, SWITCH_CL
 ########################################################################################################################
 
 # Biomes
-BIOME_BEACH_KEY: str = "beach"
-BIOME_DESERT_KEY: str = "desert"
-BIOME_FOREST_KEY: str = "forest"
-BIOME_MOUNTAIN_KEY: str = "mountainous"
-BIOME_PLAINS_KEY: str = "plains"
-BIOME_WETLANDS_KEY: str = "wetlands"
-BIOME_TWOLEGPLACE_KEY: str = "twolegplace"
-BIOME_KEYS: list[str] = [BIOME_BEACH_KEY, BIOME_DESERT_KEY, BIOME_FOREST_KEY, BIOME_MOUNTAIN_KEY,
-                         BIOME_PLAINS_KEY, BIOME_WETLANDS_KEY, BIOME_TWOLEGPLACE_KEY]
-IMPLEMENTED_BIOMES: list[str] = [BIOME_BEACH_KEY, BIOME_FOREST_KEY, BIOME_MOUNTAIN_KEY, BIOME_PLAINS_KEY]
+BIOME_ANY: str = "any"
+BIOME_BEACH: str = "beach"
+BIOME_DESERT: str = "desert"
+BIOME_FOREST: str = "forest"
+BIOME_MOUNTAIN: str = "mountainous"
+BIOME_PLAINS: str = "plains"
+BIOME_WETLANDS: str = "wetlands"
+BIOME_TWOLEGPLACE: str = "twolegplace"
+BIOME_KEYS: list[str] = [BIOME_BEACH, BIOME_DESERT, BIOME_FOREST, BIOME_MOUNTAIN,
+                         BIOME_PLAINS, BIOME_WETLANDS, BIOME_TWOLEGPLACE]
+IMPLEMENTED_BIOMES: list[str] = [BIOME_BEACH, BIOME_FOREST, BIOME_MOUNTAIN, BIOME_PLAINS]
 
 # Seasons
-SPRING_KEY: str = "newleaf"
-SUMMER_KEY: str = "greenleaf"
-AUTUMN_KEY: str = "leaffall"
-WINTER_KEY: str = "leafbare"
-YEAR_SEASONS: list[str] = [SPRING_KEY, SPRING_KEY, SPRING_KEY,
-                           SUMMER_KEY, SUMMER_KEY, SUMMER_KEY,
-                           AUTUMN_KEY, AUTUMN_KEY, AUTUMN_KEY,
-                           WINTER_KEY, WINTER_KEY, WINTER_KEY]
+SEASON_ANY: str = "any"
+SEASON_SPRING: str = "newleaf"
+SEASON_SUMMER: str = "greenleaf"
+SEASON_AUTUMN: str = "leaffall"
+SEASON_WINTER: str = "leafbare"
+YEAR_SEASONS: list[str] = [SEASON_SPRING, SEASON_SPRING, SEASON_SPRING,
+                           SEASON_SUMMER, SEASON_SUMMER, SEASON_SUMMER,
+                           SEASON_AUTUMN, SEASON_AUTUMN, SEASON_AUTUMN,
+                           SEASON_WINTER, SEASON_WINTER, SEASON_WINTER]
 
-# Clan roles
-ROLE_LEADER_KEY: str = "leader"
-ROLE_DEPUTY_KEY: str = "deputy"
-ROLE_MEDICINE_KEY: str = "medicine cat"
-ROLE_MEDICINE_APP_KEY: str = "medicine cat apprentice"
-ROLE_MEDIATOR_KEY: str = "mediator"
-ROLE_MEDIATOR_APP_KEY: str = "mediator apprentice"
-ROLE_WARRIOR_KEY: str = "warrior"
-ROLE_WARRIOR_APP_KEY: str = "apprentice"
-ROLE_KIT_KEY: str = "kitten"
-ROLE_NEWBORN_KEY: str = "newborn"
-ROLE_ELDER_KEY: str = "elder"
+# Cat status
+STATUS_ANY: str = "any"
+STATUS_LIVING: str = "living"       # TODO this status is redundant with the others
+STATUS_NONCLAN: str = "outside cat" # TODO this should be a category, like clan_roles_apps
+STATUS_CLAN: str = "clancat"        # TODO this should be a category, like clan_roles_apps
+
+STATUS_DEAD_STARCLAN: str = "starclan"
+STATUS_DEAD_DARK_FOREST: str = "darkforest"
+STATUS_DEAD_UNKNOWN_RESIDENCE: str = "unknownresidence"
+
+STATUS_KITTYPET: str = "kittypet"
+STATUS_LONER: str = "loner"
+STATUS_ROGUE: str = "rogue"
+STATUS_EXCLAN: str = "former Clancat"
+STATUS_EXILED: str = "exiled"
+
+STATUS_LEADER: str = "leader"
+STATUS_DEPUTY: str = "deputy"
+STATUS_MEDICINE: str = "medicine cat"
+STATUS_MEDICINE_APP: str = "medicine cat apprentice"
+STATUS_MEDIATOR: str = "mediator"
+STATUS_MEDIATOR_APP: str = "mediator apprentice"
+STATUS_WARRIOR: str = "warrior"
+STATUS_WARRIOR_APP: str = "apprentice"    # TODO differentiate between any apprentice and warrior apprentices
+STATUS_KIT: str = "kitten"
+STATUS_NEWBORN: str = "newborn"
+STATUS_ELDER: str = "elder"
+STATUS_LOST: str = "lost"
+
 CLAN_ROLES_RANK_SORT_REVERSE_ORDER: list[str] = [   # This in is in reverse order: top of the list at the bottom
-    ROLE_ELDER_KEY, # Elders come last in books' CLAN ALLEGIANCES sections
-    ROLE_NEWBORN_KEY,
-    ROLE_KIT_KEY,
-    ROLE_WARRIOR_APP_KEY,
-    ROLE_WARRIOR_KEY,
-    ROLE_MEDIATOR_APP_KEY,
-    ROLE_MEDIATOR_KEY,
-    ROLE_MEDICINE_APP_KEY,
-    ROLE_MEDICINE_KEY,
-    ROLE_DEPUTY_KEY,
-    ROLE_LEADER_KEY,
+    STATUS_ELDER, # Elders come last in books' CLAN ALLEGIANCES sections
+    STATUS_NEWBORN,
+    STATUS_KIT,
+    STATUS_WARRIOR_APP,
+    STATUS_WARRIOR,
+    STATUS_MEDIATOR_APP,
+    STATUS_MEDIATOR,
+    STATUS_MEDICINE_APP,
+    STATUS_MEDICINE,
+    STATUS_DEPUTY,
+    STATUS_LEADER,
 ]
-CLAN_ROLES_ADULTS: list[str] = [ROLE_LEADER_KEY, ROLE_DEPUTY_KEY, ROLE_MEDICINE_KEY,
-                                ROLE_MEDIATOR_KEY, ROLE_WARRIOR_KEY, ROLE_ELDER_KEY]
-CLAN_ROLES_APPS: list[str] = [ROLE_WARRIOR_APP_KEY, ROLE_MEDIATOR_APP_KEY, ROLE_MEDICINE_APP_KEY]
+CLAN_STATUS_ADULTS: list[str] = [STATUS_LEADER, STATUS_DEPUTY, STATUS_MEDICINE,
+                                 STATUS_MEDIATOR, STATUS_WARRIOR, STATUS_ELDER]
+CLAN_STATUS_APPS: list[str] = [STATUS_WARRIOR_APP, STATUS_MEDIATOR_APP, STATUS_MEDICINE_APP]
+STATUS_DEAD_GROUP: list[str] = [STATUS_DEAD_STARCLAN, STATUS_DEAD_DARK_FOREST, STATUS_DEAD_UNKNOWN_RESIDENCE]
+STATUS_OUTSIDE_CLAN_GROUP: list[str] = [STATUS_KITTYPET, STATUS_LONER, STATUS_ROGUE,
+                                        STATUS_EXCLAN, STATUS_EXILED]
 
 # Patrol types
-PATROL_MED_KEY: str = "gather"
-PATROL_BORDER_KEY: str = "border"
-PATROL_HUNT_KEY: str = "hunt"
-PATROL_TRAIN_KEY: str = "train"
-GENERAL_PATROLS: list[str] = [PATROL_BORDER_KEY, PATROL_HUNT_KEY, PATROL_TRAIN_KEY]
+PATROL_MED: str = "gather"
+PATROL_BORDER: str = "border"
+PATROL_HUNT: str = "hunt"
+PATROL_TRAIN: str = "train"
+GENERAL_PATROLS: list[str] = [PATROL_BORDER, PATROL_HUNT, PATROL_TRAIN]
 
 
 ########################################################################################################################
 # Decision and Interaction Keys
 ########################################################################################################################
 
-NEGATIVE_INTERACTION_KEY: str = "negative_interaction"
-POSITIVE_INTERACTION_KEY: str = "positive_interaction"
+INTERACTION_NEGATIVE: str = "negative_interaction"
+INTERACTION_POSITIVE: str = "positive_interaction"
 
 
 ########################################################################################################################
 # Location Keys
 ########################################################################################################################
-
-LOC_STARCLAN_KEY: str = "starclan"
-LOC_DARK_FOREST_KEY: str = "hell"
-LOC_DEAD_OTHER_KEY: str = "UR"
-LOC_NOT_CLAN_KEY: str = "outside"
-LOC_CLAN_KEY: str = "inside"
-DEAD_LOCATIONS: list[str] = [LOC_STARCLAN_KEY, LOC_DARK_FOREST_KEY, LOC_DEAD_OTHER_KEY]
+# These can be combined with Cat Status
+LOC_STARCLAN: str = "starclan"
+LOC_DARK_FOREST: str = "hell"
+LOC_DEAD_OTHER: str = "UR"  # unknown residence
+LOC_NOT_CLAN: str = "outside"
+LOC_CLAN: str = "inside"
+DEAD_LOCATIONS: list[str] = [LOC_STARCLAN, LOC_DARK_FOREST, LOC_DEAD_OTHER]

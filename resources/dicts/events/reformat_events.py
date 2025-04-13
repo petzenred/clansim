@@ -2,6 +2,8 @@ import json as ujson
 import os
 import re
 
+from definitions import *
+
 death_beach = []
 death_forest = []
 death_general = []
@@ -77,43 +79,61 @@ def reformat(path):
             "event_id": "",
         }
 
+        # Make sure all biomes are tagged properly
         if "general" not in path:
             new_format["biome"] = []
-            if "beach" in path:
-                new_format["biome"].append("beach")
-            if "forest" in path:
-                new_format["biome"].append("forest")
+            if "Beach" in path:
+                new_format["biome"].append(BIOME_BEACH)
+            if "Desert" in path:
+                new_format["biome"].append(BIOME_DESERT)
+            if "Forest" in path:
+                new_format["biome"].append(BIOME_FOREST)
+            if "Mountainous" in path:
+                new_format["biome"].append(BIOME_MOUNTAIN)
             if "mountainous" in path:
-                new_format["biome"].append("mountainous")
-            if "plains" in path:
-                new_format["biome"].append("plains")
+                new_format["biome"].append(BIOME_MOUNTAIN)
+            if "Plains" in path:
+                new_format["biome"].append(BIOME_PLAINS)
+            if "PLain" in path:
+                new_format["biome"].append(BIOME_PLAINS)
+            if "Wetlands" in path:
+                new_format["biome"].append(BIOME_WETLANDS)
+            if "Wetland" in path:
+                new_format["biome"].append(BIOME_WETLANDS)
 
         if "camp" in event:
             new_format["camp"] = []
             new_format["camp"].append(event["camp"])
 
+        # Make sure all seasons are tagged properly
         if "tags" in event:
             new_format["season"] = []
+            if "Newleaf" in event["tags"]:
+                new_format["season"].append(SEASON_SPRING)
+                event["tags"].remove("Newleaf")
             if "Greenleaf" in event["tags"]:
-                new_format["season"].append("greenleaf")
+                new_format["season"].append(SEASON_SUMMER)
                 event["tags"].remove("Greenleaf")
             if "Green-leaf" in event["tags"]:
-                new_format["season"].append("greenleaf")
+                new_format["season"].append(SEASON_SUMMER)
                 event["tags"].remove("Green-leaf")
-            if "Newleaf" in event["tags"]:
-                new_format["season"].append("newleaf")
-                event["tags"].remove("Newleaf")
             if "Leaf-fall" in event["tags"]:
-                new_format["season"].append("leaf-fall")
+                new_format["season"].append(SEASON_AUTUMN)
                 event["tags"].remove("Leaf-fall")
-            if "Leaf-bare" in event["tags"]:
-                new_format["season"].append("leaf-bare")
-                event["tags"].remove("Leaf-bare")
+            if "leaf-fall" in event["tags"]:
+                new_format["season"].append(SEASON_AUTUMN)
+                event["tags"].remove("leaf-fall")
             if "Leafbare" in event["tags"]:
-                new_format["season"].append("leaf-bare")
+                new_format["season"].append(SEASON_WINTER)
                 event["tags"].remove("Leafbare")
+            if "Leaf-bare" in event["tags"]:
+                new_format["season"].append(SEASON_WINTER)
+                event["tags"].remove("Leaf-bare")
+            if "leaf-bare" in event["tags"]:
+                new_format["season"].append(SEASON_WINTER)
+                event["tags"].remove("leaf-bare")
 
-        if new_format["season"] == ["greenleaf", "newleaf", "leaf-fall", "leaf-bare"]:
+        if new_format["season"] == [SEASON_SUMMER, SEASON_SPRING, SEASON_AUTUMN, SEASON_WINTER]:
             new_format["season"] = ["any"]
 
         new_format["tags"] = []
@@ -742,15 +762,15 @@ def reformat(path):
         )  # ujson tries to escape "/", but doesn't end up doing a good job.
 
         if "injury" in path:
-            if "beach" in path:
+            if BIOME_BEACH in path:
                 injury_beach.append(dict_text)
-            if "forest" in path:
+            if BIOME_FOREST in path:
                 injury_forest.append(dict_text)
             if "general" in path:
                 injury_general.append(dict_text)
-            if "mountainous" in path:
+            if BIOME_MOUNTAIN in path:
                 injury_mountainous.append(dict_text)
-            if "plains" in path:
+            if BIOME_PLAINS in path:
                 injury_plains.append(dict_text)
 
     if injury_beach:

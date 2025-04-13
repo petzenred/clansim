@@ -6,7 +6,6 @@ TODO: Docs
 
 """  # pylint: enable=line-too-long
 
-import logging
 import os
 import re
 from itertools import combinations
@@ -26,7 +25,7 @@ from scripts.game_structure.localization import (
     get_lang_config,
 )
 
-logger = logging.getLogger(__name__)
+from definitions import *
 from scripts.game_structure import image_cache, localization
 from scripts.cat.enums import CatAgeEnum
 from scripts.cat.history import History
@@ -38,6 +37,8 @@ import scripts.game_structure.screen_settings  # must be done like this to get u
 if TYPE_CHECKING:
     from scripts.cat.cats import Cat
 
+import logging
+logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------- #
 #                               Getting Cats                                   #
@@ -48,7 +49,7 @@ def get_alive_clan_queens(living_cats):
     living_kits = [
         cat
         for cat in living_cats
-        if not (cat.dead or cat.outside) and cat.status in ["kitten", "newborn"]
+        if not (cat.dead or cat.outside) and cat.status in [STATUS_KIT, STATUS_NEWBORN]
     ]
 
     queen_dict = {}
@@ -234,7 +235,7 @@ def get_random_moon_cat(
         if mentor_app_modifier:
             if (
                     main_cat.status
-                    in ["apprentice", "mediator apprentice", "medicine cat apprentice"]
+                    in [STATUS_WARRIOR_APP, STATUS_MEDIATOR_APP, STATUS_MEDICINE_APP]
                     and main_cat.mentor
                     and not int(random() * 3)
             ):
@@ -276,13 +277,13 @@ def get_current_season():
         game.clan.current_season = game.clan.starting_season
         return game.clan.starting_season
 
-    modifiers = {"Newleaf": 0, "Greenleaf": 3, "Leaf-fall": 6, "Leaf-bare": 9}
+    modifiers = {SEASON_SPRING: 0, SEASON_SUMMER: 3, SEASON_AUTUMN: 6, SEASON_WINTER: 9}
     index = game.clan.age % 12 + modifiers[game.clan.starting_season]
 
     if index > 11:
         index = index - 12
 
-    game.clan.current_season = game.clan.seasons[index]
+    game.clan.current_season = YEAR_SEASONS[index]
 
     return game.clan.current_season
 
@@ -376,9 +377,9 @@ def create_new_cat_block(
         for index in mate_indexes:
             if index in in_event_cats:
                 if in_event_cats[index] in [
-                    "apprentice",
-                    "medicine cat apprentice",
-                    "mediator apprentice",
+                    STATUS_WARRIOR_APP,
+                    STATUS_MEDICINE_APP,
+                    STATUS_MEDIATOR_APP,
                 ]:
                     print("Can't give apprentices mates")
                     continue
@@ -424,15 +425,15 @@ def create_new_cat_block(
             continue
 
         if match.group(1) in [
-            "newborn",
-            "kitten",
-            "elder",
-            "apprentice",
-            "warrior",
-            "mediator apprentice",
-            "mediator",
-            "medicine cat apprentice",
-            "medicine cat",
+            STATUS_NEWBORN,
+            STATUS_KIT,
+            STATUS_ELDER,
+            STATUS_WARRIOR_APP,
+            STATUS_WARRIOR,
+            STATUS_MEDIATOR_APP,
+            STATUS_MEDIATOR,
+            STATUS_MEDICINE_APP,
+            STATUS_MEDICINE,
         ]:
             status = match.group(1)
             break
@@ -460,16 +461,16 @@ def create_new_cat_block(
             break
 
     if status and not age:
-        if status in ["apprentice", "mediator apprentice", "medicine cat apprentice"]:
+        if status in [STATUS_WARRIOR_APP, STATUS_MEDIATOR_APP, STATUS_MEDICINE_APP]:
             age = randint(
                 Cat.age_moons[CatAgeEnum.ADOLESCENT][0],
                 Cat.age_moons[CatAgeEnum.ADOLESCENT][1],
             )
-        elif status in ["warrior", "mediator", "medicine cat"]:
+        elif status in [STATUS_WARRIOR, STATUS_MEDIATOR, STATUS_MEDICINE]:
             age = randint(
                 Cat.age_moons["young adult"][0], Cat.age_moons["senior adult"][1]
             )
-        elif status == "elder":
+        elif status == STATUS_ELDER:
             age = randint(Cat.age_moons["senior"][0], Cat.age_moons["senior"][1])
 
     if "kittypet" in attribute_list:
@@ -487,17 +488,17 @@ def create_new_cat_block(
     litter = False
     if "litter" in attribute_list:
         litter = True
-        if status not in ["kitten", "newborn"]:
-            status = "kitten"
+        if status not in [STATUS_KIT, STATUS_NEWBORN]:
+            status = STATUS_KIT
 
     # CHOOSE DEFAULT BACKSTORY BASED ON CAT TYPE, STATUS
-    if status in ("kitten", "newborn"):
+    if status in (STATUS_KIT, STATUS_NEWBORN):
         chosen_backstory = choice(
             BACKSTORIES["backstory_categories"]["abandoned_backstories"]
         )
-    elif status == "medicine cat" and cat_type == "former Clancat":
+    elif status == STATUS_MEDICINE and cat_type == "former Clancat":
         chosen_backstory = choice(["medicine_cat", "disgraced1"])
-    elif status == "medicine cat":
+    elif status == STATUS_MEDICINE:
         chosen_backstory = choice(["wandering_healer1", "wandering_healer2"])
     else:
         if cat_type == "former Clancat":
@@ -535,7 +536,7 @@ def create_new_cat_block(
         chosen_backstory = choice(stor)
 
     # KITTEN THOUGHT
-    if status in ["kitten", "newborn"]:
+    if status in [STATUS_KIT, STATUS_NEWBORN]:
         thought = i18n.t("hardcoded.thought_new_kitten")
 
     # MEETING - DETERMINE IF THIS IS AN OUTSIDE CAT
@@ -617,7 +618,7 @@ def create_new_cat_block(
             loner=cat_type in ["loner", "rogue"],
             kittypet=cat_type == "kittypet",
             other_clan=cat_type == "former Clancat",
-            kit=False if litter else status in ["kitten", "newborn"],
+            kit=False if litter else status in [STATUS_KIT, STATUS_NEWBORN],
             # this is for singular kits, litters need this to be false
             litter=litter,
             backstory=chosen_backstory,
@@ -783,17 +784,17 @@ def create_new_cat(
         number_of_cats = choices([2, 3, 4, 5], [5, 4, 1, 1], k=1)[0]
 
     if not isinstance(age, int):
-        if status == "newborn":
+        if status == STATUS_NEWBORN:
             age = 0
         elif litter or kit:
             age = randint(1, 5)
-        elif status in ("apprentice", "medicine cat apprentice", "mediator apprentice"):
+        elif status in (STATUS_WARRIOR_APP, STATUS_MEDICINE_APP, STATUS_MEDIATOR_APP):
             age = randint(6, 11)
-        elif status == "warrior":
+        elif status == STATUS_WARRIOR:
             age = randint(23, 120)
-        elif status == "medicine cat":
+        elif status == STATUS_MEDICINE:
             age = randint(23, 140)
-        elif status == "elder":
+        elif status == STATUS_ELDER:
             age = randint(120, 130)
         else:
             age = randint(6, 120)
@@ -801,15 +802,15 @@ def create_new_cat(
     # setting status
     if not status:
         if age == 0:
-            status = "newborn"
+            status = STATUS_NEWBORN
         elif age < 6:
-            status = "kitten"
+            status = STATUS_KIT
         elif 6 <= age <= 11:
-            status = "apprentice"
+            status = STATUS_WARRIOR_APP
         elif age >= 12:
-            status = "warrior"
+            status = STATUS_WARRIOR
         elif age >= 120:
-            status = "elder"
+            status = STATUS_ELDER
 
     # cat creation and naming time
     for index in range(number_of_cats):
@@ -2068,7 +2069,7 @@ def ongoing_event_text_adjust(Cat, text, clan=None, other_clan_name=None):
         kitty = Cat.fetch_cat(game.clan.deputy)
         cat_dict["dep_name"] = (str(kitty.name), choice(kitty.pronouns))
     if "med_name" in text:
-        kitty = choice(get_alive_status_cats(Cat, ["medicine cat"], working=True))
+        kitty = choice(get_alive_status_cats(Cat, [STATUS_MEDICINE], working=True))
         cat_dict["med_name"] = (str(kitty.name), choice(kitty.pronouns))
 
     if cat_dict:
@@ -2224,7 +2225,7 @@ def event_text_adjust(
 
     # med_name
     if "med_name" in text:
-        med = choice(get_alive_status_cats(Cat, ["medicine cat"], working=True))
+        med = choice(get_alive_status_cats(Cat, [STATUS_MEDICINE], working=True))
         replace_dict["med_name"] = (str(med.name), choice(med.pronouns))
 
     # assign all names and pronouns
@@ -2674,15 +2675,15 @@ def generate_sprite(
     if (
             not no_not_working
             and cat.not_working()
-            and age != "newborn"
+            and age != STATUS_NEWBORN
             and game.config["cat_sprites"]["sick_sprites"]
     ):
-        if age in ["kitten", "adolescent"]:
+        if age in [STATUS_KIT, "adolescent"]:
             cat_sprite = str(19)
         else:
             cat_sprite = str(18)
-    elif cat.pelt.paralyzed and age != "newborn":
-        if age in ["kitten", "adolescent"]:
+    elif cat.pelt.paralyzed and age != STATUS_NEWBORN:
+        if age in [STATUS_KIT, "adolescent"]:
             cat_sprite = str(17)
         else:
             if cat.pelt.length == "long":
@@ -2690,11 +2691,11 @@ def generate_sprite(
             else:
                 cat_sprite = str(15)
     else:
-        if age == "elder" and not game.config["fun"]["all_cats_are_newborn"]:
+        if age == STATUS_ELDER and not game.config["fun"]["all_cats_are_newborn"]:
             age = "senior"
 
         if game.config["fun"]["all_cats_are_newborn"]:
-            cat_sprite = str(cat.pelt.cat_sprites["newborn"])
+            cat_sprite = str(cat.pelt.cat_sprites[STATUS_NEWBORN])
         else:
             cat_sprite = str(cat.pelt.cat_sprites[age])
 

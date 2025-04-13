@@ -6,7 +6,7 @@ import pygame_gui
 from pygame_gui.core import UIContainer
 
 from definitions import (
-    NEGATIVE_INTERACTION_KEY, POSITIVE_INTERACTION_KEY
+    INTERACTION_NEGATIVE, INTERACTION_POSITIVE
 )
 from scripts.cat.cats import Cat
 from scripts.clan import OtherClan
@@ -95,13 +95,13 @@ class LeaderDenScreen(BaseScreen):
                     ):
                         self.focus_clan = game.clan.all_clans[i]
                         self.update_other_clan_focus()
-            elif event.ui_element == self.focus_frame_elements[NEGATIVE_INTERACTION_KEY]:
-                text = self.focus_frame_elements[NEGATIVE_INTERACTION_KEY].text.replace(
+            elif event.ui_element == self.focus_frame_elements[INTERACTION_NEGATIVE]:
+                text = self.focus_frame_elements[INTERACTION_NEGATIVE].text.replace(
                     "screens.leader_den.", ""
                 )
                 self.update_clan_interaction_choice(text)
-            elif event.ui_element == self.focus_frame_elements[POSITIVE_INTERACTION_KEY]:
-                text = self.focus_frame_elements[POSITIVE_INTERACTION_KEY].text.replace(
+            elif event.ui_element == self.focus_frame_elements[INTERACTION_POSITIVE]:
+                text = self.focus_frame_elements[INTERACTION_POSITIVE].text.replace(
                     "screens.leader_den.", ""
                 )
                 self.update_clan_interaction_choice(text)
@@ -649,7 +649,7 @@ class LeaderDenScreen(BaseScreen):
             },
         )
 
-        self.focus_frame_elements[NEGATIVE_INTERACTION_KEY] = UISurfaceImageButton(
+        self.focus_frame_elements[INTERACTION_NEGATIVE] = UISurfaceImageButton(
             ui_scale(pygame.Rect((0, 265), (121, 30))),
             "provoke",
             get_button_dict(ButtonStyles.SQUOVAL, (121, 30)),
@@ -659,9 +659,9 @@ class LeaderDenScreen(BaseScreen):
             manager=MANAGER,
             visible=False,
             anchors={"centerx": "centerx"},
-            sound_id=NEGATIVE_INTERACTION_KEY
+            sound_id=INTERACTION_NEGATIVE
         )
-        self.focus_frame_elements[POSITIVE_INTERACTION_KEY] = UISurfaceImageButton(
+        self.focus_frame_elements[INTERACTION_POSITIVE] = UISurfaceImageButton(
             ui_scale(pygame.Rect((0, 305), (121, 30))),
             "befriend",
             get_button_dict(ButtonStyles.SQUOVAL, (121, 30)),
@@ -677,15 +677,15 @@ class LeaderDenScreen(BaseScreen):
             self.focus_clan_container.disable()
 
         interaction = OtherClan.interaction_dict[relation]
-        self.focus_frame_elements[NEGATIVE_INTERACTION_KEY].set_text(
+        self.focus_frame_elements[INTERACTION_NEGATIVE].set_text(
             f"screens.leader_den.{interaction[0]}"
         )
-        self.focus_frame_elements[NEGATIVE_INTERACTION_KEY].show()
+        self.focus_frame_elements[INTERACTION_NEGATIVE].show()
 
-        self.focus_frame_elements[POSITIVE_INTERACTION_KEY].set_text(
+        self.focus_frame_elements[INTERACTION_POSITIVE].set_text(
             f"screens.leader_den.{interaction[1]}"
         )
-        self.focus_frame_elements[POSITIVE_INTERACTION_KEY].show()
+        self.focus_frame_elements[INTERACTION_POSITIVE].show()
 
     def update_clan_interaction_choice(self, object_id):
         """

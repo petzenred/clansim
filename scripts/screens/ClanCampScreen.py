@@ -6,16 +6,7 @@ import pygame
 import pygame_gui
 from pygame_gui.core import ObjectID
 
-from definitions import (
-    MAIN_MENU_SCREEN_NAME,
-    PROFILE_SCREEN_NAME,
-    MED_DEN_SCREEN_NAME,
-    WARRIOR_DEN_SCREEN_NAME,
-    LEADER_DEN_SCREEN_NAME,
-    CLAN_FRESHKILL_SCREEN_NAME,
-    CLAN_EVENTS_SCREEN_NAME,
-    CLAN_MEMBERS_SCREEN_NAME
-)
+from definitions import *
 
 from scripts.cat.cats import Cat
 from scripts.game_structure import image_cache
@@ -149,7 +140,7 @@ class ClanCampScreen(BaseScreen):
                 and Cat.all_cats[x].in_camp
                 and not (Cat.all_cats[x].exiled or Cat.all_cats[x].outside)
                 and (
-                    Cat.all_cats[x].status != "newborn"
+                    Cat.all_cats[x].status != STATUS_NEWBORN
                     or game.config["fun"]["all_cats_are_newborn"]
                     or game.config["fun"]["newborns_can_roam"]
                 )
@@ -352,17 +343,16 @@ class ClanCampScreen(BaseScreen):
         light_dark = "dark" if game.settings["dark mode"] else "light"
 
         camp_bg_base_dir = "resources/images/camp_bg/"
-        leaves = ["newleaf", "greenleaf", "leafbare", "leaffall"]
+        leaves = [SEASON_SPRING, SEASON_SUMMER, SEASON_WINTER, SEASON_AUTUMN]
         camp_nr = game.clan.camp_bg
 
         if camp_nr is None:
             camp_nr = "camp1"
             game.clan.camp_bg = camp_nr
 
-        available_biome = ["Forest", "Mountainous", "Plains", "Beach"]
         biome = game.clan.biome
-        if biome not in available_biome:
-            biome = available_biome[0]
+        if biome not in IMPLEMENTED_BIOMES:
+            biome = IMPLEMENTED_BIOMES[0]
             game.clan.biome = biome
         biome = biome.lower()
 
@@ -375,28 +365,28 @@ class ClanCampScreen(BaseScreen):
 
         self.add_bgs(
             {
-                "Newleaf": pygame.transform.scale(
+                SEASON_SPRING: pygame.transform.scale(
                     pygame.image.load(all_backgrounds[0]).convert(),
                     ui_scale_dimensions((800, 700)),
                 ),
-                "Greenleaf": pygame.transform.scale(
+                SEASON_SUMMER: pygame.transform.scale(
                     pygame.image.load(all_backgrounds[1]).convert(),
                     ui_scale_dimensions((800, 700)),
                 ),
-                "Leaf-bare": pygame.transform.scale(
+                SEASON_WINTER: pygame.transform.scale(
                     pygame.image.load(all_backgrounds[2]).convert(),
                     ui_scale_dimensions((800, 700)),
                 ),
-                "Leaf-fall": pygame.transform.scale(
+                SEASON_AUTUMN: pygame.transform.scale(
                     pygame.image.load(all_backgrounds[3]).convert(),
                     ui_scale_dimensions((800, 700)),
                 ),
             },
             {
-                "Newleaf": None,
-                "Greenleaf": None,
-                "Leaf-bare": None,
-                "Leaf-fall": None,
+                SEASON_SPRING: None,
+                SEASON_SUMMER: None,
+                SEASON_WINTER: None,
+                SEASON_AUTUMN: None,
             },
         )
 

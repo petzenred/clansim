@@ -14,6 +14,9 @@ import unittest
 
 import ujson
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 def test():
     """Iterate through all files in 'resources'
@@ -27,16 +30,16 @@ def test():
                     try:
                         contents = file.read()
                     except UnicodeDecodeError as e:
-                        print(f"::error file={path}::File {path} is not utf-8 encoded")
-                        print(e)
+                        logger.exception(f"::error file={path}::File {path} is not utf-8 encoded")
+                        logger.exception(e)
                         failed = True
                         continue
 
                 try:
                     _ = ujson.loads(contents)
                 except ujson.JSONDecodeError as e:
-                    print(f"::error file={path}::File {path} is invalid json")
-                    print(e)
+                    logger.exception(f"::error file={path}::File {path} is invalid json")
+                    logger.exception(e)
                     failed = True
                     pass
 

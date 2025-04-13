@@ -4,6 +4,8 @@ from typing import Union
 
 import i18n
 
+import logging
+logger = logging.getLogger(__name__)
 
 class SkillPath(Enum):
     TEACHER = ("quick to help", "good teacher", "great teacher", "excellent teacher")

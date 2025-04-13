@@ -137,7 +137,7 @@ class MusicManager:
 
     def _check_biome_playlist(self) -> str:
         """ Finds the active clan's biome and returns the appropriate playlist. """
-        biome_playlist_key: str = BIOME_FOREST_KEY
+        biome_playlist_key: str = BIOME_FOREST
         try:
             biome = game.clan.biome
             logger.debug(f"Current biome: {biome}")

@@ -7,13 +7,13 @@ __all__ = ['MUSIC_PLAYLISTS', 'SOUND_INDEX']
 MUSIC_PLAYLISTS: dict = {
     MAIN_MENU_SCREENS_KEY: ["Forest_Ambiance_1.mp3"],
     CREATION_SCREENS_KEY: ["Clangen_Generations_441khz.mp3"],
-    BIOME_BEACH_KEY: ["Beach_Ambiance_1.mp3", "Beach_Ambiance_2.mp3"],
-    BIOME_DESERT_KEY: ["Desert_Ambiance_1.mp3"],
-    BIOME_FOREST_KEY: ["Forest_Ambiance_1.mp3"],
-    BIOME_MOUNTAIN_KEY: ["Mountain_Ambiance_1.mp3", "Mountain_Ambiance_2.mp3"],
-    BIOME_PLAINS_KEY: ["Plains_Ambiance_1.mp3", "Plains_Ambiance_2.mp3"],
-    BIOME_WETLANDS_KEY: ["Wetlands_Ambiance_1.mp3"],
-    BIOME_TWOLEGPLACE_KEY: [],
+    BIOME_BEACH: ["Beach_Ambiance_1.mp3", "Beach_Ambiance_2.mp3"],
+    BIOME_DESERT: ["Desert_Ambiance_1.mp3"],
+    BIOME_FOREST: ["Forest_Ambiance_1.mp3"],
+    BIOME_MOUNTAIN: ["Mountain_Ambiance_1.mp3", "Mountain_Ambiance_2.mp3"],
+    BIOME_PLAINS: ["Plains_Ambiance_1.mp3", "Plains_Ambiance_2.mp3"],
+    BIOME_WETLANDS: ["Wetlands_Ambiance_1.mp3"],
+    BIOME_TWOLEGPLACE: [],
 }
 
 SOUND_INDEX: dict = {

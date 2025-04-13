@@ -3,6 +3,7 @@ from typing import Optional, Tuple
 import pygame
 import pygame_gui
 
+from definitions import *
 import scripts.game_structure.screen_settings
 from scripts.game_structure import image_cache
 from scripts.game_structure.game_essentials import game
@@ -442,8 +443,8 @@ def rebuild_bgs():
 
 def get_camp_bgs():
     camp_bg_base_dir = "resources/images/camp_bg/"
-    leaves = ["newleaf", "greenleaf", "leafbare", "leaffall"]
-    available_biome = ["forest", "mountainous", "plains", "beach"]
+    leaves = [SEASON_SPRING, SEASON_SUMMER, SEASON_WINTER, SEASON_AUTUMN]
+    available_biome = [BIOME_FOREST, BIOME_MOUNTAIN, BIOME_PLAINS, BIOME_BEACH]
 
     try:
         camp_nr = game.clan.camp_bg
@@ -462,37 +463,37 @@ def get_camp_bgs():
 
     return {
         "light": {
-            "Newleaf": pygame.transform.scale(
+            SEASON_SPRING: pygame.transform.scale(
                 pygame.image.load(all_backgrounds[0]).convert(),
                 scripts.game_structure.screen_settings.screen.get_size(),
             ),
-            "Greenleaf": pygame.transform.scale(
+            SEASON_SUMMER: pygame.transform.scale(
                 pygame.image.load(all_backgrounds[1]).convert(),
                 scripts.game_structure.screen_settings.screen.get_size(),
             ),
-            "Leaf-bare": pygame.transform.scale(
+            SEASON_WINTER: pygame.transform.scale(
                 pygame.image.load(all_backgrounds[2]).convert(),
                 scripts.game_structure.screen_settings.screen.get_size(),
             ),
-            "Leaf-fall": pygame.transform.scale(
+            SEASON_AUTUMN: pygame.transform.scale(
                 pygame.image.load(all_backgrounds[3]).convert(),
                 scripts.game_structure.screen_settings.screen.get_size(),
             ),
         },
         "dark": {
-            "Newleaf": pygame.transform.scale(
+            SEASON_SPRING: pygame.transform.scale(
                 pygame.image.load(all_backgrounds[4]).convert(),
                 scripts.game_structure.screen_settings.screen.get_size(),
             ),
-            "Greenleaf": pygame.transform.scale(
+            SEASON_SUMMER: pygame.transform.scale(
                 pygame.image.load(all_backgrounds[5]).convert(),
                 scripts.game_structure.screen_settings.screen.get_size(),
             ),
-            "Leaf-bare": pygame.transform.scale(
+            SEASON_WINTER: pygame.transform.scale(
                 pygame.image.load(all_backgrounds[6]).convert(),
                 scripts.game_structure.screen_settings.screen.get_size(),
             ),
-            "Leaf-fall": pygame.transform.scale(
+            SEASON_AUTUMN: pygame.transform.scale(
                 pygame.image.load(all_backgrounds[7]).convert(),
                 scripts.game_structure.screen_settings.screen.get_size(),
             ),

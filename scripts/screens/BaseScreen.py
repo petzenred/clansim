@@ -6,36 +6,7 @@ import pygame_gui
 import ujson
 from pygame_gui.core import ObjectID
 
-from definitions import (
-    MAIN_MENU_SCREEN_NAME,
-    MAIN_SETTINGS_SCREEN_NAME,
-    NEW_CLAN_SCREEN_NAME,
-    SWITCH_CLAN_SCREEN_NAME,
-
-    PROFILE_SCREEN_NAME,
-    PROFILE_ADOPT_SCREEN_NAME,
-    PROFILE_CEREMONY_SCREEN_NAME,
-    PROFILE_FAMILY_SCREEN_NAME,
-    PROFILE_GENDER_SCREEN_NAME,
-    PROFILE_MATE_SCREEN_NAME,
-    PROFILE_MEDIATION_SCREEN_NAME,
-    PROFILE_MENTOR_SCREEN_NAME,
-    PROFILE_RELATIONSHIPS_SCREEN_NAME,
-    PROFILE_ROLE_SCREEN_NAME,
-    PROFILE_SPRITE_INSPECT_SCREEN_NAME,
-
-    CLAN_ALLEGIANCES_SCREEN_NAME,
-    CLAN_CAMP_SCREEN_NAME,
-    CLAN_FRESHKILL_SCREEN_NAME,
-    CLAN_EVENTS_SCREEN_NAME,
-    CLAN_MEMBERS_SCREEN_NAME,
-    CLAN_PATROL_SCREEN_NAME,
-    CLAN_SETTINGS_SCREEN_NAME,
-
-    MED_DEN_SCREEN_NAME,
-    LEADER_DEN_SCREEN_NAME,
-    WARRIOR_DEN_SCREEN_NAME
-)
+from definitions import *
 import scripts.game_structure.screen_settings
 import scripts.screens.screens_core.screens_core
 from scripts.cat.cats import Cat
@@ -79,8 +50,6 @@ class BaseScreen:
         """Use this function when switching screens.
         It will handle keeping track of the last screen and cur screen.
         Last screen must be tracked to ensure a clear transition between screens."""
-
-        logger.debug(f"Switching to new screen: {new_screen}")
 
         music_manager.check_music(new_screen)
         # self.exit_screen()
@@ -615,13 +584,13 @@ class BaseScreen:
             text_kwargs={"count": game.clan.age},
         )
 
-        if game.clan.current_season == "Newleaf":
+        if game.clan.current_season == SEASON_SPRING:
             season_image_id = "#mns_image_newleaf"
-        elif game.clan.current_season == "Greenleaf":
+        elif game.clan.current_season == SEASON_SUMMER:
             season_image_id = "#mns_image_greenleaf"
-        elif game.clan.current_season == "Leaf-bare":
+        elif game.clan.current_season == SEASON_WINTER:
             season_image_id = "#mns_image_leafbare"
-        elif game.clan.current_season == "Leaf-fall":
+        elif game.clan.current_season == SEASON_AUTUMN:
             season_image_id = "#mns_image_leaffall"
         else:
             season_image_id = MANAGER.get_universal_empty_surface()
@@ -677,13 +646,13 @@ class BaseScreen:
             tool_tip_text_kwargs={"count": game.clan.age},
         )
 
-        if game.clan.current_season == "Newleaf":
+        if game.clan.current_season == SEASON_SPRING:
             season_image_id = "#mns_image_newleaf"
-        elif game.clan.current_season == "Greenleaf":
+        elif game.clan.current_season == SEASON_SUMMER:
             season_image_id = "#mns_image_greenleaf"
-        elif game.clan.current_season == "Leaf-bare":
+        elif game.clan.current_season == SEASON_WINTER:
             season_image_id = "#mns_image_leafbare"
-        elif game.clan.current_season == "Leaf-fall":
+        elif game.clan.current_season == SEASON_AUTUMN:
             season_image_id = "#mns_image_leaffall"
         else:
             season_image_id = MANAGER.get_universal_empty_surface()
@@ -804,18 +773,14 @@ class BaseScreen:
         try:
             season = get_current_season()
             season_bg = (
-                scripts.screens.screens_core.screens_core.default_fullscreen_bgs[theme][
-                    season
-                ]
+                scripts.screens.screens_core.screens_core.default_fullscreen_bgs[theme][season]
             )
         except (
             AttributeError
         ):  # We haven't initialised a clan (fresh install) so there's no current season.
-            season = "Newleaf"
+            season = SEASON_SPRING
             season_bg = (
-                scripts.screens.screens_core.screens_core.default_fullscreen_bgs[theme][
-                    "Newleaf"
-                ]
+                scripts.screens.screens_core.screens_core.default_fullscreen_bgs[theme][SEASON_SPRING]
             )
 
         # handle custom screen backgrounds (non-default)
@@ -842,18 +807,14 @@ class BaseScreen:
             "switch clan screen",
         ]:
             # if we're in the main menu levels, display the main menu bg
-            blur_bg = scripts.screens.screens_core.screens_core.default_fullscreen_bgs[
-                theme
-            ]["mainmenu_bg"]
+            blur_bg = scripts.screens.screens_core.screens_core.default_fullscreen_bgs[theme]["mainmenu_bg"]
         elif self.active_blur_bg in self.fullscreen_bgs:
             blur_bg = self.fullscreen_bgs[self.active_blur_bg]
         elif (
             self.active_blur_bg
             in scripts.screens.screens_core.screens_core.default_fullscreen_bgs[theme]
         ):
-            blur_bg = scripts.screens.screens_core.screens_core.default_fullscreen_bgs[
-                theme
-            ][self.active_blur_bg]
+            blur_bg = scripts.screens.screens_core.screens_core.default_fullscreen_bgs[theme][self.active_blur_bg]
         else:
             raise Exception(
                 f"Selected fullscreen background not recognised! '{self.active_blur_bg}' not in default or custom bgs"

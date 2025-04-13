@@ -5,6 +5,7 @@ import random
 import i18n
 import ujson
 
+from definitions import BIOME_KEYS
 from scripts.events_module.event_filters import (
     event_for_location,
     event_for_season,
@@ -216,7 +217,7 @@ class GenerateEvents:
         event_list = []
 
         # skip the rest of the loading if there is an unrecognised biome
-        if game.clan.biome not in game.clan.BIOME_TYPES:
+        if game.clan.biome not in BIOME_KEYS:
             print(
                 f"WARNING: unrecognised biome {game.clan.biome} in generate_events. Have you added it to BIOME_TYPES "
                 f"in clan.py?"
@@ -468,7 +469,7 @@ class GenerateEvents:
     def possible_ongoing_events(event_type=None, specific_event=None):
         event_list = []
 
-        if game.clan.biome not in game.clan.BIOME_TYPES:
+        if game.clan.biome not in BIOME_KEYS:
             print(
                 f"WARNING: unrecognised biome {game.clan.biome} in generate_events. Have you added it to BIOME_TYPES in clan.py?"
             )

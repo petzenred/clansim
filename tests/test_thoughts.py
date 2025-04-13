@@ -4,15 +4,16 @@ import unittest
 os.environ["SDL_VIDEODRIVER"] = "dummy"
 os.environ["SDL_AUDIODRIVER"] = "dummy"
 
+from definitions import BIOME_BEACH, SEASON_AUTUMN, STATUS_MEDICINE, STATUS_WARRIOR
 from scripts.cat.cats import Cat
 from scripts.cat.thoughts import Thoughts
 
 class TestNotWorkingThoughts(unittest.TestCase):
     def setUp(self):
-        self.main = Cat(status="warrior")
-        self.other = Cat(status="warrior")
-        self.biome = "Forest"
-        self.season = "Newleaf"
+        self.main = Cat(status=STATUS_WARRIOR)
+        self.other = Cat(status=STATUS_WARRIOR)
+        self.biome = BIOME_BEACH
+        self.season = SEASON_AUTUMN
         self.camp = "camp2"
 
         self.thoughts = [
@@ -73,11 +74,11 @@ class TestsGetStatusThought(unittest.TestCase):
         # given
         medicine = Cat()
         warrior = Cat()
-        medicine.status = "medicine cat"
-        warrior.status = "warrior"
+        medicine.status = STATUS_MEDICINE
+        warrior.status = STATUS_WARRIOR
         medicine.trait = "bold"
-        biome = "Forest"
-        season = "Newleaf"
+        biome = BIOME_BEACH
+        season = SEASON_AUTUMN
         camp = "camp2"
 
         # load thoughts
@@ -91,8 +92,8 @@ class TestsGetStatusThought(unittest.TestCase):
         cat = Cat(status="exiled", moons=40)
         cat.exiled = True
         cat.outside = True
-        biome = "Forest"
-        season = "Newleaf"
+        biome = BIOME_BEACH
+        season = SEASON_AUTUMN
         camp = "camp2"
 
         # load thoughts
@@ -100,10 +101,10 @@ class TestsGetStatusThought(unittest.TestCase):
 
     def test_lost_thoughts(self):
         # given
-        cat = Cat(status="warrior", moons=40)
+        cat = Cat(status=STATUS_WARRIOR, moons=40)
         cat.outside = True
-        biome = "Forest"
-        season = "Newleaf"
+        biome = BIOME_BEACH
+        season = SEASON_AUTUMN
         camp = "camp2"
 
         # load thoughts
@@ -116,8 +117,8 @@ class TestFamilyThoughts(unittest.TestCase):
         # given
         parent = Cat(moons=40)
         kit = Cat(parent1=parent.ID, moons=4)
-        biome = "Forest"
-        season = "Newleaf"
+        biome = BIOME_BEACH
+        season = SEASON_AUTUMN
         camp = "camp2"
 
         # when
