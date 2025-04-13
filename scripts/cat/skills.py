@@ -1,11 +1,23 @@
 import random
 from enum import Enum, Flag, auto
 from typing import Union
+from dataclasses import dataclass
 
 import i18n
 
 import logging
 logger = logging.getLogger(__name__)
+
+
+@dataclass
+class Skill:
+    """Class for keeping track of a skill."""
+    name: str
+    unit_price: float
+    quantity_on_hand: int = 0
+
+    def total_cost(self) -> float:
+        return self.unit_price * self.quantity_on_hand
 
 class SkillPath(Enum):
     TEACHER = ("quick to help", "good teacher", "great teacher", "excellent teacher")
