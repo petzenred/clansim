@@ -3,6 +3,14 @@
 - [ ] different languages
 - [ ] move logging to its own file
 - [ ] move loading to its own file and separate when it happens so Clan info is loaded when the ClanScreen is
+- [ ] handle ClanGen and ClanSim changelogs
+- [ ] name: Whitetoe
+
+## Cat generation
+- [ ] change how naming works
+
+## Biomes
+- [ ] add playlists for new biomes (wetlands, Twolegplace, )
 
 ## Clan creation
 
@@ -113,6 +121,15 @@ Enemies				whatever			Mudclaw will gain the *valorous* tag if the cat he killed 
 - [ ] add non-white patches - e.g. Marlowe and Aloy's chin patches
 
 
+## Sounds
+- [ ] Only have one noise for button hovering - randomly playing one of six sounds makes it seem like this only works some of the time
+- [ ] Only have one noise for button presses - randomly playing one of five sounds makes it seem like this only works some of the time
+- [ ] No music plays on cat screen
+- [ ] What's the difference between MusicManager.audio_disabled_f and MusicManager.muted_f?
+
+
+## Settings
+- [ ] Add settings keys to `definitions.py` and use them everywhere
 
 # BACKLOG
 

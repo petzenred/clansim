@@ -1,5 +1,12 @@
 """
 Module that handles the name generation for all cats.
+
+TODO
+ - Separate naming for kittypets, loners and rogues, and Clan cats.
+ - Clans have naming themes.
+ - If a Clan cat's name is based on its appearance, account for that in their name's suffix. E.g. if a black cat's prefix is "Amber" for their eye color, don't combine that with "pelt".
+ - Can use events in a cat's life to determine suffix (e.g. Leafpool).
+ - Instead of reading JSON files, read Python dictionaries?
 """
 
 import contextlib

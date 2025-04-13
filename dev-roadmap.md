@@ -10,28 +10,60 @@ new features to the relationship system, but nothing will be removed anywhere.
 
 
 ## Clan territories
-There is now a tiled game map where each square is either claimed by a specific Clan or is explicitly neutral area 
-(e.g. for communicating with StarClan and/or holding Gatherings). 
+There is now a tiled game map where each square is can be claimed by a Clan or rogues, *or* is an explicitly neutral
+area (e.g. for communicating with StarClan and/or holding Gatherings). 
 
-- Your Clan needs to regularly patrol their territory (especially squares that are Clan borders!).
+#### Claiming territory
+- Tiles that are **neutral** can't be claimed, and are different from **unclaimed** tiles, which just don't have any
+claims on them are strong enough for that tile to be considered part of any group's territory.
+
+#### Claim strength
+- Once a tile has at least one claim (belonging to either a Clan or to rogues) each claim will have a strength 
+represented by a number between 0 and 99. All claims on a tile will add up to 99 maximum. 
+- If only one claim exists on a tile, as long as the claim is stronger than 30, the tile is considered part of the 
+claimant's territory. Otherwise, tiles belong to the territory of the group with the strongest claim.
+- If no claims exist on a tile, a claim can be made simply by sending a border patrol through that tile.
+- How much strength is added to a claim by a border patrol depends on several factors about the patrol (i.e. how many 
+cats are on the patrol, how strong the patrol is).
+- If more than one claim exists on a tile, any group with a claim can patrol and/or skirmish with other claimants to 
+influence who owns the tile (think RiverClan and ThunderClan fighting over Sunningrocks).
+- Other groups' territory can be claimed by sending border patrols through the desired tiles. 
+
+#### Claim decay
+- Claim strength on tiles completely surrounded by tiles belonging to the same territory will not decay *unless 
+challenged by another group's claim*.
+- Claim strength on tiles at the edge of your Clan's territory decays faster than claims on tiles surrounded by 
+the Clan's territory. 
+- Claim strength on edge tiles that are touching territory owned by a different Clan, or by rogues decays faster than
+claims on tiles at the edge of your Clan's territory that only border neutral and/or unclaimed tiles.
+
+Your Clan needs to regularly patrol their territory (especially squares that are Clan borders!) in order to keep your
+claim on your territory.
 
 ## Biomes
 ClanGen has a partially-implemented [terrain system](/docs/dev/writing/clangen-biomes.md). I've included these 
-categorizations in this mod. Each tile in the map has a terrain, which effects which patrol events happen there.
+categorizations in this mod. Each tile in the map has a terrain, which has a number of effects on patrols that pass
+through the tile.
 
 ### Hunting
 The hunting skill has been broken up into biome-specific variants. 
 
-| Biome       | Skill   |
-|-------------|---------|
-| Beach       | Fishing |
-| Desert      |         |
-| Forest      |         |
-| Mountainous |         |
-| Plains      |         |
-| Wetlands    |         |
+| Biome        | Skill      |
+|--------------|------------|
+| Beach        | Fishing    |
+| Desert       | Scavenging |
+| Forest       | Stalking   |
+| Mountainous  | Stalking   |
+| Plains       | Stalking   |
+| Twoleg Place | Scavenging |
+| Wetlands     | Fishing    |
 
-
+!!! tip
+    The five default characteristics of biomes are: **seasonality**, **hazard**, **herb availability**, **difficulty 
+    of interactions with outsiders**, and **frequency of Twoleg interactions**. Maybe I should add 
+    **prey abundance** - but that would interact with the seasonality characteristic. Do any of the other biome 
+    characteristics interact with each other? E.g., do beaches become more **hazardous** during **greenleaf** because of 
+    increased **Twoleg interactions**? Or do deserts become more **hazardous** during **greenleaf** because of heat? 
 
 
 
@@ -52,33 +84,33 @@ interactions. However, some tags can also affect leadership succession.
 | valorous   | This cat has endangered their life for the sake of the Clan.                                       | Brambleclaw, Alderheart |
 | celebrated | This cat's name is known in every Clan and will be remembered for generations to come.             | Firestar                |
 
-Note that how your Clan views some acts might change depending on your Clan's
-[temper](/docs/dev/writing/leaders-den-events#player_clan_temper-liststr) and, if another Clan is involved, your Clan's 
-relationship to the other Clan.
+Note that how your Clan views some acts might change depending on your Clan's [temper](/docs/dev/writing/leaders-den-events#player_clan_temper-liststr) and, if another Clan is 
+involved, your Clan's relationship to the other Clan. For example, a cat choosing to attack another Clan's patrol
+unprovoked will be frowned on if your Clan is social and/or if the Clan whose patrol was attacked are allies. But cats 
+in aggressive Clans, and/or cats who attack members of a rival Clan, might be lauded for the exact same event.
 
 
 ## Patrol overhaul
 This is going to be the most obvious, and probably the most consequential, change to gameplay.
 
-### Hunting + border patrols
-
+### Border + hunting patrols
+Plans in this section are in addition to those listed in the [Clan territories](#clan-territories) section above.
 
 - The longer a tile in your territory goes without being patrolled, the more likely it becomes that the next time a cat 
 passes through it, a dangerous event will happen.
 - Each cat now has some amount of stamina (related to their experience and age), and each square they pass through 
 will take up some amount of their monthly (moonly?) energy. Patrols will now have to be managed much more mindfully.
 - Each tile has a specific [terrain](/docs/dev/writing/#clangen-biomes), which influences which events can happen in it and which skills cats need to 
-succeed at fights and hunts happening there.
-- Patrolling Clan borders more often can raise your Clan's 
-['aggresion' temper aspect](/docs/dev/writing/leaders-den-events#player_clan_temper-liststr).
+succeed at events and hunts happening there.
+- Patrolling Clan borders more often can raise your Clan's ['aggression' temper aspect](/docs/dev/writing/leaders-den-events#player_clan_temper-liststr).
 
 ### Medicine cat patrols
-Cats will specifically seek out herbs that are relevant to any current medical problems in the Clan. 
+Cats will seek out herbs that are relevant to any current medical problems in the Clan. 
 
 ### Training patrols
 If successful, these are guaranteed to result in a mentor's skills or personality influencing their apprentice.
 
-### 'Search For' action
+### 'Search For' patrols
 Allows your Clan to search for cats who disappeared, were kidnapped by Twolegs, etc. This used to be a leadership 
 decision, but I think it makes more sense here.
 
@@ -108,7 +140,7 @@ a loved one! If so, the cat who left your Clan will continue to be simulated and
 Clan is willing to take them back.
 	- If their mate dies or they break up, the cat who left your Clan might try to get back into your Clan. If they 
 don't, or if they fail, they will become a loner.
-- Other clans will start wars to claim your territory.
+- Clans will go to war over territory claims.
 	
 	
 
@@ -124,29 +156,29 @@ creating new Clans in ClanGen and ClanSim.
 | Step | ClanGen             | ClanSim                                                |
 |------|---------------------|--------------------------------------------------------|
 | 1    | Set game mode       | Set game mode and gameplay settings                    |
-| 2    | Name the Clan       | Claim territory                                        |
-| 3    | Pick leader         | Choose Clan camp location                              |
-| 4    | Pick deputy         | Name the Clan and choose icon                          |
-| 5    | Pick medicine cat   | Pick or build leader                                   |
-| 6    | Pick 4-7 other cats | Pick or build deputy, or leave choice up to the leader |
-| 7    | Choose Clan camp    | Pick or build medicine cat                             |
-| 8    | Choose Clan icon    | Pick or build 4-7 other cats                           |
+| 2    | Name the Clan       | Pick or build leader                                   |
+| 3    | Pick leader         | Pick or build medicine cat                             |
+| 4    | Pick deputy         | Pick or build deputy, or leave choice up to the leader |
+| 5    | Pick medicine cat   | Pick or build 4-7 other cats                           |
+| 6    | Pick 4-7 other cats | Claim territory                                        |
+| 7    | Choose Clan camp    | Choose Clan camp location                              |
+| 8    | Choose Clan icon    | Name the Clan and choose icon                          |
 
 ### Game mode and gameplay settings
 Settings which are **NOT** available after Clan creation
 - game mode (Classic Mode/Expanded Mode)
 - randomize relationship values when creating Clan
   - This setting is also available from the main menu's Settings, but here it can be turned on/off for individual Clans.
-- use naming conventions for your Clan
+- Use naming conventions for Clan.
   - Did I steal this idea directly from Dwarf Fortress? Yes I did. Am I sorry at all? No I’m not.
-  - All names in the game have been sorted in categories based on vibes, and if you like you can restrict which ones 
-your Clan will randomly select from.
+  - All names in the game are sorted in categories based on vibes, and if you like you can restrict which ones 
+your Clan will randomly select from when naming new kits.
   - See [this file](/resources/dicts/names/names.json) for the name categories
-- choose the number of Clans present in your game (or leave it to chance)
+- Choose the number of Clans present in your game (or leave it to chance).
   - Due to other Clans being generated in greater detail, and a map needing to be generated for the game, this is 
 mainly a lag prevention feature.
   - There is a hard cap of 4 other Clans (so 5 Clans total, including your own).
-- name the other Clans and choose their icons (or leave it to chance)
+- Name the other Clans and choose their icons (or leave it to chance).
   - Are you going for a playthrough with a specific feeling? Make sure the other Clans' names don't harsh your vibe.
 
 ### Claim territory
@@ -178,6 +210,11 @@ to create a Clan made of cats I know IRL.
 - Events which can be triggered only by cats who have already triggered other events.
 - Now, prophecies received from StarClan can have consequences in your game!
 - Make searches for missing cats more detailed.
+
+
+## Name themes
+A way to decide how cats are named in a way that's (hopefully) more coherent.
+- Names
 
 
 ## Inclusions from other mods
