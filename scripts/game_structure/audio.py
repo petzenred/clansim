@@ -1,195 +1,121 @@
-import logging
 import random
+from typing import Optional
 
 import pygame
 import pygame_gui
-import ujson
 
-from definitions import (
-    MAIN_MENU_SCREENS, CREATION_SCREENS
-)
+from definitions import *
+from resources.audio.audio_directory import (MUSIC_PLAYLISTS, SOUND_INDEX)
 from scripts.game_structure.game_essentials import game
-from scripts.game_structure.ui_elements import CatButton, UISpriteButton
+import scripts.game_structure.ui_elements as ui_elements
+
+import logging
 
 logger = logging.getLogger(__name__)
 
 
 class MusicManager:
+    playlists: dict = MUSIC_PLAYLISTS
+    current_playlist: list
+    current_track: Optional[str]
+    queued_track: Optional[str]
+
+    number_of_tracks: int
+    volume: float = game.settings["music_volume"] / 100
+
+    muted_f: bool
+    audio_disabled_f: bool
+
     def __init__(self):
-        
         self.current_playlist = []
-        self.biome_playlist = []
         self.number_of_tracks = len(self.current_playlist)
-        self.volume = game.settings["music_volume"] / 100
-        self.muted = False
-        self.audio_disabled = False
+        self.muted_f = False
+        self.audio_disabled_f = False
         self.current_track = None
         self.queued_track = None
+        return
 
-        self.load_playlists()
+    def external_music_start(self):
+        """ Plays the currently queued track then queues the next track.
 
-    def load_playlists(self):
-        self.playlists = {}
-        # loading playlists
-        try:
-            with open("resources/audio/music.json", "r", encoding="utf-8") as f:
-                music_data = ujson.load(f)
-        except:
-            logger.exception("Failed to load playlist index")
-            return
-        for playlist in music_data:
-            try:
-                self.playlists[playlist] = music_data[playlist]
-            except:
-                logger.exception("Failed to load playlist")
-
-    def check_music(self, screen):
-        """
-        checks if playlist currently playing is appropriate for the given screen and changes the playlist if needed
-        """
-        if self.muted or self.audio_disabled:
-            return
-
-        self.biome_playlist = self.get_biome_music()
-        logger.debug(f"biome playlist is {self.biome_playlist}, current playlist is {self.current_playlist}")
-        logger.debug(f"screen is {screen}")
-        logger.debug(f"menu playlist is {self.playlists['menu_playlist']}")
-
-        # main menu screens
-        if (
-            screen in MAIN_MENU_SCREENS
-            and self.current_playlist != self.playlists["menu_playlist"]
-        ):
-            logger.debug("main menu screens")
-            self.fade_out_music()
-            self.play_playlist(self.playlists["menu_playlist"])
-
-        # clan creation screens
-        elif (
-            screen in CREATION_SCREENS
-            and self.current_playlist != self.playlists["creation_playlist"]
-        ):
-            logger.debug("creation screens")
-            self.fade_out_music()
-            self.play_playlist(self.playlists["creation_playlist"])
-
-        # other screens
-        elif (
-            screen not in MAIN_MENU_SCREENS
-            and screen not in CREATION_SCREENS
-            and self.current_playlist != self.biome_playlist
-        ):
-            logger.debug("biome screens")
-            self.fade_out_music()
-            self.play_playlist(self.biome_playlist)
-
-    def play_playlist(self, playlist):
-        """
-        loads and plays random file from playlist, queues up next track
-        set loops to -1 to loop the chosen file
-        setting loops to number above zero will play the track that number of times before playing the queued track
-        """
-        self.current_playlist = playlist
-        self.queued_track = None  # clear queue
-
-        if not self.current_playlist:  # don't play an empty playlist
-            return
-
-        self.number_of_tracks = len(self.current_playlist)
-
-        self.queue_music()
-
-    def play_music(self, track, loops=0):
-        """
-        plays the given track and sets volume
-        set loops to -1 to loop the chosen file
-        setting loops to number above zero will play the track that number of times before playing the queued track
-        """
-        self.current_track = track
-        pygame.mixer.music.load(self.current_track)
-        pygame.mixer.music.set_volume(self.volume)
-        pygame.mixer.music.play(loops, fade_ms=1000)
-        logger.debug(f"playing music:{self.current_track}")
-
-    def queue_music(self):
-        """
-        queues up the next music track, this track is chosen randomly from self.current_playlist but WILL NOT be the
-        current track
-        """
-        #  if playlist is empty or has a single track, don't attempt queueing
-        if self.number_of_tracks == 0:
-            return
-
-        # otherwise we pick a new track and queue it
-        if self.current_track and self.number_of_tracks > 1:
-            playlist_copy = self.current_playlist.copy()
-            logger.debug(f"playlist: {playlist_copy}, removing track: {self.current_track}")
-            playlist_copy.remove(
-                self.current_track
-            )  # don't want to repeat current track, so we take it out
-            options = playlist_copy
-            logger.debug(f"final list: {options}")
-        else:
-            options = self.current_playlist
-
-        try:
-            self.queued_track = random.choice(options)
-            logger.info(
-                f"queueing music: current track is {self.current_track}, new track is {self.queued_track}"
-            )
-        except IndexError:
-            logger.info("WARNING: playlist is empty")
-            self.queued_track = None
-
-    def play_queued(self):
-        """
-        Plays the currently queued track then queues the next track
+        Visible to other modules.
         """
         if not self.queued_track:
+            logger.warning("no track queued")
             return
 
-        self.play_music(self.queued_track)
-        self.queue_music()
+        self._play_track(self.queued_track)
+        self._queue_track()
 
-    def fade_out_music(self, fadeout=2000):
+    def check_music(self, screen: str):
+        """ Checks if playlist currently playing is appropriate for the given screen, and changes the playlist if
+        needed.
+        Visible to other modules.
+        :param screen: key for the current game screen
         """
-        fades the music out, by default the fade is 2 seconds
-        """
-        if pygame.mixer.music.get_busy():
-            pygame.mixer.music.fadeout(fadeout)
+        if self.muted_f or self.audio_disabled_f:
+            return
+
+        playable_biome: str = self._check_biome_playlist()
+        logger.debug(f"playable_biome={playable_biome}")
+
+        logger.debug(f"Screen = {screen}")
+
+        if (    # main menu screens
+                screen in MAIN_MENU_SCREENS
+                and self.current_playlist != self.playlists[MAIN_MENU_SCREENS_KEY]
+        ):
+            new_playlist = self.playlists[MAIN_MENU_SCREENS_KEY]
+        elif (  # clan creation screens
+                screen in CREATION_SCREENS
+                and self.current_playlist != self.playlists[CREATION_SCREENS_KEY]
+        ):
+            new_playlist = self.playlists[CREATION_SCREENS_KEY]
+        # else:   # other screens
+        elif (  # other screens
+                screen not in MAIN_MENU_SCREENS
+                and screen not in CREATION_SCREENS
+        ):
+            new_playlist = self.playlists[playable_biome]
+
+        # Fade out current track and start playing the new one
+        self._fade_out_music()
+        self._load_playlist(new_playlist)
 
     def mute_music(self):
+        """Pauses current music track.
+        Visible to other modules.
         """
-        pauses current music track
-        """
-        self.muted = True
-        if not self.audio_disabled:
+        self.muted_f = True
+        if not self.audio_disabled_f:
             pygame.mixer.music.pause()
 
-    def unmute_music(self, screen):
+    def unmute_music(self, screen: str):
+        """ Unpauses current music track, then double checks if the track is appropriate for the screen before changing
+        if necessary.
+        Visible to other modules.
+        :param screen: key for the current game screen
         """
-        unpauses current music track, then double checks if the track is appropriate for the screen before changing
-        if necessary
-        """
-        
-        if self.audio_disabled:
+        if self.audio_disabled_f:
             try:
                 pygame.mixer.init()
-                self.load_playlists()
-                sound_manager.load_sounds()
-                self.audio_disabled = False
-                self.muted = False
+                sound_manager._load_sounds()
+                self.audio_disabled_f = False
+                self.muted_f = False
             except pygame.error:
-                self.muted = True
+                self.muted_f = True
                 return False
         else:
-            self.muted = False
+            self.muted_f = False
         pygame.mixer.music.unpause()
         self.check_music(screen)
         return True
 
-    def change_volume(self, new_volume):
-        """changes the volume, int given should be between 0 and 100"""
+    def change_volume(self, new_volume: int):
+        """ Changes the volume.
+        Visible to other modules.
+        :param new_volume: should be between 0 and 100
+        """
         # make sure given volume is between 0 and 100
         if new_volume > 100:
             new_volume = 100
@@ -202,53 +128,103 @@ class MusicManager:
         if pygame.mixer.music.get_busy():
             pygame.mixer.music.set_volume(self.volume)
 
-    def get_biome_music(self):
+    def _fade_out_music(self, fadeout: int = 2000):
+        """ Fades the music out.
+        :param fadeout: fadeout length in milliseconds  | Default = 2
         """
-        Finds the clan's biome and returns the appropriate playlist
-        """
+        if pygame.mixer.music.get_busy():
+            pygame.mixer.music.fadeout(fadeout)
+
+    def _check_biome_playlist(self) -> str:
+        """ Finds the active clan's biome and returns the appropriate playlist. """
+        biome_playlist_key: str = BIOME_FOREST_KEY
         try:
             biome = game.clan.biome
+            logger.debug(f"Current biome: {biome}")
+            if biome in self.playlists:
+                logger.debug(f"Found playlist for {biome} biome")
+                if self.playlists[biome]:
+                    biome_playlist_key = biome
+                    logger.debug(f"Biome playlist for {biome} is {len(biome_playlist_key)} songs long")
+            else:
+                logger.debug(f"Could not find {biome} in playlists: {self.playlists.keys()}")
         except AttributeError:
-            biome = "Forest"
-        new_playlist = []
+            pass
+        logger.debug(f"Queueing biome playlist: {biome_playlist_key}")
+        return biome_playlist_key
 
-        if biome == "Forest":
-            new_playlist = self.playlists["forest_playlist"]
-        elif biome == "Plains":
-            new_playlist = self.playlists["plains_playlist"]
-        elif biome == "Mountainous":
-            new_playlist = self.playlists["beach_playlist"]
-        elif biome == "Beach":
-            new_playlist = self.playlists["mountainous_playlist"]
+    def _load_playlist(self, playlist: list[str]):
+        """ Loads and plays random file from playlist, queues up next track
+        set loops to -1 to loop the chosen file
+        setting loops to number above zero will play the track that number of times before playing the queued track
+        """
+        self.current_playlist = playlist
+        self.queued_track = None  # clear queue
 
-        return new_playlist
+        self.number_of_tracks = len(self.current_playlist)
+
+        self._queue_track()
+
+    def _queue_track(self):
+        """ Queues up the next music track.
+
+         The next track is chosen randomly from the current playlist but WILL NOT be the current track.
+        """
+        #  if playlist is empty or has a single track, don't attempt queueing
+        if self.number_of_tracks == 0:
+            return
+
+        # otherwise we pick a new track and queue it
+        if self.current_track and self.number_of_tracks > 1:
+            playlist_copy = self.current_playlist.copy()
+            logger.debug(f"Playlist: {playlist_copy}, removing track: {self.current_track}")
+            playlist_copy.remove(self.current_track)  # don't want to repeat current track, so we take it out
+            options = playlist_copy
+            logger.debug(f"Final list: {options}")
+        else:
+            options = self.current_playlist
+
+        try:
+            self.queued_track = random.choice(options)
+            logger.debug(f"Queueing music: current track is {self.current_track}, new track is {self.queued_track}")
+        except IndexError:
+            logger.warning("Playlist is empty")
+            self.queued_track = None
+
+    def _play_track(self, track, loops=0):
+        """ Plays the given track and sets volume.
+
+        set loops to -1 to loop the chosen file
+        setting loops to number above zero will play the track that number of times before playing the queued track
+        """
+        self.current_track = track
+        pygame.mixer.music.load(MUSIC_PATH + self.current_track)
+        pygame.mixer.music.set_volume(self.volume)
+        pygame.mixer.music.play(loops, fade_ms=1000)
 
 
 music_manager = MusicManager()
 
 
 class _SoundManager:
-    def __init__(self):
-        self.volume = game.settings["sound_volume"] / 100
-        self.pressed = None
+    volume: float = game.settings["sound_volume"] / 100
 
-        self.load_sounds()
-    
-    def load_sounds(self):
+    def __init__(self):
+        self.pressed = None
+        logger.debug(f"UI Sounds volume: {self.volume}")
+
+        self._load_sounds()
+
+    def _load_sounds(self):
+        logger.debug(f"_SoundManager._load_sounds")
         self.sounds = {}
-        # open up the sound dictionary
-        try:
-            with open("resources/audio/sounds.json", "r", encoding="utf-8") as f:
-                sound_data = ujson.load(f)
-        except:
-            logger.exception("Failed to load sound index")
-            return
+        sound_data = SOUND_INDEX
         for sound in sound_data:
             try:
                 self.sounds[sound] = []
                 for path in sound_data[sound]:
                     self.sounds[sound].append(
-                        pygame.mixer.Sound("resources/audio/sounds/" + path)
+                        pygame.mixer.Sound(SOUNDS_PATH + path)
                     )
 
                 for each in self.sounds[sound]:
@@ -256,52 +232,55 @@ class _SoundManager:
             except:
                 logger.exception("Failed to load sound")
 
-    def handle_sound_events(self, event):
+    def handle_sound_events(self, sound_event: pygame.event):
         """
         assigns universal sound effects to event.type objects
         SHOULD NOT BE USED FOR INDIVIDUAL UNIQUE BUTTON SOUNDS
         UIImageButtons have a sound_id parameter for assigning unique sounds to individual buttons
-        :param event: the event that is taking place
+        :param sound_event: the event that is taking place
         """
-        # This think make sounds play using UI_BUTTON_PRESSED, instead of UI_BUTTON_START_PRESS
-        try:
-            if event.ui_element.sound_id in ["timeskip"]:
-                if event.type == pygame_gui.UI_BUTTON_PRESSED:
-                    self.play("button_press", event.ui_element)
-                else:
-                    return
-        except:
-            pass
+        if self.pressed == sound_event.ui_element:
+            pass  # Don't play a sound from a button twice
+        else:
+            self.pressed = sound_event.ui_element
 
-        if event.type == pygame_gui.UI_BUTTON_START_PRESS:
-            self.pressed = event.ui_element
-            self.play("button_press", event.ui_element)
-        elif event.type == pygame_gui.UI_BUTTON_ON_HOVERED:
-            if event.ui_element.__class__ not in [CatButton, UISpriteButton]:
-                if self.pressed != event.ui_element:
-                    self.play("button_hover")
-            self.pressed = None
+            # If hovering over the leader den decision to antagonize a different clan, play its unique sound on hover.
+            if sound_event.type == pygame_gui.UI_BUTTON_ON_HOVERED:
+                if sound_event.ui_element.__class__ not in [ui_elements.CatButton, ui_elements.UISpriteButton]:
+                    self._play_sound("button_hover")
+                # if sound_event.ui_element.sound_id == "negative_interaction":
 
-    def play(self, sound, button=None):
-        """plays the given sound, if an ImageButton is passed through then the sound_id of the ImageButton will be
-        used instead"""
-        if music_manager.muted or music_manager.audio_disabled:
+            if sound_event.type == pygame_gui.UI_BUTTON_START_PRESS:
+                self._play_sound("button_press", sound_event.ui_element)
+
+    def _play_sound(self, sound_key: str = None, button: ui_elements = None):
+        """ Plays UI sounds.
+
+        If a button is passed which has a sound_id, then that sound will be played.
+
+        plays the given sound, if an ImageButton is passed through then the sound_id of the ImageButton will be
+        used instead
+        """
+        if music_manager.muted_f or music_manager.audio_disabled_f:
             return
 
         if button and hasattr(button, "sound_id"):
             try:
                 if button.sound_id is not None:
-                    sound = button.sound_id
+                    sound_key = button.sound_id
             except AttributeError:
                 logger.exception(f"That ui_element has no sound_id.")
 
         try:
-            pygame.mixer.Sound.play(random.choice(self.sounds[sound]))
+            random_sound = random.choice(self.sounds[sound_key])
+            logger.debug(f"Playing sound: {sound_key}:{random_sound}")
+            pygame.mixer.Sound.play(random_sound)
         except KeyError:
-            logger.exception(f"Could not find sound {sound}")
+            logger.exception(f"Could not find sound {sound_key}")
+        self.pressed = None
 
-    def change_volume(self, new_volume):
-        """changes the volume, int given should be between 0 and 100"""
+    def change_volume(self, new_volume: int):
+        """ Changes the volume, int given should be between 0 and 100. """
         # make sure given volume is between 0 and 100
         if new_volume > 100:
             new_volume = 100

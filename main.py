@@ -313,8 +313,8 @@ try:
     pygame.mixer.init()
 except pygame.error:
     logger.info("Failed to initialize sound. Sound will be disabled.")
-    music_manager.audio_disabled = True
-    music_manager.muted = True
+    music_manager.audio_disabled_f = True
+    music_manager.muted_f = True
 AllScreens.main_menu_screen.screen_switches()
 
 # dev screen info now lives in scripts/screens/screens_core
@@ -323,7 +323,7 @@ cursor_img = pygame.image.load("resources/images/cursor.png").convert_alpha()
 cursor = pygame.cursors.Cursor((9, 0), cursor_img)
 disabled_cursor = pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_ARROW)
 
-while 1:
+while True:
     time_delta = clock.tick(game.switches["fps"]) / 1000.0
 
     if game.settings["custom cursor"]:
@@ -344,7 +344,8 @@ while 1:
             pass
         else:
             game.all_screens[game.current_screen].handle_event(event)
-            sound_manager.handle_sound_events(event)
+            if event.type in (pygame_gui.UI_BUTTON_START_PRESS, pygame_gui.UI_BUTTON_ON_HOVERED):
+                sound_manager.handle_sound_events(event)
 
         if event.type == pygame.QUIT:
             # Don't display if on the start screen or there is no clan.
@@ -401,11 +402,11 @@ while 1:
         game.all_screens[game.current_screen].screen_switches()
         game.switch_screens = False
     if (
-        not music_manager.audio_disabled
+        not music_manager.audio_disabled_f
         and not pygame.mixer.music.get_busy()
-        and not music_manager.muted
+        and not music_manager.muted_f
     ):
-        music_manager.play_queued()
+        music_manager.external_music_start()
 
     debug_mode.pre_update(clock)
     # END FRAME

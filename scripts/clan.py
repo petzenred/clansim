@@ -17,6 +17,7 @@ import i18n
 import pygame
 import ujson
 
+from definitions import *
 from scripts.cat.cats import Cat, cat_class
 from scripts.cat.history import History
 from scripts.cat.names import names
@@ -95,7 +96,7 @@ class Clan:
         leader=None,
         deputy=None,
         medicine_cat=None,
-        biome="Forest",
+        biome=BIOME_FOREST_KEY,
         camp_bg=None,
         symbol=None,
         game_mode="classic",
