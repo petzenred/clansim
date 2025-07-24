@@ -5,6 +5,9 @@ import i18n
 
 from scripts.game_structure.localization import load_lang_resource
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class Thoughts:
     @staticmethod
@@ -133,7 +136,7 @@ class Thoughts:
                 spli = _skill.split(",")
 
                 if len(spli) != 2:
-                    print("Throught constraint not properly formated", _skill)
+                    logger.warning(f"Thought constraint not properly formated: {_skill}")
                     continue
 
                 if main_cat.skills.meets_skill_requirement(spli[0], int(spli[1])):
@@ -149,7 +152,7 @@ class Thoughts:
                 spli = _skill.split(",")
 
                 if len(spli) != 2:
-                    print("Throught constraint not properly formated", _skill)
+                    logger.warning(f"Thought constraint not properly formated: {_skill}")
                     continue
 
                 if random_cat.skills.meets_skill_requirement(spli[0], spli[1]):
@@ -374,8 +377,8 @@ class Thoughts:
                 loaded_thoughts, main_cat, other_cat, game_mode, biome, season, camp
             )
             return final_thoughts
-        except IOError:
-            print("ERROR: loading thoughts")
+        except IOError as err:
+            logger.exception(f"Error loading thoughts", err)
 
     @staticmethod
     def get_chosen_thought(main_cat, other_cat, game_mode, biome, season, camp):
@@ -393,8 +396,9 @@ class Thoughts:
                     )
                 )
                 chosen_thought = choice(chosen_thought_group["thoughts"])
-        except Exception:
-            traceback.print_exc()
+        except Exception as err:
+            logger.exception(f"Error in get_chosen_thought()", err)
+            # traceback.print_exc()
             chosen_thought = i18n.t("defaults.thought")
 
         return chosen_thought

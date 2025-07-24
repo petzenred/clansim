@@ -4,6 +4,9 @@ from random import randint, choice, choices
 
 import ujson
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class Personality:
     """Hold personality information for a cat, and functions to deal with it"""
@@ -247,7 +250,7 @@ class Personality:
         if possible_traits:
             self.trait = choice(possible_traits)
         else:
-            print("No possible traits! Using 'strange'")
+            logger.debug(f"No possible traits! Defaulting to 'strange'")
             self.trait = "strange"
 
     def facet_wobble(self, facet_max=5):

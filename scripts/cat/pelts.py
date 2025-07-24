@@ -9,6 +9,9 @@ from scripts.game_structure.game_essentials import game
 from scripts.game_structure.localization import get_lang_config
 from scripts.utility import adjust_list_text
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class Pelt:
     sprites_names = {
@@ -925,7 +928,7 @@ class Pelt:
 
         # If this list is empty, something went wrong.
         if not par_peltcolours:
-            print("Warning - no parents: pelt randomized")
+            logger.warning(f"No parents: pelt randomized")
             return self.randomize_pattern_color(gender)
 
         # There is a 1/10 chance for kits to have the exact same pelt as one of their parents
@@ -1244,7 +1247,7 @@ class Pelt:
                 if not wildcard_chance or random.getrandbits(wildcard_chance) == 1:
                     # This is the "wildcard" chance, where you can get funky combinations.
                     # people are fans of the print message, so I'm putting it back
-                    print("Wildcard tortie!")
+                    logger.debug(f"Wildcard tortie!")
 
                     # Allow any pattern:
                     self.tortiepattern = choice(Pelt.tortiebases)
@@ -1318,7 +1321,7 @@ class Pelt:
                     par_points.append(p.pelt.points)
 
         if not parents:
-            print("Error - no parents. Randomizing white patches.")
+            logger.error(f"No parents. Randomizing white patches.")
             self.randomize_white_patches()
             return
 
@@ -1524,7 +1527,7 @@ class Pelt:
 
     @white.setter
     def white(self, val):
-        print("Can't set pelt.white")
+        logger.debug("Can't set pelt.white")
         return
 
     def describe_eyes(self):

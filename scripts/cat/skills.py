@@ -264,7 +264,7 @@ class Skill:
     @skill.setter
     def skill(self):
         """Can't set the skill directly with this setter"""
-        print("Can't set skill directly")
+        logger.debug(f"This setter doesn't let you set skills directly")
 
     @property
     def tier(self):
@@ -279,7 +279,7 @@ class Skill:
 
     @tier.setter
     def tier(self):
-        print("Can't set tier directly")
+        logger.debug(f"This setter doesn't let you set tier directly")
 
     def set_points_to_tier(self, tier: int):
         """This is seperate from the tier setter, since it will booonly allow you
@@ -627,8 +627,8 @@ class CatSkills:
             except KeyError:
                 try:
                     path = HiddenSkillEnum[path]
-                except KeyError:
-                    print(f"{path} is not a real skill path")
+                except KeyError as err:
+                    logger.exception(f"{path} is not a real skill path", err)
                     return False
 
         if isinstance(path, HiddenSkillEnum):
@@ -657,12 +657,12 @@ class CatSkills:
             spl = _skill.split(",")
 
             if len(spl) != 2:
-                print("Incorrectly formatted skill restriction", _skill)
+                logger.warning(f"Incorrectly formatted skill restriction: {_skill}")
                 continue
             try:
                 min_tier = int(spl[1])
-            except ValueError:
-                print("Min Skill Tier cannot be converted to int", _skill)
+            except ValueError as err:
+                logger.exception(f"Min Skill Tier cannot be converted to int: {_skill}")
                 continue
 
             if self.meets_skill_requirement(spl[0], min_tier):

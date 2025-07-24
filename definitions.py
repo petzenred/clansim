@@ -1,5 +1,7 @@
 # definitions.py - a map for
 
+from enum import StrEnum
+
 
 APP_NAME_DEFAULT: str = "ClanSim"
 APP_NAME_BETA: str = "ClanSimBeta"
@@ -9,17 +11,23 @@ TIMESTR_FORMAT: str = "%Y%m%d_%H%M%S"
 
 
 # This is saved in the Clan save-file, and is used for save-file conversion.
-CLANSIM_SAVE_VERSION_NUMBER = 0
-CLANSIM_VERSION_NUMBER: str = "0.1.0"
-CLANGEN_SAVE_VERSION_NUMBER = 3
-CLANGEN_VERSION_NUMBER: str = "0.9.0"
+SAVE_CLANSIM_VERSION_NUMBER = 0
+VERSION_CLANSIM_NUMBER: str = "0.1.0"
+SAVE_CLANGEN_VERSION_NUMBER = 3
+VERSION_CLANGEN_NUMBER: str = "0.9.0"
 
 
-# paths
+########################################################################################################################
+# Paths
+########################################################################################################################
+
+# resource paths
 MUSIC_PATH: str = 'resources/audio/music/'
 SOUNDS_PATH: str = 'resources/audio/sounds/'
 PATROL_IMAGE_PATH: str = 'resources/images/patrol_art/'
 
+# starting at resources/lang/{language code}/
+PATROL_LANG_PATH: str = 'patrols/'
 
 # scripts paths
 SPRITE_PATHS: dict = {
@@ -71,9 +79,24 @@ MAIN_MENU_SCREENS = [MAIN_SETTINGS_SCREEN_NAME, MAIN_MENU_SCREEN_NAME, SWITCH_CL
 
 ########################################################################################################################
 # Game Element Keys
+# TODO: replace strings with enum references
 ########################################################################################################################
 
 # Biomes
+class Biome(StrEnum):
+    Any = "any"
+    Beach = "beach"
+    Desert = "desert"
+    Forest = "forest"
+    Mountain = "mountainous"
+    Plains = "plains"
+    Wetlands = "wetlands"
+    Twolegplace = "twolegplace"
+
+    @property
+    def values(self) -> list[str]:
+        return [e for e in self]
+
 BIOME_ANY: str = "any"
 BIOME_BEACH: str = "beach"
 BIOME_DESERT: str = "desert"
@@ -87,6 +110,18 @@ BIOME_KEYS: list[str] = [BIOME_BEACH, BIOME_DESERT, BIOME_FOREST, BIOME_MOUNTAIN
 IMPLEMENTED_BIOMES: list[str] = [BIOME_BEACH, BIOME_FOREST, BIOME_MOUNTAIN, BIOME_PLAINS]
 
 # Seasons
+class Season(StrEnum):
+    Any = "any"
+    Spring = "newleaf"
+    Summer = "greenleaf"
+    Autumn = "leaffall"
+    Winter = "leafbare"
+
+    @property
+    def values(self) -> list[str]:
+        return [e for e in self]
+
+
 SEASON_ANY: str = "any"
 SEASON_SPRING: str = "newleaf"
 SEASON_SUMMER: str = "greenleaf"
@@ -147,11 +182,25 @@ STATUS_OUTSIDE_CLAN_GROUP: list[str] = [STATUS_KITTYPET, STATUS_LONER, STATUS_RO
                                         STATUS_EXCLAN, STATUS_EXILED]
 
 # Patrol types
-PATROL_MED: str = "gather"
-PATROL_BORDER: str = "border"
-PATROL_HUNT: str = "hunt"
-PATROL_TRAIN: str = "train"
-GENERAL_PATROLS: list[str] = [PATROL_BORDER, PATROL_HUNT, PATROL_TRAIN]
+class PatrolType(StrEnum):
+    General = "general"
+    Train = "training"
+    Border = "border"
+    Hunt = "hunting"
+    Med = "med"
+
+    @property
+    def values(self) -> list[str]:
+        return [e for e in self]
+
+    @property
+    def general(self) -> list[str]:
+        return [self.Train, self.Border, self.Hunt]
+
+
+
+
+GENERAL_PATROLS: list = [PatrolType.Border, PatrolType.Hunt, PatrolType.Train]
 
 
 ########################################################################################################################

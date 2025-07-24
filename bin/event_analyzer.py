@@ -23,21 +23,21 @@ event_flat = {}
 
 valid_records = {
     "location": {
-        BIOME_ANY: [],
-        BIOME_BEACH: {},
-        BIOME_DESERT: {},
-        BIOME_FOREST: {},
-        BIOME_MOUNTAIN: {},
-        BIOME_PLAINS: {},
-        BIOME_WETLANDS: {},
+        Biome.Any: [],
+        Biome.Beach: {},
+        Biome.Desert: {},
+        Biome.Forest: {},
+        Biome.Mountain: {},
+        Biome.Plains: {},
+        Biome.Wetlands: {},
     },
     "weight": {},
     "season": {
-        SEASON_ANY: [],
-        SEASON_SPRING: [],
-        SEASON_SUMMER: [],
-        SEASON_AUTUMN: [],
-        SEASON_WINTER: [],
+        Season.Any: [],
+        Season.Spring: [],
+        Season.Summer: [],
+        Season.Autumn: [],
+        Season.Winter: [],
     },
     "sub_type": {
         "war": [],

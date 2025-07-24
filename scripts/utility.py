@@ -244,7 +244,7 @@ def get_random_moon_cat(
                 random_cat = Cat.fetch_cat(choice(main_cat.apprentice))
 
     if isinstance(random_cat, str):
-        print(f"WARNING: random cat was {random_cat} instead of cat object")
+        logger.warning(f"Random cat was {random_cat} instead of cat object")
         random_cat = Cat.fetch_cat(random_cat)
     return random_cat
 
@@ -381,7 +381,7 @@ def create_new_cat_block(
                     STATUS_MEDICINE_APP,
                     STATUS_MEDIATOR_APP,
                 ]:
-                    print("Can't give apprentices mates")
+                    logger.warning(f"Can't give apprentices mates")
                     continue
 
                 give_mates.append(in_event_cats[index])
@@ -389,7 +389,7 @@ def create_new_cat_block(
             try:
                 index = int(index)
             except ValueError:
-                print(f"mate-index not correct: {index}")
+                logger.error(f"mate-index not correct: {index}")
                 continue
 
             if index >= i:
@@ -1299,8 +1299,8 @@ def filter_relationship_type(
 
             # there should be only one value constraint for each value type
         elif len(tags) > 1:
-            print(
-                f"ERROR: event {event_id} has multiple relationship constraints for the value {v_type}."
+            logger.error(
+                f"Event {event_id} has multiple relationship constraints for the value {v_type}."
             )
             break_loop = True
             break
@@ -1309,22 +1309,22 @@ def filter_relationship_type(
         try:
             threshold = int(tags[0].split("_")[1])
         except:
-            print(
-                f"ERROR: event {event_id} with the relationship constraint for the value does not {v_type} follow the formatting guidelines."
+            logger.error(
+                f"Event {event_id} with the relationship constraint for the value does not {v_type} follow the formatting guidelines."
             )
             break_loop = True
             break
 
         if threshold > 100:
-            print(
-                f"ERROR: event {event_id} has a relationship constraint for the value {v_type}, which is higher than the max value of a relationship."
+            logger.error(
+                f"Event {event_id} has a relationship constraint for the value {v_type}, which is higher than the max value of a relationship."
             )
             break_loop = True
             break
 
         if threshold <= 0:
-            print(
-                f"ERROR: event {event_id} has a relationship constraint for the value {v_type}, which is lower than the min value of a relationship or 0."
+            logger.error(
+                f"Event {event_id} has a relationship constraint for the value {v_type}, which is lower than the min value of a relationship or 0."
             )
             break_loop = True
             break
@@ -1453,7 +1453,7 @@ def gather_cat_objects(
             if index < len(event.new_cats):
                 out_set.update(event.new_cats[index])
         else:
-            print(f"WARNING: Unsupported abbreviation {abbr}")
+            logger.warning(f"Unsupported abbreviation {abbr}")
 
     return list(out_set)
 
@@ -1499,7 +1499,7 @@ def unpack_rel_block(
 
         # Check to see if value block
         if not (cats_to_ob and cats_from_ob and values and isinstance(amount, int)):
-            print(f"Relationship block incorrectly formatted: {block}")
+            logger.warning(f"Relationship block incorrectly formatted: {block}")
             continue
 
         positive = False
@@ -1560,15 +1560,15 @@ def unpack_rel_block(
                 elif len(log) == 1:
                     log1 = log[0]
             else:
-                print(f"something is wrong with relationship log: {log}")
+                logger.warning(f"something is wrong with relationship log: {log}")
 
         if not log1:
             if hasattr(event, "text"):
                 try:
                     log1 = event.text + effect
                 except AttributeError:
-                    print(
-                        f"WARNING: event changed relationships but did not create a relationship log"
+                    logger.warning(
+                        f"Event changed relationships but did not create a relationship log"
                     )
             else:
                 log1 = i18n.t("defaults.relationship_log") + effect
@@ -1577,8 +1577,8 @@ def unpack_rel_block(
                 try:
                     log2 = event.text + effect
                 except AttributeError:
-                    print(
-                        f"WARNING: event changed relationships but did not create a relationship log"
+                    logger.warning(
+                        f"Event changed relationships but did not create a relationship log"
                     )
             else:
                 log2 = i18n.t("defaults.relationship_log") + effect
@@ -1754,7 +1754,7 @@ def pronoun_repl(m, cat_pronouns_dict, raise_exception=False):
                 try:
                     catlist.append(cat_pronouns_dict[cat][1])
                 except KeyError:
-                    print(f"Missing pronouns for {cat}")
+                    logger.warning(f"Missing pronouns for {cat}")
                     continue
             d = determine_plural_pronouns(catlist)
         else:
@@ -1769,7 +1769,7 @@ def pronoun_repl(m, cat_pronouns_dict, raise_exception=False):
                     logger.warning(
                         f"Could not get pronouns for {inner_details[1]}. Using default."
                     )
-                    print(
+                    logger.warning(
                         f"Could not get pronouns for {inner_details[1]}. Using default."
                     )
                     d = choice(localization.get_new_pronouns("default"))
@@ -1788,18 +1788,16 @@ def pronoun_repl(m, cat_pronouns_dict, raise_exception=False):
 
         if raise_exception:
             raise KeyError(
-                f"Pronoun tag: {m.group(1)} is not properly"
-                "indicated as a PRONOUN or VERB tag."
+                f"Pronoun tag: {m.group(1)} is not properly indicated as a PRONOUN or VERB tag."
             )
 
-        print("Failed to find pronoun:", m.group(1))
+        logger.warning(f"Failed to find pronoun: {m.group(1)}")
         return "error1"
-    except (KeyError, IndexError) as e:
+    except (KeyError, IndexError) as err:
         if raise_exception:
             raise
 
-        logger.exception("Failed to find pronoun: " + m.group(1))
-        print("Failed to find pronoun:", m.group(1))
+        logger.exception(f"Failed to find pronoun: {m.group(1)}", err)
         return "error2"
 
 

@@ -50,6 +50,9 @@ from scripts.utility import (
 )
 from scripts.game_structure.localization import load_lang_resource
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class Events:
     """
@@ -1619,9 +1622,9 @@ class Events:
                 )
 
             possible_ceremonies = temp
-        except Exception as ex:
-            traceback.print_exception(type(ex), ex, ex.__traceback__)
-            print("Issue gathering ceremony text.", str(cat.name), promoted_to)
+        except Exception as err:
+            # traceback.print_exception(type(ex), ex, ex.__traceback__)
+            logger.exception(f"Issue gathering ceremony text when {str(cat.name)} was promoted to {promoted_to}.", err)
 
         # getting the random honor if it's needed
         random_honor = None
@@ -2124,10 +2127,10 @@ class Events:
             kill_chance = max(1, int(kill_chance))
 
             if not int(random.random() * kill_chance):
-                print(
-                    cat.name, "TARGET CHOSEN", Cat.fetch_cat(chosen_target.cat_to).name
+                logger.debug(
+                    f"TARGET CHOSEN: {cat.name} -> {Cat.fetch_cat(chosen_target.cat_to).name}"
                 )
-                print("KILL KILL KILL")
+                logger.debug(f"KILL KILL KILL")
 
                 handle_short_events.handle_event(
                     event_type="birth_death",

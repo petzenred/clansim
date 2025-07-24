@@ -27,7 +27,7 @@ from scripts.clan_resources.herb.herb_supply import HerbSupply
 from scripts.events_module.generate_events import OngoingEvent
 from scripts.game_structure.game_essentials import game
 from scripts.housekeeping.datadir import get_save_dir
-from scripts.housekeeping.version import get_version_info, SAVE_VERSION_NUMBER
+from scripts.housekeeping.version import get_version_info, SAVE_CLANSIM_VERSION_NUMBER
 from scripts.utility import (
     get_current_season,
     quit,
@@ -472,7 +472,7 @@ class Clan:
             "mediated": game.mediated,
             "starting_season": self.starting_season,
             "temperament": self.temperament,
-            "version_name": SAVE_VERSION_NUMBER,
+            "version_name": SAVE_CLANSIM_VERSION_NUMBER,
             "version_commit": get_version_info().version_number,
             "source_build": get_version_info().is_source_build,
             "custom_pronouns": self.custom_pronouns,
@@ -740,7 +740,7 @@ class Clan:
                 game.clan.add_cat(Cat.all_cats[cat])
                 game.clan.add_to_starclan(Cat.all_cats[cat])
             else:
-                print("WARNING: Cat not found:", cat)
+                logger.warning(f"Cat not found: {cat}")
         self.load_pregnancy(game.clan)
 
         # assigning a symbol, since this save would be too old to have a chosen symbol
@@ -878,7 +878,7 @@ class Clan:
                 game.clan.add_to_darkforest(Cat.all_cats[cat])
                 game.clan.add_to_unknown(Cat.all_cats[cat])
             else:
-                print("WARNING: Cat not found:", cat)
+                logger.warning(f"WARNING: Cat not found: {cat}")
         if "war" in clan_data:
             game.clan.war = clan_data["war"]
 
@@ -1258,7 +1258,7 @@ class Clan:
                 statistics.median([i.personality.aggression for i in all_cats])
             )
         else:
-            print("returned default temper: stoic")
+            logger.debug(f"returned default temper: stoic")
             return "stoic"
 
         # _temperament = ['low_aggression', 'med_aggression', 'high_aggression', ]

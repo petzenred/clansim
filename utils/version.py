@@ -6,6 +6,9 @@ import sys
 
 from util import getCommandOutput
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 def main(version_number: str = None, release_channel: str = None, upstream: str = None,
          silent: bool = True):
@@ -14,20 +17,20 @@ def main(version_number: str = None, release_channel: str = None, upstream: str 
     """
     if version_number is None:
         if not silent:
-            print("Getting version number from git")
+            logger.debug(f"Getting version number from git")
         try:
             version_number = getCommandOutput(
                 "git rev-parse HEAD").stdout.strip()
-        except Exception as e:
-            print(e)
+        except Exception as err:
+            logger.exception(err)
             version_number = "unknown"
     if release_channel is None:
         if not silent:
-            print("Defaulting release_channel to development")
+            logger.debug(f"Defaulting release_channel to development")
         release_channel = "development"
     if upstream is None:
         if not silent:
-            print("Getting upstream from git")
+            logger.debug(f"Getting upstream from git")
         try:
             origin = getCommandOutput(
                 "git remote get-url origin").stdout.strip()
@@ -38,14 +41,14 @@ def main(version_number: str = None, release_channel: str = None, upstream: str 
                 # https://github.com/ClanGenOfficial/clangen.git
                 repo = origin.replace("https://github.com/", "")
             upstream = repo.replace(".git", "")
-        except Exception as e:
-            print(e)
+        except Exception as err:
+            logger.exception(err)
             upstream = "unknown"
 
     if not silent:
-        print(f"Version: {version_number}")
-        print(f"Release channel: {release_channel}")
-        print(f"Upstream: {upstream}")
+        logger.debug(f"Version: {version_number}")
+        logger.debug(f"Release channel: {release_channel}")
+        logger.debug(f"Upstream: {upstream}")
 
     with open("version.ini", "w", encoding="utf-8") as f:
         f.write(f"""[DEFAULT]
@@ -54,13 +57,13 @@ release_channel={release_channel}
 upstream={upstream}""")
 
     if not silent:
-        print("version.ini written")
+        logger.debug(f"version.ini written")
 
 
 if __name__ == "__main__":
     if "--help" in sys.argv or "-h" in sys.argv:
-        print(
-            "Usage: version.py [-s] [-v <version_number>] [-r <release_channel>] [-u <upstream>]")
+        logger.debug(
+            f"Usage: version.py [-s] [-v <version_number>] [-r <release_channel>] [-u <upstream>]")
         sys.exit(0)
 
     _version_number = None

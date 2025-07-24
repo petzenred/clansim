@@ -50,6 +50,9 @@ from scripts.game_structure.localization import load_lang_resource
 
 import scripts.game_structure.localization as pronouns
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class Cat:
     """The cat class."""
@@ -467,7 +470,7 @@ class Cat:
         if mentor_id is None or isinstance(mentor_id, str):
             self._mentor = mentor_id
         else:
-            print(
+            logger.debug(
                 f"Mentor ID {mentor_id} of type {type(mentor_id)} isn't valid :("
                 "\nCat.mentor has to be either None (no mentor) or the mentor's ID as a string."
             )
@@ -710,7 +713,7 @@ class Cat:
                     )
 
                 if not possible_strings:
-                    print("No grief strings")
+                    logger.debug("No grief strings")
                     continue
 
                 text = choice(possible_strings)
@@ -1013,8 +1016,8 @@ class Cat:
                 clanname = game.switches["clan_name"]
             else:
                 clanname = game.switches["clan_list"][0]
-        except IndexError:
-            print("WARNING: History failed to load, no Clan in game.switches?")
+        except IndexError as err:
+            logger.exception("History failed to load, no Clan in game.switches?", err)
             return
 
         history_directory = f"{get_save_dir()}/{clanname}/history/"
@@ -1069,12 +1072,13 @@ class Cat:
                     ),
                     murder=history_data["murder"] if "murder" in history_data else {},
                 )
-        except Exception:
+        except Exception as err:
             self.history = None
-            print(
-                f"WARNING: There was an error reading the history file of cat #{self} or their history file was "
-                f"empty. Default history info was given. Close game without saving if you have save information "
-                f"you'd like to preserve!"
+            logger.exception(
+                f"There was an error reading the history file of cat #{self} or their history file was empty. "
+                f"Default history info was given. Close game without saving if you have save information you'd "
+                f"like to preserve!",
+                err
             )
 
     def save_history(self, history_dir):
@@ -1101,7 +1105,7 @@ class Cat:
                 murder={},
             )
 
-            print(f"WARNING: saving history of cat #{self.ID} didn't work")
+            logger.warning(f"Saving history of cat #{self.ID} didn't work")
 
     def generate_lead_ceremony(self):
         """Create a leader ceremony and add it to the history"""
@@ -1364,8 +1368,8 @@ class Cat:
                     attempted.append(chosen_life)
                     i += 1
                 else:
-                    print(
-                        f"WARNING: life list had no items for giver #{giver_cat.ID}. Using default life. "
+                    logger.warning(
+                        f"Life list had no items for giver #{giver_cat.ID}. Using default life. "
                         f"If you are a beta tester, please report and ping scribble along with "
                         f"all the info you can about the giver cat mentioned in this warning."
                     )
@@ -1823,7 +1827,7 @@ class Cat:
         :param severity: Override severity, default `'default'` (str, accepted values `'minor'`, `'major'`, `'severe'`)
         """
         if name not in ILLNESSES:
-            print(f"WARNING: {name} is not in the illnesses collection.")
+            logger.warning(f"{name} is not in the illnesses collection.")
             return
         if name == "kittencough" and self.status != STATUS_KIT:
             return
@@ -1891,7 +1895,7 @@ class Cat:
         :type severity: str, optional
         """
         if name not in INJURIES:
-            print(f"WARNING: {name} is not in the injuries collection.")
+            logger.warning(f"{name} is not in the injuries collection.")
             return
 
         if name == "mangled tail" and "NOTAIL" in self.pelt.scars:
@@ -1999,20 +2003,22 @@ class Cat:
 
         self.get_permanent_condition(new_condition, born_with=True)
 
-    def get_permanent_condition(self, name, born_with=False, event_triggered=False):
-        if name not in PERMANENT:
-            print(
-                self.name,
-                f"WARNING: {name} is not in the permanent conditions collection.",
-            )
+    def get_permanent_condition(self,
+                                condition_name,
+                                born_with=False,
+                                event_triggered=False
+    ):
+        if condition_name not in PERMANENT:
+            logger.warning(f"Tried to apply a permanent condition to {self.Name} but "
+                           f"'{condition_name}' was not in the permanent conditions collection.")
             return
 
-        if "blind" in self.permanent_condition and name == "failing eyesight":
+        if "blind" in self.permanent_condition and condition_name == "failing eyesight":
             return
-        if "deaf" in self.permanent_condition and name == "partial hearing loss":
+        if "deaf" in self.permanent_condition and condition_name == "partial hearing loss":
             return
 
-        # remove accessories if need be
+        # handle the effects of permanent conditions on cats' pelts
         if "NOTAIL" in self.pelt.scars and self.pelt.accessory in [
             "RED FEATHERS",
             "BLUE FEATHERS",
@@ -2033,8 +2039,10 @@ class Cat:
             "DAISY",
         ]:
             self.pelt.accessory = None
+        if condition_name == "paralyzed":
+            self.pelt.paralyzed = True
 
-        condition = PERMANENT[name]
+        condition = PERMANENT[condition_name]
         new_condition = False
         mortality = condition["mortality"][self.age.value]
         if mortality != 0 and (game.clan and game.clan.game_mode == "cruel season"):
@@ -2051,14 +2059,11 @@ class Cat:
 
         if born_with and self.status not in [STATUS_KIT, STATUS_NEWBORN]:
             moons_until = -2
-        elif born_with is False:
+        elif not born_with:
             moons_until = 0
 
-        if name == "paralyzed":
-            self.pelt.paralyzed = True
-
         new_perm_condition = PermanentCondition(
-            name=name,
+            name=condition_name,
             severity=condition["severity"],
             congenital=condition["congenital"],
             moons_until=moons_until,
@@ -2167,10 +2172,10 @@ class Cat:
                         illness_infect = illness_infect[0]
                         rate -= illness_infect["lower_by"]
 
-                    # prevent rate lower 0 and print warning message
+                    # prevent rate lower 0 and log warning message
                     if rate < 0:
-                        print(
-                            f"WARNING: injury {self.injuries[y]['name']} has lowered \
+                        logger.warning(
+                            f"Injury {self.injuries[y]['name']} has lowered \
                             chance of {illness_name} infection to {rate}"
                         )
                         rate = 1
@@ -2239,10 +2244,9 @@ class Cat:
             if "paralyzed" in self.permanent_condition and not self.pelt.paralyzed:
                 self.pelt.paralyzed = True
 
-        except Exception as e:
-            print(
-                f"WARNING: There was an error reading the condition file of cat #{self}.\n",
-                e,
+        except Exception as err:
+            logger.exception(
+                f"WARNING: There was an error reading the condition file of cat #{self}.", err
             )
 
     # ---------------------------------------------------------------------------- #
@@ -2310,7 +2314,7 @@ class Cat:
         """Takes mentor's ID as argument, mentor could just be set via this function."""
         # No !!
         if isinstance(new_mentor, Cat):
-            print("Everything is terrible!! (new_mentor {new_mentor} is a Cat D:)")
+            logger.warning(f"Everything is terrible!! (new_mentor {new_mentor} is a Cat D:)")
             return
         # Check if cat can have a mentor
         illegible_for_mentor = (
@@ -2440,7 +2444,7 @@ class Cat:
 
         # AND they must be mates with each other.
         if self.ID not in other_cat.mate or other_cat.ID not in self.mate:
-            print(
+            logger.debug(
                 f"Unsetting mates: These {self.name} and {other_cat.name} are not mates!"
             )
             return
@@ -2581,8 +2585,8 @@ class Cat:
             return self.relationships[other_cat.ID]
 
         if other_cat.ID == self.ID:
-            print(
-                f"Attempted to create a relationship with self: {self.name}. Please report as a bug!"
+            logger.debug(
+                f"A cat attempted to create a relationship with itself: {self.name}. Please report as a bug!"
             )
             return None
 
@@ -2757,8 +2761,8 @@ class Cat:
                         )
                         self.relationships[rel["cat_to_id"]] = new_rel
             except:
-                print(
-                    f"WARNING: There was an error reading the relationship file of cat #{self}."
+                logger.warning(
+                    f"There was an error reading the relationship file of cat #{self}."
                 )
 
     @staticmethod
@@ -3124,9 +3128,8 @@ class Cat:
                 cat_info = ujson.loads(read_file.read())
                 # If loading cats is attempted before the Clan is loaded, we would need to use this.
 
-        except (
-            AttributeError
-        ):  # NOPE, cats are always loaded before the Clan, so doesn't make sense to throw an error
+        except AttributeError as err:  # NOPE, cats are always loaded before the Clan, so doesn't make sense to throw an error
+            logger.exception("AttributeError when faded cat", err)
             with open(
                 get_save_dir()
                 + "/"
@@ -3139,7 +3142,7 @@ class Cat:
             ) as read_file:
                 cat_info = ujson.loads(read_file.read())
         except:
-            print("ERROR: in loading faded cat")
+            logger.error("Error in loading faded cat")
             return False
 
         cat_ob = Cat(
@@ -3297,8 +3300,8 @@ class Cat:
         try:
             if not updated_age and self.age is not None:
                 self.age = CatAgeEnum.SENIOR
-        except AttributeError:
-            print(f"ERROR: cat has no age attribute! Cat ID: {self.ID}")
+        except AttributeError as err:
+            logger.exception(f"Cat #{self.ID} has no age attribute!", err)
 
     @property
     def sprite(self):

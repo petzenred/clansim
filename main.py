@@ -145,7 +145,7 @@ if os.environ.get("CODESPACES"):
 
 if get_version_info().is_source_build:
     logger.info("Running on source code")
-    if get_version_info().version_number == definitions.CLANSIM_VERSION_NUMBER:
+    if get_version_info().version_number == definitions.VERSION_CLANSIM_NUMBER:
         logger.info("Failed to get git commit hash, using hardcoded version number instead.")
         logger.info(
             "Hey testers! We recommend you use git to clone the repository, as it makes things easier for everyone."
@@ -156,7 +156,7 @@ if get_version_info().is_source_build:
 else:
     logger.info("Running on PyInstaller build")
 
-logger.info(f"Version Name: {definitions.CLANSIM_VERSION_NUMBER}")
+logger.info(f"Version Name: {definitions.VERSION_CLANSIM_NUMBER}")
 logger.info(f"Running on commit {get_version_info().version_number}")
 
 import pygame_gui
@@ -316,6 +316,9 @@ except pygame.error:
     music_manager.audio_disabled_f = True
     music_manager.muted_f = True
 AllScreens.main_menu_screen.screen_switches()
+# start main menu screen music here
+from definitions import MAIN_MENU_SCREEN_NAME
+music_manager.check_music(MAIN_MENU_SCREEN_NAME)
 
 # dev screen info now lives in scripts/screens/screens_core
 

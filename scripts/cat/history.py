@@ -3,6 +3,9 @@ import random
 from scripts.cat.skills import SkillPath
 from scripts.game_structure.game_essentials import game
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class History:
     """
@@ -281,8 +284,8 @@ class History:
                     if cat.history.mentor_influence["skill"][_ment][_path] > 0:
                         cat.history.mentor_influence["skill"][_ment]["strings"].append(
                             random.choice(skill_influence_text[SkillPath[_path]]))
-                except KeyError:
-                    print("issue", _path)
+                except KeyError as err:
+                    logger.exception(err)
 
     @staticmethod
     def add_facet_mentor_influence(cat, mentor_id, facet, amount):
@@ -610,8 +613,8 @@ class History:
             event_type = "died_by"
 
         if not event_type:
-            print('WARNING: event type was not specified during scar/death history retrieval, '
-                  'did you remember to set scar or death as True?')
+            logger.warning(f"Event type was not specified during scar/death history "
+                           f"retrieval, did you remember to set scar or death as True?")
             return
 
         if event_type == 'scar_events':

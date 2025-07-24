@@ -6,6 +6,9 @@ import ujson
 
 from scripts.game_structure.game_essentials import game
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class Sprites:
     cat_tints = {}
@@ -32,16 +35,16 @@ class Sprites:
         try:
             with open("sprites/dicts/tint.json", "r", encoding="utf-8") as read_file:
                 self.cat_tints = ujson.loads(read_file.read())
-        except IOError:
-            print("ERROR: Reading Tints")
+        except IOError as err:
+            logger.exception(f"Reading Tints", err)
 
         try:
             with open(
                 "sprites/dicts/white_patches_tint.json", "r", encoding="utf-8"
             ) as read_file:
                 self.white_patches_tints = ujson.loads(read_file.read())
-        except IOError:
-            print("ERROR: Reading White Patches Tints")
+        except IOError as err:
+            logger.exception(f"Reading White Patches Tints", err)
 
     def spritesheet(self, a_file, name):
         """
@@ -89,7 +92,7 @@ class Sprites:
 
                 except ValueError:
                     # Fallback for non-existent sprites
-                    print(f"WARNING: nonexistent sprite - {full_name}")
+                    logger.warning(f"Nonexistent sprite - {full_name}")
                     if not self.blank_sprite:
                         self.blank_sprite = pygame.Surface(
                             (self.size, self.size), pygame.HWSURFACE | pygame.SRCALPHA
@@ -112,8 +115,8 @@ class Sprites:
             self.size = width / 3
         else:
             self.size = 50  # default, what base clangen uses
-            print(f"lineart.png is not 3x7, falling back to {self.size}")
-            print(
+            logger.warning(f"lineart.png is not 3x7, falling back to {self.size}")
+            logger.warning(
                 f"if you are a modder, please update scripts/cat/sprites.py and "
                 f"do a search for 'if width / 3 == height / 7:'"
             )
