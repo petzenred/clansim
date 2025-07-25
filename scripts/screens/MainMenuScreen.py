@@ -173,7 +173,7 @@ class MainMenuScreen(BaseScreen):
 
         # start menu music if it isn't already playing
         # this is the only screen that has to check its own music, other screens handle that in the screen change
-        music_manager.check_music(MAIN_MENU_SCREEN_NAME)
+        # music_manager.check_music(MAIN_MENU_SCREEN_NAME)
 
         bg = pygame.image.load("resources/images/menu.png").convert()
         if game.settings["dark mode"]:
@@ -401,8 +401,8 @@ class MainMenuScreen(BaseScreen):
             error_text = "screens.start.error_text"
             traceback_text = ""
             if game.switches["traceback"]:
-                print("Traceback:")
-                print(game.switches["traceback"])
+                logger.error("Traceback:")
+                logger.error(game.switches["traceback"])
                 traceback_text = "<br><br>" + escape(
                     "".join(
                         traceback.format_exception(

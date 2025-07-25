@@ -5,21 +5,20 @@ import sys
 from configparser import ConfigParser
 from importlib.util import find_spec
 
-from definitions import CLANSIM_VERSION_NUMBER
+from definitions import (
+    # This is saved in the Clan save-file, and is used for save-file conversion.
+    VERSION_CLANSIM_NUMBER, SAVE_CLANSIM_VERSION_NUMBER,
+    VERSION_CLANGEN_NUMBER, SAVE_CLANGEN_VERSION_NUMBER
+    )
 from platformdirs import user_data_dir
 
 logger = logging.getLogger(__name__)
-
-# This is saved in the Clan save-file, and is used for save-file conversion.
-SAVE_VERSION_NUMBER = 3
-CLANSIM_CLANSIM_VERSION_NUMBER = "0.1.0"
-CLANSIM_SAVE_VERSION_NUMBER = 0
 
 
 def get_version_info():
     if get_version_info.instance is None:
         is_source_build = False
-        version_number = CLANSIM_VERSION_NUMBER
+        version_number = VERSION_CLANSIM_NUMBER
         release_channel = False
         upstream = ""
         is_itch = False

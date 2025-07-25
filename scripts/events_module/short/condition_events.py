@@ -5,8 +5,11 @@ from typing import Dict, List
 import i18n
 import ujson
 
+from definitions import (
+    Age, Season, cast_to_season
+)
+
 from scripts.cat.cats import Cat
-from scripts.cat.enums import CatAgeEnum
 from scripts.cat.history import History
 from scripts.clan_resources.freshkill import (
     FRESHKILL_ACTIVE,
@@ -59,7 +62,10 @@ class Condition_Events:
     with open(
         "resources/dicts/conditions/illnesses_seasons.json", "r", encoding="utf-8"
     ) as read_file:
-        ILLNESSES_SEASON_LIST = ujson.loads(read_file.read())
+        ILLNESSES_SEASON_DICT: dict[Season: dict] = {}
+        file_contents = ujson.loads(read_file.read())
+        for season in file_contents:
+            ILLNESSES_SEASON_DICT.update({cast_to_season(season): file_contents[season]})
 
     with open(
         "resources/dicts/conditions/event_injuries_distribution.json",
@@ -88,6 +94,7 @@ class Condition_Events:
         if cls.current_loaded_lang == i18n.config.get("locale"):
             return
 
+        # TODO move paths to definitions file
         resources = [
             (
                 "PERM_CONDITION_RISK_STRINGS",
@@ -253,7 +260,7 @@ class Condition_Events:
             )
 
     @staticmethod
-    def handle_illnesses(cat, season=None):
+    def handle_illnesses(cat, season: Season = None):
         """
         This function handles the illnesses overall by randomly making cat ill (or not).
         It will return a bool to indicate if the cat is dead.
@@ -275,9 +282,7 @@ class Condition_Events:
             # ---------------------------------------------------------------------------- #
             random_number = int(
                 random.random()
-                * game.get_config_value(
-                    "condition_related", f"{game.clan.game_mode}_illness_chance"
-                )
+                * game.get_config_value("condition_related", f"{game.clan.game_mode}_illness_chance")
             )
             if (
                 not cat.dead
@@ -287,13 +292,11 @@ class Condition_Events:
             ):
                 # CLAN FOCUS!
                 if game.clan.clan_settings.get("rest and recover"):
-                    stopping_chance = game.config["focus"]["rest and recover"][
-                        "illness_prevent"
-                    ]
+                    stopping_chance = game.config["focus"]["rest and recover"]["illness_prevent"]
                     if not int(random.random() * stopping_chance):
                         return triggered
 
-                season_dict = Condition_Events.ILLNESSES_SEASON_LIST[season]
+                season_dict = Condition_Events.ILLNESSES_SEASON_DICT[season]
                 possible_illnesses = []
 
                 # pick up possible illnesses from the season dict
@@ -1008,30 +1011,30 @@ class Condition_Events:
                     # Higher chances for "severe". These are meant to be nearly 100% without
                     # being 100%
                     retire_chances = {
-                        CatAgeEnum.NEWBORN: 0,
-                        CatAgeEnum.KITTEN: 0,
-                        CatAgeEnum.ADOLESCENT: 50,  # This is high so instances where a cat retires the same moon they become an apprentice is rare
-                        CatAgeEnum.YOUNG_ADULT: 10,
-                        CatAgeEnum.ADULT: 5,
-                        CatAgeEnum.SENIOR_ADULT: 5,
-                        CatAgeEnum.SENIOR: 5,
+                        Age.Newborn: 0,
+                        Age.Kitten: 0,
+                        Age.Adolescent: 50,  # This is high so instances where a cat retires the same moon they become an apprentice is rare
+                        Age.YoungAdult: 10,
+                        Age.Adult: 5,
+                        Age.SeniorAdult: 5,
+                        Age.Senior: 5,
                     }
                 else:
                     retire_chances = {
-                        CatAgeEnum.NEWBORN: 0,
-                        CatAgeEnum.KITTEN: 0,
-                        CatAgeEnum.ADOLESCENT: 100,
-                        CatAgeEnum.YOUNG_ADULT: 80,
-                        CatAgeEnum.ADULT: 70,
-                        CatAgeEnum.SENIOR_ADULT: 50,
-                        CatAgeEnum.SENIOR: 10,
+                        Age.Newborn: 0,
+                        Age.Kitten: 0,
+                        Age.Adolescent: 100,
+                        Age.YoungAdult: 80,
+                        Age.Adult: 70,
+                        Age.SeniorAdult: 50,
+                        Age.Senior: 10,
                     }
 
                 chance = int(retire_chances.get(cat.age))
                 if not int(random.random() * chance):
                     retire_involved = [cat.ID]
                     cat_dict = {"m_c": cat}
-                    if cat.age == CatAgeEnum.ADOLESCENT:
+                    if cat.age == Age.Adolescent:
                         event = i18n.t(
                             "hardcoded.condition_retire_adolescent", name=cat.name
                         )
@@ -1049,7 +1052,7 @@ class Condition_Events:
                     else:
                         event = i18n.t("hardcoded.condition_retire_no_leader")
 
-                    if cat.age == CatAgeEnum.ADOLESCENT:
+                    if cat.age == Age.Adolescent:
                         event += i18n.t(
                             "hardcoded.condition_retire_adolescent_ceremony",
                             clan=game.clan.name,
@@ -1211,9 +1214,7 @@ class Condition_Events:
                             dictionary[condition].update({"complication": complication})
                     break
                 elif new_condition_name in Condition_Events.PERMANENT:
-                    cat.get_permanent_condition(
-                        new_condition_name, event_triggered=event_triggered
-                    )
+                    cat.get_permanent_condition(new_condition_name, event_triggered=event_triggered)
                     break
 
                 # break out of risk giving loop cus we don't want to give multiple risks for one condition

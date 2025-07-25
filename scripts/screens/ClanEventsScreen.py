@@ -36,6 +36,9 @@ from scripts.utility import (
     ui_scale_offset,
 )
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class ClanEventsScreen(BaseScreen):
     current_display = "all events"
@@ -620,7 +623,7 @@ class ClanEventsScreen(BaseScreen):
 
         for i, event_object in enumerate(self.display_events):
             if not isinstance(event_object.text, str):
-                print(
+                logger.warning(
                     f"Incorrectly Formatted Event: {event_object.text}, {type(event_object)}"
                 )
                 self.display_events.remove(event_object)

@@ -228,12 +228,12 @@ class MainSettingsScreen(BaseScreen):
                         and event.ui_element is self.checkboxes["discord"]
                     ):
                         if game.settings["discord"]:
-                            print("Starting Discord RPC")
+                            logger.debug("Starting Discord RPC")
                             game.rpc = _DiscordRPC("1076277970060185701", daemon=True)
                             game.rpc.start()
                             game.rpc.start_rpc.set()
                         else:
-                            print("Stopping Discord RPC")
+                            logger.debug("Stopping Discord RPC")
                             game.rpc.close()
 
                     break

@@ -14,20 +14,19 @@ from scripts.events_module.short.handle_short_events import INJURY_GROUPS
 if TYPE_CHECKING:
     from scripts.events_module.patrol.patrol import Patrol
 
+from definitions import Age
 from scripts.cat.history import History
 from scripts.utility import (
     change_clan_relations,
     change_clan_reputation,
     unpack_rel_block,
     event_text_adjust,
-    create_new_cat_block,
     gather_cat_objects,
     adjust_list_text,
 )
 from scripts.game_structure.game_essentials import game
 from scripts.cat.skills import SkillPath
-from scripts.cat.cats import Cat, ILLNESSES, INJURIES, PERMANENT
-from scripts.cat.enums import CatAgeEnum
+from scripts.cat.cats import Cat, create_new_cat_block, INJURIES, PERMANENT
 from scripts.cat.pelts import Pelt
 from scripts.cat_relations.relationship import Relationship
 from scripts.clan_resources.freshkill import (

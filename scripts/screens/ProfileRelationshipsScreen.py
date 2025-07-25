@@ -33,6 +33,9 @@ from ..ui.generate_box import get_box, BoxStyles
 from ..ui.generate_button import get_button_dict, ButtonStyles
 from ..ui.icon import Icon
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class ProfileRelationshipsScreen(BaseScreen):
     checkboxes = {}  # To hold the checkboxes.
@@ -89,13 +92,13 @@ class ProfileRelationshipsScreen(BaseScreen):
                     game.switches["cat"] = self.next_cat
                     self.update_focus_cat()
                 else:
-                    print("invalid next cat", self.next_cat)
+                    logger.debug(f"Invalid next cat: {self.next_cat}")
             elif event.ui_element == self.previous_cat_button:
                 if isinstance(Cat.fetch_cat(self.previous_cat), Cat):
                     game.switches["cat"] = self.previous_cat
                     self.update_focus_cat()
                 else:
-                    print("invalid previous cat", self.previous_cat)
+                    logger.debug(f"Invalid previous cat: {self.previous_cat}")
             elif event.ui_element == self.previous_page_button:
                 self.current_page -= 1
                 self.update_cat_page()

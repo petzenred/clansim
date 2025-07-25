@@ -75,66 +75,67 @@ def reformat(path):
     print(path)
 
     for event in event_ujson:
-        new_format = {
+        new_format: dict = {
             "event_id": "",
         }
 
         # Make sure all biomes are tagged properly
-        if "general" not in path:
-            new_format["biome"] = []
+        if "general" not in path: # TODO why is this "general" not "any"?
+            new_format_biome = []
             if "Beach" in path:
-                new_format["biome"].append(BIOME_BEACH)
+                new_format_biome.append(Biome.Beach)
             if "Desert" in path:
-                new_format["biome"].append(BIOME_DESERT)
+                new_format_biome.append(Biome.Desert)
             if "Forest" in path:
-                new_format["biome"].append(BIOME_FOREST)
+                new_format_biome.append(Biome.Forest)
             if "Mountainous" in path:
-                new_format["biome"].append(BIOME_MOUNTAIN)
+                new_format_biome.append(Biome.Mountain)
             if "mountainous" in path:
-                new_format["biome"].append(BIOME_MOUNTAIN)
+                new_format_biome.append(Biome.Mountain)
             if "Plains" in path:
-                new_format["biome"].append(BIOME_PLAINS)
+                new_format_biome.append(Biome.Plains)
             if "PLain" in path:
-                new_format["biome"].append(BIOME_PLAINS)
+                new_format_biome.append(Biome.Plains)
             if "Wetlands" in path:
-                new_format["biome"].append(BIOME_WETLANDS)
+                new_format_biome.append(Biome.Wetlands)
             if "Wetland" in path:
-                new_format["biome"].append(BIOME_WETLANDS)
+                new_format_biome.append(Biome.Wetlands)
+            new_format.update({"biome": new_format_biome})
 
         if "camp" in event:
-            new_format["camp"] = []
-            new_format["camp"].append(event["camp"])
+            new_format.update({"camp": [event["camp"]] })
 
         # Make sure all seasons are tagged properly
         if "tags" in event:
-            new_format["season"] = []
+            new_format_season = []
             if "Newleaf" in event["tags"]:
-                new_format["season"].append(SEASON_SPRING)
+                new_format_season.append(Season.Spring)
                 event["tags"].remove("Newleaf")
             if "Greenleaf" in event["tags"]:
-                new_format["season"].append(SEASON_SUMMER)
+                new_format_season.append(Season.Summer)
                 event["tags"].remove("Greenleaf")
             if "Green-leaf" in event["tags"]:
-                new_format["season"].append(SEASON_SUMMER)
+                new_format_season.append(Season.Summer)
                 event["tags"].remove("Green-leaf")
             if "Leaf-fall" in event["tags"]:
-                new_format["season"].append(SEASON_AUTUMN)
+                new_format_season.append(Season.Autumn)
                 event["tags"].remove("Leaf-fall")
             if "leaf-fall" in event["tags"]:
-                new_format["season"].append(SEASON_AUTUMN)
+                new_format_season.append(Season.Autumn)
                 event["tags"].remove("leaf-fall")
             if "Leafbare" in event["tags"]:
-                new_format["season"].append(SEASON_WINTER)
+                new_format_season.append(Season.Winter)
                 event["tags"].remove("Leafbare")
             if "Leaf-bare" in event["tags"]:
-                new_format["season"].append(SEASON_WINTER)
+                new_format_season.append(Season.Winter)
                 event["tags"].remove("Leaf-bare")
             if "leaf-bare" in event["tags"]:
-                new_format["season"].append(SEASON_WINTER)
+                new_format_season.append(Season.Winter)
                 event["tags"].remove("leaf-bare")
+            new_format.update({"season": new_format_season})
 
-        if new_format["season"] == [SEASON_SUMMER, SEASON_SPRING, SEASON_AUTUMN, SEASON_WINTER]:
-            new_format["season"] = ["any"]
+        if new_format["season"] == [Season.Spring, Season.Summer, Season.Autumn, Season.Winter]:
+            new_format["season"] = [Season.Any]
 
         new_format["tags"] = []
 
@@ -762,16 +763,16 @@ def reformat(path):
         )  # ujson tries to escape "/", but doesn't end up doing a good job.
 
         if "injury" in path:
-            if BIOME_BEACH in path:
+            if Biome.Beach in path:
                 injury_beach.append(dict_text)
-            if BIOME_FOREST in path:
+            if Biome.Forest in path:
                 injury_forest.append(dict_text)
-            if "general" in path:
-                injury_general.append(dict_text)
-            if BIOME_MOUNTAIN in path:
+            if Biome.Mountain in path:
                 injury_mountainous.append(dict_text)
-            if BIOME_PLAINS in path:
+            if Biome.Plains in path:
                 injury_plains.append(dict_text)
+            if "general" in path: #TODO why is this "general", not "any"?
+                injury_general.append(dict_text)
 
     if injury_beach:
         string = ""

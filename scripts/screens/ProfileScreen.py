@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: ascii -*-
+import logging
 import os
 from random import choice
 from re import sub
@@ -10,7 +11,7 @@ import pygame_gui
 import ujson
 
 from definitions import (
-    PROFILE_SCREEN_NAME,
+    Age,
     PROFILE_ADOPT_SCREEN_NAME,
     PROFILE_CEREMONY_SCREEN_NAME,
     PROFILE_FAMILY_SCREEN_NAME,
@@ -22,10 +23,7 @@ from definitions import (
     PROFILE_ROLE_SCREEN_NAME,
     PROFILE_SPRITE_INSPECT_SCREEN_NAME, MED_DEN_SCREEN_NAME,
 )
-
 from scripts.cat.cats import Cat, BACKSTORIES
-from ..cat.enums import CatAgeEnum
-from scripts.cat.pelts import Pelt
 from scripts.clan_resources.freshkill import FRESHKILL_ACTIVE
 from scripts.game_structure import image_cache
 from scripts.game_structure.game_essentials import game
@@ -53,6 +51,8 @@ from ..housekeeping.datadir import get_save_dir
 from ..ui.generate_box import get_box, BoxStyles
 from ..ui.generate_button import ButtonStyles, get_button_dict
 from ..ui.icon import Icon
+
+logger = logging.getLogger(__name__)
 
 
 # ---------------------------------------------------------------------------- #
@@ -175,7 +175,7 @@ class ProfileScreen(BaseScreen):
                     self.build_profile()
                     self.update_disabled_buttons_and_text()
                 else:
-                    print("invalid previous cat", self.previous_cat)
+                    logger.warning(f"Invalid previous cat: {self.previous_cat}")
             elif event.ui_element == self.next_cat_button:
                 if isinstance(Cat.fetch_cat(self.next_cat), Cat):
                     self.clear_profile()
@@ -183,7 +183,7 @@ class ProfileScreen(BaseScreen):
                     self.build_profile()
                     self.update_disabled_buttons_and_text()
                 else:
-                    print("invalid next cat", self.previous_cat)
+                    logger.warning(f"Invalid next cat: {self.next_cat}")
             elif event.ui_element == self.inspect_button:
                 self.close_current_tab()
                 self.change_screen(PROFILE_SPRITE_INSPECT_SCREEN_NAME)
@@ -235,7 +235,7 @@ class ProfileScreen(BaseScreen):
                     self.build_profile()
                     self.update_disabled_buttons_and_text()
                 else:
-                    print("invalid previous cat", self.previous_cat)
+                    logger.debug(f"Invalid previous cat: {self.previous_cat}")
             elif event.key == pygame.K_RIGHT:
                 if isinstance(Cat.fetch_cat(self.next_cat), Cat):
                     self.clear_profile()
@@ -243,7 +243,7 @@ class ProfileScreen(BaseScreen):
                     self.build_profile()
                     self.update_disabled_buttons_and_text()
                 else:
-                    print("invalid next cat", self.previous_cat)
+                    logger.debug(f"Invalid next cat: {self.next_cat}")
 
             elif event.key == pygame.K_ESCAPE:
                 self.close_current_tab()
@@ -712,9 +712,9 @@ class ProfileScreen(BaseScreen):
         output += "\n"
 
         # AGE
-        if the_cat.age == CatAgeEnum.KITTEN:
+        if the_cat.age == Age.Kitten:
             output += i18n.t("general.kitten_profile")
-        elif the_cat.age == CatAgeEnum.SENIOR:
+        elif the_cat.age == Age.Senior:
             output += i18n.t(f"general.{the_cat.age.value}", count=1)
         else:
             output += i18n.t(f"general.{the_cat.age.value}", count=1)
@@ -1147,10 +1147,7 @@ class ProfileScreen(BaseScreen):
                 if str(self.the_cat.ID) in rel_data:
                     self.user_notes = rel_data.get(str(self.the_cat.ID))
         except Exception as e:
-            print(
-                f"ERROR: there was an error reading the Notes file of cat #{self.the_cat.ID}.\n",
-                e,
-            )
+            logger.exception(f"There was an error reading the Notes file of cat #{self.the_cat.ID}.", e)
 
     def toggle_history_sub_tab(self):
         """To toggle the history-sub-tab"""

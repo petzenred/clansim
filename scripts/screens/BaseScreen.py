@@ -51,6 +51,8 @@ class BaseScreen:
         It will handle keeping track of the last screen and cur screen.
         Last screen must be tracked to ensure a clear transition between screens."""
 
+        logger.debug(f"Old screen: {self.name}")
+        logger.debug(f"New screen: {new_screen}")
         music_manager.check_music(new_screen)
         # self.exit_screen()
         game.last_screen_forupdate = self.name
@@ -584,14 +586,14 @@ class BaseScreen:
             text_kwargs={"count": game.clan.age},
         )
 
-        if game.clan.current_season == SEASON_SPRING:
+        if game.clan.current_season == Season.Spring:
             season_image_id = "#mns_image_newleaf"
-        elif game.clan.current_season == SEASON_SUMMER:
+        elif game.clan.current_season == Season.Summer:
             season_image_id = "#mns_image_greenleaf"
-        elif game.clan.current_season == SEASON_WINTER:
-            season_image_id = "#mns_image_leafbare"
-        elif game.clan.current_season == SEASON_AUTUMN:
+        elif game.clan.current_season == Season.Autumn:
             season_image_id = "#mns_image_leaffall"
+        elif game.clan.current_season == Season.Winter:
+            season_image_id = "#mns_image_leafbare"
         else:
             season_image_id = MANAGER.get_universal_empty_surface()
 
@@ -646,14 +648,14 @@ class BaseScreen:
             tool_tip_text_kwargs={"count": game.clan.age},
         )
 
-        if game.clan.current_season == SEASON_SPRING:
+        if game.clan.current_season == Season.Spring:
             season_image_id = "#mns_image_newleaf"
-        elif game.clan.current_season == SEASON_SUMMER:
+        elif game.clan.current_season == Season.Summer:
             season_image_id = "#mns_image_greenleaf"
-        elif game.clan.current_season == SEASON_WINTER:
-            season_image_id = "#mns_image_leafbare"
-        elif game.clan.current_season == SEASON_AUTUMN:
+        elif game.clan.current_season == Season.Autumn:
             season_image_id = "#mns_image_leaffall"
+        elif game.clan.current_season == Season.Winter:
+            season_image_id = "#mns_image_leafbare"
         else:
             season_image_id = MANAGER.get_universal_empty_surface()
 
@@ -778,9 +780,9 @@ class BaseScreen:
         except (
             AttributeError
         ):  # We haven't initialised a clan (fresh install) so there's no current season.
-            season = SEASON_SPRING
+            season = Season.Spring
             season_bg = (
-                scripts.screens.screens_core.screens_core.default_fullscreen_bgs[theme][SEASON_SPRING]
+                scripts.screens.screens_core.screens_core.default_fullscreen_bgs[theme][Season.Spring]
             )
 
         # handle custom screen backgrounds (non-default)

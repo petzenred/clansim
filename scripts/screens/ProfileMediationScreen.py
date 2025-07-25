@@ -27,6 +27,9 @@ from ..ui.generate_box import get_box, BoxStyles
 from ..ui.generate_button import get_button_dict, ButtonStyles
 from ..ui.icon import Icon
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class ProfileMediationScreen(BaseScreen):
     def __init__(self, name=None):
@@ -641,12 +644,9 @@ class ProfileMediationScreen(BaseScreen):
                 display_romantic = 0
                 # Print, just for bug checking. Again, they should not be able to get love towards their relative.
                 if the_relationship.romantic_love and related:
-                    print(
-                        str(cat.name)
-                        + " has "
-                        + str(the_relationship.romantic_love)
-                        + " romantic love "
-                        "towards their relative, " + str(the_relationship.cat_to.name)
+                    logger.debug(
+                        f"{str(cat.name)} has {str(the_relationship.romantic_love)} romantic "
+                        f"love towards their relative, {str(the_relationship.cat_to.name)}."
                     )
             else:
                 display_romantic = the_relationship.romantic_love

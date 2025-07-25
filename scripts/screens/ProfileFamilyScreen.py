@@ -26,6 +26,9 @@ from ..ui.generate_box import BoxStyles, get_box
 from ..ui.generate_button import get_button_dict, ButtonStyles
 from ..ui.icon import Icon
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class ProfileFamilyScreen(BaseScreen):
     # Page numbers for siblings and offspring
@@ -102,7 +105,7 @@ class ProfileFamilyScreen(BaseScreen):
                     self.exit_screen()
                     self.screen_switches()
                 else:
-                    print("invalid previous cat", self.previous_cat)
+                    logger.debug(f"Invalid previous cat: {self.previous_cat}")
             elif event.ui_element == self.next_cat_button:
                 if isinstance(Cat.fetch_cat(self.next_cat), Cat):
                     game.switches["cat"] = self.next_cat
@@ -110,7 +113,7 @@ class ProfileFamilyScreen(BaseScreen):
                     self.exit_screen()
                     self.screen_switches()
                 else:
-                    print("invalid next cat", self.next_cat)
+                    logger.debug(f"Invalid next cat: {self.next_cat}")
             elif event.ui_element == self.parents_button:
                 self.current_group = self.parents
                 self.current_group_name = "parents"

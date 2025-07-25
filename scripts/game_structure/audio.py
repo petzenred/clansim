@@ -57,9 +57,6 @@ class MusicManager:
             return
 
         playable_biome: str = self._check_biome_playlist()
-        logger.debug(f"playable_biome={playable_biome}")
-
-        logger.debug(f"Screen = {screen}")
 
         if (    # main menu screens
                 screen in MAIN_MENU_SCREENS
@@ -132,25 +129,23 @@ class MusicManager:
         """ Fades the music out.
         :param fadeout: fadeout length in milliseconds  | Default = 2
         """
+        logger.debug(f"Fading out track: {self.current_track}")
         if pygame.mixer.music.get_busy():
             pygame.mixer.music.fadeout(fadeout)
+        self.current_track = None
 
     def _check_biome_playlist(self) -> str:
         """ Finds the active clan's biome and returns the appropriate playlist. """
-        biome_playlist_key: str = BIOME_FOREST
+        biome_playlist_key: str = Biome.Forest
         try:
             biome = game.clan.biome
-            logger.debug(f"Current biome: {biome}")
             if biome in self.playlists:
-                logger.debug(f"Found playlist for {biome} biome")
                 if self.playlists[biome]:
                     biome_playlist_key = biome
-                    logger.debug(f"Biome playlist for {biome} is {len(biome_playlist_key)} songs long")
             else:
                 logger.debug(f"Could not find {biome} in playlists: {self.playlists.keys()}")
         except AttributeError:
             pass
-        logger.debug(f"Queueing biome playlist: {biome_playlist_key}")
         return biome_playlist_key
 
     def _load_playlist(self, playlist: list[str]):
@@ -186,7 +181,6 @@ class MusicManager:
 
         try:
             self.queued_track = random.choice(options)
-            logger.debug(f"Queueing music: current track is {self.current_track}, new track is {self.queued_track}")
         except IndexError:
             logger.warning("Playlist is empty")
             self.queued_track = None
@@ -212,11 +206,9 @@ class _SoundManager:
     def __init__(self):
         self.pressed = None
         logger.debug(f"UI Sounds volume: {self.volume}")
-
         self._load_sounds()
 
     def _load_sounds(self):
-        logger.debug(f"_SoundManager._load_sounds")
         self.sounds = {}
         sound_data = SOUND_INDEX
         for sound in sound_data:
@@ -230,7 +222,7 @@ class _SoundManager:
                 for each in self.sounds[sound]:
                     pygame.mixer.Sound.set_volume(each, self.volume)
             except:
-                logger.exception("Failed to load sound")
+                logger.error("Failed to load sound")
 
     def handle_sound_events(self, sound_event: pygame.event):
         """
@@ -268,15 +260,14 @@ class _SoundManager:
             try:
                 if button.sound_id is not None:
                     sound_key = button.sound_id
-            except AttributeError:
-                logger.exception(f"That ui_element has no sound_id.")
+            except AttributeError as err:
+                logger.error(f"That ui_element has no sound_id.")
 
         try:
             random_sound = random.choice(self.sounds[sound_key])
-            logger.debug(f"Playing sound: {sound_key}:{random_sound}")
             pygame.mixer.Sound.play(random_sound)
         except KeyError:
-            logger.exception(f"Could not find sound {sound_key}")
+            logger.error(f"Could not find sound {sound_key}")
         self.pressed = None
 
     def change_volume(self, new_volume: int):

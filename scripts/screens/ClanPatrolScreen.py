@@ -5,7 +5,7 @@ import i18n
 import pygame
 import pygame_gui
 
-from definitions import CLAN_MEMBERS_SCREEN_NAME, CLAN_CAMP_SCREEN_NAME
+from definitions import CLAN_MEMBERS_SCREEN_NAME, CLAN_CAMP_SCREEN_NAME, PatrolType, Biome
 from scripts.cat.cats import Cat
 from scripts.game_structure.game_essentials import game
 from scripts.game_structure.ui_elements import (
@@ -28,14 +28,15 @@ from ..ui.generate_box import BoxStyles, get_box
 from ..ui.generate_button import get_button_dict, ButtonStyles
 from ..ui.icon import Icon
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class ClanPatrolScreen(BaseScreen):
     current_patrol = []
     patrol_stage = "choose_cats"  # Can be 'choose_cats', 'patrol_events' or 'patrol_complete'. Controls the stage of patrol.
     patrol_screen = "patrol_cats"  # Can be "patrol_cats" or "skills". Controls the tab on the select_cats stage
-    patrol_type = (
-        "general"  # Can be 'general', 'border', 'training', 'med', or 'hunting'
-    )
+    patrol_type: PatrolType = PatrolType.General
     current_page = 1
     elements = {}  # hold elements for sub-page
     cat_buttons = {}  # Hold cat image sprites.
@@ -97,8 +98,8 @@ class ClanPatrolScreen(BaseScreen):
             if self.able_cats:
                 self.selected_cat = choice(self.able_cats)
             else:
-                print(
-                    "WARNING: attempted to select random cat for patrol from empty list of able cats"
+                logger.warning(
+                    "Attempted to select random cat for patrol from empty list of able cats"
                 )
             self.update_selected_cat()
             self.update_button()
@@ -138,8 +139,8 @@ class ClanPatrolScreen(BaseScreen):
                     if self.able_cats:
                         self.selected_cat = choice(self.able_cats)
                     else:
-                        print(
-                            "WARNING: attempted to select random cat for patrol from empty list of able cats"
+                        logger.warning(
+                            "Attempted to select random cat for patrol from empty list of able cats"
                         )
                 self.update_selected_cat()
                 self.current_patrol.append(self.selected_cat)
@@ -196,28 +197,28 @@ class ClanPatrolScreen(BaseScreen):
             self.update_cat_images_buttons()
             self.update_button()
         elif event.ui_element == self.elements["paw"]:
-            if self.patrol_type == "training":
-                self.patrol_type = "general"
+            if self.patrol_type == PatrolType.Train:
+                self.patrol_type = PatrolType.General
             else:
-                self.patrol_type = "training"
+                self.patrol_type == PatrolType.Train
             self.update_button()
         elif event.ui_element == self.elements["claws"]:
-            if self.patrol_type == "border":
-                self.patrol_type = "general"
+            if self.patrol_type == PatrolType.Border:
+                self.patrol_type = PatrolType.General
             else:
-                self.patrol_type = "border"
+                self.patrol_type = PatrolType.Border
             self.update_button()
         elif event.ui_element == self.elements["herb"]:
-            if self.patrol_type == "med":
-                self.patrol_type = "general"
+            if self.patrol_type == PatrolType.Med:
+                self.patrol_type = PatrolType.General
             else:
-                self.patrol_type = "med"
+                self.patrol_type = PatrolType.Med
             self.update_button()
         elif event.ui_element == self.elements["mouse"]:
-            if self.patrol_type == "hunting":
-                self.patrol_type = "general"
+            if self.patrol_type == PatrolType.Hunting:
+                self.patrol_type = PatrolType.General
             else:
-                self.patrol_type = "hunting"
+                self.patrol_type = PatrolType.Hunting
             self.update_button()
         elif event.ui_element == self.elements["patrol_start"]:
             self.elements["patrol_start"].disable()
@@ -361,7 +362,7 @@ class ClanPatrolScreen(BaseScreen):
             self.open_patrol_event_screen()
             self.open_patrol_complete_screen()
         else:
-            print("how'd that happen? Unidentified patrol stage.")
+            logger.debug(f"How'd that happen? Unidentified patrol stage.")
 
     def update_button(self):
         """ " Updates button availabilities."""
@@ -419,10 +420,10 @@ class ClanPatrolScreen(BaseScreen):
                     for cat in self.current_patrol
                 )
             ):
-                self.patrol_type = "med"
+                self.patrol_type = PatrolType.Med
             else:
-                if self.patrol_type == "med":
-                    self.patrol_type = "general"
+                if self.patrol_type == PatrolType.Med:
+                    self.patrol_type = PatrolType.General
 
             self.elements["paw"].enable()
             self.elements["mouse"].enable()
@@ -430,19 +431,19 @@ class ClanPatrolScreen(BaseScreen):
             self.elements["herb"].enable()
             self.elements["info"].kill()  # clearing the text before displaying new text
 
-            if self.patrol_type != "med" and self.current_patrol:
+            if self.patrol_type != PatrolType.Med and self.current_patrol:
                 self.elements["herb"].disable()
-                if self.patrol_type == "med":
-                    self.patrol_type = "general"
-            if self.patrol_type == "general":
+                if self.patrol_type == PatrolType.Med:
+                    self.patrol_type = PatrolType.General
+            if self.patrol_type == PatrolType.General:
                 text = "screens.patrol.random_patrol"
-            elif self.patrol_type == "training":
+            elif self.patrol_type == PatrolType.Train:
                 text = "screens.patrol.training"
-            elif self.patrol_type == "border":
+            elif self.patrol_type == PatrolType.Border:
                 text = "screens.patrol.border"
-            elif self.patrol_type == "hunting":
+            elif self.patrol_type == PatrolType.Hunting:
                 text = "screens.patrol.hunting"
-            elif self.patrol_type == "med":
+            elif self.patrol_type == PatrolType.Med:
                 if self.current_patrol:
                     text = "screens.patrol.herb_gathering"
                     self.elements["mouse"].disable()
@@ -774,9 +775,8 @@ class ClanPatrolScreen(BaseScreen):
     def run_patrol_start(self):
         """Runs patrol start. To be run in a separate thread."""
         try:
-            self.display_text = self.patrol_obj.setup_patrol(
-                self.current_patrol, self.patrol_type
-            )
+            patrol_biomes: list[Biome] = [ Biome(game.clan.biome) ] # TODO: replace this with tiles
+            self.display_text = self.patrol_obj.setup_patrol( self.current_patrol, patrol_biomes )
         except RuntimeError:
             self.display_text = None
 

@@ -26,6 +26,9 @@ from ..game_structure.screen_settings import MANAGER
 from ..ui.generate_box import BoxStyles, get_box
 from ..ui.generate_button import get_button_dict, ButtonStyles
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class ProfileRoleScreen(BaseScreen):
     the_cat = None
@@ -45,13 +48,13 @@ class ProfileRoleScreen(BaseScreen):
                     game.switches["cat"] = self.next_cat
                     self.update_selected_cat()
                 else:
-                    print("invalid next cat", self.next_cat)
+                    logger.warning(f"Invalid next cat: {self.next_cat}")
             elif event.ui_element == self.previous_cat_button:
                 if isinstance(Cat.fetch_cat(self.previous_cat), Cat):
                     game.switches["cat"] = self.previous_cat
                     self.update_selected_cat()
                 else:
-                    print("invalid previous cat", self.previous_cat)
+                    logger.warning(f"Invalid previous cat: {self.previous_cat}")
             elif event.ui_element == self.promote_leader:
                 if self.the_cat == game.clan.deputy:
                     game.clan.deputy = None

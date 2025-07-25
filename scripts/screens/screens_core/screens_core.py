@@ -406,6 +406,7 @@ def rebuild_bgs():
         },
     }
 
+    # TODO Make this an enum
     for theme in ["light", "dark"]:
         for name, bg in default_fullscreen_bgs[theme].items():
             if name not in [
@@ -443,57 +444,55 @@ def rebuild_bgs():
 
 def get_camp_bgs():
     camp_bg_base_dir = "resources/images/camp_bg/"
-    leaves = [SEASON_SPRING, SEASON_SUMMER, SEASON_WINTER, SEASON_AUTUMN]
-    available_biome = [BIOME_FOREST, BIOME_MOUNTAIN, BIOME_PLAINS, BIOME_BEACH]
 
     try:
         camp_nr = game.clan.camp_bg
-        biome = game.clan.biome.lower()
+        biome = cast_to_biome(game.clan.biome)
     except AttributeError:
         camp_nr = "camp1"
-        biome = available_biome[0]
+        biome = AVAILABLE_BIOMES[0]
 
     all_backgrounds = []
     for light_dark in ["light", "dark"]:
-        for leaf in leaves:
+        for season in AVAILABLE_SEASONS:
             platform_dir = (
-                f"{camp_bg_base_dir}/{biome}/{leaf}_{camp_nr}_{light_dark}.png"
+                f"{camp_bg_base_dir}/{str(biome)}/{str(season)}_{camp_nr}_{light_dark}.png"
             )
             all_backgrounds.append(platform_dir)
 
     return {
         "light": {
-            SEASON_SPRING: pygame.transform.scale(
+            Season.Spring: pygame.transform.scale(
                 pygame.image.load(all_backgrounds[0]).convert(),
                 scripts.game_structure.screen_settings.screen.get_size(),
             ),
-            SEASON_SUMMER: pygame.transform.scale(
+            Season.Summer: pygame.transform.scale(
                 pygame.image.load(all_backgrounds[1]).convert(),
                 scripts.game_structure.screen_settings.screen.get_size(),
             ),
-            SEASON_WINTER: pygame.transform.scale(
-                pygame.image.load(all_backgrounds[2]).convert(),
+            Season.Autumn: pygame.transform.scale(
+                pygame.image.load(all_backgrounds[3]).convert(),
                 scripts.game_structure.screen_settings.screen.get_size(),
             ),
-            SEASON_AUTUMN: pygame.transform.scale(
-                pygame.image.load(all_backgrounds[3]).convert(),
+            Season.Winter: pygame.transform.scale(
+                pygame.image.load(all_backgrounds[2]).convert(),
                 scripts.game_structure.screen_settings.screen.get_size(),
             ),
         },
         "dark": {
-            SEASON_SPRING: pygame.transform.scale(
+            Season.Spring: pygame.transform.scale(
                 pygame.image.load(all_backgrounds[4]).convert(),
                 scripts.game_structure.screen_settings.screen.get_size(),
             ),
-            SEASON_SUMMER: pygame.transform.scale(
+            Season.Summer: pygame.transform.scale(
                 pygame.image.load(all_backgrounds[5]).convert(),
                 scripts.game_structure.screen_settings.screen.get_size(),
             ),
-            SEASON_WINTER: pygame.transform.scale(
+            Season.Winter: pygame.transform.scale(
                 pygame.image.load(all_backgrounds[6]).convert(),
                 scripts.game_structure.screen_settings.screen.get_size(),
             ),
-            SEASON_AUTUMN: pygame.transform.scale(
+            Season.Autumn: pygame.transform.scale(
                 pygame.image.load(all_backgrounds[7]).convert(),
                 scripts.game_structure.screen_settings.screen.get_size(),
             ),

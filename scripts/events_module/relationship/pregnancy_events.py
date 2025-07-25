@@ -4,8 +4,10 @@ from typing import Dict, List, Union, Optional
 
 import i18n
 
-from scripts.cat.cats import Cat
-from scripts.cat.enums import CatAgeEnum
+from definitions import (
+    Age
+)
+from scripts.cat.cats import Cat, create_new_cat
 from scripts.cat.history import History
 from scripts.cat.names import names, Name
 from scripts.cat_relations.relationship import Relationship
@@ -13,7 +15,6 @@ from scripts.event_class import Single_Event
 from scripts.events_module.short.condition_events import Condition_Events
 from scripts.game_structure.game_essentials import game
 from scripts.utility import (
-    create_new_cat,
     get_highest_romantic_relation,
     event_text_adjust,
     get_personality_compatibility,
@@ -559,7 +560,7 @@ class Pregnancy_Events:
         # decide chances of having kits, and if it's possible at all.
         # Including - age, dead statis, having kits turned off.
         not_correct_age = (
-            cat.age in [CatAgeEnum.NEWBORN, CatAgeEnum.KITTEN, CatAgeEnum.ADOLESCENT]
+            cat.age in [Age.Newborn, Age.Kitten, Age.Adolescent]
             or cat.moons < 15
         )
         if not_correct_age or cat.no_kits or cat.dead:
@@ -806,7 +807,6 @@ class Pregnancy_Events:
                         count=kits_amount,
                     )
                     blood_parent = create_new_cat(
-                        Cat,
                         status=random.choice(["loner", "kittypet"]),
                         alive=False,
                         thought=thought,

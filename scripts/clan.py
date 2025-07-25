@@ -18,7 +18,7 @@ import pygame
 import ujson
 
 from definitions import *
-from scripts.cat.cats import Cat, cat_class
+from scripts.cat.cats import Cat # , cat_class
 from scripts.cat.history import History
 from scripts.cat.names import names
 from scripts.cat.sprites import sprites
@@ -37,27 +37,13 @@ from scripts.utility import (
 import logging
 logger = logging.getLogger(__name__)
 
+# TODO Clan should be a dataclass
 class Clan:
     """
 
     TODO: Docs
 
     """
-
-    CAT_TYPES = [
-        STATUS_NEWBORN,
-        STATUS_KIT,
-        STATUS_WARRIOR_APP,
-        STATUS_WARRIOR,
-        STATUS_MEDICINE_APP,
-        STATUS_MEDICINE,
-        STATUS_DEPUTY,
-        STATUS_LEADER,
-        STATUS_ELDER,
-        STATUS_MEDIATOR_APP,
-        STATUS_MEDIATOR,
-        STATUS_ANY,
-    ]
 
     seasons = YEAR_SEASONS
 
@@ -77,7 +63,7 @@ class Clan:
         layouts = ujson.loads(read_file.read())
 
     age = 0
-    current_season = SEASON_SPRING
+    current_season = Season.Spring
     all_clans = []
 
     def __init__(
@@ -86,12 +72,12 @@ class Clan:
         leader=None,
         deputy=None,
         medicine_cat=None,
-        biome=BIOME_FOREST,
+        biome=Biome.Forest,
         camp_bg=None,
         symbol=None,
         game_mode="classic",
         starting_members=[],
-        starting_season=SEASON_SPRING,
+        starting_season=Season.Spring,
         self_run_init_functions=True,
     ):
         self.history = History()
@@ -112,7 +98,7 @@ class Clan:
             self.med_cat_list
         )  # Must do this after the medicine cat is added to the list.
         self.age = 0
-        self.current_season = SEASON_SPRING
+        self.current_season = Season.Spring
         self.starting_season = starting_season
         self.instructor = None
         # This is the first cat in starclan, to "guide" the other dead cats there.
@@ -176,18 +162,18 @@ class Clan:
     # The clan couldn't save itself in time due to issues arising, for example, from this function: "if deputy is not None: self.deputy.status_change('deputy') -> game.clan.remove_med_cat(self)"
     def post_initialization_functions(self):
         if self.deputy is not None:
-            self.deputy.status_change(STATUS_DEPUTY)
+            self.deputy.status_change(Status.Deputy)
             self.clan_cats.append(self.deputy.ID)
 
         if self.leader:
-            self.leader.status_change(STATUS_LEADER)
+            self.leader.status_change(Status.Leader)
             self.clan_cats.append(self.leader.ID)
 
         if self.medicine_cat is not None:
             self.clan_cats.append(self.medicine_cat.ID)
             self.med_cat_list.append(self.medicine_cat.ID)
-            if self.medicine_cat.status != STATUS_MEDICINE:
-                Cat.all_cats[self.medicine_cat.ID].status_change(STATUS_MEDICINE)
+            if self.medicine_cat.status != Status.Medicine:
+                Cat.all_cats[self.medicine_cat.ID].status_change(Status.Medicine)
 
     def create_clan(self):
         """
@@ -198,15 +184,15 @@ class Clan:
         self.instructor = Cat(
             status=choice(
                 [
-                    STATUS_WARRIOR_APP,
-                    STATUS_MEDIATOR_APP,
-                    STATUS_MEDICINE_APP,
-                    STATUS_WARRIOR,
-                    STATUS_MEDICINE,
-                    STATUS_LEADER,
-                    STATUS_MEDIATOR,
-                    STATUS_DEPUTY,
-                    STATUS_ELDER,
+                    Status.WarriorApp,
+                    Status.MediatorApp,
+                    Status.MedicineApp,
+                    Status.Warrior,
+                    Status.Mediator,
+                    Status.Medicine,
+                    Status.Leader,
+                    Status.Deputy,
+                    Status.Elder,
                 ]
             ),
         )
@@ -400,7 +386,7 @@ class Clan:
         if leader:
             self.history.add_lead_ceremony(leader)
             self.leader = leader
-            Cat.all_cats[leader.ID].status_change(STATUS_LEADER)
+            Cat.all_cats[leader.ID].status_change(Status.Leader)
             self.leader_predecessors += 1
             self.leader_lives = 9
         game.switches["new_leader"] = None
@@ -411,7 +397,7 @@ class Clan:
         """
         if deputy:
             self.deputy = deputy
-            Cat.all_cats[deputy.ID].status_change(STATUS_DEPUTY)
+            Cat.all_cats[deputy.ID].status_change(Status.Deputy)
             self.deputy_predecessors += 1
 
     def new_medicine_cat(self, medicine_cat):
@@ -419,8 +405,8 @@ class Clan:
         TODO: DOCS
         """
         if medicine_cat:
-            if medicine_cat.status != STATUS_MEDICINE:
-                Cat.all_cats[medicine_cat.ID].status_change(STATUS_MEDICINE)
+            if medicine_cat.status != Status.Medicine:
+                Cat.all_cats[medicine_cat.ID].status_change(Status.Medicine)
             if medicine_cat.ID not in self.med_cat_list:
                 self.med_cat_list.append(medicine_cat.ID)
             medicine_cat = self.med_cat_list[0]
@@ -480,18 +466,18 @@ class Clan:
 
         # LEADER DATA
         if self.leader:
-            clan_data[STATUS_LEADER] = self.leader.ID
+            clan_data[Status.Leader] = self.leader.ID
             clan_data["leader_lives"] = self.leader_lives
         else:
-            clan_data[STATUS_LEADER] = None
+            clan_data[Status.Leader] = None
 
         clan_data["leader_predecessors"] = self.leader_predecessors
 
         # DEPUTY DATA
         if self.deputy:
-            clan_data[STATUS_DEPUTY] = self.deputy.ID
+            clan_data[Status.Deputy] = self.deputy.ID
         else:
-            clan_data[STATUS_DEPUTY] = None
+            clan_data[Status.Deputy] = None
 
         clan_data["deputy_predecessors"] = self.deputy_predecessors
 
@@ -717,7 +703,7 @@ class Clan:
                 game.clan.instructor = Cat.all_cats[instructor_info]
                 game.clan.add_cat(game.clan.instructor)
         else:
-            game.clan.instructor = Cat(status=choice([STATUS_WARRIOR, STATUS_WARRIOR, STATUS_ELDER]))
+            game.clan.instructor = Cat(status=choice([Status.Warrior, Status.Warrior, Status.Elder]))
             # update_sprite(game.clan.instructor)
             game.clan.instructor.dead = True
             game.clan.add_cat(game.clan.instructor)
@@ -772,15 +758,15 @@ class Clan:
         ) as read_file:  # pylint: disable=redefined-outer-name
             clan_data = ujson.loads(read_file.read())
 
-        if clan_data[STATUS_LEADER]:
-            leader = Cat.all_cats[clan_data[STATUS_LEADER]]
+        if clan_data[Status.Leader]:
+            leader = Cat.all_cats[clan_data[Status.Leader]]
             leader_lives = clan_data["leader_lives"]
         else:
             leader = None
             leader_lives = 0
 
-        if clan_data[STATUS_DEPUTY]:
-            deputy = Cat.all_cats[clan_data[STATUS_DEPUTY]]
+        if clan_data[Status.Deputy]:
+            deputy = Cat.all_cats[clan_data[Status.Deputy]]
         else:
             deputy = None
 
@@ -807,7 +793,7 @@ class Clan:
         game.clan.starting_season = (
             clan_data["starting_season"]
             if "starting_season" in clan_data
-            else SEASON_SPRING
+            else Season.Spring
         )
         get_current_season()
 
@@ -831,7 +817,7 @@ class Clan:
             game.clan.instructor = Cat.all_cats[clan_data["instructor"]]
             game.clan.add_cat(game.clan.instructor)
         else:
-            game.clan.instructor = Cat(status=choice([STATUS_WARRIOR, STATUS_WARRIOR, STATUS_ELDER]))
+            game.clan.instructor = Cat(status=choice([Status.Warrior, Status.Warrior, Status.Elder]))
             # update_sprite(game.clan.instructor)
             game.clan.instructor.dead = True
             game.clan.add_cat(game.clan.instructor)
@@ -1207,7 +1193,7 @@ class Clan:
         all_cats = [
             i
             for i in Cat.all_cats_list
-            if i.status not in [STATUS_LEADER, STATUS_DEPUTY] and not i.dead and not i.outside
+            if i.status not in [Status.Leader, Status.Deputy] and not i.dead and not i.outside
         ]
         leader = (
             Cat.fetch_cat(self.leader)
@@ -1366,5 +1352,6 @@ class StarClan:
 
 
 clan_class = Clan()
-clan_class.remove_cat(cat_class.ID)
+# clan_class.remove_cat(cat_class.ID) # TODO if the game runs with this commented out, delete this line
+clan_class.remove_cat(Cat(example=True).ID)
 

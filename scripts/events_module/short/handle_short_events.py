@@ -4,8 +4,7 @@ from typing import List
 import i18n
 
 from scripts.game_structure import localization
-from scripts.cat.cats import Cat
-from scripts.cat.enums import CatAgeEnum
+from scripts.cat.cats import Cat, create_new_cat_block
 from scripts.cat.history import History
 from scripts.cat.pelts import Pelt
 from scripts.cat_relations.relationship import Relationship
@@ -26,7 +25,6 @@ from scripts.utility import (
     get_warring_clan,
     unpack_rel_block,
     change_clan_reputation,
-    create_new_cat_block,
     get_leader_life_notice,
     get_alive_status_cats,
     adjust_list_text,

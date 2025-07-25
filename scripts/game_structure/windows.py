@@ -1512,7 +1512,7 @@ class ChangelogPopup(UIWindow):
             ).decode("utf-8")
             dynamic_changelog = True
         else:
-            with open("changelog.txt", "r", encoding="utf-8") as read_file:
+            with open("changelog.clangen.txt", "r", encoding="utf-8") as read_file:
                 file_cont = read_file.read()
 
         if get_version_info().is_dev() and not get_version_info().is_source_build:

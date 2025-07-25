@@ -1,69 +1,49 @@
 #!/usr/bin/env python3
 # -*- coding: ascii -*-
-from typing import List, Union
+from dataclasses import dataclass, field
+from typing import List, Optional
 
+from definitions import Biome, PatrolType, Season
 from scripts.events_module.patrol.patrol_outcome import PatrolOutcome
 
+import logging
+logger = logging.getLogger(__name__)
 
+
+@dataclass
 class PatrolEvent:
 
-    def __init__(self,
-                 patrol_id,
-                 biome: List[str] = None,
-                 camp: List[str] = None,
-                 season: List[str] = None,
-                 types: List[str] = None,
-                 tags: List[str] = None,
-                 weight: int = 20,
-                 patrol_art: Union[str, None] = None,
-                 patrol_art_clean: Union[str, None] = None,
-                 intro_text: str = "",
-                 decline_text: str = "",
-                 chance_of_success=0,
-                 success_outcomes: List[PatrolOutcome] = None,
-                 fail_outcomes: List[PatrolOutcome] = None,
-                 antag_success_outcomes: List[PatrolOutcome] = None,
-                 antag_fail_outcomes: List[PatrolOutcome] = None,
-                 min_cats=1,
-                 max_cats=6,
-                 min_max_status: dict = None,
-                 relationship_constraints: List[str] = None,
-                 pl_skill_constraints: List[str] = None,
-                 pl_trait_constraints: List[str] = None):
+    patrol_id: str
 
-        self.patrol_id = patrol_id
-        self.weight = weight
-        self.types = types if types is not None else []
+    weight: int
+    min_cats: int
+    max_cats: int
+    chance_of_success: int
 
-        self.patrol_art = patrol_art
-        self.patrol_art_clean = patrol_art_clean
-        self.biome = biome if biome is not None else ["any"]
-        self.camp = camp if camp is not None else ["any"]
-        self.season = season if season is not None else ["any"]
-        self.tags = tags if tags is not None else []
-        self.intro_text = intro_text
+    camp: List[str]
 
-        self.success_outcomes = success_outcomes if success_outcomes is not None \
-            else []
-        self.fail_outcomes = fail_outcomes if fail_outcomes is not None else []
-        self.decline_text = decline_text
-        self.chance_of_success = chance_of_success  # out of 100
-        self.min_cats = min_cats
-        self.max_cats = max_cats
-        self.antag_success_outcomes = antag_success_outcomes if antag_success_outcomes \
-                                                                is not None else []
-        self.antag_fail_outcomes = antag_fail_outcomes if antag_fail_outcomes \
-                                                          is not None else []
-        self.relationship_constraints = relationship_constraints if relationship_constraints \
-                                                                    is not None else []
-        self.pl_skill_constraints = pl_skill_constraints if pl_skill_constraints is not None else []
-        self.pl_trait_constraints = pl_trait_constraints if pl_trait_constraints is not None else []
-        self.min_max_status = min_max_status if min_max_status is not None else {}
+    patrol_art_path: str = None
+    patrol_art_clean_path: str = None
+    intro_text: str = ""
+    decline_text: str = ""
+
+    # patrol constraints
+    tags: List[str] = field(default_factory=list)
+    biomes: List[Biome] = (Biome.Any,)
+    seasons: List[Season] = (Biome.Any,)
+    patrol_types: List[PatrolType] = field(default_factory=list)
+    min_max_status: dict = field(default_factory=dict)
+    relationship_constraints: List = field(default_factory=list)
+    success_outcomes: List[PatrolOutcome] = field(default_factory=list)
+    fail_outcomes: List[PatrolOutcome] = field(default_factory=list)
+    antag_success_outcomes: List[PatrolOutcome] = field(default_factory=list)
+    antag_fail_outcomes: List[PatrolOutcome] = field(default_factory=list)
+    pl_skill_constraints: List[str] = field(default_factory=list)
+    pl_trait_constraints: List[str] = field(default_factory=list)
 
     @property
     def new_cat(self) -> bool:
-        """Returns boolean if there are any outcomes that results in
-            a new cat joining (not just meeting)"""
+        """Returns boolean if there are any outcomes that results in a new cat joining (not just meeting)"""
 
         for out in self.success_outcomes + self.fail_outcomes + self.antag_fail_outcomes + self.antag_success_outcomes:
             for sublist in out.new_cat:
@@ -83,9 +63,7 @@ class PatrolEvent:
 
     @property
     def herbs_given(self) -> list:
-        """
-        returns list of herbs available to get from this patrol
-        """
+        """Returns list of herbs available to get from this patrol"""
         herb_list = []
         for out in self.success_outcomes + self.fail_outcomes + self.antag_fail_outcomes + self.antag_success_outcomes:
             herb_list.extend([herb for herb in out.herbs if herb not in herb_list])

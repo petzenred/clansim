@@ -27,6 +27,9 @@ from ..ui.generate_box import get_box, BoxStyles
 from ..ui.generate_button import get_button_dict, ButtonStyles
 from ..ui.icon import Icon
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class ProfileMentorScreen(BaseScreen):
     selected_mentor: Optional[Cat] = None
@@ -92,7 +95,7 @@ class ProfileMentorScreen(BaseScreen):
                     self.update_selected_cat()
                     self.update_buttons()
                 else:
-                    print("invalid next cat", self.next_cat)
+                    logger.warning(f"Invalid next cat: {self.next_cat}")
             elif event.ui_element == self.previous_cat_button:
                 if isinstance(Cat.fetch_cat(self.previous_cat), Cat):
                     game.switches["cat"] = self.previous_cat
@@ -101,7 +104,7 @@ class ProfileMentorScreen(BaseScreen):
                     self.update_selected_cat()
                     self.update_buttons()
                 else:
-                    print("invalid previous cat", self.previous_cat)
+                    logger.warning(f"Invalid previous cat: {self.previous_cat}")
             elif event.ui_element == self.next_page_button:
                 self.current_page += 1
                 self.update_cat_list()

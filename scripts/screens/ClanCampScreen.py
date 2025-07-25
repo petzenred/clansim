@@ -6,7 +6,11 @@ import pygame
 import pygame_gui
 from pygame_gui.core import ObjectID
 
-from definitions import *
+from definitions import (
+    MED_DEN_SCREEN_NAME, MAIN_MENU_SCREEN_NAME, PROFILE_SCREEN_NAME, CLAN_FRESHKILL_SCREEN_NAME,
+    WARRIOR_DEN_SCREEN_NAME, LEADER_DEN_SCREEN_NAME, CLAN_MEMBERS_SCREEN_NAME, CLAN_EVENTS_SCREEN_NAME,
+    AVAILABLE_BIOMES, cast_to_biome, Season, Status,
+)
 
 from scripts.cat.cats import Cat
 from scripts.game_structure import image_cache
@@ -26,6 +30,9 @@ from scripts.utility import (
 )
 from .BaseScreen import BaseScreen
 from ..ui.generate_button import ButtonStyles, get_button_dict
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 class ClanCampScreen(BaseScreen):
@@ -140,7 +147,7 @@ class ClanCampScreen(BaseScreen):
                 and Cat.all_cats[x].in_camp
                 and not (Cat.all_cats[x].exiled or Cat.all_cats[x].outside)
                 and (
-                    Cat.all_cats[x].status != STATUS_NEWBORN
+                    Cat.all_cats[x].status != Status.Newborn
                     or game.config["fun"]["all_cats_are_newborn"]
                     or game.config["fun"]["newborns_can_roam"]
                 )
@@ -185,10 +192,9 @@ class ClanCampScreen(BaseScreen):
                             starting_height=i,
                         )
                     )
-                except:
-                    print(
-                        f"ERROR: placing {Cat.all_cats[x].name}'s sprite on Clan page"
-                    )
+                except Exception as err:
+                    logger.error(f"Something went wrong. Placing {Cat.all_cats[x].name}'s sprite on Clan page")
+                    logger.exception(err)
 
         # Den Labels
         # Redo the locations, so that it uses layout on the Clan page
@@ -343,50 +349,45 @@ class ClanCampScreen(BaseScreen):
         light_dark = "dark" if game.settings["dark mode"] else "light"
 
         camp_bg_base_dir = "resources/images/camp_bg/"
-        leaves = [SEASON_SPRING, SEASON_SUMMER, SEASON_WINTER, SEASON_AUTUMN]
         camp_nr = game.clan.camp_bg
 
         if camp_nr is None:
             camp_nr = "camp1"
             game.clan.camp_bg = camp_nr
 
-        biome = game.clan.biome
-        if biome not in IMPLEMENTED_BIOMES:
-            biome = IMPLEMENTED_BIOMES[0]
-            game.clan.biome = biome
-        biome = biome.lower()
+        biome = cast_to_biome(game.clan.biome)
+        if biome not in AVAILABLE_BIOMES:
+            game.clan.biome = AVAILABLE_BIOMES[0]
 
         all_backgrounds = []
-        for leaf in leaves:
-            platform_dir = (
-                f"{camp_bg_base_dir}/{biome}/{leaf}_{camp_nr}_{light_dark}.png"
-            )
+        for season in [e for e in Season if e != Season.Any]:
+            platform_dir = ( f"{camp_bg_base_dir}/{biome}/{season}_{camp_nr}_{light_dark}.png" )
             all_backgrounds.append(platform_dir)
 
         self.add_bgs(
             {
-                SEASON_SPRING: pygame.transform.scale(
+                Season.Spring: pygame.transform.scale(
                     pygame.image.load(all_backgrounds[0]).convert(),
                     ui_scale_dimensions((800, 700)),
                 ),
-                SEASON_SUMMER: pygame.transform.scale(
+                Season.Summer: pygame.transform.scale(
                     pygame.image.load(all_backgrounds[1]).convert(),
                     ui_scale_dimensions((800, 700)),
                 ),
-                SEASON_WINTER: pygame.transform.scale(
-                    pygame.image.load(all_backgrounds[2]).convert(),
+                Season.Autumn: pygame.transform.scale(
+                    pygame.image.load(all_backgrounds[3]).convert(),
                     ui_scale_dimensions((800, 700)),
                 ),
-                SEASON_AUTUMN: pygame.transform.scale(
-                    pygame.image.load(all_backgrounds[3]).convert(),
+                Season.Winter: pygame.transform.scale(
+                    pygame.image.load(all_backgrounds[2]).convert(),
                     ui_scale_dimensions((800, 700)),
                 ),
             },
             {
-                SEASON_SPRING: None,
-                SEASON_SUMMER: None,
-                SEASON_WINTER: None,
-                SEASON_AUTUMN: None,
+                Season.Spring: None,
+                Season.Summer: None,
+                Season.Autumn: None,
+                Season.Winter: None,
             },
         )
 

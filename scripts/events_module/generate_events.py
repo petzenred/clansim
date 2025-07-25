@@ -5,7 +5,7 @@ import random
 import i18n
 import ujson
 
-from definitions import BIOME_KEYS
+from definitions import cast_to_biome, AVAILABLE_BIOMES
 from scripts.events_module.event_filters import (
     event_for_location,
     event_for_season,
@@ -23,6 +23,9 @@ from scripts.utility import (
     get_living_clan_cat_count,
 )
 from scripts.game_structure.localization import load_lang_resource
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 def get_resource_directory(fallback=False):
@@ -217,7 +220,7 @@ class GenerateEvents:
         event_list = []
 
         # skip the rest of the loading if there is an unrecognised biome
-        if game.clan.biome not in BIOME_KEYS:
+        if game.clan.biome not in AVAILABLE_BIOMES:
             print(
                 f"WARNING: unrecognised biome {game.clan.biome} in generate_events. Have you added it to BIOME_TYPES "
                 f"in clan.py?"
@@ -469,13 +472,8 @@ class GenerateEvents:
     def possible_ongoing_events(event_type=None, specific_event=None):
         event_list = []
 
-        if game.clan.biome not in BIOME_KEYS:
-            print(
-                f"WARNING: unrecognised biome {game.clan.biome} in generate_events. Have you added it to BIOME_TYPES in clan.py?"
-            )
-
-        else:
-            biome = game.clan.biome.lower()
+        try:
+            biome = cast_to_biome(game.clan.biome)
             if not specific_event:
                 event_list.extend(
                     GenerateEvents.generate_ongoing_events(event_type, biome)
@@ -489,6 +487,8 @@ class GenerateEvents:
                     event_type, biome, specific_event
                 )
                 return event
+        except Exception as err:
+            logger.exception(f"Could not generate events for {err} because it isn't a valid member of the Biome class. ")
 
     @staticmethod
     def possible_death_reactions(family_relation, rel_value, trait, body_status):

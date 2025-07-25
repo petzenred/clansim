@@ -15,6 +15,7 @@ import random
 
 import ujson
 
+from definitions import Status
 from scripts.game_structure.game_essentials import game
 from scripts.housekeeping.datadir import get_save_dir
 
@@ -271,22 +272,23 @@ class Name:
         # then suffixes based on ages (fixes #2004, just trust me)
 
         # Handles suffix assignment with outside cats
-        if self.cat.status in ["exiled", "lost"]:
+        # Removed because this isn't how it works - Ravenpaw kept his name, and cats shouldn't get a warrior name unless and until they return to their Clan
+        if self.cat.status in [Status.Exiled, Status.Lost]:
             adjusted_status: str = ""
             if self.cat.moons >= 15:
-                adjusted_status = "warrior"
+                adjusted_status = Status.Warrior
             elif self.cat.moons >= 6:
-                adjusted_status = "apprentice"
+                adjusted_status = Status.WarriorApp
             if self.cat.moons == 0:
-                adjusted_status = "newborn"
+                adjusted_status = Status.Newborn
             elif self.cat.moons < 6:
-                adjusted_status = "kitten"
+                adjusted_status = Status.Kit
             elif self.cat.moons < 12:
-                adjusted_status = "apprentice"
+                adjusted_status = Status.WarriorApp
             else:
-                adjusted_status = "warrior"
+                adjusted_status = Status.Warrior
 
-            if adjusted_status != "warrior":
+            if adjusted_status != Status.Warrior:
                 return (
                     self.prefix + self.names_dict["special_suffixes"][adjusted_status]
                 )
