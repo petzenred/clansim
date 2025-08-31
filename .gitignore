@@ -123,6 +123,9 @@ saved_images/**
 #   install all needed dependencies.
 #Pipfile.lock
 
+# Do not include temp files
+*.kate-swp
+
 # PEP 582; used by e.g. github.com/David-OConnor/pyflow
 __pypackages__/
 
