@@ -8,7 +8,7 @@ import pygame_gui
 from definitions import CLAN_MEMBERS_SCREEN_NAME, CLAN_CAMP_SCREEN_NAME, PatrolType, Biome
 from scripts.cat.cats import Cat
 from scripts.game_structure.game_essentials import game
-from scripts.game_structure.ui_elements import (
+from scripts.ui.ui_elements import (
     UIImageButton,
     UISpriteButton,
     UISurfaceImageButton,
@@ -126,7 +126,7 @@ class ClanPatrolScreen(BaseScreen):
             self.update_button()
         elif event.ui_element == self.elements["add_one"]:
             if len(self.current_patrol) < 6:
-                if not game.clan.clan_settings["random med cat"]:
+                if not game.clan_obj.clan_settings["random med cat"]:
                     able_no_med = [
                         cat
                         for cat in self.able_cats
@@ -148,7 +148,7 @@ class ClanPatrolScreen(BaseScreen):
             self.update_button()
         elif event.ui_element == self.elements["add_three"]:
             if len(self.current_patrol) <= 3:
-                if not game.clan.clan_settings["random med cat"]:
+                if not game.clan_obj.clan_settings["random med cat"]:
                     able_no_med = [
                         cat
                         for cat in self.able_cats
@@ -163,7 +163,7 @@ class ClanPatrolScreen(BaseScreen):
             self.update_button()
         elif event.ui_element == self.elements["add_six"]:
             if len(self.current_patrol) == 0:
-                if not game.clan.clan_settings["random med cat"]:
+                if not game.clan_obj.clan_settings["random med cat"]:
                     able_no_med = [
                         cat
                         for cat in self.able_cats
@@ -296,14 +296,14 @@ class ClanPatrolScreen(BaseScreen):
     def screen_switches(self):
         super().screen_switches()
         self.set_disabled_menu_buttons(["patrol_screen"])
-        self.update_heading_text(f"{game.clan.name}Clan")
+        self.update_heading_text(f"{game.clan_obj.name}Clan")
         self.show_mute_buttons()
         self.show_menu_buttons()
 
         if (
             self.in_progress_data is not None
-            and self.in_progress_data["current_moon"] == game.clan.age
-            and self.in_progress_data["clan_name"] == game.clan.name
+            and self.in_progress_data["current_moon"] == game.clan_obj.age
+            and self.in_progress_data["clan_name"] == game.clan_obj.name
         ):
             self.display_change_load(self.in_progress_data)
         else:
@@ -336,8 +336,8 @@ class ClanPatrolScreen(BaseScreen):
         variable_dict["results_text"] = self.results_text
         variable_dict["outcome_art"] = self.outcome_art
 
-        variable_dict["current_moon"] = game.clan.age
-        variable_dict["clan_name"] = game.clan.name
+        variable_dict["current_moon"] = game.clan_obj.age
+        variable_dict["clan_name"] = game.clan_obj.name
 
         return variable_dict
 
@@ -466,7 +466,7 @@ class ClanPatrolScreen(BaseScreen):
                 for cat in self.able_cats
                 if cat.status not in ["medicine cat", "medicine cat apprentice"]
             ]
-            if game.clan.clan_settings["random med cat"]:
+            if game.clan_obj.clan_settings["random med cat"]:
                 able_no_med = self.able_cats
             if len(able_no_med) == 0:
                 able_no_med = self.able_cats
@@ -752,8 +752,8 @@ class ClanPatrolScreen(BaseScreen):
         self.elements["patrol_start"].disable()
 
         # add prey information
-        if game.clan.game_mode != "classic":
-            current_amount = round(game.clan.freshkill_pile.total_amount, 2)
+        if game.clan_obj.game_mode != "classic":
+            current_amount = round(game.clan_obj.freshkill_pile.total_amount, 2)
             self.elements["current_prey"] = pygame_gui.elements.UITextBox(
                 "screens.patrol.current_prey",
                 ui_scale(pygame.Rect((300, 630), (200, 400))),
@@ -761,7 +761,7 @@ class ClanPatrolScreen(BaseScreen):
                 manager=MANAGER,
                 text_kwargs={"prey": str(current_amount)},
             )
-            needed_amount = round(game.clan.freshkill_pile.amount_food_needed(), 2)
+            needed_amount = round(game.clan_obj.freshkill_pile.amount_food_needed(), 2)
             self.elements["needed_prey"] = pygame_gui.elements.UITextBox(
                 "screens.patrol.needed_prey",
                 ui_scale(pygame.Rect((300, 647), (200, 400))),
@@ -775,7 +775,7 @@ class ClanPatrolScreen(BaseScreen):
     def run_patrol_start(self):
         """Runs patrol start. To be run in a separate thread."""
         try:
-            patrol_biomes: list[Biome] = [ Biome(game.clan.biome) ] # TODO: replace this with tiles
+            patrol_biomes: list[Biome] = [Biome(game.clan_obj.biome)] # TODO: replace this with tiles
             self.display_text = self.patrol_obj.setup_patrol( self.current_patrol, patrol_biomes )
         except RuntimeError:
             self.display_text = None
@@ -996,9 +996,9 @@ class ClanPatrolScreen(BaseScreen):
             ):
                 if (
                     the_cat.status == "newborn"
-                    or game.config["fun"]["all_cats_are_newborn"]
+                    or game._game_config["fun"]["all_cats_are_newborn"]
                 ):
-                    if game.config["fun"]["newborns_can_patrol"]:
+                    if game._game_config["fun"]["newborns_can_patrol"]:
                         self.able_cats.append(the_cat)
                 else:
                     self.able_cats.append(the_cat)
@@ -1036,7 +1036,7 @@ class ClanPatrolScreen(BaseScreen):
         pos_x = 50
         i = 0
         for cat in display_cats:
-            if game.clan.clan_settings["show fav"] and cat.favourite:
+            if game.clan_obj.clan_settings["show fav"] and cat.favourite:
                 self.fav[str(i)] = pygame_gui.elements.UIImage(
                     ui_scale(pygame.Rect((pos_x, pos_y), (50, 50))),
                     pygame.transform.scale(

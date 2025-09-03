@@ -10,7 +10,7 @@ from definitions import PROFILE_SCREEN_NAME, CLAN_PATROL_SCREEN_NAME, CLAN_CAMP_
 from scripts.cat.cats import Cat
 from scripts.game_structure.game_essentials import game
 from scripts.game_structure.screen_settings import game_screen_size, MANAGER
-from scripts.game_structure.ui_elements import (
+from scripts.ui.ui_elements import (
     UIImageButton,
     UIDropDownContainer,
     UICatListDisplay,
@@ -125,11 +125,11 @@ class ClanMembersScreen(BaseScreen):
                 if "#fav_cat_toggle_on" in event.ui_element.get_object_ids():
                     element.change_object_id("#fav_cat_toggle_off")
                     element.set_tooltip("screens.list.favorite_show_tooltip")
-                    game.clan.clan_settings["show fav"] = False
+                    game.clan_obj.clan_settings["show fav"] = False
                 else:
                     element.change_object_id("#fav_cat_toggle_on")
                     element.set_tooltip("screens.list.favorite_hide_tooltip")
-                    game.clan.clan_settings["show fav"] = True
+                    game.clan_obj.clan_settings["show fav"] = True
                 self.update_cat_list(
                     self.cat_list_bar_elements["search_bar_entry"].get_text()
                 )
@@ -280,7 +280,7 @@ class ClanMembersScreen(BaseScreen):
     def screen_switches(self):
         super().screen_switches()
         self.show_mute_buttons()
-        self.clan_name = game.clan.name + "Clan"
+        self.clan_name = game.clan_obj.name + "Clan"
 
         self.set_disabled_menu_buttons(["catlist_screen"])
         self.show_menu_buttons()
@@ -311,11 +311,11 @@ class ClanMembersScreen(BaseScreen):
             ui_scale(pygame.Rect((0, 0), (38, 34))),
             "",
             object_id="#fav_cat_toggle_on"
-            if game.clan.clan_settings["show fav"]
+            if game.clan_obj.clan_settings["show fav"]
             else "#fav_cat_toggle_off",
             container=self.cat_list_bar,
             tool_tip_text="screens.list.favorite_hide_tooltip"
-            if game.clan.clan_settings["show fav"]
+            if game.clan_obj.clan_settings["show fav"]
             else "screens.list.favorite_show_tooltip",
             starting_height=1,
         )
@@ -661,12 +661,12 @@ class ClanMembersScreen(BaseScreen):
 
         # adding in the guide if necessary, this ensures the guide isn't affected by sorting as we always want them to
         # be the first cat on the list
-        if (self.current_group == "df" and game.clan.instructor.df) or (
-            self.current_group == "sc" and not game.clan.instructor.df
+        if (self.current_group == "df" and game.clan_obj.instructor.df) or (
+            self.current_group == "sc" and not game.clan_obj.instructor.df
         ):
-            if game.clan.instructor in self.full_cat_list:
-                self.full_cat_list.remove(game.clan.instructor)
-            self.full_cat_list.insert(0, game.clan.instructor)
+            if game.clan_obj.instructor in self.full_cat_list:
+                self.full_cat_list.remove(game.clan_obj.instructor)
+            self.full_cat_list.insert(0, game.clan_obj.instructor)
 
         search_text = search_text.strip()
         if search_text not in ["", "name search"]:
@@ -828,7 +828,7 @@ class ClanMembersScreen(BaseScreen):
         for the_cat in Cat.all_cats_list:
             if (
                 the_cat.dead
-                and the_cat.ID != game.clan.instructor.ID
+                and the_cat.ID != game.clan_obj.instructor.ID
                 and not the_cat.outside
                 and not the_cat.df
                 and not the_cat.faded
@@ -846,7 +846,7 @@ class ClanMembersScreen(BaseScreen):
         for the_cat in Cat.all_cats_list:
             if (
                 the_cat.dead
-                and the_cat.ID != game.clan.instructor.ID
+                and the_cat.ID != game.clan_obj.instructor.ID
                 and the_cat.df
                 and not the_cat.faded
             ):
@@ -861,7 +861,7 @@ class ClanMembersScreen(BaseScreen):
         self.full_cat_list = []
         for the_cat in Cat.all_cats_list:
             if (
-                the_cat.ID in game.clan.unknown_cats
+                the_cat.ID in game.clan_obj.unknown_cats
                 and not the_cat.faded
                 and not the_cat.driven_out
             ):

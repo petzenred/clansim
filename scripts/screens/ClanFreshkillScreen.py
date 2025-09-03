@@ -7,7 +7,7 @@ import ujson
 
 from scripts.cat.cats import Cat
 from scripts.game_structure.game_essentials import game
-from scripts.game_structure.ui_elements import (
+from scripts.ui.ui_elements import (
     UISpriteButton,
     UIImageButton,
     UITextBoxTweaked,
@@ -95,15 +95,15 @@ class ClanFreshkillScreen(BaseScreen):
             elif event.ui_element in [self.feed_one_button, self.feed_max_button]:
                 amount = 1
                 if event.ui_element == self.feed_max_button:
-                    nutrition_info = game.clan.freshkill_pile.nutrition_info
+                    nutrition_info = game.clan_obj.freshkill_pile.nutrition_info
                     max_amount = nutrition_info[self.focus_cat_object.ID].max_score
                     current_amount = nutrition_info[
                         self.focus_cat_object.ID
                     ].current_score
                     amount = max_amount - current_amount
-                game.clan.freshkill_pile.feed_cat(self.focus_cat_object, amount, 0)
+                game.clan_obj.freshkill_pile.feed_cat(self.focus_cat_object, amount, 0)
                 Condition_Events.handle_nutrient(
-                    self.focus_cat_object, game.clan.freshkill_pile.nutrition_info
+                    self.focus_cat_object, game.clan_obj.freshkill_pile.nutrition_info
                 )
                 self.update_cats_list()
                 self.update_nutrition_cats()
@@ -120,9 +120,9 @@ class ClanFreshkillScreen(BaseScreen):
                     self.tactic_tab.enable()
                     self.handle_tab_toggles()
             elif event.ui_element == self.feed_all_button:
-                game.clan.freshkill_pile.already_fed = []
-                game.clan.freshkill_pile.feed_cats(self.hungry_cats, True)
-                game.clan.freshkill_pile.already_fed = []
+                game.clan_obj.freshkill_pile.already_fed = []
+                game.clan_obj.freshkill_pile.feed_cats(self.hungry_cats, True)
+                game.clan_obj.freshkill_pile.already_fed = []
                 self.update_cats_list()
                 self.update_nutrition_cats()
                 self.update_focus_cat()
@@ -191,7 +191,7 @@ class ClanFreshkillScreen(BaseScreen):
     def update_cats_list(self):
         self.satisfied_cats = []
         self.hungry_cats = []
-        nutrition_info = game.clan.freshkill_pile.nutrition_info
+        nutrition_info = game.clan_obj.freshkill_pile.nutrition_info
         low_nutrition_cats = [
             cat_id
             for cat_id, nutrient in nutrition_info.items()
@@ -211,7 +211,7 @@ class ClanFreshkillScreen(BaseScreen):
     def screen_switches(self):
         super().screen_switches()
         self.hide_menu_buttons()
-        if game.clan.game_mode == "classic":
+        if game.clan_obj.game_mode == "classic":
             self.change_screen(game.last_screen_forupdate)
             return
 
@@ -465,7 +465,7 @@ class ClanFreshkillScreen(BaseScreen):
         self.feed_max_button.show()
         self.stop_focus_button.show()
         self.feed_all_button.hide()
-        nutrition_info = game.clan.freshkill_pile.nutrition_info
+        nutrition_info = game.clan_obj.freshkill_pile.nutrition_info
         p = 100
         if self.focus_cat_object.ID in nutrition_info:
             p = int(nutrition_info[self.focus_cat_object.ID].percentage)
@@ -498,13 +498,13 @@ class ClanFreshkillScreen(BaseScreen):
             manager=MANAGER,
         )
         info_list = [self.focus_cat_object.skills.skill_string(short=True)]
-        nutrition_info = game.clan.freshkill_pile.nutrition_info
+        nutrition_info = game.clan_obj.freshkill_pile.nutrition_info
         if self.focus_cat_object.ID in nutrition_info:
             nutrition_text = i18n.t(
                 "screens.clearing.nutrition_text",
                 nutrition_text=nutrition_info[self.focus_cat_object.ID].nutrition_text,
             )
-            if game.clan.clan_settings["showxp"]:
+            if game.clan_obj.clan_settings["showxp"]:
                 nutrition_text += f" ({str(int(nutrition_info[self.focus_cat_object.ID].percentage))})"
             info_list.append(nutrition_text)
         work_status = i18n.t("general.can_work")
@@ -564,13 +564,13 @@ class ClanFreshkillScreen(BaseScreen):
                 elif "malnourished" in cat.illnesses.keys():
                     condition_list.append("malnourished")
             if self.cat_tab_open == self.hungry_tab:
-                nutrition_info = game.clan.freshkill_pile.nutrition_info
+                nutrition_info = game.clan_obj.freshkill_pile.nutrition_info
                 if cat.ID in nutrition_info:
                     full_text = i18n.t(
                         "screens.clearing.nutrition_text",
                         nutrition_text=nutrition_info[cat.ID].nutrition_text,
                     )
-                    if game.clan.clan_settings["showxp"]:
+                    if game.clan_obj.clan_settings["showxp"]:
                         full_text += f" ({str(int(nutrition_info[cat.ID].percentage))})"
                     condition_list.append(full_text)
             conditions = (
@@ -615,8 +615,8 @@ class ClanFreshkillScreen(BaseScreen):
 
         information_display = []
 
-        current_prey_amount = game.clan.freshkill_pile.total_amount
-        needed_amount = game.clan.freshkill_pile.amount_food_needed()
+        current_prey_amount = game.clan_obj.freshkill_pile.total_amount
+        needed_amount = game.clan_obj.freshkill_pile.amount_food_needed()
         warrior_need = game.prey_config["prey_requirement"]["warrior"]
         warrior_amount = int(current_prey_amount / warrior_need)
         general_text = i18n.t(
@@ -649,8 +649,8 @@ class ClanFreshkillScreen(BaseScreen):
 
         if self.pile_base:
             self.pile_base.kill()
-        current_prey_amount = game.clan.freshkill_pile.total_amount
-        needed_amount = round(game.clan.freshkill_pile.amount_food_needed(), 2)
+        current_prey_amount = game.clan_obj.freshkill_pile.total_amount
+        needed_amount = round(game.clan_obj.freshkill_pile.amount_food_needed(), 2)
         hover_display = i18n.t(
             "screens.clearing.freshkill_pile_tooltip",
             current_prey_amount=current_prey_amount,
@@ -665,7 +665,7 @@ class ClanFreshkillScreen(BaseScreen):
         )
 
     def exit_screen(self):
-        if game.clan.game_mode == "classic":
+        if game.clan_obj.game_mode == "classic":
             return
         self.info_messages.kill()
         self.stop_focus_button.kill()
@@ -780,7 +780,7 @@ class ClanFreshkillScreen(BaseScreen):
         )
 
         prey_requirement = game.prey_config["prey_requirement"]
-        feeding_order = game.prey_config["feeding_order"]
+        feeding_order = game.prey_config["feeding_order"] # # definitions.CLAN_ROLES_FEEDING_ORDER
         for status in feeding_order:
             amount = prey_requirement[status]
             self.additional_text[
@@ -840,7 +840,7 @@ class ClanFreshkillScreen(BaseScreen):
         for code, desc in settings_dict["freshkill_tactics"].items():
             if code == "ration prey":
                 continue
-            if game.clan.clan_settings[code]:
+            if game.clan_obj.clan_settings[code]:
                 box_type = "@checked_checkbox"
             else:
                 box_type = "@unchecked_checkbox"
@@ -851,7 +851,7 @@ class ClanFreshkillScreen(BaseScreen):
             if len(desc) == 4 and isinstance(desc[3], list):
                 x_val += 25
                 disabled = (
-                    game.clan.clan_settings.get(desc[3][0], not desc[3][1])
+                    game.clan_obj.clan_settings.get(desc[3][0], not desc[3][1])
                     != desc[3][1]
                 )
 
@@ -875,7 +875,7 @@ class ClanFreshkillScreen(BaseScreen):
         n = 0
         for code, desc in settings_dict["freshkill_tactics"].items():
             if code == "ration prey":
-                if game.clan.clan_settings[code]:
+                if game.clan_obj.clan_settings[code]:
                     box_type = "@checked_checkbox"
                 else:
                     box_type = "@unchecked_checkbox"
@@ -886,7 +886,7 @@ class ClanFreshkillScreen(BaseScreen):
                 if len(desc) == 4 and isinstance(desc[3], list):
                     x_val += 50
                     disabled = (
-                        game.clan.clan_settings.get(desc[3][0], not desc[3][1])
+                        game.clan_obj.clan_settings.get(desc[3][0], not desc[3][1])
                         != desc[3][1]
                     )
 
@@ -913,7 +913,7 @@ class ClanFreshkillScreen(BaseScreen):
                     value == event.ui_element
                     and value.object_ids[1] == "@unchecked_checkbox"
                 ):
-                    game.clan.switch_setting(key)
+                    game.clan_obj.switch_setting(key)
                     active_key = key
                     self.settings_changed = True
                     self.create_checkboxes()
@@ -926,7 +926,7 @@ class ClanFreshkillScreen(BaseScreen):
                     and key != active_key
                     and value.object_ids[1] == "@checked_checkbox"
                 ):
-                    game.clan.switch_setting(key)
+                    game.clan_obj.switch_setting(key)
                     self.settings_changed = True
                     self.create_checkboxes()
                     break
@@ -934,7 +934,7 @@ class ClanFreshkillScreen(BaseScreen):
         if event.ui_element in self.checkboxes.values():
             for key, value in self.checkboxes.items():
                 if value == event.ui_element:
-                    game.clan.switch_setting(key)
+                    game.clan_obj.switch_setting(key)
                     active_key = key
                     self.settings_changed = True
                     self.create_checkboxes()

@@ -10,7 +10,7 @@ from scripts.game_structure import image_cache
 from scripts.game_structure.game_essentials import (
     game,
 )
-from scripts.game_structure.ui_elements import (
+from scripts.ui.ui_elements import (
     UIImageButton,
     UISpriteButton,
     UIRelationStatusBar,
@@ -24,10 +24,8 @@ from scripts.utility import (
     ui_scale_dimensions,
     ui_scale_blit,
     ui_scale_offset,
-    event_text_adjust,
 )
 from .BaseScreen import BaseScreen
-from ..cat_relations.relationship import Relationship
 from ..game_structure.screen_settings import MANAGER, screen
 from ..ui.generate_box import get_box, BoxStyles
 from ..ui.generate_button import get_button_dict, ButtonStyles
@@ -184,16 +182,16 @@ class ProfileRelationshipsScreen(BaseScreen):
                         ],
                     )
             elif event.ui_element == self.checkboxes["show_dead"]:
-                game.clan.clan_settings[
+                game.clan_obj.clan_settings[
                     "show dead relation"
-                ] = not game.clan.clan_settings["show dead relation"]
+                ] = not game.clan_obj.clan_settings["show dead relation"]
                 self.update_checkboxes()
                 self.apply_cat_filter()
                 self.update_cat_page()
             elif event.ui_element == self.checkboxes["show_empty"]:
-                game.clan.clan_settings[
+                game.clan_obj.clan_settings[
                     "show empty relation"
-                ] = not game.clan.clan_settings["show empty relation"]
+                ] = not game.clan_obj.clan_settings["show empty relation"]
                 self.update_checkboxes()
                 self.apply_cat_filter()
                 self.update_cat_page()
@@ -383,7 +381,7 @@ class ProfileRelationshipsScreen(BaseScreen):
             ui_scale(pygame.Rect((78, 505), (34, 34))),
             "",
             object_id="@checked_checkbox"
-            if game.clan.clan_settings["show dead relation"]
+            if game.clan_obj.clan_settings["show dead relation"]
             else "@unchecked_checkbox",
         )
 
@@ -391,7 +389,7 @@ class ProfileRelationshipsScreen(BaseScreen):
             ui_scale(pygame.Rect((78, 550), (34, 34))),
             "",
             object_id="@checked_checkbox"
-            if game.clan.clan_settings["show empty relation"]
+            if game.clan_obj.clan_settings["show empty relation"]
             else "@unchecked_checkbox",
         )
 
@@ -400,13 +398,13 @@ class ProfileRelationshipsScreen(BaseScreen):
             self.focus_cat_elements[ele].kill()
         self.focus_cat_elements = {}
 
-        self.the_cat = Cat.all_cats.get(game.switches["cat"], game.clan.instructor)
+        self.the_cat = Cat.all_cats.get(game.switches["cat"], game.clan_obj.instructor)
 
         self.current_page = 1
         self.inspect_cat = None
 
         # Keep a list of all the relations
-        if game.config["sorting"]["sort_by_rel_total"]:
+        if game._game_config["sorting"]["sort_by_rel_total"]:
             self.all_relations = sorted(
                 self.the_cat.relationships.values(),
                 key=lambda x: sum(
@@ -498,7 +496,7 @@ class ProfileRelationshipsScreen(BaseScreen):
             else:
                 # Family Dot
                 related = self.the_cat.is_related(
-                    self.inspect_cat, game.clan.clan_settings["first cousin mates"]
+                    self.inspect_cat, game.clan_obj.clan_settings["first cousin mates"]
                 )
                 if related:
                     self.inspect_cat_elements["family"] = pygame_gui.elements.UIImage(
@@ -604,7 +602,7 @@ class ProfileRelationshipsScreen(BaseScreen):
                         relation = "general.sibling_littermate"
                     else:
                         relation = "general.sibling"
-                elif not game.clan.clan_settings[
+                elif not game.clan_obj.clan_settings[
                     "first cousin mates"
                 ] and self.inspect_cat.is_cousin(self.the_cat):
                     relation = "general.cousin"
@@ -639,12 +637,12 @@ class ProfileRelationshipsScreen(BaseScreen):
     def apply_cat_filter(self, search_text=""):
         # Filter for dead or empty cats
         self.filtered_cats = self.all_relations.copy()
-        if not game.clan.clan_settings["show dead relation"]:
+        if not game.clan_obj.clan_settings["show dead relation"]:
             self.filtered_cats = list(
                 filter(lambda rel: not rel.cat_to.dead, self.filtered_cats)
             )
 
-        if not game.clan.clan_settings["show empty relation"]:
+        if not game.clan_obj.clan_settings["show empty relation"]:
             self.filtered_cats = list(
                 filter(
                     lambda rel: (
@@ -781,7 +779,7 @@ class ProfileRelationshipsScreen(BaseScreen):
         else:
             # FAMILY DOT
             # Only show family dot on cousins if first cousin mates are disabled.
-            if game.clan.clan_settings["first cousin mates"]:
+            if game.clan_obj.clan_settings["first cousin mates"]:
                 check_cousins = False
             else:
                 check_cousins = the_relationship.cat_to.is_cousin(self.the_cat)

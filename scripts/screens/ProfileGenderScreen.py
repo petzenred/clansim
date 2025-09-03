@@ -11,7 +11,7 @@ from pygame_gui.core import ObjectID, UIContainer
 from definitions import PROFILE_SCREEN_NAME
 from scripts.cat.cats import Cat
 from scripts.game_structure.game_essentials import game
-from scripts.game_structure.ui_elements import (
+from scripts.ui.ui_elements import (
     UIImageButton,
     CatButton,
     UISurfaceImageButton,
@@ -113,7 +113,7 @@ class ProfileGenderScreen(BaseScreen):
                         self.the_cat.pronouns.remove(event.ui_element.cat_object)
                 elif event.ui_element.cat_id == "delete":
                     if event.ui_element.cat_object in pronouns.get_custom_pronouns():
-                        game.clan.custom_pronouns[i18n.config.get("locale")].remove(
+                        game.clan_obj.custom_pronouns[i18n.config.get("locale")].remove(
                             event.ui_element.cat_object
                         )
 

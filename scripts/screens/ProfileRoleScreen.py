@@ -10,7 +10,7 @@ from definitions import PROFILE_SCREEN_NAME
 from scripts.cat.cats import Cat
 from scripts.game_structure import image_cache
 from scripts.game_structure.game_essentials import game
-from scripts.game_structure.ui_elements import (
+from scripts.ui.ui_elements import (
     UITextBoxTweaked,
     UISurfaceImageButton,
 )
@@ -56,14 +56,14 @@ class ProfileRoleScreen(BaseScreen):
                 else:
                     logger.warning(f"Invalid previous cat: {self.previous_cat}")
             elif event.ui_element == self.promote_leader:
-                if self.the_cat == game.clan.deputy:
-                    game.clan.deputy = None
-                game.clan.new_leader(self.the_cat)
+                if self.the_cat == game.clan_obj.deputy:
+                    game.clan_obj.deputy = None
+                game.clan_obj.new_leader(self.the_cat)
                 if game.sort_type == "rank":
                     Cat.sort_cats()
                 self.update_selected_cat()
             elif event.ui_element == self.promote_deputy:
-                game.clan.deputy = self.the_cat
+                game.clan_obj.deputy = self.the_cat
                 self.the_cat.status_change("deputy", resort=True)
                 self.update_selected_cat()
             elif event.ui_element == self.switch_warrior:
@@ -132,7 +132,7 @@ class ProfileRoleScreen(BaseScreen):
         self.bar = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((48, 350), (704, 10))),
             pygame.transform.scale(
-                image_cache.load_image("resources/images/bar.png"),
+                image_cache.load_image("resources/images/bar_horizontal.png"),
                 ui_scale_dimensions((704, 10)),
             ),
             manager=MANAGER,
@@ -297,23 +297,23 @@ class ProfileRoleScreen(BaseScreen):
 
         main_dir = "resources/images/"
         paths = {
-            "leader": "leader_icon.png",
-            "deputy": "deputy_icon.png",
-            "medicine cat": "medic_icon.png",
-            "medicine cat apprentice": "medic_app_icon.png",
-            "mediator": "mediator_icon.png",
-            "mediator apprentice": "mediator_app_icon.png",
-            "warrior": "warrior_icon.png",
-            "apprentice": "warrior_app_icon.png",
-            "kitten": "kit_icon.png",
-            "newborn": "kit_icon.png",
-            "elder": "elder_icon.png",
+            "leader": "icon_leader.png",
+            "deputy": "icon_deputy.png",
+            "medicine cat": "icon_medicine.png",
+            "medicine cat apprentice": "icon_medicine_app.png",
+            "mediator": "icon_mediator.png",
+            "mediator apprentice": "icon_mediator_app.png",
+            "warrior": "icon_warrior.png",
+            "apprentice": "icon_warrior_app.png",
+            "kitten": "icon_kit.png",
+            "newborn": "icon_kit.png",
+            "elder": "icon_elder.png",
         }
 
         if self.the_cat.status in paths:
             icon_path = os.path.join(main_dir, paths[self.the_cat.status])
         else:
-            icon_path = os.path.join(main_dir, "buttonrank.png")
+            icon_path = os.path.join(main_dir, "buttons/rank.png")
 
         self.selected_cat_elements["role_icon"] = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((82, 231), (78, 78))),
@@ -333,13 +333,13 @@ class ProfileRoleScreen(BaseScreen):
 
         self.update_previous_next_cat_buttons()
 
-        if game.clan.leader:
-            leader_invalid = game.clan.leader.dead or game.clan.leader.outside
+        if game.clan_obj.leader:
+            leader_invalid = game.clan_obj.leader.dead or game.clan_obj.leader.outside
         else:
             leader_invalid = True
 
-        if game.clan.deputy:
-            deputy_invalid = game.clan.deputy.dead or game.clan.deputy.outside
+        if game.clan_obj.deputy:
+            deputy_invalid = game.clan_obj.deputy.dead or game.clan_obj.deputy.outside
         else:
             deputy_invalid = True
 
@@ -535,7 +535,7 @@ class ProfileRoleScreen(BaseScreen):
         else:
             output = "screens.role.blurb_unknown"
 
-        return i18n.t(output, name=self.the_cat.name, clan=game.clan.name)
+        return i18n.t(output, name=self.the_cat.name, clan=game.clan_obj.name)
 
     def exit_screen(self):
         self.back_button.kill()

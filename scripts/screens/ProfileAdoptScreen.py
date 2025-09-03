@@ -11,7 +11,7 @@ from scripts.game_structure.game_essentials import (
     game,
 )
 from scripts.game_structure.propagating_thread import PropagatingThread
-from scripts.game_structure.ui_elements import (
+from scripts.ui.ui_elements import (
     UIImageButton,
     UISpriteButton,
     UISurfaceImageButton,
@@ -213,7 +213,7 @@ class ProfileAdoptScreen(BaseScreen):
         self.center_icon = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((306, 160), (188, 129))),
             pygame.transform.scale(
-                image_cache.load_image("resources/images/adoption.png").convert_alpha(),
+                image_cache.load_image("resources/images/icon_adoption.png").convert_alpha(),
                 ui_scale_dimensions((376, 258)),
             ),
             manager=MANAGER,
@@ -286,7 +286,7 @@ class ProfileAdoptScreen(BaseScreen):
         self.potential_seperator = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((497, 0), (10, 176))),
             pygame.transform.scale(
-                image_cache.load_image("resources/images/vertical_bar.png"),
+                image_cache.load_image("resources/images/bar_vertical.png"),
                 ui_scale_dimensions((20, 352)),
             ),
             container=self.potential_container,

@@ -11,7 +11,7 @@ import ujson
 
 from scripts.cat.cats import Cat
 from scripts.game_structure.game_essentials import game
-from scripts.game_structure.ui_elements import UIImageButton, UISurfaceImageButton
+from scripts.ui.ui_elements import UIImageButton, UISurfaceImageButton
 from scripts.utility import (
     get_text_box_theme,
     ui_scale,
@@ -108,7 +108,7 @@ class ClanSettingsScreen(BaseScreen):
         if event.ui_element in self.checkboxes.values():
             for key, value in self.checkboxes.items():
                 if value == event.ui_element:
-                    game.clan.switch_setting(key)
+                    game.clan_obj.switch_setting(key)
                     self.settings_changed = True
                     # self.update_save_button()
 
@@ -378,7 +378,7 @@ class ClanSettingsScreen(BaseScreen):
         self.sub_menu = "stats"
 
         # Stats determination time.
-        faded_cats = len(game.clan.faded_ids)
+        faded_cats = len(game.clan_obj.faded_ids)
         living_cats = 0
         med_cats = 0
         warriors = 0
@@ -460,7 +460,7 @@ class ClanSettingsScreen(BaseScreen):
 
         n = 0
         for code, desc in settings_dict[self.sub_menu].items():
-            if game.clan.clan_settings[code]:
+            if game.clan_obj.clan_settings[code]:
                 box_type = "@checked_checkbox"
             else:
                 box_type = "@unchecked_checkbox"
@@ -471,7 +471,7 @@ class ClanSettingsScreen(BaseScreen):
             if len(desc) == 4 and isinstance(desc[3], list):
                 x_val += 25
                 disabled = (
-                    game.clan.clan_settings.get(desc[3][0], not desc[3][1])
+                    game.clan_obj.clan_settings.get(desc[3][0], not desc[3][1])
                     != desc[3][1]
                 )
 

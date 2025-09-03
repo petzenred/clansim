@@ -10,7 +10,7 @@ from scripts.game_structure import image_cache
 from scripts.game_structure.game_essentials import (
     game,
 )
-from scripts.game_structure.ui_elements import (
+from scripts.ui.ui_elements import (
     UIImageButton,
     UISpriteButton,
     UISurfaceImageButton,
@@ -184,7 +184,7 @@ class ProfileMentorScreen(BaseScreen):
         self.mentor_icon = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((315, 160), (171, 114))),
             pygame.transform.scale(
-                image_cache.load_image("resources/images/mentor.png").convert_alpha(),
+                image_cache.load_image("resources/images/icon_mentor.png").convert_alpha(),
                 (343, 228),
             ),
             manager=MANAGER,
@@ -262,7 +262,7 @@ class ProfileMentorScreen(BaseScreen):
         self.filter_seperator = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((497, 7), (10, 210))),
             pygame.transform.scale(
-                image_cache.load_image("resources/images/vertical_bar.png"),
+                image_cache.load_image("resources/images/bar_vertical.png"),
                 ui_scale_dimensions((10, 210)),
             ),
             container=self.filter_container,

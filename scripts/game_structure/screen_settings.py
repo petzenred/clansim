@@ -4,10 +4,12 @@ from typing import TYPE_CHECKING
 
 import ujson
 
+# from resources.game_config import SCREEN_CONFIG
+from scripts._red.conf_manager import conf
 from scripts.housekeeping.datadir import get_save_dir
 
 if TYPE_CHECKING:
-    from scripts.screens.BaseScreen import BaseScreen
+    pass
 
 from math import floor
 from typing import Optional, Tuple
@@ -15,10 +17,15 @@ from typing import Optional, Tuple
 import pygame
 import pygame_gui
 
-from scripts.game_structure.ui_manager import UIManager
+from scripts.ui.ui_manager import UIManager
 from scripts.ui.generate_screen_scale_json import generate_screen_scale
 
 logger = logging.getLogger(__name__)
+
+
+########################################################################################################################
+# Constants
+########################################################################################################################
 
 
 offset = (0, 0)
@@ -31,6 +38,12 @@ screen: Optional[pygame.Surface] = None
 curr_variable_dict = {}
 
 display_change_in_progress = False  # this acts as a lock to ensure we don't end up in a loop of fullscreen changes
+
+SCREEN_CONFIG: dict = conf.get_config_value("cat_generation")
+
+########################################################################################################################
+# Methods
+########################################################################################################################
 
 
 def set_display_mode(
@@ -65,8 +78,7 @@ def set_display_mode(
     if fullscreen is None:
         fullscreen = game.settings["fullscreen"]
 
-    with open("resources/screen_config.json", "r", encoding="utf-8") as read_config:
-        screen_config = ujson.load(read_config)
+    screen_config = SCREEN_CONFIG
 
     if source_screen is not None:
         curr_variable_dict = source_screen.display_change_save()
@@ -119,7 +131,7 @@ def set_display_mode(
             from scripts.screens.all_screens import AllScreens
             import scripts.screens.screens_core.screens_core
 
-            game.save_settings(currentscreen=source_screen)
+            game.save_game_settings()
             source_screen.exit_screen()
 
             if fullscreen:
@@ -270,7 +282,7 @@ def toggle_fullscreen(
         fullscreen = not game.settings["fullscreen"]
 
     game.settings["fullscreen"] = fullscreen
-    game.save_settings()
+    game.save_game_settings()
 
     set_display_mode(
         fullscreen=fullscreen,

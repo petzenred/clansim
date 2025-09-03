@@ -40,7 +40,7 @@ class ClanAllegiancesScreen(BaseScreen):
         self.heading = pygame_gui.elements.UITextBox(
             "screens.allegiances.heading",
             ui_scale(pygame.Rect((0, 115), (400, 40))),
-            text_kwargs={"clan_name": game.clan.name},
+            text_kwargs={"clan_name": game.clan_obj.name},
             object_id=get_text_box_theme("#text_box_34_horizcenter_vertcenter"),
             manager=MANAGER,
             anchors={"centerx": "centerx"},
@@ -50,7 +50,7 @@ class ClanAllegiancesScreen(BaseScreen):
         self.show_menu_buttons()
         self.show_mute_buttons()
         self.set_disabled_menu_buttons(["allegiances"])
-        self.update_heading_text(f"{game.clan.name}Clan")
+        self.update_heading_text(f"{game.clan_obj.name}Clan")
         allegiance_list = self.get_allegiances_text()
 
         self.scroll_container = pygame_gui.elements.UIScrollingContainer(
@@ -171,20 +171,20 @@ class ClanAllegiancesScreen(BaseScreen):
         # Clan Leader Box:
         # Pull the Clan leaders
         outputs = []
-        if game.clan.leader and not (game.clan.leader.dead or game.clan.leader.outside):
+        if game.clan_obj.leader and not (game.clan_obj.leader.dead or game.clan_obj.leader.outside):
             outputs.append(
                 [
                     f"<b><u>{i18n.t('general.leader', count=1).upper()}</u></b>",
-                    self.generate_one_entry(game.clan.leader),
+                    self.generate_one_entry(game.clan_obj.leader),
                 ]
             )
 
         # Deputy Box:
-        if game.clan.deputy and not (game.clan.deputy.dead or game.clan.deputy.outside):
+        if game.clan_obj.deputy and not (game.clan_obj.deputy.dead or game.clan_obj.deputy.outside):
             outputs.append(
                 [
                     f"<b><u>{i18n.t('general.deputy', count=1).upper()}</u></b>",
-                    self.generate_one_entry(game.clan.deputy),
+                    self.generate_one_entry(game.clan_obj.deputy),
                 ]
             )
 

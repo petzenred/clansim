@@ -1,7 +1,7 @@
 import json
 import math
 import os
-import re
+import re as regex
 
 
 def _multiply_numbers_in_string(s, multiplier):
@@ -12,7 +12,7 @@ def _multiply_numbers_in_string(s, multiplier):
         return str(multiplied)
 
     # Use regex to find all numbers in the string
-    return re.sub(r"(?<![#0x])(?<![#0X])-?\b\d+\.?\d*\b", replace, s)
+    return regex.sub(r"(?<![#0x])(?<![#0X])-?\b\d+\.?\d*\b", replace, s)
 
 
 def _multiply_numbers(data, multiplier):

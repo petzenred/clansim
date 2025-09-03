@@ -1283,7 +1283,7 @@ class UICatListDisplay(UIContainer):
         [name.kill() for name in self.cat_names.values()]
         [favor.kill() for favor in self.favor_indicator.values()]
 
-        show_fav = game.clan.clan_settings["show fav"]
+        show_fav = game.clan_obj.clan_settings["show fav"]
 
         # FAVOURITE ICON
         if show_fav:

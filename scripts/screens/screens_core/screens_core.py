@@ -8,7 +8,7 @@ import scripts.game_structure.screen_settings
 from scripts.game_structure import image_cache
 from scripts.game_structure.game_essentials import game
 from scripts.game_structure.screen_settings import MANAGER
-from scripts.game_structure.ui_elements import UISurfaceImageButton, UIImageButton
+from scripts.ui.ui_elements import UISurfaceImageButton, UIImageButton
 from scripts.housekeeping.version import get_version_info
 from scripts.ui.generate_box import get_box, BoxStyles
 from scripts.ui.generate_button import get_button_dict, ButtonStyles
@@ -180,7 +180,7 @@ def rebuild_core(*, should_rebuild_bgs=True):
     menu_buttons["dens_bar"] = pygame_gui.elements.UIImage(
         ui_scale(pygame.Rect((40, 5), (10, 160))),
         pygame.transform.scale(
-            image_cache.load_image("resources/images/vertical_bar.png").convert_alpha(),
+            image_cache.load_image("resources/images/bar_vertical.png").convert_alpha(),
             ui_scale_dimensions((380, 70)),
         ),
         visible=False,
@@ -253,7 +253,7 @@ def rebuild_core(*, should_rebuild_bgs=True):
         )
     )
 
-    if get_version_info().is_source_build or get_version_info().is_dev():
+    if get_version_info().is_source_build or get_version_info().is_dev:
         dev_watermark = pygame_gui.elements.UILabel(
             ui_scale(pygame.Rect((525, 660), (300, 50))),
             "screens.core.dev_watermark",
@@ -354,9 +354,9 @@ def rebuild_bgs():
         del game_box
 
     bg = pygame.Surface(scripts.game_structure.screen_settings.game_screen_size)
-    bg.fill(game.config["theme"]["light_mode_background"])
+    bg.fill(game._game_config["theme"]["light_mode_background"])
     bg_dark = pygame.Surface(scripts.game_structure.screen_settings.game_screen_size)
-    bg_dark.fill(game.config["theme"]["dark_mode_background"])
+    bg_dark.fill(game._game_config["theme"]["dark_mode_background"])
 
     default_game_bgs = {
         "light": {"default": bg},
@@ -446,8 +446,8 @@ def get_camp_bgs():
     camp_bg_base_dir = "resources/images/camp_bg/"
 
     try:
-        camp_nr = game.clan.camp_bg
-        biome = cast_to_biome(game.clan.biome)
+        camp_nr = game.clan_obj.camp_bg
+        biome = cast_to_biome(game.clan_obj.biome)
     except AttributeError:
         camp_nr = "camp1"
         biome = AVAILABLE_BIOMES[0]
@@ -513,12 +513,12 @@ def process_blur_bg(
     if theme is None:
         theme = "dark" if game.settings["dark mode"] else "light"
 
-    fade.fill(game.config["theme"]["fullscreen_background"][theme]["fade_color"])
+    fade.fill(game._game_config["theme"]["fullscreen_background"][theme]["fade_color"])
     vignette.set_alpha(
-        game.config["theme"]["fullscreen_background"][theme]["vignette_alpha"]
+        game._game_config["theme"]["fullscreen_background"][theme]["vignette_alpha"]
     )
     dropshadow.set_alpha(
-        game.config["theme"]["fullscreen_background"][theme]["dropshadow_alpha"]
+        game._game_config["theme"]["fullscreen_background"][theme]["dropshadow_alpha"]
     )
 
     if vignette_strength is not None:

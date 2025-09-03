@@ -12,7 +12,7 @@ from scripts.clan import Clan
 from scripts.game_structure.game_essentials import (
     game,
 )
-from scripts.game_structure.ui_elements import UIImageButton, UISurfaceImageButton
+from scripts.ui.ui_elements import UIImageButton, UISurfaceImageButton
 from scripts.game_structure.windows import DeleteCheck
 from scripts.utility import (
     get_text_box_theme,
@@ -141,8 +141,8 @@ class SwitchClanScreen(BaseScreen):
             manager=MANAGER,
             anchors={"centerx": "centerx"},
             text_kwargs={
-                "clan": game.clan.name if game.clan else "",
-                "count": 1 if game.clan else 0,
+                "clan": game.clan_obj.name if game.clan_obj else "",
+                "count": 1 if game.clan_obj else 0,
             },
         )
         self.clan_list = game.read_clans()

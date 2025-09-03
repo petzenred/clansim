@@ -11,9 +11,10 @@ import pygame_gui
 import ujson
 
 from definitions import MAIN_MENU_SCREEN_NAME
+from resources.settings import GAME_SETTINGS
 from scripts.game_structure.discord_rpc import _DiscordRPC
 from scripts.game_structure.game_essentials import game
-from scripts.game_structure.ui_elements import (
+from scripts.ui.ui_elements import (
     UIImageButton,
     UISurfaceImageButton,
     UIImageHorizontalSlider,
@@ -30,8 +31,6 @@ from ..housekeeping.version import get_version_info
 from ..ui.generate_button import get_button_dict, ButtonStyles
 
 logger = logging.getLogger(__name__)
-with open("resources/gamesettings.json", "r", encoding="utf-8") as f:
-    settings_dict = ujson.load(f)
 
 
 class MainSettingsScreen(BaseScreen):
@@ -136,9 +135,12 @@ class MainSettingsScreen(BaseScreen):
                 self.change_screen(MAIN_MENU_SCREEN_NAME)
                 return
             if event.ui_element == self.fullscreen_toggle:
-                game.switch_setting("fullscreen")
+                if game.settings.Fullscreen:
+                    game.settings.Fullscreen = False
+                else:
+                    game.settings.Fullscreen = True
                 self.save_settings()
-                game.save_settings(self)
+                game.save_game_settings(self)
                 set_display_mode(
                     fullscreen=game.settings["fullscreen"], source_screen=self
                 )
@@ -155,7 +157,7 @@ class MainSettingsScreen(BaseScreen):
                 return
             elif event.ui_element == self.save_settings_button:
                 self.save_settings()
-                game.save_settings(self)
+                game.save_game_settings(self)
                 self.settings_changed = False
                 self.update_save_button()
                 return
@@ -383,7 +385,7 @@ class MainSettingsScreen(BaseScreen):
             manager=MANAGER,
         )
 
-        for i, (code, desc) in enumerate(settings_dict["general"].items()):
+        for i, (code, desc) in enumerate(GAME_SETTINGS["general"].items()):
             self.checkboxes_text[code] = pygame_gui.elements.UITextBox(
                 f"settings.{code}",
                 ui_scale(pygame.Rect((225, 34 if i < 0 else 0), (500, 34))),
@@ -399,7 +401,7 @@ class MainSettingsScreen(BaseScreen):
             self.checkboxes_text[code].disable()
 
         self.checkboxes_text["container_general"].set_scrollable_area_dimensions(
-            ui_scale_dimensions((680, (len(settings_dict["general"].keys()) * 39 + 40)))
+            ui_scale_dimensions((680, (len(GAME_SETTINGS["general"].keys()) * 39 + 40)))
         )
 
         self.checkboxes_text["instr"] = pygame_gui.elements.UITextBox(
@@ -708,7 +710,7 @@ class MainSettingsScreen(BaseScreen):
         )
 
     def open_lang_settings(self):
-        """Open Language Settings"""
+        """Open LanguageCode Settings"""
         self.enable_all_menu_buttons()
         self.language_button.disable()
         self.clear_sub_settings_buttons_and_text()
@@ -766,7 +768,7 @@ class MainSettingsScreen(BaseScreen):
                 self.checkboxes["de"].disable()
 
         else:
-            for i, (code, desc) in enumerate(settings_dict[self.sub_menu].items()):
+            for i, (code, desc) in enumerate(GAME_SETTINGS[self.sub_menu].items()):
                 if game.settings[code]:
                     box_type = "@checked_checkbox"
                 else:

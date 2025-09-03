@@ -8,7 +8,7 @@ from definitions import PROFILE_SCREEN_NAME
 from scripts.cat.cats import Cat
 from scripts.clan_resources.herb.herb_supply import MESSAGES
 from scripts.game_structure.game_essentials import game
-from scripts.game_structure.ui_elements import (
+from scripts.ui.ui_elements import (
     UISpriteButton,
     UIImageButton,
     UITextBoxTweaked,
@@ -19,7 +19,6 @@ from scripts.utility import (
     ui_scale,
     get_alive_status_cats,
     shorten_text_to_fit,
-    get_living_clan_cat_count,
     event_text_adjust,
     ui_scale_offset,
 )
@@ -155,7 +154,7 @@ class MedDenScreen(BaseScreen):
             manager=MANAGER,
         )
 
-        if game.clan.game_mode != "classic":
+        if game.clan_obj.game_mode != "classic":
             self.help_button = UIImageButton(
                 ui_scale(pygame.Rect((725, 25), (34, 34))),
                 "",
@@ -347,7 +346,7 @@ class MedDenScreen(BaseScreen):
         if self.meds:
             med_messages = []
 
-            amount_per_med = get_amount_cat_for_one_medic(game.clan)
+            amount_per_med = get_amount_cat_for_one_medic(game.clan_obj)
             number = medical_cats_condition_fulfilled(
                 Cat.all_cats.values(), amount_per_med, give_clanmembers_covered=True
             )
@@ -358,7 +357,7 @@ class MedDenScreen(BaseScreen):
                 count=len(self.meds)
             )
 
-            if game.clan.game_mode == "classic":
+            if game.clan_obj.game_mode == "classic":
                 meds_cover = ""
 
             if not self.meds:
@@ -368,13 +367,13 @@ class MedDenScreen(BaseScreen):
                     Cat=Cat,
                     text=choice(MESSAGES["single_not_working"]),
                     main_cat=self.meds[0],
-                    clan=game.clan
+                    clan=game.clan_obj
                 )
             elif len(self.meds) >= 2 and number == 0:
                 meds_cover = event_text_adjust(
                     Cat=Cat,
                     text=choice(MESSAGES["many_not_working"]),
-                    clan=game.clan
+                    clan=game.clan_obj
                 )
 
             if meds_cover:
@@ -385,7 +384,7 @@ class MedDenScreen(BaseScreen):
                 ))
 
             if self.meds:
-                med_messages.append(game.clan.herb_supply.get_status_message(choice(self.meds)))
+                med_messages.append(game.clan_obj.herb_supply.get_status_message(choice(self.meds)))
             self.meds_messages.set_text("<br>".join(med_messages))
 
         else:
@@ -599,12 +598,12 @@ class MedDenScreen(BaseScreen):
     def draw_med_den(self):
 
         herb_list = []
-        herb_supply = game.clan.herb_supply
+        herb_supply = game.clan_obj.herb_supply
 
         if not herb_supply.total:
             herb_list = ["Empty"]
 
-        elif game.clan.game_mode != "classic":
+        elif game.clan_obj.game_mode != "classic":
             for herb, count in herb_supply.entire_supply.items():
                 if count <= 0:
                     continue
@@ -613,7 +612,7 @@ class MedDenScreen(BaseScreen):
 
         if len(herb_list) <= 10:
             # classic doesn't display herbs
-            if game.clan.game_mode == "classic":
+            if game.clan_obj.game_mode == "classic":
                 herb_display = None
             else:
                 herb_display = "<br>".join(sorted(herb_list))
@@ -646,7 +645,7 @@ class MedDenScreen(BaseScreen):
                 holding_pairs.extend(pair)
 
             # classic doesn't display herbs
-            if game.clan.game_mode == "classic":
+            if game.clan_obj.game_mode == "classic":
                 herb_display = None
             else:
                 herb_display = "<br>".join(holding_pairs)
@@ -659,7 +658,7 @@ class MedDenScreen(BaseScreen):
             )
 
         # otherwise draw the herbs you have
-        herbs = game.clan.herb_supply.entire_supply
+        herbs = game.clan_obj.herb_supply.entire_supply
 
         for herb, count in herbs.items():
             if count <= 0:
@@ -711,7 +710,7 @@ class MedDenScreen(BaseScreen):
         if self.med_name:
             self.med_name.kill()
         self.back_button.kill()
-        if game.clan.game_mode != "classic":
+        if game.clan_obj.game_mode != "classic":
             self.help_button.kill()
             self.cat_bg.kill()
             self.last_page.kill()

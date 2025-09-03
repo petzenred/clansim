@@ -7,7 +7,7 @@ import pygame_gui
 from definitions import PROFILE_SCREEN_NAME
 from scripts.cat.cats import Cat
 from scripts.game_structure.game_essentials import game
-from scripts.game_structure.ui_elements import UIImageButton, UISurfaceImageButton
+from scripts.ui.ui_elements import UIImageButton, UISurfaceImageButton
 from scripts.utility import (
     generate_sprite,
     shorten_text_to_fit,
@@ -216,7 +216,7 @@ class ProfileSpriteInspectScreen(BaseScreen):
             starting_height=2,
         )
 
-        if game.clan.clan_settings["backgrounds"]:
+        if game.clan_obj.clan_settings["backgrounds"]:
             self.platform_shown = True
         else:
             self.platform_shown = False
@@ -461,14 +461,14 @@ class ProfileSpriteInspectScreen(BaseScreen):
             self.previous_life_stage.enable()
 
     def get_platform(self):
-        the_cat = Cat.all_cats.get(game.switches["cat"], game.clan.instructor)
+        the_cat = Cat.all_cats.get(game.switches["cat"], game.clan_obj.instructor)
 
         light_dark = "light"
         if game.settings["dark mode"]:
             light_dark = "dark"
 
         available_biome = ["Forest", "Mountainous", "Plains", "Beach"]
-        biome = game.clan.biome
+        biome = game.clan_obj.biome
 
         if biome not in available_biome:
             biome = available_biome[0]
@@ -492,7 +492,7 @@ class ProfileSpriteInspectScreen(BaseScreen):
                 pygame.Rect(0, order.index("SC/DF") * 70, 640, 70)
             )
             return biome_platforms.subsurface(pygame.Rect(0 + offset, 0, 80, 70))
-        elif the_cat.dead or game.clan.instructor.ID == the_cat.ID:
+        elif the_cat.dead or game.clan_obj.instructor.ID == the_cat.ID:
             biome_platforms = platformsheet.subsurface(
                 pygame.Rect(0, order.index("SC/DF") * 70, 640, 70)
             )
@@ -511,7 +511,7 @@ class ProfileSpriteInspectScreen(BaseScreen):
             return biome_platforms.subsurface(
                 pygame.Rect(
                     season_x.get(
-                        game.clan.current_season.lower(), season_x["greenleaf"]
+                        game.clan_obj.current_season.lower(), season_x["greenleaf"]
                     ),
                     0,
                     80,

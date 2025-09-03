@@ -18,7 +18,6 @@ import subprocess
 import traceback
 from html import escape
 
-import i18n
 import pygame
 import pygame_gui
 from pygame_gui.core import ObjectID
@@ -26,18 +25,16 @@ from requests.exceptions import RequestException, Timeout
 
 from definitions import (
     CLAN_CAMP_SCREEN_NAME,
-    MAIN_MENU_SCREEN_NAME,
     MAIN_SETTINGS_SCREEN_NAME,
     NEW_CLAN_SCREEN_NAME,
     SWITCH_CLAN_SCREEN_NAME
 )
 from scripts.cat.cats import Cat
 from scripts.game_structure import image_cache
-from scripts.game_structure.audio import music_manager
 from scripts.game_structure.game_essentials import (
     game,
 )
-from scripts.game_structure.ui_elements import UIImageButton, UISurfaceImageButton
+from scripts.ui.ui_elements import UIImageButton, UISurfaceImageButton
 from scripts.game_structure.windows import UpdateAvailablePopup, ChangelogPopup
 from scripts.utility import ui_scale, quit, ui_scale_dimensions
 from .BaseScreen import BaseScreen
@@ -178,7 +175,7 @@ class MainMenuScreen(BaseScreen):
         bg = pygame.image.load("resources/images/menu.png").convert()
         if game.settings["dark mode"]:
             bg.fill(
-                game.config["theme"]["fullscreen_background"]["dark"]["mainmenu_tint"],
+                game._game_config["theme"]["fullscreen_background"]["dark"]["mainmenu_tint"],
                 bg.get_rect(),
                 pygame.BLEND_MULT,
             )
@@ -387,7 +384,7 @@ class MainMenuScreen(BaseScreen):
         self.warning_label.text_horiz_alignment = "center"
         self.warning_label.rebuild()
 
-        if game.clan is not None and game.switches["error_message"] == "":
+        if game.clan_obj is not None and game.switches["error_message"] == "":
             self.continue_button.enable()
         else:
             self.continue_button.disable()
@@ -431,11 +428,11 @@ class MainMenuScreen(BaseScreen):
 
             self.error_open = True
 
-        if game.clan is not None:
+        if game.clan_obj is not None:
             key_copy = tuple(Cat.all_cats.keys())
             for x in key_copy:
-                if x not in game.clan.clan_cats:
-                    game.clan.remove_cat(x)
+                if x not in game.clan_obj.clan_cats:
+                    game.clan_obj.remove_cat(x)
 
         # LOAD settings
-        game.load_settings()
+        game.load_game_settings()

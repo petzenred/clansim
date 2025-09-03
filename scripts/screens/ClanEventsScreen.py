@@ -14,7 +14,7 @@ from scripts.events import events_class
 from scripts.game_structure import image_cache
 from scripts.game_structure.game_essentials import game
 from scripts.game_structure.screen_settings import MANAGER
-from scripts.game_structure.ui_elements import (
+from scripts.ui.ui_elements import (
     UIModifiedScrollingContainer,
     IDImageButton,
     UISurfaceImageButton,
@@ -252,7 +252,7 @@ class ClanEventsScreen(BaseScreen):
         self.clan_info["symbol"] = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((227, 105), (100, 100))),
             pygame.transform.scale(
-                clan_symbol_sprite(game.clan), ui_scale_dimensions((100, 100))
+                clan_symbol_sprite(game.clan_obj), ui_scale_dimensions((100, 100))
             ),
             object_id=f"clan_symbol",
             starting_height=1,
@@ -277,7 +277,7 @@ class ClanEventsScreen(BaseScreen):
             container=self.event_screen_container,
             manager=MANAGER,
             text_kwargs={
-                "season": i18n.t(game.clan.current_season.lower()).capitalize()
+                "season": i18n.t(game.clan_obj.current_season.lower()).capitalize()
             },
         )
         self.clan_info["age"] = pygame_gui.elements.UITextBox(
@@ -287,7 +287,7 @@ class ClanEventsScreen(BaseScreen):
             starting_height=1,
             container=self.event_screen_container,
             manager=MANAGER,
-            text_kwargs={"count": game.clan.age},
+            text_kwargs={"count": game.clan_obj.age},
         )
 
         self.timeskip_button = UISurfaceImageButton(
@@ -351,7 +351,7 @@ class ClanEventsScreen(BaseScreen):
 
         # Draw and disable the correct menu buttons.
         self.set_disabled_menu_buttons(["events_screen"])
-        self.update_heading_text(f"{game.clan.name}Clan")
+        self.update_heading_text(f"{game.clan_obj.name}Clan")
         self.show_menu_buttons()
 
     def display_change_save(self) -> Dict:
@@ -571,11 +571,11 @@ class ClanEventsScreen(BaseScreen):
         self.clan_info["season"].set_text(
             "screens.events.season",
             text_kwargs={
-                "season": i18n.t(game.clan.current_season.lower()).capitalize()
+                "season": i18n.t(game.clan_obj.current_season.lower()).capitalize()
             },
         )
         self.clan_info["age"].set_text(
-            "screens.events.age", text_kwargs={"count": game.clan.age}
+            "screens.events.age", text_kwargs={"count": game.clan_obj.age}
         )
 
         self.make_event_scrolling_container()
@@ -597,7 +597,7 @@ class ClanEventsScreen(BaseScreen):
         self.involved_cat_buttons = []
 
         # Stop if Clan is new, so that events from previously loaded Clan don't show up
-        if game.clan.age == 0:
+        if game.clan_obj.age == 0:
             return
 
         default_rect = pygame.Rect(

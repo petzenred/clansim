@@ -10,7 +10,7 @@ from scripts.game_structure import image_cache
 from scripts.game_structure.game_essentials import (
     game,
 )
-from scripts.game_structure.ui_elements import (
+from scripts.ui.ui_elements import (
     UIImageButton,
     UISpriteButton,
     UISurfaceImageButton,
@@ -295,7 +295,7 @@ class ProfileMateScreen(BaseScreen):
         self.offspring_separator = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((497, 0), (10, 176))),
             pygame.transform.scale(
-                image_cache.load_image("resources/images/vertical_bar.png"),
+                image_cache.load_image("resources/images/bar_vertical.png"),
                 ui_scale_dimensions((10, 176)),
             ),
             container=self.offspring_container,
@@ -328,7 +328,7 @@ class ProfileMateScreen(BaseScreen):
         self.potential_seperator = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((497, 0), (10, 176))),
             pygame.transform.scale(
-                image_cache.load_image("resources/images/vertical_bar.png"),
+                image_cache.load_image("resources/images/bar_vertical.png"),
                 ui_scale_dimensions((10, 176)),
             ),
             container=self.potential_container,
@@ -1055,7 +1055,7 @@ class ProfileMateScreen(BaseScreen):
             )
 
         if (
-            not game.clan.clan_settings["same sex birth"]
+            not game.clan_obj.clan_settings["same sex birth"]
             and self.the_cat.gender == self.selected_cat.gender
         ):
             warning_rect = ui_scale(pygame.Rect((0, 0), (160, 45)))
@@ -1182,7 +1182,7 @@ class ProfileMateScreen(BaseScreen):
             and (not self.single_only or not i.mate)
             and (
                 not self.have_kits_only
-                or game.clan.clan_settings["same sex birth"]
+                or game.clan_obj.clan_settings["same sex birth"]
                 or i.gender != self.the_cat.gender
             )
         ]

@@ -7,7 +7,7 @@ from pygame_gui.core import ObjectID
 from scripts.cat.cats import Cat
 from scripts.game_structure.game_essentials import game
 from scripts.game_structure.screen_settings import MANAGER
-from scripts.game_structure.ui_elements import UIImageButton, UISurfaceImageButton
+from scripts.ui.ui_elements import UIImageButton, UISurfaceImageButton
 from scripts.game_structure.windows import SelectFocusClans
 from scripts.screens.BaseScreen import BaseScreen
 from scripts.ui.generate_button import ButtonStyles, get_button_dict
@@ -61,21 +61,21 @@ class WarriorDenScreen(BaseScreen):
                     if value == event.ui_element:
                         description = settings_dict["clan_focus"][code][1]
 
-                        game.clan.switch_setting(self.active_code)
-                        game.clan.switch_setting(code)
+                        game.clan_obj.switch_setting(self.active_code)
+                        game.clan_obj.switch_setting(code)
                         self.active_code = code
 
                         # un-switch the old checkbox
-                        game.clan.switch_setting(self.active_code)
+                        game.clan_obj.switch_setting(self.active_code)
                         # switch the new checkbox
-                        game.clan.switch_setting(code)
+                        game.clan_obj.switch_setting(code)
                         self.active_code = code
                         # only enable the save button if a focus switch is possible
                         if (
-                            game.clan.last_focus_change is None
-                            or game.clan.last_focus_change
-                            + game.config["focus"]["duration"]
-                            <= game.clan.age
+                            game.clan_obj.last_focus_change is None
+                            or game.clan_obj.last_focus_change
+                            + game._game_config["focus"]["duration"]
+                            <= game.clan_obj.age
                         ):
                             self.save_button.enable()
 
@@ -116,7 +116,7 @@ class WarriorDenScreen(BaseScreen):
                 if self.active_code in self.other_clan_settings:
                     SelectFocusClans()
                 else:
-                    game.clan.last_focus_change = game.clan.age
+                    game.clan_obj.last_focus_change = game.clan_obj.age
                     self.original_focus_code = self.active_code
                     self.save_button.disable()
                     self.update_buttons()
@@ -232,9 +232,9 @@ class WarriorDenScreen(BaseScreen):
         if self.original_focus_code != self.active_code:
             for code in settings_dict["clan_focus"].keys():
                 if code == self.original_focus_code:
-                    game.clan.clan_settings[code] = True
+                    game.clan_obj.clan_settings[code] = True
                 else:
-                    game.clan.clan_settings[code] = False
+                    game.clan_obj.clan_settings[code] = False
 
     def update_buttons(self):
         for code, button in self.focus_buttons.items():
@@ -242,7 +242,7 @@ class WarriorDenScreen(BaseScreen):
                 button.disable()
             else:
                 button.enable()
-            if game.clan.game_mode == "classic" and code in self.not_classic_codes:
+            if game.clan_obj.game_mode == "classic" and code in self.not_classic_codes:
                 button.disable()
 
     def create_buttons(self):
@@ -275,13 +275,13 @@ class WarriorDenScreen(BaseScreen):
                 else {"top": "top"},
             )
 
-            if game.clan.clan_settings[code]:
+            if game.clan_obj.clan_settings[code]:
                 self.focus_buttons[code].disable()
                 self.original_focus_code = code
                 self.active_code = code
             else:
                 self.focus_buttons[code].enable()
-            if game.clan.game_mode == "classic" and code in self.not_classic_codes:
+            if game.clan_obj.game_mode == "classic" and code in self.not_classic_codes:
                 self.focus_buttons[code].disable()
 
             n += 1
@@ -310,19 +310,19 @@ class WarriorDenScreen(BaseScreen):
             desc = i18n.t(
                 "screens.warrior_den.involved_clans",
                 clans=adjust_list_text(
-                    [f"{clan}clan" for clan in game.clan.clans_in_focus]
+                    [f"{clan}clan" for clan in game.clan_obj.clans_in_focus]
                 ),
             )
         last_change_text = ""
         next_change = ""
-        if game.clan.last_focus_change:
+        if game.clan_obj.last_focus_change:
             last_change_text = i18n.t(
-                "general.moon_date", moon=str(game.clan.last_focus_change)
+                "general.moon_date", moon=str(game.clan_obj.last_focus_change)
             )
             moons = (
-                game.clan.last_focus_change
-                + game.config["focus"]["duration"]
-                - game.clan.age
+                game.clan_obj.last_focus_change
+                + game._game_config["focus"]["duration"]
+                - game.clan_obj.age
             )
             moons = moons if moons > 0 else 0
             next_change = i18n.t(
@@ -379,6 +379,6 @@ class WarriorDenScreen(BaseScreen):
         """
         Saves the focus when the clan to focus on in screen 'SelectFocusClan' are selected.
         """
-        if len(game.clan.clans_in_focus) > 0:
-            game.clan.last_focus_change = game.clan.age
+        if len(game.clan_obj.clans_in_focus) > 0:
+            game.clan_obj.last_focus_change = game.clan_obj.age
             self.original_focus_code = self.active_code

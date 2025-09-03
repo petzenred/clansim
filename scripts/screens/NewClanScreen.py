@@ -18,7 +18,7 @@ from scripts.game_structure import image_cache
 from scripts.game_structure.game_essentials import (
     game,
 )
-from scripts.game_structure.ui_elements import (
+from scripts.ui.ui_elements import (
     UIImageButton,
     UISpriteButton,
     UISurfaceImageButton,
@@ -99,7 +99,7 @@ class NewClanScreen(BaseScreen):
         # current page for symbol choosing
         self.current_page = 1
 
-        self.rolls_left = game.config["clan_creation"]["rerolls"]
+        self.rolls_left = game._game_config["clan_creation"]["rerolls"]
         self.menu_warning = None
 
     def screen_switches(self):
@@ -339,7 +339,7 @@ class NewClanScreen(BaseScreen):
                 self.elements["error_message"].hide()
             self.refresh_cat_images_and_info()  # Refresh all the images.
             self.rolls_left -= 1
-            if game.config["clan_creation"]["rerolls"] == 3:
+            if game._game_config["clan_creation"]["rerolls"] == 3:
                 event.ui_element.disable()
             else:
                 self.elements["reroll_count"].set_text(str(self.rolls_left))
@@ -567,7 +567,7 @@ class NewClanScreen(BaseScreen):
         self.main_menu.kill()
         self.menu_warning.kill()
         self.clear_all_page()
-        self.rolls_left = game.config["clan_creation"]["rerolls"]
+        self.rolls_left = game._game_config["clan_creation"]["rerolls"]
         self.fullscreen_bgs = {}
         self.game_bgs = {}
         self.set_mute_button_position("bottomright")
@@ -1561,7 +1561,7 @@ class NewClanScreen(BaseScreen):
             manager=MANAGER,
         )
 
-        if game.config["clan_creation"]["rerolls"] == 3:
+        if game._game_config["clan_creation"]["rerolls"] == 3:
             if self.rolls_left <= 2:
                 self.elements["roll1"].disable()
             if self.rolls_left <= 1:
@@ -2123,7 +2123,7 @@ class NewClanScreen(BaseScreen):
         self.elements["leader_image"] = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((350, 125), (100, 100))),
             pygame.transform.scale(
-                game.clan.leader.sprite, ui_scale_dimensions((100, 100))
+                game.clan_obj.leader.sprite, ui_scale_dimensions((100, 100))
             ),
             starting_height=1,
             manager=MANAGER,
@@ -2153,7 +2153,7 @@ class NewClanScreen(BaseScreen):
         Cat.outside_cats.clear()
         Patrol.used_patrols.clear()
         convert_camp = {1: "camp1", 2: "camp2", 3: "camp3", 4: "camp4"}
-        game.clan = Clan(
+        game.clan_obj = Clan(
             name=self.clan_name,
             leader=self.leader,
             deputy=self.deputy,
@@ -2165,12 +2165,12 @@ class NewClanScreen(BaseScreen):
             starting_members=self.members,
             starting_season=self.selected_season,
         )
-        game.clan.create_clan()
+        game.clan_obj.create_clan()
         # game.clan.starclan_cats.clear()
         game.cur_events_list.clear()
         game.herb_events_list.clear()
-        game.clan.herb_supply.start_storage(len(self.members))
-        game.clan.save_herb_supply(game.clan)
+        game.clan_obj.herb_supply.start_storage(len(self.members))
+        game.clan_obj.save_herb_supply(game.clan_obj)
         Cat.grief_strings.clear()
         Cat.sort_cats()
 

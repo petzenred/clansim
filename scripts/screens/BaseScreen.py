@@ -3,7 +3,6 @@ from typing import Dict, Optional, Union
 
 import pygame
 import pygame_gui
-import ujson
 from pygame_gui.core import ObjectID
 
 from definitions import *
@@ -18,7 +17,7 @@ from scripts.game_structure.screen_settings import (
     MANAGER,
     screen,
 )
-from scripts.game_structure.ui_elements import UIImageButton
+from scripts.ui.ui_elements import UIImageButton
 from scripts.game_structure.windows import SaveCheck, EventLoading
 from scripts.utility import (
     update_sprite,
@@ -29,7 +28,6 @@ from scripts.utility import (
 )
 
 import logging
-
 logger = logging.getLogger(__name__)
 
 class BaseScreen:
@@ -83,8 +81,8 @@ class BaseScreen:
         game.switches["cur_screen"] = new_screen
         game.switch_screens = True
         game.rpc.update_rpc.set()
-        if game.clan:
-            if game.clan.clan_settings["moons and seasons"]:
+        if game.clan_obj:
+            if game.clan_obj.clan_settings["moons and seasons"]:
                 x_shift = 1358
                 y_shift = 70
                 if new_screen == CLAN_EVENTS_SCREEN_NAME:
@@ -115,11 +113,11 @@ class BaseScreen:
         self.work_done = {}
 
         bg = pygame.Surface(scripts.game_structure.screen_settings.game_screen_size)
-        bg.fill(game.config["theme"]["light_mode_background"])
+        bg.fill(game._game_config["theme"]["light_mode_background"])
         bg_dark = pygame.Surface(
             scripts.game_structure.screen_settings.game_screen_size
         )
-        bg_dark.fill(game.config["theme"]["dark_mode_background"])
+        bg_dark.fill(game._game_config["theme"]["dark_mode_background"])
 
         self.game_bgs = {}
         self.fullscreen_bgs = {}
@@ -199,7 +197,7 @@ class BaseScreen:
         BaseScreen.menu_buttons = scripts.screens.screens_core.screens_core.menu_buttons
         BaseScreen.game_frame = scripts.screens.screens_core.screens_core.game_frame
         try:
-            BaseScreen.update_heading_text(game.clan.name + "Clan")
+            BaseScreen.update_heading_text(game.clan_obj.name + "Clan")
         except AttributeError:
             BaseScreen.update_heading_text("DebugClan")
         if self.active_bg is None or "default" in self.active_bg:
@@ -237,12 +235,12 @@ class BaseScreen:
         for name, button in cls.menu_buttons.items():
             if name == 'dens':
                 if (
-                    game.clan.clan_settings["moons and seasons"]
+                    game.clan_obj.clan_settings["moons and seasons"]
                     and game.switches["cur_screen"] == CLAN_EVENTS_SCREEN_NAME
                 ):
                     button.show()
                 elif (
-                    not game.clan.clan_settings["moons and seasons"]
+                    not game.clan_obj.clan_settings["moons and seasons"]
                     and game.switches["cur_screen"] != CLAN_CAMP_SCREEN_NAME
                 ):
                     button.show()
@@ -357,7 +355,7 @@ class BaseScreen:
             if cls.menu_buttons[den].visible:
                 cls.menu_buttons[den].hide()
             else:  # else, show
-                if game.clan.game_mode != "classic":
+                if game.clan_obj.game_mode != "classic":
                     cls.menu_buttons[den].show()
                 elif den == "clearing":
                     if cls.menu_buttons["dens_bar"].get_relative_rect()[2:] != [
@@ -372,7 +370,7 @@ class BaseScreen:
                                     ui_scale(pygame.Rect((40, 60), (10, 125))),
                                     pygame.transform.scale(
                                         image_cache.load_image(
-                                            "resources/images/vertical_bar.png"
+                                            "resources/images/bar_vertical.png"
                                         ).convert_alpha(),
                                         ui_scale_dimensions((10, 125)),
                                     ),
@@ -425,7 +423,7 @@ class BaseScreen:
                     ui_scale(pygame.Rect((142 + x_shift, 120 + y_shift), (20, 320))),
                     pygame.transform.scale(
                         image_cache.load_image(
-                            "resources/images/vertical_bar.png").convert_alpha(),
+                            "resources/images/bar_vertical.png").convert_alpha(),
                         (380, 70)),
                     visible=False,
                     starting_height=5,
@@ -473,7 +471,7 @@ class BaseScreen:
                     ui_scale(pygame.Rect((80 + x_shift, 120 + y_shift), (20, 320))),
                     pygame.transform.scale(
                         image_cache.load_image(
-                            "resources/images/vertical_bar.png").convert_alpha(),
+                            "resources/images/bar_vertical.png").convert_alpha(),
                         (380, 70)),
                     visible=False,
                     starting_height=5,
@@ -531,7 +529,7 @@ class BaseScreen:
     def update_moon_and_season(cls):
         """Updates the moons and seasons widget."""
         if (
-            game.clan.clan_settings["moons and seasons"]
+            game.clan_obj.clan_settings["moons and seasons"]
             and game.switches["cur_screen"] != CLAN_EVENTS_SCREEN_NAME
         ):
             cls.menu_buttons["moons_n_seasons_arrow"].kill()
@@ -583,16 +581,16 @@ class BaseScreen:
             container=cls.menu_buttons["moons_n_seasons"],
             manager=MANAGER,
             object_id="#text_box_30_horizleft_light",
-            text_kwargs={"count": game.clan.age},
+            text_kwargs={"count": game.clan_obj.age},
         )
 
-        if game.clan.current_season == Season.Spring:
+        if game.clan_obj.current_season == Season.Spring:
             season_image_id = "#mns_image_newleaf"
-        elif game.clan.current_season == Season.Summer:
+        elif game.clan_obj.current_season == Season.Summer:
             season_image_id = "#mns_image_greenleaf"
-        elif game.clan.current_season == Season.Autumn:
+        elif game.clan_obj.current_season == Season.Autumn:
             season_image_id = "#mns_image_leaffall"
-        elif game.clan.current_season == Season.Winter:
+        elif game.clan_obj.current_season == Season.Winter:
             season_image_id = "#mns_image_leafbare"
         else:
             season_image_id = MANAGER.get_universal_empty_surface()
@@ -605,7 +603,7 @@ class BaseScreen:
             container=cls.menu_buttons["moons_n_seasons"],
         )
         cls.moons_n_seasons_text2 = pygame_gui.elements.UITextBox(
-            f"general.{game.clan.current_season.lower()}".capitalize(),
+            f"general.{game.clan_obj.current_season.lower()}".capitalize(),
             ui_scale(pygame.Rect((42, 36), (100, 30))),
             container=cls.menu_buttons["moons_n_seasons"],
             manager=MANAGER,
@@ -645,16 +643,16 @@ class BaseScreen:
             container=cls.menu_buttons["moons_n_seasons"],
             starting_height=2,
             tool_tip_text=f"general.moons_age",
-            tool_tip_text_kwargs={"count": game.clan.age},
+            tool_tip_text_kwargs={"count": game.clan_obj.age},
         )
 
-        if game.clan.current_season == Season.Spring:
+        if game.clan_obj.current_season == Season.Spring:
             season_image_id = "#mns_image_newleaf"
-        elif game.clan.current_season == Season.Summer:
+        elif game.clan_obj.current_season == Season.Summer:
             season_image_id = "#mns_image_greenleaf"
-        elif game.clan.current_season == Season.Autumn:
+        elif game.clan_obj.current_season == Season.Autumn:
             season_image_id = "#mns_image_leaffall"
-        elif game.clan.current_season == Season.Winter:
+        elif game.clan_obj.current_season == Season.Winter:
             season_image_id = "#mns_image_leafbare"
         else:
             season_image_id = MANAGER.get_universal_empty_surface()
@@ -666,7 +664,7 @@ class BaseScreen:
             object_id=season_image_id,
             container=cls.menu_buttons["moons_n_seasons"],
             starting_height=2,
-            tool_tip_text=f"{game.clan.current_season}",
+            tool_tip_text=f"{game.clan_obj.current_season}",
         )
 
     def add_bgs(
@@ -691,7 +689,7 @@ class BaseScreen:
         # intialise the vignette strength
         vignette = scripts.screens.screens_core.screens_core.vignette
         if vignette_alpha is None:
-            vignette_alpha = game.config["theme"]["fullscreen_background"][
+            vignette_alpha = game._game_config["theme"]["fullscreen_background"][
                 "dark" if game.settings["dark mode"] else "light"
             ]["vignette_alpha"]
         if not (0 <= vignette_alpha <= 255):
@@ -862,7 +860,7 @@ class BaseScreen:
                 "darkforest"
                 if cat.df
                 else "unknown_residence"
-                if cat.ID in game.clan.unknown_cats
+                if cat.ID in game.clan_obj.unknown_cats
                 else "starclan"
             )
             self.set_bg(bg=bg, blur_bg=blur_bg)
@@ -895,13 +893,12 @@ class BaseScreen:
     @property
     def theme(self) -> str:
         try:
-            return "dark" if game.settings["dark mode"] else "light"
+            if "dark mode" not in game.settings:
+                game.load_game_settings()
+            return game.settings["dark mode"]
         except AttributeError:
-            with open(
-                "resources/gamesettings.json", "r", encoding="utf-8"
-            ) as read_file:
-                _settings = ujson.loads(read_file.read())
-                return "dark" if _settings["dark mode"] else "light"
+            logger.error(f"There is no saved dark mode setting! Defaulting to light")
+            return "light"
 
     def update_previous_next_cat_buttons(self):
         """Updates disabled status of previous and next cat buttons. Does nothing if the screen does not have both previous and next cat buttons."""

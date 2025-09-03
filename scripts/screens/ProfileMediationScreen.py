@@ -9,7 +9,7 @@ from definitions import PROFILE_SCREEN_NAME
 from scripts.cat.cats import Cat
 from scripts.game_structure import image_cache
 from scripts.game_structure.game_essentials import game
-from scripts.game_structure.ui_elements import (
+from scripts.ui.ui_elements import (
     UIImageButton,
     UISpriteButton,
     UIRelationStatusBar,
@@ -408,7 +408,7 @@ class ProfileMediationScreen(BaseScreen):
         chunked_cats = self.chunks(self.current_listed_cats, 24)
         if chunked_cats:
             for cat in chunked_cats[self.page - 1]:
-                if game.clan.clan_settings["show fav"] and cat.favourite:
+                if game.clan_obj.clan_settings["show fav"] and cat.favourite:
                     _temp = pygame.transform.scale(
                         pygame.image.load(
                             f"resources/images/fav_marker.png"
@@ -473,7 +473,7 @@ class ProfileMediationScreen(BaseScreen):
             object_id="#text_box_30_horizcenter",
         )
 
-        # Gender
+        # GenderKits
         if cat.genderalign == "female":
             gender_icon = image_cache.load_image(
                 "resources/images/female_big.png"
@@ -516,7 +516,7 @@ class ProfileMediationScreen(BaseScreen):
         elif other_cat:
             # FAMILY DOT
             # Only show family dot on cousins if first cousin mates are disabled.
-            if game.clan.clan_settings["first cousin mates"]:
+            if game.clan_obj.clan_settings["first cousin mates"]:
                 check_cousins = False
             else:
                 check_cousins = other_cat.is_cousin(cat)
@@ -594,7 +594,7 @@ class ProfileMediationScreen(BaseScreen):
                 col2 += i18n.t("general.child")
             elif cat.is_sibling(other_cat) or other_cat.is_sibling(cat):
                 col2 += i18n.t("general.sibling")
-            elif not game.clan.clan_settings[
+            elif not game.clan_obj.clan_settings[
                 "first cousin mates"
             ] and other_cat.is_cousin(cat):
                 col2 += i18n.t("general.cousin")
@@ -635,7 +635,7 @@ class ProfileMediationScreen(BaseScreen):
             # ROMANTIC LOVE
             # CHECK AGE DIFFERENCE
             same_age = the_relationship.cat_to.age == cat.age
-            both_adult = cat.age.can_have_mate() and the_relationship.cat_to.age.can_have_mate()
+            both_adult = cat.age.is_adult() and the_relationship.cat_to.age.is_adult()
             check_age = both_adult or same_age
 
             # If they are not both adults, or the same age, OR they are related, don't display any romantic affection,
