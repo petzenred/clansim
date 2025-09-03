@@ -1,0 +1,53 @@
+event_injuries_distribution:
+  apprentice:
+    major: 2
+    minor: 5
+    severe: 1
+  deputy:
+    major: 2
+    minor: 1
+    severe: 4
+  elder:
+    major: 3
+    minor: 6
+    severe: 1
+  kitten:
+    major: 3
+    minor: 6
+    severe: 1
+  leader:
+    major: 2
+    minor: 1
+    severe: 5
+  medicine cat:
+    major: 2
+    minor: 4
+    severe: 1
+  medicine cat apprentice:
+    major: 2
+    minor: 5
+    severe: 1
+  warrior:
+    major: 3
+    minor: 2
+    severe: 2
+illnesses_seasons:
+  greenleaf:
+    fleas: 2
+    heat exhaustion: 3
+    heat stroke: 1
+    stomachache: 1
+  leafbare:
+    greencough: 3
+    kittencough: 4
+    running nose: 1
+    stomachache: 1
+    yellowcough: 3
+  leaffall:
+    greencough: 1
+    kittencough: 4
+    running nose: 3
+    stomachache: 1
+  newleaf:
+    running nose: 2
+    stomachache: 1
