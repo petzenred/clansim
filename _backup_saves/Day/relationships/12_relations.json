@@ -1,0 +1,243 @@
+[
+    {
+        "cat_from_id": "12",
+        "cat_to_id": "1",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 12,
+        "admiration": 17,
+        "comfortable": 23,
+        "jealousy": 0,
+        "trust": 9,
+        "log": [
+            "Dashkit makes stinky faces at Chickfoot for seemingly no reason. (medium negative effect)- Dashkit was 2 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "12",
+        "cat_to_id": "2",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 33,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 23,
+        "jealousy": 0,
+        "trust": 1,
+        "log": []
+    },
+    {
+        "cat_from_id": "12",
+        "cat_to_id": "4",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 33,
+        "dislike": 0,
+        "admiration": 19,
+        "comfortable": 19,
+        "jealousy": 0,
+        "trust": 4,
+        "log": []
+    },
+    {
+        "cat_from_id": "12",
+        "cat_to_id": "5",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 3,
+        "dislike": 0,
+        "admiration": 6,
+        "comfortable": 17,
+        "jealousy": 0,
+        "trust": 4,
+        "log": [
+            "These cats recently interacted. (positive effect)- Newtfrost was 16 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "12",
+        "cat_to_id": "6",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 12,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 26,
+        "jealousy": 0,
+        "trust": 17,
+        "log": [
+            "Dashkit gets some good advice from Fiercekit about something trivial. (low positive effect)- Dashkit was 3 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "12",
+        "cat_to_id": "7",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 32,
+        "dislike": 0,
+        "admiration": 5,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 11,
+        "log": [
+            "Dashkit runs into Daystar at the medicine den. They both have a tummy ache from two halves of the same prey. (neutral effect)- Dashkit was 5 moons old",
+            "These cats recently interacted. (positive effect)- Daystar was 78 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "12",
+        "cat_to_id": "8",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 18,
+        "dislike": 0,
+        "admiration": 11,
+        "comfortable": 7,
+        "jealousy": 0,
+        "trust": 9,
+        "log": [
+            "These cats recently interacted. (positive effect)- Piperswoop was 12 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "12",
+        "cat_to_id": "9",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 10,
+        "comfortable": 24,
+        "jealousy": 0,
+        "trust": 5,
+        "log": []
+    },
+    {
+        "cat_from_id": "12",
+        "cat_to_id": "11",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 14,
+        "dislike": 0,
+        "admiration": 10,
+        "comfortable": 21,
+        "jealousy": 0,
+        "trust": 15,
+        "log": []
+    },
+    {
+        "cat_from_id": "12",
+        "cat_to_id": "13",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    },
+    {
+        "cat_from_id": "12",
+        "cat_to_id": "3",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 7,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 11,
+        "jealousy": 0,
+        "trust": 7,
+        "log": [
+            "Dashkit asks Bluestripe to look at a little cut on her leg. (high positive effect)- Dashkit was 4 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "12",
+        "cat_to_id": "10",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 13,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 5,
+        "log": [
+            "These cats recently interacted. (positive effect)- Ivypuddle was 57 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "12",
+        "cat_to_id": "14",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    },
+    {
+        "cat_from_id": "12",
+        "cat_to_id": "15",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    },
+    {
+        "cat_from_id": "12",
+        "cat_to_id": "16",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    },
+    {
+        "cat_from_id": "12",
+        "cat_to_id": "17",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 7,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 11,
+        "jealousy": 0,
+        "trust": 7,
+        "log": [
+            "Whenever Stagshade's name is mentioned, Dashpaw relaxes. (high positive effect)- Dashpaw was 6 moons old"
+        ]
+    }
+]

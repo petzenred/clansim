@@ -1,0 +1,256 @@
+[
+    {
+        "cat_from_id": "1",
+        "cat_to_id": "2",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 29,
+        "dislike": 0,
+        "admiration": 14,
+        "comfortable": 21,
+        "jealousy": 0,
+        "trust": 13,
+        "log": [
+            "These cats recently interacted. (positive effect)- Honeyfleck was 15 moons old",
+            "These cats recently interacted. (positive effect)- Honeyfleck was 17 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "1",
+        "cat_to_id": "4",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 12,
+        "dislike": 7,
+        "admiration": 10,
+        "comfortable": 15,
+        "jealousy": 7,
+        "trust": 21,
+        "log": [
+            "Chickfoot comes up with a plan to sneak out of camp with Verbenafoot. (medium positive effect)- Chickfoot was 104 moons old",
+            "Verbenafoot was complimented by another Clan during the recent Gathering, but Chickfoot wasn't. (medium negative effect)- Chickfoot was 104 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "1",
+        "cat_to_id": "5",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 36,
+        "dislike": 4,
+        "admiration": 24,
+        "comfortable": 36,
+        "jealousy": 7,
+        "trust": 5,
+        "log": [
+            "Chickfoot and Newtpaw find out they have nice conversations when they aren't bickering. (medium positive effect)- Chickfoot was 100 moons old",
+            "The leader was more impressed by what Newtfrost brought back from a hunting patrol than what Chickfoot did. (medium negative effect)- Chickfoot was 101 moons old",
+            "These cats recently interacted. (positive effect)- Newtfrost was 16 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "1",
+        "cat_to_id": "6",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 1,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 4,
+        "jealousy": 0,
+        "trust": 8,
+        "log": []
+    },
+    {
+        "cat_from_id": "1",
+        "cat_to_id": "7",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 32,
+        "dislike": 0,
+        "admiration": 14,
+        "comfortable": 13,
+        "jealousy": 0,
+        "trust": 13,
+        "log": [
+            "Quickstar worries that Chickfoot isn't being honest with their relationship. (medium negative effect)- Chickfoot was 101 moons old",
+            "These cats recently interacted. (positive effect)- Daystar was 78 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "1",
+        "cat_to_id": "8",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 24,
+        "dislike": 0,
+        "admiration": 18,
+        "comfortable": 7,
+        "jealousy": 0,
+        "trust": 5,
+        "log": [
+            "These cats recently interacted. (positive effect)- Piperswoop was 12 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "1",
+        "cat_to_id": "9",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 11,
+        "dislike": 3,
+        "admiration": 7,
+        "comfortable": 9,
+        "jealousy": 0,
+        "trust": 15,
+        "log": []
+    },
+    {
+        "cat_from_id": "1",
+        "cat_to_id": "11",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 28,
+        "dislike": 0,
+        "admiration": 23,
+        "comfortable": 9,
+        "jealousy": 0,
+        "trust": 21,
+        "log": [
+            "These cats recently interacted. (positive effect)- Emberspots was 69 moons old",
+            "Chickfoot and Emberspots had a fight over if they would take a new mate if one of them died or went missing. (medium negative effect)- Chickfoot was 100 moons old",
+            "These cats recently interacted. (positive effect)- Emberspots was 71 moons old",
+            "Chickfoot comes up with a plan to sneak out of camp with Emberspots. (medium positive effect)- Chickfoot was 103 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "1",
+        "cat_to_id": "12",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 10,
+        "dislike": 21,
+        "admiration": 20,
+        "comfortable": 10,
+        "jealousy": 12,
+        "trust": 3,
+        "log": [
+            "Chickfoot tried on an accessory that Dashkit threw away, but realized Dashkit looked a lot better in it. (medium negative effect)- Chickfoot was 100 moons old",
+            "Chickfoot tells Dashkit to talk a little quieter. (low negative effect)- Chickfoot was 101 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "1",
+        "cat_to_id": "13",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 4,
+        "dislike": 0,
+        "admiration": 20,
+        "comfortable": 20,
+        "jealousy": 0,
+        "trust": 9,
+        "log": []
+    },
+    {
+        "cat_from_id": "1",
+        "cat_to_id": "3",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    },
+    {
+        "cat_from_id": "1",
+        "cat_to_id": "10",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 11,
+        "admiration": 10,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": [
+            "Chickfoot thinks Ivypuddle is annoying. (high negative effect)- Chickfoot was 102 moons old",
+            "These cats recently interacted. (positive effect)- Ivypuddle was 57 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "1",
+        "cat_to_id": "14",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 3,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": [
+            "Chickfoot and Silverkit are arguing about who should take the blame for something trivial. (low negative effect)- Chickfoot was 102 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "1",
+        "cat_to_id": "15",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    },
+    {
+        "cat_from_id": "1",
+        "cat_to_id": "16",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 2,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 3,
+        "trust": 0,
+        "log": [
+            "A Clanmate that Chickfoot wanted to get to know better is already friends with Iciclekit. (low negative effect)- Chickfoot was 103 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "1",
+        "cat_to_id": "17",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    }
+]

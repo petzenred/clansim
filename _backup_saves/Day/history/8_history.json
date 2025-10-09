@@ -1,0 +1,35 @@
+{
+    "beginning": {},
+    "mentor_influence": {
+        "trait": {
+            "4": {
+                "aggression": 3,
+                "lawfulness": -1,
+                "stability": 2,
+                "strings": [
+                    "resort to violence",
+                    "make their own rules",
+                    "be resilient"
+                ]
+            }
+        },
+        "skill": {
+            "4": {
+                "CLEVER": 8,
+                "strings": [
+                    "solving problems"
+                ]
+            }
+        }
+    },
+    "app_ceremony": {
+        "honor": "fortitude",
+        "graduation_age": 11,
+        "moon": 4
+    },
+    "lead_ceremony": null,
+    "possible_history": {},
+    "died_by": [],
+    "scar_events": [],
+    "murder": {}
+}

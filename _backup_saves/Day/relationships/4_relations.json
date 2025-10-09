@@ -1,0 +1,248 @@
+[
+    {
+        "cat_from_id": "4",
+        "cat_to_id": "1",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 7,
+        "admiration": 6,
+        "comfortable": 10,
+        "jealousy": 0,
+        "trust": 9,
+        "log": [
+            "Verbenafoot and Chickfoot couldn't agree which way to go on a patrol and got home late. (medium negative effect)- Verbenafoot was 42 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "4",
+        "cat_to_id": "2",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 8,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 9,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    },
+    {
+        "cat_from_id": "4",
+        "cat_to_id": "5",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 9,
+        "dislike": 12,
+        "admiration": 5,
+        "comfortable": 24,
+        "jealousy": 0,
+        "trust": 7,
+        "log": [
+            "Verbenafoot and Newtpaw keep trying to figure out what a bad smell in camp is. (neutral effect)- Verbenafoot was 38 moons old",
+            "Verbenafoot ignores Newtfrost. (medium negative effect)- Verbenafoot was 40 moons old",
+            "These cats recently interacted. (positive effect)- Newtfrost was 16 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "4",
+        "cat_to_id": "6",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 34,
+        "dislike": 0,
+        "admiration": 6,
+        "comfortable": 17,
+        "jealousy": 0,
+        "trust": 6,
+        "log": [
+            "Verbenafoot starts to plan things hoping that Fiercepaw will get involved. (high positive effect)- Verbenafoot was 41 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "4",
+        "cat_to_id": "7",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 26,
+        "dislike": 0,
+        "admiration": 25,
+        "comfortable": 6,
+        "jealousy": 0,
+        "trust": 13,
+        "log": [
+            "These cats recently interacted. (positive effect)- Daystar was 78 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "4",
+        "cat_to_id": "8",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 8,
+        "dislike": 0,
+        "admiration": 23,
+        "comfortable": 30,
+        "jealousy": 0,
+        "trust": 8,
+        "log": [
+            "These cats recently interacted. (positive effect)- Magpiepaw was 9 moons old",
+            "These cats recently interacted. (positive effect)- Piperswoop was 12 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "4",
+        "cat_to_id": "9",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 29,
+        "dislike": 0,
+        "admiration": 14,
+        "comfortable": 19,
+        "jealousy": 0,
+        "trust": 7,
+        "log": []
+    },
+    {
+        "cat_from_id": "4",
+        "cat_to_id": "11",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 22,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 4,
+        "log": []
+    },
+    {
+        "cat_from_id": "4",
+        "cat_to_id": "12",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 33,
+        "dislike": 0,
+        "admiration": 16,
+        "comfortable": 23,
+        "jealousy": 0,
+        "trust": 15,
+        "log": []
+    },
+    {
+        "cat_from_id": "4",
+        "cat_to_id": "13",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    },
+    {
+        "cat_from_id": "4",
+        "cat_to_id": "3",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 12,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 8,
+        "jealousy": 0,
+        "trust": 0,
+        "log": [
+            "Verbenafoot thinks Bluestripe has interesting things to talk about. (medium positive effect)- Verbenafoot was 39 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "4",
+        "cat_to_id": "10",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 10,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": [
+            "These cats recently interacted. (positive effect)- Ivypuddle was 57 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "4",
+        "cat_to_id": "14",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    },
+    {
+        "cat_from_id": "4",
+        "cat_to_id": "15",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 4,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 7,
+        "trust": 0,
+        "log": [
+            "Verbenafoot doubts whether Chillkit even likes him at all... (high negative effect)- Verbenafoot was 41 moons old",
+            "Verbenafoot wishes he looked more like Chillkit. (medium negative effect)- Verbenafoot was 42 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "4",
+        "cat_to_id": "16",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 5,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 8,
+        "jealousy": 0,
+        "trust": 5,
+        "log": [
+            "Iciclekit gives advice to Verbenafoot. It's not good advice, but Verbenafoot appreciates the effort. (low positive effect)- Verbenafoot was 40 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "4",
+        "cat_to_id": "17",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    }
+]

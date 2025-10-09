@@ -1,0 +1,86 @@
+{
+    "storage": {
+        "horsetail": [
+            0,
+            0,
+            0,
+            0,
+            11
+        ],
+        "mallow": [],
+        "thyme": [
+            0,
+            0,
+            0,
+            0,
+            8
+        ],
+        "burdock": [
+            0,
+            0,
+            0,
+            0,
+            11
+        ],
+        "poppy": [],
+        "catmint": [
+            0,
+            0,
+            0,
+            0,
+            9
+        ],
+        "elder_leaves": [
+            0,
+            0,
+            0,
+            2
+        ],
+        "cobwebs": [
+            0,
+            0,
+            0,
+            1
+        ],
+        "daisy": [],
+        "juniper": [
+            0,
+            0,
+            1
+        ],
+        "lungwort": [
+            0,
+            0,
+            1
+        ],
+        "marigold": [
+            0,
+            1
+        ],
+        "moss": [],
+        "oak_leaves": [],
+        "ragwort": [
+            0,
+            1
+        ],
+        "wild_garlic": [],
+        "raspberry": [
+            2
+        ],
+        "tansy": [
+            1
+        ],
+        "dandelion": [
+            3
+        ]
+    },
+    "collected": {
+        "mallow": 2,
+        "moss": 2,
+        "oak_leaves": 2,
+        "wild_garlic": 3,
+        "mullein": 2,
+        "rosemary": 2,
+        "poppy": 3
+    }
+}

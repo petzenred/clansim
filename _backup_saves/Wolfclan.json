@@ -1,0 +1,55 @@
+{
+    "clanname": "Wolf",
+    "clanage": 0,
+    "biome": "mountainous",
+    "camp_bg": "camp1",
+    "clan_symbol": "symbolHOWL0",
+    "gamemode": "classic",
+    "last_focus_change": null,
+    "clans_in_focus": [],
+    "instructor": "13",
+    "reputation": 80,
+    "mediated": [],
+    "starting_season": "newleaf",
+    "temperament": "cunning",
+    "version_name": 3,
+    "version_commit": "a06024448ecd82561a35c7dcc45ee8757f2e913f",
+    "source_build": true,
+    "custom_pronouns": {},
+    "leader": "4",
+    "leader_lives": 9,
+    "leader_predecessors": 0,
+    "deputy": "10",
+    "deputy_predecessors": 0,
+    "med_cat": "12",
+    "med_cat_number": 0,
+    "med_cat_predecessors": 0,
+    "clan_cats": "10,4,12,13,1,2,3,6,7,8,11",
+    "faded_cats": "",
+    "patrolled_cats": [],
+    "other_clans": [
+        {
+            "name": "Bird",
+            "relations": 8,
+            "temperament": "mellow",
+            "chosen_symbol": "symbolHERON0"
+        },
+        {
+            "name": "Fish",
+            "relations": 10,
+            "temperament": "logical",
+            "chosen_symbol": "symbolBASS0"
+        },
+        {
+            "name": "Snake",
+            "relations": 9,
+            "temperament": "bloodthirsty",
+            "chosen_symbol": "symbolSNAKE0"
+        }
+    ],
+    "war": {
+        "at_war": false,
+        "enemy": null,
+        "duration": 0
+    }
+}

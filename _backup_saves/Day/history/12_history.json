@@ -1,0 +1,21 @@
+{
+    "beginning": {},
+    "mentor_influence": {
+        "trait": {
+            "10": {
+                "aggression": -2
+            }
+        },
+        "skill": {
+            "10": {
+                "TEACHER": 1
+            }
+        }
+    },
+    "app_ceremony": {},
+    "lead_ceremony": null,
+    "possible_history": {},
+    "died_by": [],
+    "scar_events": [],
+    "murder": {}
+}

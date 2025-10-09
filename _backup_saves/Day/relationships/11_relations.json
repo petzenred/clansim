@@ -1,0 +1,255 @@
+[
+    {
+        "cat_from_id": "11",
+        "cat_to_id": "1",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 26,
+        "dislike": 0,
+        "admiration": 18,
+        "comfortable": 8,
+        "jealousy": 0,
+        "trust": 16,
+        "log": [
+            "These cats recently interacted. (positive effect)- Chickfoot was 99 moons old",
+            "Chickfoot and Emberspots had a fight over if they would take a new mate if one of them died or went missing. (medium negative effect)- Emberspots was 69 moons old",
+            "These cats recently interacted. (positive effect)- Chickfoot was 101 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "11",
+        "cat_to_id": "2",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 52,
+        "dislike": 0,
+        "admiration": 30,
+        "comfortable": 32,
+        "jealousy": 0,
+        "trust": 12,
+        "log": [
+            "These cats recently interacted. (positive effect)- Honeyfleck was 15 moons old",
+            "Emberspots and Honeyfleck plan all their days together. (high positive effect)- Emberspots was 70 moons old",
+            "These cats recently interacted. (positive effect)- Honeyfleck was 17 moons old",
+            "Emberspots thinks Honeyfleck is being thoughtful of others. (low positive effect)- Emberspots was 72 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "11",
+        "cat_to_id": "4",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 29,
+        "dislike": 0,
+        "admiration": 14,
+        "comfortable": 1,
+        "jealousy": 0,
+        "trust": 8,
+        "log": []
+    },
+    {
+        "cat_from_id": "11",
+        "cat_to_id": "5",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 34,
+        "dislike": 0,
+        "admiration": 10,
+        "comfortable": 33,
+        "jealousy": 0,
+        "trust": 9,
+        "log": [
+            "Emberspots stares at Newtfrost with an unreadable expression. (neutral effect)- Emberspots was 70 moons old",
+            "Emberspots playfully teases Newtfrost for missing a catch. (medium positive effect)- Emberspots was 73 moons old",
+            "These cats recently interacted. (positive effect)- Newtfrost was 16 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "11",
+        "cat_to_id": "6",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 19,
+        "dislike": 0,
+        "admiration": 19,
+        "comfortable": 42,
+        "jealousy": 0,
+        "trust": 18,
+        "log": [
+            "Emberspots remembers something nice that Fiercekit did. (low positive effect)- Emberspots was 71 moons old",
+            "Emberspots has snuggled up against Fiercepaw. (medium positive effect)- Emberspots was 72 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "11",
+        "cat_to_id": "7",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 16,
+        "dislike": 8,
+        "admiration": 16,
+        "comfortable": 21,
+        "jealousy": 12,
+        "trust": 5,
+        "log": [
+            "The Clan likes one of Quickstar's suggestions, but it was just Emberspots's reworded. (medium negative effect)- Emberspots was 71 moons old",
+            "These cats recently interacted. (positive effect)- Daystar was 78 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "11",
+        "cat_to_id": "8",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 27,
+        "dislike": 0,
+        "admiration": 29,
+        "comfortable": 10,
+        "jealousy": 0,
+        "trust": 8,
+        "log": [
+            "These cats recently interacted. (positive effect)- Piperswoop was 12 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "11",
+        "cat_to_id": "9",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 21,
+        "dislike": 0,
+        "admiration": 8,
+        "comfortable": 7,
+        "jealousy": 0,
+        "trust": 8,
+        "log": []
+    },
+    {
+        "cat_from_id": "11",
+        "cat_to_id": "12",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 12,
+        "dislike": 0,
+        "admiration": 18,
+        "comfortable": 7,
+        "jealousy": 0,
+        "trust": 13,
+        "log": []
+    },
+    {
+        "cat_from_id": "11",
+        "cat_to_id": "13",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 27,
+        "dislike": 0,
+        "admiration": 1,
+        "comfortable": 6,
+        "jealousy": 0,
+        "trust": 4,
+        "log": []
+    },
+    {
+        "cat_from_id": "11",
+        "cat_to_id": "3",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 8,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    },
+    {
+        "cat_from_id": "11",
+        "cat_to_id": "10",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 10,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": [
+            "These cats recently interacted. (positive effect)- Ivypuddle was 57 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "11",
+        "cat_to_id": "14",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 4,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 7,
+        "trust": 0,
+        "log": [
+            "Emberspots worries that one of her friends likes Silverkit more. (medium negative effect)- Emberspots was 74 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "11",
+        "cat_to_id": "15",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    },
+    {
+        "cat_from_id": "11",
+        "cat_to_id": "16",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": [
+            "Emberspots is checking on Dawnkit. (neutral effect)- Emberspots was 74 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "11",
+        "cat_to_id": "17",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 8,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 13,
+        "trust": 0,
+        "log": [
+            "Emberspots thinks Stagshade looks nicer than her today. (low negative effect)- Emberspots was 73 moons old"
+        ]
+    }
+]

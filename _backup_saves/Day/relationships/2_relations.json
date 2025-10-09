@@ -1,0 +1,250 @@
+[
+    {
+        "cat_from_id": "2",
+        "cat_to_id": "1",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 36,
+        "dislike": 0,
+        "admiration": 19,
+        "comfortable": 16,
+        "jealousy": 0,
+        "trust": 3,
+        "log": [
+            "These cats recently interacted. (positive effect)- Chickfoot was 99 moons old",
+            "These cats recently interacted. (positive effect)- Chickfoot was 101 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "2",
+        "cat_to_id": "4",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 23,
+        "admiration": 11,
+        "comfortable": 24,
+        "jealousy": 0,
+        "trust": 4,
+        "log": [
+            "Honeyfleck is bossing Verbenafoot around. (high negative effect)- Honeyfleck was 17 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "2",
+        "cat_to_id": "5",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 21,
+        "comfortable": 21,
+        "jealousy": 0,
+        "trust": 27,
+        "log": [
+            "These cats recently interacted. (positive effect)- Newtfrost was 16 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "2",
+        "cat_to_id": "6",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 40,
+        "dislike": 0,
+        "admiration": 28,
+        "comfortable": 25,
+        "jealousy": 0,
+        "trust": 24,
+        "log": [
+            "Fiercepaw vents about something trivial to Honeyfleck. (low positive effect)- Honeyfleck was 19 moons old",
+            "These cats recently interacted. (positive effect)- Fiercepaw was 8 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "2",
+        "cat_to_id": "7",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 17,
+        "dislike": 0,
+        "admiration": 15,
+        "comfortable": 7,
+        "jealousy": 0,
+        "trust": 1,
+        "log": [
+            "These cats recently interacted. (positive effect)- Daystar was 78 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "2",
+        "cat_to_id": "8",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 37,
+        "dislike": 0,
+        "admiration": 10,
+        "comfortable": 12,
+        "jealousy": 0,
+        "trust": 8,
+        "log": [
+            "Honeyfleck overhears Magpiepaw humming a comforting tune. (low positive effect)- Honeyfleck was 16 moons old",
+            "These cats recently interacted. (positive effect)- Piperswoop was 12 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "2",
+        "cat_to_id": "9",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 14,
+        "dislike": 17,
+        "admiration": 2,
+        "comfortable": 22,
+        "jealousy": 0,
+        "trust": 2,
+        "log": [
+            "Honeyfleck had a spat with Frogsilk over a piece of prey on the fresh-kill pile. (medium negative effect)- Honeyfleck was 18 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "2",
+        "cat_to_id": "11",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 27,
+        "dislike": 0,
+        "admiration": 38,
+        "comfortable": 7,
+        "jealousy": 0,
+        "trust": 11,
+        "log": [
+            "These cats recently interacted. (positive effect)- Emberspots was 69 moons old",
+            "These cats recently interacted. (positive effect)- Emberspots was 71 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "2",
+        "cat_to_id": "12",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 27,
+        "dislike": 0,
+        "admiration": 17,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    },
+    {
+        "cat_from_id": "2",
+        "cat_to_id": "13",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    },
+    {
+        "cat_from_id": "2",
+        "cat_to_id": "3",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    },
+    {
+        "cat_from_id": "2",
+        "cat_to_id": "10",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 10,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": [
+            "These cats recently interacted. (positive effect)- Ivypuddle was 57 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "2",
+        "cat_to_id": "14",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    },
+    {
+        "cat_from_id": "2",
+        "cat_to_id": "15",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    },
+    {
+        "cat_from_id": "2",
+        "cat_to_id": "16",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 3,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 2,
+        "jealousy": 0,
+        "trust": 0,
+        "log": [
+            "Dawnkit compliments Honeyfleck's name. (low positive effect)- Honeyfleck was 20 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "2",
+        "cat_to_id": "17",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    }
+]

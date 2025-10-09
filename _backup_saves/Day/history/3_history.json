@@ -1,0 +1,24 @@
+{
+    "beginning": {
+        "clan_born": false,
+        "birth_season": null,
+        "age": 26,
+        "moon": 1
+    },
+    "mentor_influence": {
+        "trait": {},
+        "skill": {}
+    },
+    "app_ceremony": {},
+    "lead_ceremony": null,
+    "possible_history": {},
+    "died_by": [],
+    "scar_events": [
+        {
+            "involved": null,
+            "text": "m_c was scarred from an injury or illness (broken bone).",
+            "moon": 5
+        }
+    ],
+    "murder": {}
+}

@@ -1,0 +1,73 @@
+{
+    "clanname": "Day",
+    "clanage": 5,
+    "biome": "forest",
+    "camp_bg": "camp4",
+    "clan_symbol": "symbolDAY0",
+    "gamemode": "expanded",
+    "last_focus_change": null,
+    "clans_in_focus": [],
+    "instructor": "13",
+    "reputation": 83,
+    "mediated": [
+        [
+            "5",
+            "10"
+        ]
+    ],
+    "starting_season": "newleaf",
+    "temperament": "stoic",
+    "version_name": 0,
+    "version_commit": "2e170666780e318c2efb0423856a09a3f2ecea60",
+    "source_build": true,
+    "custom_pronouns": {},
+    "leader": "7",
+    "leader_lives": 9,
+    "leader_predecessors": 0,
+    "deputy": "11",
+    "deputy_predecessors": 0,
+    "med_cat": "2",
+    "med_cat_number": 2,
+    "med_cat_predecessors": 0,
+    "clan_cats": "11,7,2,13,1,4,5,6,8,9,12,3,10,14,15,16,17",
+    "faded_cats": "",
+    "patrolled_cats": [
+        "17",
+        "12",
+        "10",
+        "2",
+        "6",
+        "7",
+        "8",
+        "5",
+        "4",
+        "1",
+        "11",
+        "3"
+    ],
+    "other_clans": [
+        {
+            "name": "Eagle",
+            "relations": 13,
+            "temperament": "wary",
+            "chosen_symbol": "symbolEAGLE0"
+        },
+        {
+            "name": "Freeze",
+            "relations": 8,
+            "temperament": "cunning",
+            "chosen_symbol": "symbolNECTAR2"
+        },
+        {
+            "name": "Bat",
+            "relations": 13,
+            "temperament": "wary",
+            "chosen_symbol": "symbolBAT0"
+        }
+    ],
+    "war": {
+        "at_war": false,
+        "enemy": null,
+        "duration": 0
+    }
+}

@@ -1,0 +1,55 @@
+{
+    "clanname": "Stone",
+    "clanage": 0,
+    "biome": "mountainous",
+    "camp_bg": "camp1",
+    "clan_symbol": "symbolPEAK0",
+    "gamemode": "expanded",
+    "last_focus_change": null,
+    "clans_in_focus": [],
+    "instructor": "48",
+    "reputation": 80,
+    "mediated": [],
+    "starting_season": "newleaf",
+    "temperament": "stoic",
+    "version_name": 0,
+    "version_commit": "daab9b66ab18dcb81fc6bb41d3787cb0e77b80d7",
+    "source_build": true,
+    "custom_pronouns": {},
+    "leader": "36",
+    "leader_lives": 9,
+    "leader_predecessors": 0,
+    "deputy": "42",
+    "deputy_predecessors": 0,
+    "med_cat": "43",
+    "med_cat_number": 0,
+    "med_cat_predecessors": 0,
+    "clan_cats": "42,36,43,48,37,38,39,41,45,46,47",
+    "faded_cats": "",
+    "patrolled_cats": [],
+    "other_clans": [
+        {
+            "name": "Timber",
+            "relations": 12,
+            "temperament": "logical",
+            "chosen_symbol": "symbolORIOLE0"
+        },
+        {
+            "name": "Bluebell",
+            "relations": 8,
+            "temperament": "logical",
+            "chosen_symbol": "symbolBLUEBELL0"
+        },
+        {
+            "name": "Dove",
+            "relations": 12,
+            "temperament": "amiable",
+            "chosen_symbol": "symbolDOVE0"
+        }
+    ],
+    "war": {
+        "at_war": false,
+        "enemy": null,
+        "duration": 0
+    }
+}

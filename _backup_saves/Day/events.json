@@ -1,0 +1,458 @@
+[
+    {
+        "text": "Chickfoot comes up with a plan to sneak out of camp with Verbenafoot. (medium positive effect)",
+        "types": [
+            "relation",
+            "interaction"
+        ],
+        "cats_involved": [
+            "4",
+            "1"
+        ],
+        "cat_dict": {
+            "m_c": "4",
+            "r_c": "1"
+        }
+    },
+    {
+        "text": "Verbenafoot was complimented by another Clan during the recent Gathering, but Chickfoot wasn't. (medium negative effect)",
+        "types": [
+            "relation",
+            "interaction"
+        ],
+        "cats_involved": [
+            "4",
+            "1"
+        ],
+        "cat_dict": {
+            "m_c": "4",
+            "r_c": "1"
+        }
+    },
+    {
+        "text": "Chickfoot was pushing through some dense shrubs and felt the branches tear painfully at his pelt. ",
+        "types": [
+            "health"
+        ],
+        "cats_involved": [
+            "1"
+        ],
+        "cat_dict": {}
+    },
+    {
+        "text": "Honeyfleck has recovered from heat stroke.",
+        "types": [
+            "health"
+        ],
+        "cats_involved": [
+            "2"
+        ],
+        "cat_dict": {
+            "m_c": "2"
+        }
+    },
+    {
+        "text": "Dawnkit compliments Honeyfleck's name. (low positive effect)",
+        "types": [
+            "relation",
+            "interaction"
+        ],
+        "cats_involved": [
+            "16",
+            "2"
+        ],
+        "cat_dict": {
+            "m_c": "16",
+            "r_c": "2"
+        }
+    },
+    {
+        "text": "Verbenafoot and Chickfoot couldn't agree which way to go on a patrol and got home late. (medium negative effect)",
+        "types": [
+            "relation",
+            "interaction"
+        ],
+        "cats_involved": [
+            "1",
+            "4"
+        ],
+        "cat_dict": {
+            "m_c": "1",
+            "r_c": "4"
+        }
+    },
+    {
+        "text": "Verbenafoot wishes he looked more like Chillkit. (medium negative effect)",
+        "types": [
+            "relation",
+            "interaction"
+        ],
+        "cats_involved": [
+            "15",
+            "4"
+        ],
+        "cat_dict": {
+            "m_c": "15",
+            "r_c": "4"
+        }
+    },
+    {
+        "text": "Newtfrost and Emberspots chat about Clan news. (low positive effect)",
+        "types": [
+            "relation",
+            "interaction"
+        ],
+        "cats_involved": [
+            "11",
+            "5"
+        ],
+        "cat_dict": {
+            "m_c": "11",
+            "r_c": "5"
+        }
+    },
+    {
+        "text": "Fiercepaw asks Chillkit if her fur looks clean. (neutral effect)",
+        "types": [
+            "relation",
+            "interaction"
+        ],
+        "cats_involved": [
+            "15",
+            "6"
+        ],
+        "cat_dict": {
+            "m_c": "15",
+            "r_c": "6"
+        }
+    },
+    {
+        "text": "Daystar asks Frogsilk if her fur looks clean. (neutral effect)",
+        "types": [
+            "relation",
+            "interaction"
+        ],
+        "cats_involved": [
+            "9",
+            "7"
+        ],
+        "cat_dict": {
+            "m_c": "9",
+            "r_c": "7"
+        }
+    },
+    {
+        "text": "Daystar, wanting to help keep her Clanmates in shape and ready for anything, woke Frogsilk, Newtfrost, Stagshade, and Piperswoop up early for morning stretches.screens.relationships.negative_postscript",
+        "types": [
+            "relation",
+            "interaction"
+        ],
+        "cats_involved": [
+            "7",
+            "9",
+            "5",
+            "17",
+            "8"
+        ],
+        "cat_dict": {}
+    },
+    {
+        "text": "Daystar feels a little safer when Newtfrost joins her in the clearing. (low positive effect)",
+        "types": [
+            "relation",
+            "interaction"
+        ],
+        "cats_involved": [
+            "5",
+            "7"
+        ],
+        "cat_dict": {
+            "m_c": "5",
+            "r_c": "7"
+        }
+    },
+    {
+        "text": "The Clan watches Piperswoop and Dawnkit slowly lose their patience with one another. (high negative effect)",
+        "types": [
+            "relation",
+            "interaction"
+        ],
+        "cats_involved": [
+            "16",
+            "8"
+        ],
+        "cat_dict": {
+            "m_c": "16",
+            "r_c": "8"
+        }
+    },
+    {
+        "text": "Frogsilk and Fiercepaw agree about something trivial. (low positive effect)",
+        "types": [
+            "relation",
+            "interaction"
+        ],
+        "cats_involved": [
+            "6",
+            "9"
+        ],
+        "cat_dict": {
+            "m_c": "6",
+            "r_c": "9"
+        }
+    },
+    {
+        "text": "Frogsilk, Chillkit, and Newtfrost took a sunbath and had a little small talk.screens.relationships.neutral_postscript",
+        "types": [
+            "relation",
+            "interaction"
+        ],
+        "cats_involved": [
+            "9",
+            "15",
+            "5"
+        ],
+        "cat_dict": {}
+    },
+    {
+        "text": "Frogsilk defends Chillkit in conversations. (high positive effect)",
+        "types": [
+            "relation",
+            "interaction"
+        ],
+        "cats_involved": [
+            "15",
+            "9"
+        ],
+        "cat_dict": {
+            "m_c": "15",
+            "r_c": "9"
+        }
+    },
+    {
+        "text": "Emberspots is checking on Dawnkit. (neutral effect)",
+        "types": [
+            "relation",
+            "interaction"
+        ],
+        "cats_involved": [
+            "16",
+            "11"
+        ],
+        "cat_dict": {
+            "m_c": "16",
+            "r_c": "11"
+        }
+    },
+    {
+        "text": "Emberspots worries that one of her friends likes Silverkit more. (medium negative effect)",
+        "types": [
+            "relation",
+            "interaction"
+        ],
+        "cats_involved": [
+            "14",
+            "11"
+        ],
+        "cat_dict": {
+            "m_c": "14",
+            "r_c": "11"
+        }
+    },
+    {
+        "text": "Emberspots has gotten stomachache.",
+        "types": [
+            "health"
+        ],
+        "cats_involved": [
+            "11"
+        ],
+        "cat_dict": {
+            "m_c": "11"
+        }
+    },
+    {
+        "text": "Dashpaw fidgets impatiently beside Emberspots as she waits for the meeting to end. She's finally an apprentice! She wants to hurry up, get out there and go, go, go!",
+        "types": [
+            "ceremony"
+        ],
+        "cats_involved": [
+            "11",
+            "12"
+        ],
+        "cat_dict": {}
+    },
+    {
+        "text": "Whenever Stagshade's name is mentioned, Dashpaw relaxes. (high positive effect)",
+        "types": [
+            "relation",
+            "interaction"
+        ],
+        "cats_involved": [
+            "17",
+            "12"
+        ],
+        "cat_dict": {
+            "m_c": "17",
+            "r_c": "12"
+        }
+    },
+    {
+        "text": "Bluestripe pads along on all four legs for the first time in a long time, wincing. His healed broken bone has definitely left the leg weaker, but it's manageable as far as he's concerned.",
+        "types": [
+            "health"
+        ],
+        "cats_involved": [
+            "3"
+        ],
+        "cat_dict": {}
+    },
+    {
+        "text": "Bluestripe and Newtfrost have a race. Bluestripe wins. (medium positive effect)",
+        "types": [
+            "relation",
+            "interaction"
+        ],
+        "cats_involved": [
+            "5",
+            "3"
+        ],
+        "cat_dict": {
+            "m_c": "5",
+            "r_c": "3"
+        }
+    },
+    {
+        "text": "Ivypuddle finally feels back to normal after the strain of birthing a litter.",
+        "types": [
+            "health"
+        ],
+        "cats_involved": [
+            "10"
+        ],
+        "cat_dict": {}
+    },
+    {
+        "text": "Ivypuddle and Dawnkit keep trying to figure out what a bad smell in camp is. (neutral effect)",
+        "types": [
+            "relation",
+            "interaction"
+        ],
+        "cats_involved": [
+            "16",
+            "10"
+        ],
+        "cat_dict": {
+            "m_c": "16",
+            "r_c": "10"
+        }
+    },
+    {
+        "text": "Ivypuddle hears a nice story about Silverkit. (low positive effect)",
+        "types": [
+            "relation",
+            "interaction"
+        ],
+        "cats_involved": [
+            "14",
+            "10"
+        ],
+        "cat_dict": {
+            "m_c": "14",
+            "r_c": "10"
+        }
+    },
+    {
+        "text": "Silverkit is having a wonderful time discussing recent Clan news with Daystar. (high positive effect)",
+        "types": [
+            "relation",
+            "interaction"
+        ],
+        "cats_involved": [
+            "7",
+            "14"
+        ],
+        "cat_dict": {
+            "m_c": "7",
+            "r_c": "14"
+        }
+    },
+    {
+        "text": "Silverkit was trying to fluff up her nest when she saw a thorn inside of her bedding. Another prank, but it could not fool her! ",
+        "types": [
+            "misc"
+        ],
+        "cats_involved": [
+            "14"
+        ],
+        "cat_dict": {}
+    },
+    {
+        "text": "Dashpaw thanked Chillkit for bringing her food. (low positive effect)",
+        "types": [
+            "relation",
+            "interaction"
+        ],
+        "cats_involved": [
+            "12",
+            "15"
+        ],
+        "cat_dict": {
+            "m_c": "12",
+            "r_c": "15"
+        }
+    },
+    {
+        "text": "Dawnkit no longer has a stomachache.",
+        "types": [
+            "health"
+        ],
+        "cats_involved": [
+            "16"
+        ],
+        "cat_dict": {
+            "m_c": "16"
+        }
+    },
+    {
+        "text": "Bluestripe keeps asking Dawnkit silly questions. (low negative effect)",
+        "types": [
+            "relation",
+            "interaction"
+        ],
+        "cats_involved": [
+            "3",
+            "16"
+        ],
+        "cat_dict": {
+            "m_c": "3",
+            "r_c": "16"
+        }
+    },
+    {
+        "text": "Stagshade travels to BatClan to resolve some recent personal disputes. ",
+        "types": [
+            "misc",
+            "other_clans"
+        ],
+        "cats_involved": [
+            "17"
+        ],
+        "cat_dict": {}
+    },
+    {
+        "text": "Stagshade wonders why Bluestripe keeps spending time with him when others usually don't like his attitude, but he certainly won't object. (medium positive effect)",
+        "types": [
+            "relation",
+            "interaction"
+        ],
+        "cats_involved": [
+            "3",
+            "17"
+        ],
+        "cat_dict": {
+            "m_c": "3",
+            "r_c": "17"
+        }
+    }
+]

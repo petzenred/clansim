@@ -1,0 +1,241 @@
+[
+    {
+        "cat_from_id": "5",
+        "cat_to_id": "1",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 19,
+        "dislike": 0,
+        "admiration": 13,
+        "comfortable": 3,
+        "jealousy": 0,
+        "trust": 0,
+        "log": [
+            "Chickfoot forgot something important about Newtfrost. (medium negative effect)- Newtfrost was 12 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "5",
+        "cat_to_id": "2",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 5,
+        "dislike": 0,
+        "admiration": 13,
+        "comfortable": 8,
+        "jealousy": 0,
+        "trust": 26,
+        "log": [
+            "Honeyfleck tells Newtfrost that she was worried for him. (low positive effect)- Newtfrost was 15 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "5",
+        "cat_to_id": "4",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 13,
+        "dislike": 13,
+        "admiration": 6,
+        "comfortable": 14,
+        "jealousy": 0,
+        "trust": 11,
+        "log": [
+            "Newtfrost confesses something to Verbenafoot, but realizes he can't relate at all. (low negative effect)- Newtfrost was 13 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "5",
+        "cat_to_id": "6",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 8,
+        "dislike": 0,
+        "admiration": 18,
+        "comfortable": 23,
+        "jealousy": 0,
+        "trust": 10,
+        "log": []
+    },
+    {
+        "cat_from_id": "5",
+        "cat_to_id": "7",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 35,
+        "dislike": 12,
+        "admiration": 23,
+        "comfortable": 20,
+        "jealousy": 0,
+        "trust": 6,
+        "log": [
+            "These cats recently interacted. (positive effect)- Daystar was 78 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "5",
+        "cat_to_id": "8",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 2,
+        "dislike": 0,
+        "admiration": 21,
+        "comfortable": 6,
+        "jealousy": 0,
+        "trust": 5,
+        "log": [
+            "These cats recently interacted. (positive effect)- Piperswoop was 12 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "5",
+        "cat_to_id": "9",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 19,
+        "dislike": 0,
+        "admiration": 7,
+        "comfortable": 12,
+        "jealousy": 0,
+        "trust": 14,
+        "log": []
+    },
+    {
+        "cat_from_id": "5",
+        "cat_to_id": "11",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 33,
+        "dislike": 3,
+        "admiration": 20,
+        "comfortable": 31,
+        "jealousy": 8,
+        "trust": 4,
+        "log": [
+            "Newtfrost sees a Clanmate complimenting Emberspots and feels a pang of envy. (low negative effect)- Newtfrost was 14 moons old",
+            "Newtfrost and Emberspots chat about Clan news. (low positive effect)- Newtfrost was 16 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "5",
+        "cat_to_id": "12",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 7,
+        "dislike": 0,
+        "admiration": 7,
+        "comfortable": 22,
+        "jealousy": 0,
+        "trust": 3,
+        "log": []
+    },
+    {
+        "cat_from_id": "5",
+        "cat_to_id": "13",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    },
+    {
+        "cat_from_id": "5",
+        "cat_to_id": "3",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 13,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    },
+    {
+        "cat_from_id": "5",
+        "cat_to_id": "10",
+        "mates": false,
+        "family": false,
+        "romantic_love": 4,
+        "platonic_like": 2,
+        "dislike": 0,
+        "admiration": 10,
+        "comfortable": 4,
+        "jealousy": 0,
+        "trust": 3,
+        "log": [
+            "These cats recently interacted. (positive effect)- Ivypuddle was 57 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "5",
+        "cat_to_id": "14",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    },
+    {
+        "cat_from_id": "5",
+        "cat_to_id": "15",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    },
+    {
+        "cat_from_id": "5",
+        "cat_to_id": "16",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    },
+    {
+        "cat_from_id": "5",
+        "cat_to_id": "17",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    }
+]

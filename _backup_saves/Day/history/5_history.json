@@ -1,0 +1,31 @@
+{
+    "beginning": {},
+    "mentor_influence": {
+        "trait": {
+            "7": {
+                "lawfulness": -2,
+                "strings": [
+                    "break rules that don't suit them"
+                ]
+            }
+        },
+        "skill": {
+            "7": {
+                "CAMP": 3,
+                "strings": [
+                    "caring for camp"
+                ]
+            }
+        }
+    },
+    "app_ceremony": {
+        "honor": "devotion",
+        "graduation_age": 12,
+        "moon": 1
+    },
+    "lead_ceremony": null,
+    "possible_history": {},
+    "died_by": [],
+    "scar_events": [],
+    "murder": {}
+}

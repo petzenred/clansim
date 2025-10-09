@@ -1,0 +1,22 @@
+{
+    "beginning": {},
+    "mentor_influence": {
+        "trait": {
+            "2": {
+                "lawfulness": -2,
+                "aggression": -2
+            }
+        },
+        "skill": {
+            "2": {
+                "KIT": 7
+            }
+        }
+    },
+    "app_ceremony": {},
+    "lead_ceremony": null,
+    "possible_history": {},
+    "died_by": [],
+    "scar_events": [],
+    "murder": {}
+}

@@ -1,0 +1,247 @@
+[
+    {
+        "cat_from_id": "6",
+        "cat_to_id": "1",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 1,
+        "dislike": 0,
+        "admiration": 4,
+        "comfortable": 20,
+        "jealousy": 0,
+        "trust": 7,
+        "log": []
+    },
+    {
+        "cat_from_id": "6",
+        "cat_to_id": "2",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 21,
+        "dislike": 0,
+        "admiration": 35,
+        "comfortable": 25,
+        "jealousy": 0,
+        "trust": 20,
+        "log": [
+            "These cats recently interacted. (positive effect)- Honeyfleck was 18 moons old",
+            "These cats recently interacted. (positive effect)- Honeyfleck was 20 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "6",
+        "cat_to_id": "4",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 6,
+        "admiration": 0,
+        "comfortable": 12,
+        "jealousy": 13,
+        "trust": 12,
+        "log": []
+    },
+    {
+        "cat_from_id": "6",
+        "cat_to_id": "5",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 11,
+        "dislike": 0,
+        "admiration": 11,
+        "comfortable": 4,
+        "jealousy": 0,
+        "trust": 10,
+        "log": [
+            "These cats recently interacted. (positive effect)- Newtfrost was 16 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "6",
+        "cat_to_id": "7",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 18,
+        "dislike": 8,
+        "admiration": 24,
+        "comfortable": 17,
+        "jealousy": 13,
+        "trust": 12,
+        "log": [
+            "Fiercekit suspects that Quickstar gets special treatment. (low negative effect)- Fiercekit was 4 moons old",
+            "These cats recently interacted. (positive effect)- Daystar was 78 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "6",
+        "cat_to_id": "8",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 34,
+        "dislike": 0,
+        "admiration": 12,
+        "comfortable": 1,
+        "jealousy": 0,
+        "trust": 10,
+        "log": [
+            "These cats recently interacted. (positive effect)- Piperswoop was 11 moons old",
+            "These cats recently interacted. (positive effect)- Piperswoop was 12 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "6",
+        "cat_to_id": "9",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 53,
+        "dislike": 0,
+        "admiration": 13,
+        "comfortable": 46,
+        "jealousy": 0,
+        "trust": 27,
+        "log": [
+            "Fiercepaw thinks Frogsilk tells the best stories. (high positive effect)- Fiercepaw was 6 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "6",
+        "cat_to_id": "11",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 25,
+        "dislike": 0,
+        "admiration": 8,
+        "comfortable": 21,
+        "jealousy": 0,
+        "trust": 1,
+        "log": [
+            "Fiercekit sees Emberspots whispering suspiciously to a Clanmate. (low negative effect)- Fiercekit was 5 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "6",
+        "cat_to_id": "12",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 8,
+        "dislike": 0,
+        "admiration": 4,
+        "comfortable": 3,
+        "jealousy": 0,
+        "trust": 10,
+        "log": []
+    },
+    {
+        "cat_from_id": "6",
+        "cat_to_id": "13",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    },
+    {
+        "cat_from_id": "6",
+        "cat_to_id": "3",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    },
+    {
+        "cat_from_id": "6",
+        "cat_to_id": "10",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 10,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": [
+            "These cats recently interacted. (positive effect)- Ivypuddle was 57 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "6",
+        "cat_to_id": "14",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 8,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": [
+            "Fiercepaw loses in a race against Silverkit and acts bitterly about it. (low negative effect)- Fiercepaw was 7 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "6",
+        "cat_to_id": "15",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": [
+            "Fiercepaw asks Chillkit if her fur looks clean. (neutral effect)- Fiercepaw was 8 moons old"
+        ]
+    },
+    {
+        "cat_from_id": "6",
+        "cat_to_id": "16",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    },
+    {
+        "cat_from_id": "6",
+        "cat_to_id": "17",
+        "mates": false,
+        "family": false,
+        "romantic_love": 0,
+        "platonic_like": 0,
+        "dislike": 0,
+        "admiration": 0,
+        "comfortable": 0,
+        "jealousy": 0,
+        "trust": 0,
+        "log": []
+    }
+]
