@@ -220,13 +220,13 @@ class GenerateEvents:
         event_list = []
 
         # skip the rest of the loading if there is an unrecognised biome
-        if game.clan.biome not in AVAILABLE_BIOMES:
+        if game.clan_obj.biome not in AVAILABLE_BIOMES:
             print(
-                f"WARNING: unrecognised biome {game.clan.biome} in generate_events. Have you added it to BIOME_TYPES "
+                f"WARNING: unrecognised biome {game.clan_obj.biome} in generate_events. Have you added it to BIOME_TYPES "
                 f"in clan.py?"
             )
 
-        biome = game.clan.biome.lower()
+        biome = game.clan_obj.biome.lower()
 
         # biome specific events
         event_list.extend(GenerateEvents.generate_short_events(event_type, biome))
@@ -306,13 +306,13 @@ class GenerateEvents:
             # check for old age
             if (
                 "old_age" in event.sub_type
-                and cat.moons < game.config["death_related"]["old_age_death_start"]
+                and cat.moons < game._game_config["death_related"]["old_age_death_start"]
             ):
                 continue
             # remove some non-old age events to encourage elders to die of old age more often
             if (
                 "old_age" not in event.sub_type
-                and cat.moons > game.config["death_related"]["old_age_death_start"]
+                and cat.moons > game._game_config["death_related"]["old_age_death_start"]
                 and int(random.random() * 3)
             ):
                 continue
@@ -427,7 +427,7 @@ class GenerateEvents:
                         continue
 
             # clans below a certain age can't have their supplies messed with
-            if game.clan.age < 5 and event.supplies:
+            if game.clan_obj.age < 5 and event.supplies:
                 continue
 
             elif event.supplies:
@@ -441,7 +441,7 @@ class GenerateEvents:
                             continue
 
                         if not event_for_freshkill_supply(
-                            game.clan.freshkill_pile,
+                            game.clan_obj.freshkill_pile,
                             trigger,
                             freshkill_trigger_factor,
                             clan_size,
@@ -473,7 +473,7 @@ class GenerateEvents:
         event_list = []
 
         try:
-            biome = cast_to_biome(game.clan.biome)
+            biome = cast_to_biome(game.clan_obj.biome)
             if not specific_event:
                 event_list.extend(
                     GenerateEvents.generate_ongoing_events(event_type, biome)

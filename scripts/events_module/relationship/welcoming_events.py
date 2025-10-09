@@ -68,8 +68,8 @@ class Welcoming_Events:
         )
 
         # influence the relationship
-        new_to_clan_cat = game.config["new_cat"]["rel_buff"]["new_to_clan_cat"]
-        clan_cat_to_new = game.config["new_cat"]["rel_buff"]["clan_cat_to_new"]
+        new_to_clan_cat = game._game_config["new_cat"]["rel_buff"]["new_to_clan_cat"]
+        clan_cat_to_new = game._game_config["new_cat"]["rel_buff"]["clan_cat_to_new"]
         change_relationship_values(
             cats_to=[clan_cat],
             cats_from=[new_cat],
@@ -246,7 +246,7 @@ def create_welcome_interaction(inter_list) -> list:
     for inter in inter_list:
         created_list.append(
             Welcome_Interaction(
-                id=inter["id"],
+                id=inter["cat_id"],
                 interactions=inter["interactions"] if "interactions" in inter else None,
                 background=inter["background"] if "background" in inter else None,
                 new_cat_moons=(

@@ -11,7 +11,6 @@ TODO
  - Prefixes and suffixes shouldn't use the same source.
 """
 
-import contextlib
 import os
 import random
 import ujson
@@ -19,13 +18,14 @@ from typing import Optional
 
 
 from definitions import (
-    Age, Backstory, Biome, EyeColour,
-    Location, PeltColour, PeltPattern, Rank,
-    RedSkill, TortiePattern, BackstoryCategory,
+    Age, Biome, Location,
+    EyeColour, PeltColour, PeltPattern, TortiePattern,
+    Rank, RedSkill,
 )
-from scripts._red.cat_tracker import cat_tracker
-from scripts._red.conf_manager import conf
+from scripts.game_structure.game_essentials import game
+from scripts._red.config_manager import config
 from scripts._red.general_utils import one_in_num_chance
+from scripts._red.cats.history.red_backstory import RedBackstoryCategory
 from scripts.housekeeping.datadir import get_save_dir
 
 import logging
@@ -35,8 +35,8 @@ logger = logging.getLogger(__name__)
 # Constants
 ########################################################################################################################
 
-GAME_CONFIG_CAT_NAME_CONTROLS: dict = conf.get_config_value("cat_name_controls")
-GAME_CONFIG_FUN: dict = conf.get_config_value("fun")
+GAME_CONFIG_CAT_NAME_CONTROLS: dict = config.get_config_value("cat_name_controls")
+GAME_CONFIG_FUN: dict = config.get_config_value("fun")
 
 # FIXME remove the manual dictionary below
 # GAME_CONFIG_CAT_NAME_CONTROLS: dict = {
@@ -166,8 +166,10 @@ class RedName:
         if not load_existing_name:
             # decide prefix first
             while not self._verify_prefix():
-                if backstory and backstory.category.outsider:
+                if backstory and backstory.category in (RedBackstoryCategory.Loner, RedBackstoryCategory.Rogue):
                     self.prefix = self.names_dict["loner_names"]
+                elif backstory and backstory.category is RedBackstoryCategory.Kittypet:
+                    self.prefix = self.names_dict["loner_names"] + self.names_dict["kittypet_names"]
                 else:
                     self.prefix_source = None
                     self._give_prefix(eye_colour=eyes, pelt_colour=colour, tortie_colour=tortie_colour, biome=biome)
@@ -192,8 +194,8 @@ class RedName:
         if not self.prefix:
             return False
         # Check for prefix duplication within the cat's Clan. It's not unheard of for cats in different Clans
-        #   to be using the same prefix (e.g. Lionblaze and Lioneye), so that's allowed.
-        if self.prefix in cat_tracker.name_prefixes_per_clan[self.cat.clan_prefix]:
+        #   to be using the same prefix (e.g. Lionblaze and Lioneye), so that's allowed.\
+        if self.prefix in game.cat_tracker.get_name_prefixes_of_clan(clan_prefix = self.cat.clan_prefix):
             return False
         return True
 

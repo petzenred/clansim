@@ -24,8 +24,8 @@ def event_for_location(locations: list) -> bool:
             req_biome = place
             req_camps = ["any"]
 
-        if req_biome == game.clan.biome.lower():
-            if "any" in req_camps or game.clan.camp_bg in req_camps:
+        if req_biome == game.clan_obj.biome.lower():
+            if "any" in req_camps or game.clan_obj.camp_bg in req_camps:
                 return True
         return False
 
@@ -34,7 +34,7 @@ def event_for_season(seasons: list) -> bool:
     """
         checks if the clan is within the given seasons
         """
-    if "any" in seasons or game.clan.current_season.lower() in seasons:
+    if "any" in seasons or game.clan_obj.current_season.lower() in seasons:
         return True
 
     return False
@@ -48,7 +48,7 @@ def event_for_tags(tags: list, cat, other_cat=None) -> bool:
         return True
 
     # some events are mode specific
-    mode = game.clan.game_mode
+    mode = game.clan_obj.game_mode
     possible_modes = ["classic", "expanded", "cruel_season"]
     for _poss in possible_modes:
         if _poss in tags and mode != _poss:
@@ -56,7 +56,7 @@ def event_for_tags(tags: list, cat, other_cat=None) -> bool:
 
     # check leader life tags
     if cat.status == "leader":
-        leader_lives = game.clan.leader_lives
+        leader_lives = game.clan_obj.leader_lives
 
         life_lookup = {
             "some_lives": 4,
@@ -114,7 +114,7 @@ def event_for_reputation(required_rep: list) -> bool:
     if "any" in required_rep:
         return True
 
-    clan_rep = game.clan.reputation
+    clan_rep = game.clan_obj.reputation
 
     if "hostile" in required_rep and 0 <= clan_rep <= 30:
         return True
@@ -149,7 +149,7 @@ def event_for_freshkill_supply(pile, trigger, factor, clan_size) -> bool:
     """
         checks if clan has the correct amount of freshkill for event
         """
-    if game.clan.game_mode == "classic":
+    if game.clan_obj.game_mode == "classic":
         return False
 
     needed_amount = pile.amount_food_needed()
@@ -165,11 +165,11 @@ def event_for_freshkill_supply(pile, trigger, factor, clan_size) -> bool:
 
     # find how much is too much freshkill
     # it would probably be good to move this section of finding trigger_value to the freshkill class
-    divider = 35 if game.clan.game_mode == "expanded" else 20
+    divider = 35 if game.clan_obj.game_mode == "expanded" else 20
     factor = factor - round(
         pow((clan_size / divider), 2)
     )
-    if factor < 2 and game.clan.game_mode == "expanded":
+    if factor < 2 and game.clan_obj.game_mode == "expanded":
         factor = 2
 
     trigger_value = round(factor * needed_amount, 2)
@@ -190,7 +190,7 @@ def event_for_herb_supply(trigger, supply_type, clan_size) -> bool:
     if "always" in trigger:
         return True
 
-    herb_supply = game.clan.herb_supply
+    herb_supply = game.clan_obj.herb_supply
 
     if not herb_supply.entire_supply and "empty" in trigger:
         return True

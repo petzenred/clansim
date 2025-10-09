@@ -179,8 +179,8 @@ class RomanticEvents:
             relevant_dict["positive"] if positive else relevant_dict["negative"]
         )
         filtered_interactions = []
-        _season = [str(game.clan.current_season).casefold(), "Any", "any"]
-        _biome = [str(game.clan.biome).casefold(), "Any", "any"]
+        _season = [str(game.clan_obj.current_season).casefold(), "Any", "any"]
+        _biome = [str(game.clan_obj.biome).casefold(), "Any", "any"]
         for interaction in possible_interactions:
             in_tags = [i for i in interaction.biome if i not in _biome]
             if len(in_tags) > 0:
@@ -197,7 +197,7 @@ class RomanticEvents:
                 continue
 
             cat_fulfill = cats_fulfill_single_interaction_constraints(
-                cat_from, cat_to, interaction, game.clan.game_mode
+                cat_from, cat_to, interaction, game.clan_obj.game_mode
             )
             if not cat_fulfill:
                 continue
@@ -504,6 +504,7 @@ class RomanticEvents:
         return: bool if event is triggered or not
         """
 
+        # TODO use global_rels.cat_get_highest_romance() instead
         # get the highest romantic love relationships and
         rel_list = cat_from.relationships.values()
         highest_romantic_relation = get_highest_romantic_relation(
@@ -512,7 +513,7 @@ class RomanticEvents:
         if not highest_romantic_relation:
             return False
 
-        condition = game.config["mates"]["confession"]["make_confession"]
+        condition = game._game_config["mates"]["confession"]["make_confession"]
         if not RomanticEvents.relationship_fulfill_condition(
             highest_romantic_relation, condition
         ):
@@ -545,7 +546,7 @@ class RomanticEvents:
             return False
 
         become_mate = False
-        condition = game.config["mates"]["confession"]["accept_confession"]
+        condition = game._game_config["mates"]["confession"]["accept_confession"]
         rel_to_check = highest_romantic_relation.opposite_relationship
         if not rel_to_check:
             highest_romantic_relation.link_relationship()
@@ -657,11 +658,11 @@ class RomanticEvents:
             relationship_to = cat_to.create_one_relationship(cat_from)
 
         mate_string = None
-        mate_chance = game.config["mates"]["chance_fulfilled_condition"]
+        mate_chance = game._game_config["mates"]["chance_fulfilled_condition"]
         hit = int(random.random() * mate_chance)
 
         # has to be high because every moon this will be checked for each relationship in the game
-        friends_to_lovers = game.config["mates"]["chance_friends_to_lovers"]
+        friends_to_lovers = game._game_config["mates"]["chance_friends_to_lovers"]
         random_hit = int(random.random() * friends_to_lovers)
 
         # already return if there is 'no' hit (everything above 0), other checks are not necessary
@@ -687,10 +688,10 @@ class RomanticEvents:
         if (
             not hit
             and RomanticEvents.relationship_fulfill_condition(
-                relationship_from, game.config["mates"]["mate_condition"]
+                relationship_from, game._game_config["mates"]["mate_condition"]
             )
             and RomanticEvents.relationship_fulfill_condition(
-                relationship_to, game.config["mates"]["mate_condition"]
+                relationship_to, game._game_config["mates"]["mate_condition"]
             )
         ):
             become_mates = True
@@ -700,10 +701,10 @@ class RomanticEvents:
         if (
             not random_hit
             and RomanticEvents.relationship_fulfill_condition(
-                relationship_from, game.config["mates"]["platonic_to_romantic"]
+                relationship_from, game._game_config["mates"]["platonic_to_romantic"]
             )
             and RomanticEvents.relationship_fulfill_condition(
-                relationship_to, game.config["mates"]["platonic_to_romantic"]
+                relationship_to, game._game_config["mates"]["platonic_to_romantic"]
             )
         ):
             become_mates = True
@@ -815,8 +816,8 @@ class RomanticEvents:
     @staticmethod
     def current_mates_allow_new_mate(cat_from, cat_to) -> bool:
         """Check if all current mates are fulfill the given conditions."""
-        current_mate_condition = game.config["mates"]["poly"]["current_mate_condition"]
-        current_to_new_condition = game.config["mates"]["poly"]["mates_to_each_other"]
+        current_mate_condition = game._game_config["mates"]["poly"]["current_mate_condition"]
+        current_to_new_condition = game._game_config["mates"]["poly"]["mates_to_each_other"]
 
         # check relationship from current mates from cat_from
         all_mates_fulfill_current_mate_condition = True
@@ -1006,7 +1007,7 @@ class RomanticEvents:
             relationship_to = cat_to.create_one_relationship(cat_from)
 
         # No breakup chance if the cat is a good deal above the make-confession requirments.
-        condition = game.config["mates"]["confession"]["make_confession"].copy()
+        condition = game._game_config["mates"]["confession"]["make_confession"].copy()
         for x in condition:
             if condition[x] > 0:
                 condition[x] += 16

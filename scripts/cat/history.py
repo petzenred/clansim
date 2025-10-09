@@ -1,12 +1,127 @@
 import random
+from enum import StrEnum
+from dataclasses import dataclass
+from typing import Optional
 
-from definitions import Status
+from definitions import Location, Rank
 from scripts.cat.skills import SkillPath
 from scripts.game_structure.game_essentials import game
 
 import logging
 logger = logging.getLogger(__name__)
 
+########################################################################################################################
+# Enums and Dataclasses
+########################################################################################################################
+
+# TODO history is a dictionary, where the keys are integers for the moon where the event happened and the values are Events
+# TODO allow secret and false histories that the player doesn't know, for example:
+#  - secret and false parents
+#  - secret and false reasons for joining Clans (so a cat can be a spy from another Clan, a pack of rogues, etc.)
+
+@dataclass
+class Birth:
+    """ Short dataclass detailing how a cat was created. """
+
+    moon_of_birth: int
+    age_at_birth: int # This is 0 for kits who are born, and higher for cats created during Clan creation, through patrol events, etc.
+    bio_parents: list
+    backstory: str
+    clan: Optional[str]
+    rank: Rank
+
+
+@dataclass
+class AppCeremony:
+    """ Short dataclass detailing how a Clan cat's apprenticing ceremony went. """
+
+
+@dataclass
+class LeadCeremony:
+    """ Short dataclass detailing how a Clan cat's leadership ceremony went. """
+
+    df: bool # Was it a Dark Forest leadership ceremony?
+    sc: bool # Was it a StarClan leadership ceremony?
+    intro: int # index of the intro used in the leadership ceremony
+    lives: list[dict] # each dictionary contains the index of the life, the cat who gave it, and the virtue given
+    outro: int # index of the outro used in the leadership ceremony
+
+    # TODO when generating lives, don't get the same virtue from multiple cats
+
+
+@dataclass
+class Death:
+    """ Short dataclass detailing how a cat died. Only created once a cat has died. """
+
+    moon_of_death: int
+    dark_forest: bool
+    faded: bool
+    prevent_fading: bool
+    cause_of_death: str
+
+
+########################################################################################################################
+# Methods
+########################################################################################################################
+
+def generate_leadership_ceremony(new_leader) -> LeadCeremony:
+    """ Generate a leadership ceremony event for a Clan leader.
+
+    TODO
+     - make sure the cat is logged as their clan's leader when this is generated
+
+    :param new_leader: a Cat object who is the new leader of a Clan
+    """
+    # TODO Make sure the cat's history has been loaded, and reload it if it hasn't been
+    # new_leader.history.check_load()
+
+    # The text used will depend on whether the Clan's guide is from StarClan or the Dark Forest.
+    if game.clan_obj.instructor.location is Location.StarClan:
+        pass # TODO use StarClan dictionary
+    elif game.clan_obj.instructor.location is Location.DarkForest:
+        pass # TODO use Dark Forest dictionary
+    else:
+        raise AttributeError(f"Clan guides should be from either StarClan or the Dark Forest, "
+                             f"but {game.clan_obj}'s guide is in '{game.clan_obj.instructor.location}'")
+
+    # ---------------------------------- INTROS ---------------------------------- #
+
+    # TODO filter through all possible intros to get ones that are valid for new_leader
+
+    # TODO pick a random intro
+
+    # ---------------------------------- LIVES ----------------------------------- #
+
+    # TODO filter through all possible lives to get ones that are valid for new_leader
+
+    # TODO choose 9 random lives
+
+    # TODO choose 9 different virtues, so each life has a unique one
+
+    # TODO replace name codes (m_c, r_c, c_n)
+
+    # TODO replace pronouns and Clan names
+
+    # ---------------------------------- OUTROS ---------------------------------- #
+
+    # TODO filter through all possible outros to get ones that are valid for new_leader
+
+    # TODO pick a random outro
+
+    # ---------------------------------- FORMAT ---------------------------------- #
+
+    # TODO replace name codes (m_c, r_c, c_n)
+
+    # TODO replace pronouns and Clan names
+
+    # TODO create the LeadCeremony object and return it
+
+
+
+
+########################################################################################################################
+# Classes
+########################################################################################################################
 
 class History:
     """
@@ -32,6 +147,7 @@ class History:
         self.scar_events = scar_events if scar_events else []
         self.murder = murder if murder else {}
 
+        # TODO include this in SaveManager
         # fix 'old' history save bugs
         if type(self.mentor_influence["trait"]) is type(None):
             self.mentor_influence["trait"] = {}
@@ -166,15 +282,15 @@ class History:
         :param cat: cat object
         :param clan_born: default False, set True if the cat was not born in the Clan
         """
-        if not game.clan:
+        if not game.clan_obj:
             return
         History.check_load(cat)
 
         cat.history.beginning = {
             "clan_born": clan_born,
-            "birth_season": game.clan.current_season if clan_born else None,
+            "birth_season": game.clan_obj.current_season if clan_born else None,
             "age": cat.moons,
-            "moon": game.clan.age
+            "moon": game.clan_obj.age
         }
 
     @staticmethod
@@ -321,14 +437,14 @@ class History:
         :param cat: cat object
         :param honor: the honor trait given during the cat's ceremony
         """
-        if not game.clan:
+        if not game.clan_obj:
             return
         History.check_load(cat)
 
         cat.history.app_ceremony = {
             "honor": honor,
             "graduation_age": cat.moons,
-            "moon": game.clan.age
+            "moon": game.clan_obj.age
         }
 
     @staticmethod
@@ -355,7 +471,7 @@ class History:
             # Use a default is none is provided.
             # Will probably sound weird, but it's better than nothing
             if not death_text:
-                if cat.status == Status.Leader:
+                if cat.status == Rank.Leader:
                     death_text = f"died from an injury or illness ({condition})"
                 else:
                     death_text = f"m_c died from an injury or illness ({condition})."
@@ -390,7 +506,7 @@ class History:
             other_cat there (overriding the
             passed death_text and other_cat). """
 
-        if not game.clan:
+        if not game.clan_obj:
             return
         History.check_load(cat)
 
@@ -405,12 +521,12 @@ class History:
         cat.history.died_by.append({
             "involved": other_cat,
             "text": death_text,
-            "moon": game.clan.age
+            "moon": game.clan_obj.age
         })
 
     @staticmethod
     def add_scar(cat, scar_text, condition=None, other_cat=None):
-        if not game.clan:
+        if not game.clan_obj:
             return
         History.check_load(cat)
 
@@ -425,7 +541,7 @@ class History:
         cat.history.scar_events.append({
             "involved": other_cat,
             "text": scar_text,
-            "moon": game.clan.age
+            "moon": game.clan_obj.age
         })
 
     @staticmethod
@@ -439,7 +555,7 @@ class History:
         :param unrevealed_text: unrevealed event text for victim's death (not saved in their death history)
         :return:
         """
-        if not game.clan:
+        if not game.clan_obj:
             return
         History.check_load(cat)
         History.check_load(other_cat)
@@ -451,14 +567,14 @@ class History:
         other_cat.history.murder["is_murderer"].append({
             "victim": cat.ID,
             "revealed": revealed,
-            "moon": game.clan.age
+            "moon": game.clan_obj.age
         })
         cat.history.murder["is_victim"].append({
             "murderer": other_cat.ID,
             "revealed": revealed,
             "text": text,
             "unrevealed_text": unrevealed_text,
-            "moon": game.clan.age
+            "moon": game.clan_obj.age
         })
 
     @staticmethod
@@ -673,7 +789,7 @@ class History:
                 murder_history = murder_history["is_murderer"][murder_index]
                 murder_history["revealed"] = True
                 murder_history["revealed_by"] = other_cat.ID if other_cat else None
-                murder_history["revelation_moon"] = game.clan.age
+                murder_history["revelation_moon"] = game.clan_obj.age
                 if not other_cat:
                     murder_history["revelation_text"] = \
                         "The truth of {PRONOUN/m_c/poss} crime against [victim] is known to the Clan."
@@ -684,7 +800,7 @@ class History:
                 victim_history = victim_history["is_victim"][0]
                 victim_history["revealed"] = True
                 victim_history["revealed_by"] = other_cat.ID if other_cat else None
-                victim_history["revelation_moon"] = game.clan.age
+                victim_history["revelation_moon"] = game.clan_obj.age
                 if not other_cat:
                     victim_history["revelation_text"] = \
                         "The truth of {PRONOUN/m_c/poss} murder is known to the Clan."
@@ -696,7 +812,7 @@ class History:
                 if other_cat:
                     discoverer = str(other_cat.name)
                 if "clan_discovery" in murder_history:
-                    discoverer = game.clan.name + "Clan"
+                    discoverer = game.clan_obj.name + "Clan"
 
                 murder_history["revelation_text"] = murder_history["revelation_text"].replace('[victim]',
                                                                                               str(victim.name))

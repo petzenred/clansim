@@ -1,4 +1,4 @@
-# condition.py - Class for managing conditions that cats can have.
+# red_condition.py - Class for managing conditions that cats can have.
 import random
 
 # -------------------------------------------------------------------------------- #
@@ -20,7 +20,7 @@ from resources._red.conditions import ILLNESSES, INJURIES, PERMANENT_CONDITIONS
 # Classes
 ########################################################################################################################
 
-class Condition:
+class RedCondition:
     """ A pregnancy, an illness, an injury, or a permanent condition. """
 
 
@@ -96,19 +96,19 @@ class Condition:
 # Functions
 ########################################################################################################################
 
-def get_condition(condition_name: str, is_genetic: bool = False) -> Condition:
+def get_condition(condition_name: str, is_genetic: bool = False) -> RedCondition:
     """ Get a condition object. """
     if condition_name in PERMANENT_CONDITIONS:
-        return Condition(name=condition_name, is_genetic=is_genetic, **PERMANENT_CONDITIONS[condition_name])
+        return RedCondition(name=condition_name, is_genetic=is_genetic, **PERMANENT_CONDITIONS[condition_name])
     elif condition_name in ILLNESSES:
-        return Condition(name=condition_name, is_genetic=is_genetic, **ILLNESSES[condition_name])
+        return RedCondition(name=condition_name, is_genetic=is_genetic, **ILLNESSES[condition_name])
     elif condition_name in INJURIES:
-        return Condition(name=condition_name, is_genetic=is_genetic, **INJURIES[condition_name])
+        return RedCondition(name=condition_name, is_genetic=is_genetic, **INJURIES[condition_name])
     else:
         raise ValueError(f"Unknown condition: {condition_name}")
 
 
-def get_random_permanent_condition(parent_conditions: list = None) -> Condition:
+def get_random_permanent_condition(parent_conditions: list = None) -> RedCondition:
     """ Get a random permanent condition if a randomly generated cat has one. """
     population: list = []
     weights: list = []

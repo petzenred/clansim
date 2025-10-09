@@ -1,0 +1,401 @@
+# idea: LIFE: an ancient cat who shares a trait with m_c
+# idea: LIFE: an ancient cat who has a high stat in a facet that m_c has a low stat in (has a trait m_c lacks)
+# idea: LIFE: m_c's mentor
+# idea: LIFE: a cat who died on a patrol m_c was leading
+# idea: LIFE: a dead mate of m_c
+# idea: LIFE: leader's Clan founder
+
+# TAGS: new_clan, unknown_blessing
+
+intro:
+  default: # default
+    filter:
+      tags: []
+      leader:
+        trait: ~
+    text: "m_c leaves to speak with StarClan. {PRONOUN/m_c/subject/CAP} {VERB/m_c/close/closes} {PRONOUN/m_c/poss} eyes and {VERB/m_c/are/is} immediately surrounded by {PRONOUN/m_c/poss} loved ones, friends, and Clanmates who have passed on. Stars shine throughout their pelts, and their eyes are warm as they greet the new leader."
+  new_clan: # new_clan
+    filter:
+      tags:
+        - new_clan
+      leader:
+        trait: ~
+    text: "As m_c dreams that night, {PRONOUN/m_c/subject} {VERB/m_c/find/finds} {PRONOUN/m_c/self} walking the stars of Silverpelt, a ghostly landscape surrounding {PRONOUN/m_c/object} and a single, starry cat sat within a clearing."
+  0: # violent leader
+    filter:
+      tags: []
+      leader:
+        trait:
+          OR:
+            - bloodthirsty
+            - vengeful
+    text: "m_c leaves to speak with StarClan. {PRONOUN/m_c/subject/CAP} {VERB/m_c/close/closes} {PRONOUN/m_c/poss} eyes and {VERB/m_c/awaken/awakens} under a vast, inky black sky. {PRONOUN/m_c/subject/CAP} {VERB/m_c/turn/turns} around to see a wary group of cats approaching, stars dotting their fur."
+lives:
+  #example:
+  #  filter:
+  #    tags: []
+  #    leader:
+  #      trait: ~
+  #    giver:
+  #      trait: ~
+  #      rank: ~
+  #      lead_rel: ~
+  #  text: ""
+  #  virtues:
+  #    - asdf
+  unknown_ghosts:
+    filter:
+      tags:
+        - unknown_blessing
+      leader:
+        trait: ~
+      giver:
+        trait: ~
+        rank: ~
+        lead_rel: ~
+    text: "Suddenly, the mist at the edge of the clearing takes shape. Dozens of wispy, starry spirits emerge, quickly surrounding m_c. \"We grant you your remaining [life_num] lives.\" Individually, each voice is distant, but together, the force of their words shakes m_c to {PRONOUN/m_c/poss} core.  \"Use them well, with our blessing.\"  And in a heartbeat, they were gone."
+    virtues: []
+  default:
+    filter:
+      tags: []
+      leader:
+        trait: ~
+      giver:
+        trait: ~
+        rank: ~
+        lead_rel: ~
+    text: "r_c approaches, dipping {PRONOUN/r_c/poss} head in greeting. \"I give you a life for [virtue].\" {PRONOUN/r_c/subject/CAP} {VERB/r_c/meow/meows}, before slipping back into the crowd."
+    virtues:
+      - energy
+      - strength
+      - wisdom
+  only_guide:
+    filter:
+      tags:
+        - new_clan
+        - guide
+      leader:
+        trait: ~
+      giver:
+        trait: ~
+        rank: ~
+        lead_rel: ~
+    text: "The starry cat approaches {PRONOUN/m_c/object} and, although the cat is unfamiliar, their meeting still feels like a reunion with an old friend. \"My name is r_c. You meet me tonight, but the cats under your care will all meet me one day when they join the stars. For now,\" the cat presses {PRONOUN/r_c/poss} nose to m_c's forehead, \"Take this gift, to help you [virtue].\""
+    virtues:
+      - endure in the face of hardship
+      - know when to fight and when to choose peace
+      - have the strength to overcome your fears
+      - lead with tireless energy
+      - see the dawn behind the darkness
+      - find wisdom in desperate times
+  0: # Non-bloodthirsty leader, same-Clan medicine cat leader knew
+    filter:
+      tags: []
+      leader:
+        trait:
+          NOR:
+            - bloodthirsty
+      giver:
+        trait:
+          NOR:
+            - bloodthirsty # it just seems wierd for a bloodthirsty medicine cat to have a "warm smile" for a more peaceful leader
+        rank:
+          OR:
+            - medicine cat
+            - medicine cat apprentice
+        lead_rel:
+          AND:
+            op: morethan
+            value: 0 # Filter out cats who didn't have a positive relationship with the leader.
+            clan: same # Filter out cats who aren't from the same Clan as the leader.
+    text: "r_c approaches, a warm smile on {PRONOUN/r_c/poss} face. {PRONOUN/r_c/subject/CAP} {VERB/r_c/meow/meows}, \"I offer you a life for [virtue].\" Resting their muzzle on m_c's head, the medicine cat continues, \"Use this life to take care of {CLAN/r_c}, as I once did as a medicine cat.\""
+    virtues:
+      - devotion to your Clanmates. Never forget that to be a leader is to put their wellbeing before your own
+      - faith in StarClan. Never forget to look to your ancestors in times of hardship
+      - selflessness. Never forget that to be a leader is to put your Clanmates before yourself
+  1: # Selfless leader, selfless same-Clan medicine cat leader didn't know
+    filter:
+      tags: []
+      leader:
+        trait:
+          NOR:
+            - arrogant
+            - bloodthirsty
+            - cold
+            - vengeful
+      giver:
+        trait:
+          NOR:
+            # it just seems wierd for a cruel medicine cat to have a "warm smile" for a more peaceful leader
+            - arrogant
+            - bloodthirsty
+            - cold
+            - vengeful
+        rank:
+          OR:
+            - medicine cat
+            - medicine cat apprentice
+        lead_rel:
+          AND:
+            value: ~ # Filter out cats who knew the leader personally.
+            clan: same # Filter out cats who aren't from the same Clan as the leader.
+    text: "A starry cat approaches, a warm smile on {PRONOUN/r_c/poss} face. {PRONOUN/r_c/subject/CAP} {VERB/r_c/meow/meows}, \"My name is r_c. I was once the medicine cat of {CLAN/r_c}. I now offer you a life for [virtue].\" Resting their muzzle on m_c's head, the medicine cat continues, \"Use this life to take care of {CLAN/m_c}, as I once did.\""
+    virtues:
+      - devotion to your Clanmates. Never forget that to be a leader is to put their wellbeing before your own
+      - faith in StarClan. Never forget to look to your ancestors in times of hardship
+      - selflessness. Never forget that to be a leader is to put your Clanmates before yourself
+  2: # Selfish leader, selfless same-Clan medicine cat leader knew
+    filter:
+      tags: []
+      leader:
+        trait:
+          OR:
+            - ambitious
+            - arrogant
+            - bloodthirsty
+            - cold
+            - vengeful
+      giver:
+        trait:
+          NOR:
+            - ambitious
+            - arrogant
+            - bloodthirsty
+            - cold
+            - vengeful
+        rank:
+          OR:
+            - medicine cat
+            - medicine cat apprentice
+        lead_rel:
+          AND:
+            op: morethan
+            value: 0 # Filter out cats who didn't have a positive relationship with the leader.
+            clan: same # filter out cats who aren't from the same Clan as the leader.
+    text: "r_c approaches, a cautious look on {PRONOUN/r_c/poss} face. {PRONOUN/r_c/subject/CAP} {VERB/r_c/meow/meows}, \"I offer you a life for [virtue].\" Resting their muzzle on m_c's head, the medicine cat continues, \"Use this life to ensure that you never lose your way when guiding {CLAN/m_c}.\""
+    virtues:
+      - devotion to your Clanmates. Never forget that to be a leader is to put their wellbeing before your own
+      - faith in StarClan. Never forget to look to your ancestors in times of hardship, and to always heed their advice
+      - selflessness. Never forget that to be a leader is to put your Clanmates before yourself
+  3: # Selfish leader, selfless special cat who the leader didn't know
+    filter:
+      tags: []
+      leader:
+        trait:
+          OR:
+            - bloodthirsty
+            - vengeful
+            - ambitious
+      giver:
+        trait:
+          NOR:
+            - ambitious
+            - arrogant
+            - bloodthirsty
+            - cold
+            - vengeful
+        rank:
+          OR:
+            - medicine cat
+            - leader
+            - deputy
+        lead_rel:
+          AND:
+            value: ~ # Filter out cats who knew the leader personally.
+    text: "A star-furred cat approaches, a cautious look on {PRONOUN/r_c/poss} face. {PRONOUN/r_c/subject/CAP} {VERB/r_c/meow/meows}, \"My name is r_c. I was once the {RANK/r_c} of {CLAN/r_c}. I offer you a life for [virtue].\" Resting {PRONOUN/r_c/poss} muzzle on m_c's head, {PRONOUN/r_c/object} {VERB/r_c/continue/continues}, \"Use this life to ensure that you never lose your way when guiding {CLAN/m_c}.\""
+    virtues:
+      - devotion to your Clanmates. Never forget that to be a leader is to put their wellbeing before your own
+      - faith in StarClan. Never forget to look to your ancestors in times of hardship, and to always heed their advice
+      - selflessness. Never forget that to be a leader is to put your Clanmates before yourself
+      - knowing when to fight and when to choose peace. Clanmates' lives are worth more to a true leader than anything else
+      - loyalty to your Clan above personal desires
+      - the strength to overcome your flaws, so that you may always lead your Clan selflessly
+  4: # Violent leader, ancient elder
+    filter:
+      tags: []
+      leader:
+        trait:
+          OR:
+            - bloodthirsty
+            - cold
+            - vengeful
+      giver:
+        trait:
+          NOR:
+            - bloodthirsty
+            - cold
+            - vengeful
+        rank: elder
+        lead_rel:
+          AND:
+            value: ~ # Filter out cats who knew the leader personally.
+    text: r_c pads forward with a wary expression. {PRONOUN/r_c/subject/CAP} mew, "My name is r_c, elder of {CLAN/r_c}. I gift you a life for [virtue]."
+    virtues:
+      - empathy, for it is the duty of a Clan leader to treat even the feeblest elder with compassion and respect at all times
+      - grace # TODO: finish this
+      - humility, for even the strongest Clan leader will one day be as feeble as the oldest elder
+      - integrity, to put even the feeblest elder or kit before {PRONOUN/m_c/self}
+      - persistence, even in the face of the unconquerable enemy - time
+      - resilience, even in the face of the unconquerable enemy - time
+  5: # Adventurous giver
+    filter:
+      tags: []
+      leader:
+        trait: ~
+      giver:
+        trait:
+          OR:
+            - adventurous
+        rank:
+          NOR:
+            - kit
+        lead_rel: ~
+      text: "After giving a small lecture on the blessings of being open-minded to what lay beyond the Clan's borders, r_c happily gives m_c a life for [virtue]."
+      virtues:
+        - acceptance
+        - bravery
+        - clear judgment
+        - confidence
+        - courage
+        - determination
+        - farsightedness
+        - friendship
+        - mercy
+        - open-mindedness
+  6: # Warrior, deputy, or leader who the leader knew
+    filter:
+      tags: []
+      leader:
+        trait: ~
+      giver:
+        trait: ~
+        rank:
+          OR:
+            - warrior
+            - deputy
+            - leader
+        lead_rel:
+            op: morethan
+            value: 0 # Filter out cats who didn't have a positive relationship with the leader.
+    text: "r_c walks up to m_c, offering a life for [virtue]. {PRONOUN/r_c/subject/CAP} {VERB/r_c/smile/smiles}, and {VERB/r_c/state/states} that {CLAN/m_c} will do well under m_c's leadership. Yowls of agreement break out as r_c pads back to the other StarClan cats."
+    virtues:
+      - acceptance
+      - bravery
+      - certainty
+      - clear judgment
+      - confidence
+      - courage
+      - determination
+      - endurance
+      - farsightedness
+      - friendship
+      - loyalty
+      - mercy
+      - strength
+      - sympathy
+      - trust
+      - unity
+  7: # Warrior, deputy, or leader who the leader knew
+    filter:
+      tags: []
+      leader:
+        trait: ~
+      giver:
+        trait: ~
+        rank:
+          OR:
+            - warrior
+            - deputy
+            - leader
+        lead_rel:
+            op: morethan
+            value: 0 # Filter out cats who didn't have a positive relationship with the leader.
+    text: "r_c steps forward to give m_c a life for [virtue]. m_c grits {PRONOUN/m_c/poss} teeth as the chill of their new life rushes into {PRONOUN/m_c/object}, pouring over their soul like ice water."
+    virtues:
+      - acceptance
+      - bravery
+      - certainty
+      - clear judgment
+      - confidence
+      - courage
+      - determination
+      - endurance
+      - farsightedness
+      - strength
+      - unity
+  8: # Warrior, deputy, or leader who the leader knew
+    filter:
+      tags: []
+      leader:
+        trait: ~
+      giver:
+        trait: ~
+        rank:
+          OR:
+            - warrior
+            - deputy
+            - leader
+        lead_rel:
+            op: morethan
+            value: 0 # Filter out cats who didn't have a positive relationship with the leader.
+    text: "r_c dips {PRONOUN/r_c/poss} head in greeting. m_c is caught of guard when r_c's gifted life for [virtue] surges through m_c's pelt like lightning, making all of {PRONOUN/m_c/poss} fur stand on end."
+    virtues:
+      - acceptance
+      - bravery
+      - courage
+      - determination
+      - empathy
+      - endurance
+      - friendship
+      - loyalty
+      - trust
+  9:
+    filter:
+      tags: []
+      leader:
+        trait:
+          OR:
+            - ambitious
+      giver:
+        trait: ~
+        rank: ~
+        lead_rel: ~
+    text: "With a calm meow that m_c should keep {PRONOUN/m_c/poss} ambitions in check and not lose {PRONOUN/m_c/self} to greed, r_c delivers a life for [virtue]."
+    virtues:
+      - acceptance
+      - clear judgment
+      - confidence
+      - empathy
+      - farsightedness
+      - friendship
+      - humility
+      - mercy
+      - selflessness
+      - sympathy
+      - trust
+      - unity
+outro:
+  default:
+    filter:
+      tags: []
+      leader:
+        trait: ~
+    text: "r_c hails m_c by {PRONOUN/m_c/poss} new name, m_c_star, telling {PRONOUN/m_c/object} that {PRONOUN/m_c/poss} old life is no more. {PRONOUN/m_c/subject/CAP} {VERB/m_c/are/is} granted guardianship of c_n, and {VERB/m_c/are/is} told to use {PRONOUN/m_c/poss} new power wisely. The group of starry cats yowls m_c_star's name in support. m_c_star wakes up feeling a new strength within {PRONOUN/m_c/poss} body and knows that {PRONOUN/m_c/subject} {VERB/m_c/are/is} now ready to lead the Clan."
+  new_clan:
+    filter:
+      tags:
+        - new_clan
+      leader:
+        trait: ~
+    text: "m_c_star wakes, {PRONOUN/m_c/poss} new name echoing in {PRONOUN/m_c/poss} ears."
+  0: # violent leader
+    filter:
+      tags: []
+      leader:
+        trait:
+          OR:
+            - bloodthirsty
+            - vengeful
+    text: "r_c hails m_c by {PRONOUN/m_c/poss} new name, m_c_star, telling {PRONOUN/m_c/object} that {PRONOUN/m_c/poss} old life is no more. {PRONOUN/m_c/subject/CAP} {VERB/m_c/are/is} granted guardianship of c_n, and {VERB/m_c/are/is} told to use {PRONOUN/m_c/poss} new power wisely. StarClan is silent as the new leader begins to wake up. m_c_star stands, feeling a new strength within {PRONOUN/m_c/poss} body, and grins."
+
+

@@ -104,7 +104,7 @@ class Relationship:
         if rel_type in ["jealousy", "dislike"]:
             in_de_crease = "decrease" if positive else "increase"
 
-        chance = game.config["relationship"]["chance_for_neutral"]
+        chance = game._game_config["relationship"]["chance_for_neutral"]
         if chance == 1:
             in_de_crease = "neutral"
         elif chance > 1 and random.randint(1, chance) == 1:
@@ -114,9 +114,9 @@ class Relationship:
         intensity = choice(random.choices(["low", "medium", "high"], weights=[4, 3, 2]))
 
         # get other possible filters
-        season = str(game.clan.current_season).casefold()
-        biome = str(game.clan.biome).casefold()
-        game_mode = game.clan.game_mode
+        season = str(game.clan_obj.current_season).casefold()
+        biome = str(game.clan_obj.biome).casefold()
+        game_mode = game.clan_obj.game_mode
 
         all_interactions = interactions.NEUTRAL_INTERACTIONS.copy()
         if in_de_crease != "neutral":
@@ -267,7 +267,7 @@ class Relationship:
         if in_de_crease == "neutral":
             return 0
         # get the normal amount
-        amount = game.config["relationship"]["in_decrease_value"][intensity]
+        amount = game._game_config["relationship"]["in_decrease_value"][intensity]
         if in_de_crease == "decrease":
             amount = amount * -1
 
@@ -278,10 +278,10 @@ class Relationship:
             amount = amount
         elif compatibility:
             # positive compatibility
-            amount += game.config["relationship"]["compatibility_effect"]
+            amount += game._game_config["relationship"]["compatibility_effect"]
         else:
             # negative compatibility
-            amount -= game.config["relationship"]["compatibility_effect"]
+            amount -= game._game_config["relationship"]["compatibility_effect"]
         return amount
 
     def interaction_affect_relationships(
@@ -303,7 +303,7 @@ class Relationship:
         """
         amount = self.get_amount(in_de_crease, intensity)
         passive_buff = int(
-            abs(amount / game.config["relationship"]["passive_influence_div"])
+            abs(amount / game._game_config["relationship"]["passive_influence_div"])
         )
 
         # influence the own relationship

@@ -5,6 +5,7 @@
 - [ ] move loading to its own file and separate when it happens so Clan info is loaded when the ClanScreen is
 - [ ] handle ClanGen and ClanSim changelogs
 - [ ] name: Whitetoe
+- [ ] find all other `TODO.md` files
 
 ## Cat generation
 - [ ] change how naming works
@@ -35,11 +36,10 @@
   - [ ] other clan asks for freshkill
 - storylines
   - [ ] prophecy storyline
-    - must have a non-medicine cat skill 3 >= skill.STAR or a medicine cat with at least one of the following skills: 
-    STAR, PROPHET, OMEN, CLAIRVOYANT
-  - [ ] search for a cat who went missing
-  - [ ] search for a cat who was kidnapped by Twolegs
-    - [ ] the cat might come back spayed/neutered
+    - must have a non-medicine cat skill 3 >= skill.STAR or a medicine cat with at least one supernatural 
+non-Dark Forest skills
+  - [ ] search for a cat who is lost
+    - [ ] if the cat was kidnapped (kitnapped?) by Twolegs, the cat might come back spayed/neutered
   - [ ] There's two backstories about being sent as a spy. Make something out of that
 
 ## Interactions
@@ -96,7 +96,7 @@ involved, your Clan's relationship to the other Clan. For example, say the WindC
 skirmish with a ThunderClan patrol and kills a ThunderClan cat.
 
 Clan relationship	WindClan temper		Result
-Allies				high social			Mudclaw will gain the *shunned* tag for putting the Clan in danger by angering an ally and bordering Clan.
+Allies				high social			Mudclaw will gain the *shunned* tag for putting the Clan in danger by angering a bordering ally Clan.
 Allies				high aggression		Mudclaw's clanmates have a random chance to lose trust in him because he did not act in the Clan's best interest. One day, I'd like this to be determined by personality instead of random chance.
 					neutral-low social	
 
@@ -121,7 +121,11 @@ Enemies				whatever			Mudclaw will gain the *valorous* tag if the cat he killed 
 - [ ] What's the difference between MusicManager.audio_disabled_f and MusicManager.muted_f?
 
 ## Settings
-- [ ] Add settings keys to `definitions.py` and use them everywhere
+- [ ] Game rule: so that medicine cats shouldn't have mates or kits.
+  - [ ] Subrule where if a medicine cat has kits anyway, they are demoted to a warrior.
+- [ ] Game rule: use the term 'medicine cat', 'healer', or something else
+- [ ] Game rule: only cats who have trained apprentices in the past can become deputies (unless no one else is available).
+- [ ] Game rule: the founding leader of a Clan is renamed the same thing as the Clan (e.g. the founding leader of CherryClan will be renamed Cherrystar).
 
 Game mode and gameplay settings
 - Settings which are **NOT** available after Clan creation

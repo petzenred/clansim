@@ -153,7 +153,7 @@ class FreshkillPile:
             ]
         )
         # increase the number for sick cats
-        if game.clan and game.clan.game_mode == "cruel season":
+        if game.clan_obj and game.clan_obj.game_mode == "cruel season":
             sick_cats = [
                 cat
                 for cat in living_cats
@@ -207,22 +207,22 @@ class FreshkillPile:
         """
         self.update_nutrition(living_cats)
         # NOTE: this is for testing purposes
-        if not game.clan:
+        if not game.clan_obj:
             self.tactic_status(living_cats, additional_food_round)
             return
 
         # NOTE: the tactics should have their own function for testing purposes
-        if game.clan.clan_settings["younger first"]:
+        if game.clan_obj.clan_settings["younger first"]:
             self.tactic_younger_first(living_cats, additional_food_round)
-        elif game.clan.clan_settings["less nutrition first"]:
+        elif game.clan_obj.clan_settings["less nutrition first"]:
             self.tactic_less_nutrition_first(living_cats, additional_food_round)
-        elif game.clan.clan_settings["more experience first"]:
+        elif game.clan_obj.clan_settings["more experience first"]:
             self.tactic_more_experience_first(living_cats, additional_food_round)
-        elif game.clan.clan_settings["hunter first"]:
+        elif game.clan_obj.clan_settings["hunter first"]:
             self.tactic_hunter_first(living_cats, additional_food_round)
-        elif game.clan.clan_settings["sick/injured first"]:
+        elif game.clan_obj.clan_settings["sick/injured first"]:
             self.tactic_sick_injured_first(living_cats, additional_food_round)
-        elif game.clan.clan_settings["by-status"]:
+        elif game.clan_obj.clan_settings["by-status"]:
             self.tactic_status(living_cats, additional_food_round)
         else:
             self.tactic_status(living_cats, additional_food_round)
@@ -353,7 +353,7 @@ class FreshkillPile:
         ]
 
         # first split nutrition information into low nutrition and satisfied
-        ration_prey = game.clan.clan_settings["ration prey"] if game.clan else False
+        ration_prey = game.clan_obj.clan_settings["ration prey"] if game.clan_obj else False
 
         low_nutrition = {}
         satisfied = {}
@@ -390,7 +390,7 @@ class FreshkillPile:
 
             # check for condition
             if "pregnant" not in cat.injuries and cat.not_working():
-                if game.clan and game.clan.game_mode == "cruel season":
+                if game.clan_obj and game.clan_obj.game_mode == "cruel season":
                     feeding_amount += CONDITION_INCREASE
                 needed_amount = feeding_amount
             else:
@@ -492,7 +492,7 @@ class FreshkillPile:
             return
 
         # first split nutrition information into low nutrition and satisfied
-        ration_prey = game.clan.clan_settings["ration prey"] if game.clan else False
+        ration_prey = game.clan_obj.clan_settings["ration prey"] if game.clan_obj else False
 
         # first feed the cats with the lowest nutrition
         for cat in group:
@@ -511,7 +511,7 @@ class FreshkillPile:
 
             # check for condition
             if "pregnant" not in cat.injuries and cat.not_working():
-                if game.clan and game.clan.game_mode == "cruel season":
+                if game.clan_obj and game.clan_obj.game_mode == "cruel season":
                     feeding_amount += CONDITION_INCREASE
                 needed_amount = feeding_amount
             else:
@@ -556,7 +556,7 @@ class FreshkillPile:
             actual_needed : int|float
                 the amount the cat actually needs for the moon
         """
-        ration = game.clan.clan_settings["ration prey"] if game.clan else False
+        ration = game.clan_obj.clan_settings["ration prey"] if game.clan_obj else False
         remaining_amount = amount
         amount_difference = actual_needed - amount
         order = ["expires_in_1", "expires_in_2", "expires_in_3", "expires_in_4"]
@@ -678,8 +678,8 @@ class FreshkillPile:
         if (
             "pregnant" not in cat.injuries
             and cat.not_working()
-            and game.clan
-            and game.clan.game_mode == "cruel season"
+            and game.clan_obj
+            and game.clan_obj.game_mode == "cruel season"
         ):
             nutrition.max_score += CONDITION_INCREASE * factor
             nutrition.current_score = nutrition.max_score
@@ -695,7 +695,7 @@ class FreshkillPile:
 ADDITIONAL_PREY = game.prey_config["additional_prey"]
 PREY_REQUIREMENT = game.prey_config["prey_requirement"]
 CONDITION_INCREASE = game.prey_config["condition_increase"]
-FEEDING_ORDER = game.prey_config["feeding_order"]
+FEEDING_ORDER = game.prey_config["feeding_order"] # definitions.CLAN_ROLES_FEEDING_ORDER
 HUNTER_BONUS = game.prey_config["hunter_bonus"]
 HUNTER_EXP_BONUS = game.prey_config["hunter_exp_bonus"]
 FRESHKILL_EVENT_TRIGGER_FACTOR = game.prey_config["base_event_trigger_factor"]

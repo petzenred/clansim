@@ -352,7 +352,7 @@ You can use either the backstory pool name, or an individual backstory name.  Wh
 > 
 >The following table also displays certain categories within each snippet list that you can call. To call these categories, you can just add the category after the snippet list abbr, like so: `prophecy_list_sight`.  You can even specify multiple categories, like so: `prophecy_list_sight_touch`.  If you do not add a category, then every category will be used. 
 
-> Full snippet lists are found in `resources/dicts/snippet_collections.json`.  Feel free to add more options into these lists!
+> Full snippet lists are found in `resources/lang/en/snippet_collections.json`.  Feel free to add more options into these lists!
 
 | Snippet       | Sight                     | Sound                     | Smell                     | Emotion                   | Touch                     | Taste                     |
 |---------------|---------------------------|---------------------------|---------------------------|---------------------------|---------------------------|---------------------------|

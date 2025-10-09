@@ -4,7 +4,6 @@ import subprocess
 import threading
 import time
 from collections import namedtuple
-from copy import deepcopy
 from platform import system
 from random import choice
 from re import search as re_search
@@ -29,11 +28,10 @@ from scripts.game_structure.localization import (
     add_custom_pronouns,
 )
 from scripts.game_structure.screen_settings import MANAGER
-from scripts.game_structure.ui_elements import (
+from scripts.ui.ui_elements import (
     UIImageButton,
     UITextBoxTweaked,
     UISurfaceImageButton,
-    UIModifiedScrollingContainer,
     UIDropDownContainer,
 )
 from scripts.housekeeping.datadir import (
@@ -63,7 +61,7 @@ from scripts.utility import (
 )
 
 if TYPE_CHECKING:
-    from scripts.screens.BaseScreen import BaseScreen
+    pass
 
 
 class SymbolFilterWindow(UIWindow):
@@ -223,8 +221,8 @@ class SaveCheck(UIWindow):
         self.set_blocking(True)
 
         self.clan_name = "UndefinedClan"
-        if game.clan:
-            self.clan_name = f"{game.clan.name}Clan"
+        if game.clan_obj:
+            self.clan_name = f"{game.clan_obj.name}Clan"
         self.last_screen = last_screen
         self.isMainMenu = is_main_menu
         self.mm_btn = mm_btn
@@ -327,12 +325,12 @@ class SaveCheck(UIWindow):
                     game.is_close_menu_open = False
                     quit(savesettings=False, clearevents=False)
             elif event.ui_element == self.save_button:
-                if game.clan is not None:
+                if game.clan_obj is not None:
                     self.save_button_saving_state.show()
                     self.save_button.disable()
                     game.save_cats()
-                    game.clan.save_clan()
-                    game.clan.save_pregnancy(game.clan)
+                    game.clan_obj.save_clan()
+                    game.clan_obj.save_pregnancy(game.clan_obj)
                     game.save_events()
                     self.save_button_saving_state.hide()
                     self.save_button_saved_state.show()
@@ -425,7 +423,7 @@ class GameOver(UIWindow):
             resizable=False,
         )
         self.set_blocking(True)
-        self.clan_name = str(game.clan.name + "Clan")
+        self.clan_name = str(game.clan_obj.name + "Clan")
         self.last_screen = last_screen
         self.game_over_message = UITextBoxTweaked(
             "windows.game_over_message",
@@ -1206,9 +1204,9 @@ class KillCat(UIWindow):
                         )
 
                     if self.take_all:
-                        game.clan.leader_lives = 0
+                        game.clan_obj.leader_lives = 0
                     else:
-                        game.clan.leader_lives -= 1
+                        game.clan_obj.leader_lives -= 1
 
                 self.the_cat.die()
                 self.history.add_death(self.the_cat, death_message)
@@ -1494,7 +1492,7 @@ class ChangelogPopup(UIWindow):
 
         dynamic_changelog = False
         if (
-            get_version_info().is_dev()
+            get_version_info().is_dev
             and get_version_info().is_source_build
             and get_version_info().git_installed
         ):
@@ -1515,7 +1513,7 @@ class ChangelogPopup(UIWindow):
             with open("changelog.clangen.txt", "r", encoding="utf-8") as read_file:
                 file_cont = read_file.read()
 
-        if get_version_info().is_dev() and not get_version_info().is_source_build:
+        if get_version_info().is_dev and not get_version_info().is_source_build:
             dynamic_changelog = True
 
         if dynamic_changelog:
@@ -1952,7 +1950,7 @@ class ChangeCatToggles(UIWindow):
         self.checkboxes = {}
 
         # Prevent Fading
-        if self.the_cat == game.clan.instructor:
+        if self.the_cat == game.clan_obj.instructor:
             box_type = "@checked_checkbox"
             tool_tip = "windows.prevent_fading_tooltip_guide"
         elif self.the_cat.prevent_fading:
@@ -1971,7 +1969,7 @@ class ChangeCatToggles(UIWindow):
             tool_tip_text=tool_tip,
         )
 
-        if self.the_cat == game.clan.instructor:
+        if self.the_cat == game.clan_obj.instructor:
             self.checkboxes["prevent_fading"].disable()
 
         # No Kits
@@ -2069,7 +2067,7 @@ class SelectFocusClans(UIWindow):
             container=self,
         )
         n = 0
-        for clan in game.clan.all_clans:
+        for clan in game.clan_obj.all_clans:
             self.texts[clan.name] = pygame_gui.elements.UITextBox(
                 clan.name + "clan",
                 ui_scale(pygame.Rect(107, n * 27 + 38, -1, 25)),
@@ -2084,9 +2082,9 @@ class SelectFocusClans(UIWindow):
         self.checkboxes = {}
 
         n = 0
-        for clan in game.clan.all_clans:
+        for clan in game.clan_obj.all_clans:
             box_type = "@unchecked_checkbox"
-            if clan.name in game.clan.clans_in_focus:
+            if clan.name in game.clan_obj.clans_in_focus:
                 box_type = "@checked_checkbox"
 
             self.checkboxes[clan.name] = UIImageButton(
@@ -2100,7 +2098,7 @@ class SelectFocusClans(UIWindow):
     def process_event(self, event):
         if event.type == pygame_gui.UI_BUTTON_START_PRESS:
             if event.ui_element == self.back_button:
-                game.clan.clans_in_focus = []
+                game.clan_obj.clans_in_focus = []
                 game.all_screens[WARRIOR_DEN_SCREEN_NAME].exit_screen()
                 game.all_screens[WARRIOR_DEN_SCREEN_NAME].screen_switches()
                 self.kill()
@@ -2113,14 +2111,14 @@ class SelectFocusClans(UIWindow):
                 for clan_name, value in self.checkboxes.items():
                     if value == event.ui_element:
                         if value.object_ids[1] == "@unchecked_checkbox":
-                            game.clan.clans_in_focus.append(clan_name)
+                            game.clan_obj.clans_in_focus.append(clan_name)
                         if value.object_ids[1] == "@checked_checkbox":
-                            game.clan.clans_in_focus.remove(clan_name)
+                            game.clan_obj.clans_in_focus.remove(clan_name)
                         self.refresh_checkboxes()
-                if len(game.clan.clans_in_focus) < 1 and self.save_button.is_enabled:
+                if len(game.clan_obj.clans_in_focus) < 1 and self.save_button.is_enabled:
                     self.save_button.disable()
                 if (
-                    len(game.clan.clans_in_focus) >= 1
+                    len(game.clan_obj.clans_in_focus) >= 1
                     and not self.save_button.is_enabled
                 ):
                     self.save_button.enable()

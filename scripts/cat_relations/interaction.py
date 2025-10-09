@@ -294,7 +294,7 @@ def create_interaction(inter_list) -> list:
     for inter in inter_list:
         created_list.append(
             SingleInteraction(
-                interact_id=inter["id"],
+                interact_id=inter["cat_id"],
                 biome=inter["biome"] if "biome" in inter else ["Any"],
                 season=inter["season"] if "season" in inter else ["Any"],
                 intensity=inter["intensity"] if "intensity" in inter else "medium",
@@ -359,7 +359,7 @@ def create_group_interaction(inter_list) -> list:
     for inter in inter_list:
         created_list.append(
             GroupInteraction(
-                interact_id=inter["id"],
+                interact_id=inter["cat_id"],
                 biome=inter["biome"] if "biome" in inter else ["Any"],
                 season=inter["season"] if "season" in inter else ["Any"],
                 cat_amount=inter["cat_amount"] if "cat_amount" in inter else None,

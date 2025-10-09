@@ -10,6 +10,131 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+
+########################################################################################################################
+# Constants
+########################################################################################################################
+
+TINTS_DICT: dict = {
+  "colour_groups":
+  {
+    "WHITE": "white",
+    "PALEGREY": "cool",
+    "SILVER": "cool",
+    "GREY": "monochrome",
+    "DARKGREY": "monochrome",
+    "GHOST": "monochrome",
+    "BLACK": "monochrome",
+    "CREAM": "warm",
+    "PALEGINGER": "warm",
+    "GOLDEN": "warm",
+    "GINGER": "warm",
+    "DARKGINGER": "warm",
+    "SIENNA": "brown",
+    "LIGHTBROWN": "brown",
+    "LILAC": "brown",
+    "BROWN": "brown",
+    "GOLDEN-BROWN": "brown",
+    "DARKBROWN": "brown",
+    "CHOCOLATE": "brown"
+  },
+  "possible_tints": {
+    "basic": ["pink", "gray", "red", "orange", "none", "warmdilute"],
+    "warm": ["yellow", "purple", "dilute", "cooldilute"],
+    "cool": ["purple", "black", "dilute"],
+    "white": ["yellow"],
+    "monochrome": ["blue", "black", "dilute", "cooldilute"],
+    "brown": ["yellow", "purple", "black", "dilute", "cooldilute"]
+  },
+  "tint_colours":
+  {
+    "pink": [253, 237, 237],
+    "gray": [225, 225, 225],
+    "red": [248, 226, 228],
+    "black": [195, 195, 195],
+    "orange": [255, 247, 235],
+    "yellow": [250, 248, 225],
+    "purple": [235, 225, 244],
+    "blue": [218, 237, 245],
+    "none": None
+  },
+  "dilute_tint_colours":
+  {
+    "dilute": [20, 20, 20],
+    "warmdilute": [25, 15, 7],
+    "cooldilute": [7, 15, 25],
+    "none": None
+  }
+}
+
+
+WHITE_PATCHES_TINTS_DICT: dict = {
+  "colour_groups": {
+    "WHITE": "white",
+
+    "PALEGREY": "gray",
+    "SILVER": "gray",
+    "GREY": "gray",
+
+    "DARKGREY": "black",
+    "GHOST": "black",
+    "BLACK": "black",
+
+    "CREAM": "ginger",
+    "PALEGINGER": "ginger",
+    "GOLDEN": "ginger",
+    "GINGER": "ginger",
+    "DARKGINGER": "ginger",
+    "SIENNA": "ginger",
+
+    "LIGHTBROWN": "brown",
+    "LILAC": "brown",
+    "BROWN": "brown",
+    "GOLDEN-BROWN": "brown",
+    "DARKBROWN": "brown",
+    "CHOCOLATE": "brown"
+  },
+  "possible_tints": {
+    "basic": ["none", "offwhite", "offwhite"],
+    "black": ["gray", "darkcream", "cream"],
+    "gray": ["gray"],
+    "ginger": ["darkcream", "cream", "pink"],
+    "brown": ["darkcream", "cream"],
+    "white": []
+  },
+  "tint_colours":
+  {
+    "darkcream": [236, 229, 208],
+    "cream": [247, 241, 225],
+    "offwhite": [238, 249, 252],
+    "gray": [208, 225, 229],
+    "pink": [254, 248, 249],
+    "none": None
+  }
+}
+
+""" 
+# scripts paths
+SPRITE_PATHS: dict = {
+    'pelt': 'sprites/1_pelt/',
+    'tortie': 'sprites/2_tortie_mask/',
+    'white_patch': 'sprites/3_white_patch/',
+    'scar': 'sprites/4_scar/',
+    'eyes': 'sprites/5_eyes/',
+    'lineart': 'sprites/6_lineart/',
+    'skin': 'sprites/7_skin/',
+    'missing_limb': 'sprites/8_missing_limb_mask/',
+    'accessories': 'sprites/9_accessories/',
+    'april_fools': 'sprites/april_fools/',
+    'faded': 'sprites/faded/',
+    'lighting': 'sprites/lighting/',
+}
+"""
+
+########################################################################################################################
+# Classes
+########################################################################################################################
+
 class Sprites:
     cat_tints = {}
     white_patches_tints = {}
@@ -29,22 +154,8 @@ class Sprites:
         # Shared empty sprite for placeholders
         self.blank_sprite = None
 
-        self.load_tints()
-
-    def load_tints(self):
-        try:
-            with open("sprites/dicts/tint.json", "r", encoding="utf-8") as read_file:
-                self.cat_tints = ujson.loads(read_file.read())
-        except IOError as err:
-            logger.exception(f"Reading Tints", err)
-
-        try:
-            with open(
-                "sprites/dicts/white_patches_tint.json", "r", encoding="utf-8"
-            ) as read_file:
-                self.white_patches_tints = ujson.loads(read_file.read())
-        except IOError as err:
-            logger.exception(f"Reading White Patches Tints", err)
+        self.cat_tints = TINTS_DICT
+        self.white_patches_tints = WHITE_PATCHES_TINTS_DICT
 
     def spritesheet(self, a_file, name):
         """
@@ -161,7 +272,7 @@ class Sprites:
             "fadedarkforest",
             "symbols",
         ]:
-            if "lineart" in x and game.config["fun"]["april_fools"]:
+            if "lineart" in x and game._game_config["fun"]["april_fools"]:
                 self.spritesheet(f"sprites/aprilfools{x}.png", x)
             else:
                 self.spritesheet(f"sprites/{x}.png", x)

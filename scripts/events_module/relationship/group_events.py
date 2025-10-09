@@ -89,8 +89,8 @@ class GroupEvents:
         ]
 
         # get some filters premisses
-        biome = str(game.clan.biome).casefold()
-        season = str(game.clan.current_season).casefold()
+        biome = str(game.clan_obj.biome).casefold()
+        season = str(game.clan_obj.current_season).casefold()
 
         # start filter for main cat / basic checks
         # - this might reduce the amount of checks which will be needed when checking for other cats
@@ -111,7 +111,7 @@ class GroupEvents:
 
         # TRIGGER ALL NEEDED FUNCTIONS TO REFLECT THE INTERACTION
         GroupEvents.injuring_cats(chosen_interaction, abbreviations_cat_id)
-        amount = game.config["relationship"]["in_decrease_value"][
+        amount = game._game_config["relationship"]["in_decrease_value"][
             chosen_interaction.intensity
         ]
 

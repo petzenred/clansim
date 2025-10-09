@@ -18,7 +18,6 @@ class Settings:
     Fullscreen: bool = False
     FullscreenScaling: bool = False
     DarkMode: bool = False
-    MoonSeasonWidget: bool = False
     Antialiasing: bool = True
     UseShaders: bool = False
     AllowPatrolGore: bool = False
@@ -50,7 +49,6 @@ class Settings:
     AllowHealerPatrolSelect: bool = True
     AllowFading: bool = True
     SaveCompleteFadedCopy: bool = False
-    CampBackground: bool = True
 
     # role settings
     AutoDeputy: bool = False
@@ -67,7 +65,7 @@ class Settings:
     RomanceFirstCousin: bool = False
 
     # freshkill_tactics
-    Freshkill_Tactic: FreshkillTactic = FreshkillTactic.Rank
+    FreshkillTactic: FreshkillTactic = FreshkillTactic.Rank
     RationFreshkill: bool = False
 
     ShowRelationsDead: bool = False
@@ -75,6 +73,8 @@ class Settings:
     # FavouriteSubTab: # TODO
     ShowDenLabels: bool = True
     ShowFavouriteHighlight: bool = True
+    ShowCampBackground: bool = True
+    ShowMoonSeasonWidget: bool = False
 SETTINGS: Settings = Settings()
 
 @dataclass
@@ -111,6 +111,13 @@ class GameConfig:
         "mainmenu_tint": (239, 229, 206)
     }
 GAME_CONFIG: GameConfig = GameConfig()
+
+
+@dataclass
+class ScreenConfig:
+    """ Screen configuration items. """
+    pass
+SCREEN_CONFIG: ScreenConfig = ScreenConfig()
 
 
 @dataclass
@@ -202,6 +209,7 @@ class CatConfig:
 
     # generating a random cat
     chance_gender_kits_intersex: int = 100 # 1/100
+    chance_gender_align_trans: int = 30 # 1/30
     chance_clairvoyant: int = 200 # 1/200 chance that a cat is clairvoyant
     chance_condition: int = 200 # 1/200 chance that a cat is born with a permanent condition
 CAT_CONFIG: CatConfig = CatConfig()
@@ -514,28 +522,6 @@ CLAN_CONFIG: ClanConfig = ClanConfig()
 @dataclass
 class EventConfig:
     """
-	"pregnancy": {
-		"birth_cooldown": 6,
-		"primary_chance_mated": 80,
-		"primary_chance_unmated": 130,
-		"random_affair_chance": 50,
-		"unmated_random_affair_chance": 10,
-		"one_kit_possibility": {"young adult": 8, "adult": 9, "senior adult": 10, "senior": 4},
-        "two_kit_possibility": {"young adult": 10, "adult": 13, "senior adult": 15, "senior": 3},
-        "three_kit_possibility": {"young adult": 17, "adult": 15, "senior adult": 5, "senior": 1},
-        "four_kit_possibility": {"young adult": 12, "adult": 8, "senior adult": 2, "senior": 0},
-        "five_kit_possibility": {"young adult": 6, "adult": 2, "senior adult": 0, "senior": 0},
-		"max_kit_possibility": {"young adult": 2, "adult": 0, "senior adult": 0, "senior": 0},
-		"min_kits": 1,
-		"max_kits": 6,
-		"comment": [
-			"primary mated - 1/chance for kits, relationship and other factors will influence this chance",
-			"primary unmated - 1/chance for kits, relationship and other factors will influence this chance",
-			"The kit number is incremental. It is 1-6 as default so if you change these numbers, you should probably keep this in mind.",
-			"As in, your max kits number should probably be 5 more than the min kits number.",
-			"But that's not required - just makes more sense that way with how the litters are generated."
-		]
-	},
 	"accessory_generation": {
 		"base_acc_chance": 150,
 		"med_modifier": -80,
@@ -670,6 +656,31 @@ class EventConfig:
     mother_birth_cooldown_moons: int = 6
     father_birth_cooldown_moons: int = 0
 
+    """ 
+    	"pregnancy": {
+		"birth_cooldown": 6,
+		"primary_chance_mated": 80,
+		"primary_chance_unmated": 130,
+		"random_affair_chance": 50,
+		"unmated_random_affair_chance": 10,
+		"one_kit_possibility": {"young adult": 8, "adult": 9, "senior adult": 10, "senior": 4},
+        "two_kit_possibility": {"young adult": 10, "adult": 13, "senior adult": 15, "senior": 3},
+        "three_kit_possibility": {"young adult": 17, "adult": 15, "senior adult": 5, "senior": 1},
+        "four_kit_possibility": {"young adult": 12, "adult": 8, "senior adult": 2, "senior": 0},
+        "five_kit_possibility": {"young adult": 6, "adult": 2, "senior adult": 0, "senior": 0},
+		"max_kit_possibility": {"young adult": 2, "adult": 0, "senior adult": 0, "senior": 0},
+		"min_kits": 1,
+		"max_kits": 6,
+		"comment": [
+			"primary mated - 1/chance for kits, relationship and other factors will influence this chance",
+			"primary unmated - 1/chance for kits, relationship and other factors will influence this chance",
+			"The kit number is incremental. It is 1-6 as default so if you change these numbers, you should probably keep this in mind.",
+			"As in, your max kits number should probably be 5 more than the min kits number.",
+			"But that's not required - just makes more sense that way with how the litters are generated."
+		]
+	},
+	"""
+
 EVENT_CONFIG: EventConfig = EventConfig()
 
 
@@ -681,7 +692,11 @@ class PreyConfig:
     # TODO should this deactivate the entire system or just leave cats complaining about how starving they are forever?
     starvation_possible: bool = True # activate_death
 
+    # how many moons a piece of freshkill will last before it 'rots' and it discarded
+    freshkill_rots_after_moons: int = 4 # TODO change this for the Cruel Season
+    # how much prey will warriors automatically catch on timeskips
     moon_auto_catch_prey_warrior = (2, 4) # auto_warrior_prey
+    # how much prey will warrior apprentices automatically catch on timeskips
     moon_auto_catch_prey_app = (1, 2) # auto_apprentice_prey
 
     req_prey_sick_multiplier: int = 1 # condition increase

@@ -1,32 +1,60 @@
+# game_essentials.py - Create the game object, a semi-global object which updates the screens and acts
+#   as a central databank to access all game information.
+
 import os
-import traceback
-from ast import literal_eval
-from shutil import move as shutil_move
+from typing import Optional
 
 import pygame
+import traceback
 import ujson
+from shutil import move as shutil_move
+from types import FunctionType
 
-from definitions import (
-MAIN_MENU_SCREEN_NAME,
-CLAN_MEMBERS_SCREEN_NAME
-)
+from scripts._red.cat_tracker import CatTracker
+from scripts._red.save_manager import SaveManager
+from scripts._red.config_manager import config
+from scripts._red.io_manager import io_manager
+from scripts._red.red_exceptions import InitializationError
 
 from scripts.event_class import Single_Event
 from scripts.game_structure.screen_settings import toggle_fullscreen
 from scripts.housekeeping.datadir import get_save_dir, get_temp_dir
+
+from definitions import (
+    APP_NAME_LONG, CLAN_MEMBERS_SCREEN_NAME, GAME_SETTINGS_FILENAME, MAIN_MENU_SCREEN_NAME,
+    GameMode, LanguageCode, ScreenName,
+    cast_to_language, Season,
+)
+
+import logging
+logger = logging.getLogger(__name__)
 
 pygame.init()
 
 
 # G A M E
 class Game:
-    max_name_length = 10
+    """ The pygame Game object. """
+
+    _save_manager = None
+    language_code: LanguageCode = LanguageCode.Unset
+    game_mode: GameMode = GameMode.Unset
+    cat_tracker: CatTracker = None
+    active_clan_prefix: str = None
+    current_moon: int = 0
+    current_season: Season = Season.Spring
+
+    clansim_version: str # TODO set this
+
     # max_events_displayed = 10
     # event_scroll_ct = 0
     # max_allegiance_displayed = 17
     # allegiance_scroll_ct = 0
     # max_relation_events_displayed = 10
-    # relation_scroll_ct = 0
+    # relation_scroll_ct = 0 = field(default_factory=list)
+
+    max_clan_prefix_length: int = 10
+    settings_changed: bool = False
 
     mediated = []  # Keep track of which couples have been mediated this moon.
     just_died = []  # keeps track of which cats died this moon via die()
@@ -42,18 +70,9 @@ class Game:
     freshkill_event_list = []
 
     allegiance_list = []
-    language = {}
-    game_mode = ""
-    language_list = ["english", "spanish", "german"]
-    game_mode_list = ["classic", "expanded", "cruel season"]
 
     cat_to_fade = []
     sub_tab_list = ["life events", "user notes"]
-
-    # Keeping track of various last screen for various purposes
-    last_screen_forupdate = MAIN_MENU_SCREEN_NAME
-    last_screen_forProfile = CLAN_MEMBERS_SCREEN_NAME
-    last_list_forProfile = None
 
     # down = pygame.image.load("resources/images/buttons/arrow_down.png").convert_alpha()
     # up = pygame.image.load("resources/images/buttons/arrow_up.png").convert_alpha()
@@ -91,6 +110,7 @@ class Game:
         "roll_count": 0,
         "event": None,
         "cur_screen": MAIN_MENU_SCREEN_NAME,
+        "last_screen": MAIN_MENU_SCREEN_NAME,
         "naming_text": "",
         "timeskip": False,
         "mate": None,
@@ -99,7 +119,6 @@ class Game:
         "setting": None,
         "save_settings": False,
         "list_page": 1,
-        "last_screen": MAIN_MENU_SCREEN_NAME,
         "events_left": 0,
         "save_clan": False,
         "saved_clan": False,
@@ -146,12 +165,13 @@ class Game:
         "moon&season_open": False,
     }
     all_screens = {}
-    cur_events = {}
+    current_events = {}
+    _future_events = {} #
     map_info = {}
 
     # SETTINGS
-    settings = {}
-    settings["moon&season_open"] = False
+    # settings = {}
+    # settings["moon&season_open"] = False
     setting_lists = {}
 
     debug_settings = {
@@ -162,51 +182,126 @@ class Game:
     }
 
     # Init Settings
-    with open("resources/gamesettings.json", "r", encoding="utf-8") as read_file:
-        _settings = ujson.loads(read_file.read())
-
-    for setting, values in _settings["__other"].items():
-        settings[setting] = values[0]
-        setting_lists[setting] = values
-
-    _ = []
-    _.append(_settings["general"])
-
-    for cat in _:  # Add all the settings to the settings dictionary
-        for setting_name, inf in cat.items():
-            settings[setting_name] = inf[2]
-            setting_lists[setting_name] = [inf[2], not inf[2]]
-    del _settings
-    del _
+    # _settings = GAME_SETTINGS
+    #
+    # for setting, values in _settings["__other"].items():
+    #     settings[setting] = values[0]
+    #     setting_lists[setting] = values
+    #
+    # _ = []
+    # _.append(_settings["general"])
+    #
+    # for cat in _:  # Add all the settings to the settings dictionary
+    #     for setting_name, inf in cat.items():
+    #         settings[setting_name] = inf[2]
+    #         setting_lists[setting_name] = [inf[2], not inf[2]]
+    # del _settings
+    # del _
     # End init settings
 
-    settings_changed = False
 
     # CLAN
-    clan = None
+    clan_obj = None
     cat_class = None
-    config = {}
-    prey_config = {}
 
-    rpc = None
+    rpc = None # TODO rename discord_rpc
 
     is_close_menu_open = False
 
-    def __init__(self, current_screen=MAIN_MENU_SCREEN_NAME):
-        self.current_screen = current_screen
+    # Keeping track of various screens for various purposes
+    current_screen: ScreenName = ScreenName.MainMenu
+    last_screen_forupdate = MAIN_MENU_SCREEN_NAME
+    last_screen_forProfile = CLAN_MEMBERS_SCREEN_NAME
+    last_list_forProfile = None
+
+    def __init__(self):
+        """ Create the Game object. """
         self.clicked = False
         self.keyspressed = []
         self.switch_screens = False
+        return
 
-        with open(f"resources/game_config.json", "r", encoding="utf-8") as read_file:
-            self.config = ujson.loads(read_file.read())
+    def assign_save_manager(self, save_manager, currentclan: bool):
+        """ Set the game's save manager.
 
-        with open(f"resources/prey_config.json", "r", encoding="utf-8") as read_file:
-            self.prey_config = ujson.loads(read_file.read())
+        Used by the main script.
+        """
+        self._save_manager = save_manager
 
-        if self.config["fun"]["april_fools"]:
-            self.config["fun"]["newborns_can_roam"] = True
-            self.config["fun"]["newborns_can_patrol"] = True
+        if currentclan:
+            self._load_currentclan()
+        return
+
+    def _load_currentclan(self):
+        """ Load the save designated by the file `currentclan.txt` if possible. """
+        current_clan_prefix = io_manager.get_last_played_clan_prefix()
+        self.update_active_clan_prefix_everywhere(new_active_clan_prefix=current_clan_prefix)
+        return
+
+    def _ready_to_go(self):
+        """ Check if all the external initialization has finished. """
+        ready_to_go: bool = True
+        if not self._save_manager:
+            ready_to_go = False
+        if not ready_to_go:
+            raise InitializationError(f"game hasn't been fully initialized yet")
+        return
+
+    # ------------------------------------ PRIVATE ----------------------------------- #
+
+    def update_active_clan_prefix_everywhere(self, new_active_clan_prefix: Optional[str]) -> bool:
+        """ Update the active Clan in the game object, the save manager, and the I/O manager.
+
+        :param new_active_clan_prefix: the name of the Clan in the save file you want to try to update the game to
+        :return bool: True if the active Clan prefix was updated, False otherwise
+        """
+        if new_active_clan_prefix is None:
+            logger.info(f"Setting active Clan to None")
+            self.active_clan_prefix = None
+            self._save_manager.update_active_clan_prefix(new_active_clan_prefix=None)
+            io_manager.update_active_clan_prefix(new_active_clan_prefix=None)
+            return True
+        elif io_manager.check_save_validity(new_active_clan_prefix):
+            logger.info(f"Setting active Clan to {new_active_clan_prefix}Clan")
+            self.active_clan_prefix = new_active_clan_prefix
+            self._save_manager.update_active_clan_prefix(new_active_clan_prefix=new_active_clan_prefix)
+            io_manager.update_active_clan_prefix(new_active_clan_prefix=new_active_clan_prefix)
+            return True
+        else:
+            logger.warning(f"Can't change active Clan to '{new_active_clan_prefix}' "
+                           f"because there is no corresponding valid save")
+            logger.warning(f"Setting active Clan to None")
+            self.update_active_clan_prefix_everywhere(new_active_clan_prefix=None)
+            return False
+
+    def _update_future_events(self):
+        """ Runs any events that are scheduled. """
+        # update all events so they're one moon closer
+        moons = list(self._future_events.keys())
+        moons.sort() # make sure that the events are ordered so the closest events are parsed first
+        for moon in moons:
+            temp = self._future_events[moon]
+            self._future_events[moon - 1] = temp
+            self._future_events[moon] = []
+
+        # run any events whose scheduled time has come
+        if self._future_events[0]:
+            num_events = len(self._future_events)
+            for n in range(num_events):
+                event: tuple = self._future_events.pop(n)
+                function: FunctionType = event[0]
+                kwargs: dict = event[1]
+                args: list = event[2]
+                function(**kwargs, *args)
+        return
+
+    # ------------------------------------ PUBLIC ------------------------------------ #
+
+    def add_to_future_events(self, moons: int, function: FunctionType, kwargs: dict = {}, args: list = []):
+        """ Schedule an event to be run at a specified point in the future. """
+        if moons not in self._future_events.keys():
+            self._future_events[moons] = []
+        self._future_events[moons].append((function, kwargs, args))
 
     def update_game(self):
         if self.current_screen != self.switches["cur_screen"]:
@@ -214,7 +309,38 @@ class Game:
             self.switch_screens = True
         self.clicked = False
         self.keyspressed = []
+        self._update_future_events()
 
+    def switch_to_new_save(self, new_active_clan_prefix: Optional[str]) -> bool:
+        """ Switch to a different game save.
+
+        Note that this method does NOT save the game first.
+
+        :param new_active_clan_prefix: the name of the Clan in the save file you want to try to update the game to
+        :return bool: True if the game successfully switched to the new save file, False otherwise
+        """
+        if self.update_active_clan_prefix_everywhere(new_active_clan_prefix=new_active_clan_prefix):
+            # delete the old cat tracker
+            del self.cat_tracker
+            self.cat_tracker = None
+            # load the new save file
+            self.load_active_clan_save_file()
+            return True
+        else:
+            logger.error(f"Couldn't switch to new save {new_active_clan_prefix}Clan")
+            return False
+
+    def load_active_clan_save_file(self):
+        """ Load the save file corresponding to the given clan name. """
+        self.cat_tracker = CatTracker()
+        config.read_clan_settings_file()
+        self._save_manager.load_save(game_obj=self)
+        return
+
+
+    # ----------------------------------- OUTDATED ----------------------------------- #
+
+    # TODO remove this once SaveManager is implemented
     @staticmethod
     def safe_save(path: str, write_data, check_integrity=False, max_attempts: int = 15):
         """If write_data is not a string, assumes you want this
@@ -350,12 +476,12 @@ class Game:
 
     def save_settings(self, currentscreen=None):
         """Save user settings for later use"""
-        if os.path.exists(get_save_dir() + "/settings.txt"):
-            os.remove(get_save_dir() + "/settings.txt")
+        if os.path.exists(get_save_dir() + GAME_SETTINGS_FILENAME):
+            os.remove(get_save_dir() + GAME_SETTINGS_FILENAME)
 
         self.settings_changed = False
         try:
-            game.safe_save(get_save_dir() + "/settings.json", self.settings)
+            game.safe_save(get_save_dir() + GAME_SETTINGS_FILENAME, self.settings)
         except RuntimeError:
             from scripts.game_structure.windows import SaveError
 
@@ -405,8 +531,8 @@ class Game:
             clanname = game.switches['clan_name']
         elif len(game.switches['clan_name']) > 0:
             clanname = game.switches['clan_list'][0]"""
-        if game.clan is not None:
-            clanname = game.clan.name
+        if game.clan_obj is not None:
+            clanname = game.clan_obj.name
         directory = get_save_dir() + "/" + clanname
         if not os.path.exists(directory):
             os.makedirs(directory)
@@ -447,7 +573,7 @@ class Game:
             inter_cat = self.cat_class.all_cats[cat]
 
             # Add ID to list of faded cats.
-            self.clan.faded_ids.append(cat)
+            self.clan_obj.faded_ids.append(cat)
 
             # If they have a mate, break it up
             if inter_cat.mate:
@@ -465,7 +591,7 @@ class Game:
                         print(f"WARNING: Can't find parent {x} of {cat.name}")
 
             # Get a copy of info
-            if game.clan.clan_settings["save_faded_copy"]:
+            if game.clan_obj.clan_settings["save_faded_copy"]:
                 copy_of_info += (
                     ujson.dumps(inter_cat.get_save_dict(), indent=4)
                     + "\n--------------------------------------------------------------------------\n"
@@ -479,12 +605,12 @@ class Game:
             )
 
             # Remove the cat from the active cats lists
-            self.clan.remove_cat(cat)
+            self.clan_obj.remove_cat(cat)
 
         game.cat_to_fade = []
 
         # Save the copies, flush the file.
-        if game.clan.clan_settings["save_faded_copy"]:
+        if game.clan_obj.clan_settings["save_faded_copy"]:
             with open(
                 get_save_dir() + "/" + clanname + "/faded_cats_info_copy.txt",
                 "a",
@@ -518,7 +644,7 @@ class Game:
         events_list = []
         for event in game.cur_events_list:
             events_list.append(event.to_dict())
-        game.safe_save(f"{get_save_dir()}/{game.clan.name}/events.json", events_list)
+        game.safe_save(f"{get_save_dir()}/{game.clan_obj.name}/events.json", events_list)
 
     def add_faded_offspring_to_faded_cat(self, parent, offspring):
         """In order to siblings to work correctly, and not to lose relation info on fading, we have to keep track of
@@ -528,7 +654,7 @@ class Game:
             with open(
                 get_save_dir()
                 + "/"
-                + self.clan.name
+                + self.clan_obj.name
                 + "/faded_cats/"
                 + parent
                 + ".json",
@@ -543,7 +669,7 @@ class Game:
         cat_info["faded_offspring"].append(offspring)
 
         self.safe_save(
-            f"{get_save_dir()}/{self.clan.name}/faded_cats/{parent}.json", cat_info
+            f"{get_save_dir()}/{self.clan_obj.name}/faded_cats/{parent}.json", cat_info
         )
 
         return True
@@ -553,7 +679,7 @@ class Game:
         Load events from events.json and place into game.cur_events_list.
         """
 
-        clanname = self.clan.name
+        clanname = self.clan_obj.name
         events_path = f"{get_save_dir()}/{clanname}/events.json"
         events_list = []
         try:
@@ -566,71 +692,9 @@ class Game:
         except FileNotFoundError:
             pass
 
-    def get_config_value(self, *args):
-        """Fetches a value from the self.config dictionary. Pass each key as a
-        separate argument, in the same order you would access the dictionary.
-        This function will apply war modifiers if the clan is currently at war."""
 
-        war_effected = {
-            ("death_related", "leader_death_chance"): (
-                "death_related",
-                "war_death_modifier_leader",
-            ),
-            ("death_related", "classic_death_chance"): (
-                "death_related",
-                "war_death_modifier",
-            ),
-            ("death_related", "expanded_death_chance"): (
-                "death_related",
-                "war_death_modifier",
-            ),
-            ("death_related", "cruel season_death_chance"): (
-                "death_related",
-                "war_death_modifier",
-            ),
-            ("condition_related", "classic_injury_chance"): (
-                "condition_related",
-                "war_injury_modifier",
-            ),
-            ("condition_related", "expanded_injury_chance"): (
-                "condition_related",
-                "war_injury_modifier",
-            ),
-            ("condition_related", "cruel season_injury_chance"): (
-                "condition_related",
-                "war_injury_modifier",
-            ),
-        }
+########################################################################################################################
+# Object creation
+########################################################################################################################
 
-        # Get Value
-        config_value = self.config
-        for key in args:
-            config_value = config_value[key]
-
-        # Apply war if needed
-        if self.clan and self.clan.war.get("at_war", False) and args in war_effected:
-            # Grabs the modifer
-            mod = self.config
-            for key in war_effected[args]:
-                mod = mod[key]
-
-            config_value -= mod
-
-        return config_value
-
-
-game = Game()
-
-if not os.path.exists(get_save_dir() + "/settings.txt"):
-    os.makedirs(get_save_dir(), exist_ok=True)
-    with open(get_save_dir() + "/settings.txt", "w", encoding="utf-8") as write_file:
-        write_file.write("")
-game.load_settings()
-
-pygame.display.set_caption("Clan Generator")
-
-toggle_fullscreen(
-    fullscreen=game.settings["fullscreen"],
-    show_confirm_dialog=False,
-    ingame_switch=False,
-)
+game: Game = Game()

@@ -13,7 +13,7 @@ from typing import Optional
 # This module is imported by game, which imports Cat and Clan (which imports Cat as well
 
 from definitions import OUTSIDER_CLAN_PREFIX, Location, LocationCategory, Rank
-from scripts._red.conf_manager import conf
+from scripts._red.config_manager import config
 
 import logging
 logger = logging.getLogger(__name__)
@@ -34,18 +34,18 @@ class CatTracker:
 
     _last_id: int # the last ID given to a newly generated cat
 
-    all_clans: dict # dict{id: Clan object} - only extant Clans
-    destroyed_clans: dict # dict{id: Clan object} - only destroyed Clans
-    all_clans_ever: dict # dict{id: Clan object} - all Clans ever generated in the
+    all_clans: dict # dict{clan_prefix: Clan object} - only extant Clans
+    destroyed_clans: dict # dict{clan_prefix: Clan object} - only destroyed Clans
+    all_clans_ever: dict # dict{clan_prefix: Clan object} - all Clans ever generated in the
                          # active save file, extant and destroyed.
 
-    all_cats: dict # dict{id: Cat object} - only living cats
+    all_cats: dict # dict{cat_id: Cat object} - only living cats
     sc_guide_cat_id: int
     df_guide_cat_id: int
     dead_cats_starclan: list # list of Cat and FadedCat objects
     dead_cats_darkforest: list # list of Cat and FadedCat objects
     dead_cats_outsider_afterlife: list # list of Cat and FadedCat objects
-    all_cats_ever: dict # dict{id: RedCat object} - contains every RedCat and/or
+    all_cats_ever: dict # dict{cat_id: RedCat object} - contains every RedCat and/or
                         # FadedCat object ever generated in the save file, alive and dead.
 
 
@@ -106,13 +106,19 @@ class CatTracker:
         """
         return self.all_clans_ever[clan_prefix]
 
-    def get_cat_object(self, cat_id: int):
+    def get_cat_objects(self, cat_id: int | list[int]) -> list[int]:
         """ Get a RedCat object.
 
-        :param int cat_id: the cat's ID number
-        :return RedCat: the cat object who has the ID cat_id
+        :param list cat_id: the ID(s) of the cat(s) requested
+        :return list[RedCat]: list of the RedCat objects with the requested IDs
         """
-        return self.all_cats_ever[cat_id]
+        result: list = []
+        if isinstance(cat_id, int):
+            result.append(self.all_cats_ever[cat_id])
+        else:
+            for _ in cat_id:
+                result.append(self.all_cats_ever[_])
+        return result
 
     def get_name_prefixes_of_clan(self, clan_prefix: str):
         clan_obj = self.all_clans[clan_prefix]
@@ -174,6 +180,27 @@ class CatTracker:
 
         return
 
+    def add_new_cat_to_clan(self, new_clan_prefix: str, cat_obj):
+        """ Add a newly-created cat to a Clan. Does not handle the cat leaving their old Clan.
+
+        Does not change cat_obj.rank or cat_obj.clan_prefix.
+
+        Called by RedClan.add_cat_to_clan().
+        """
+
+        # professional queens
+        if cat_obj.rank in (Rank.Queen, Rank.QueenApp):
+            # case 1: a professional Clan queen moves to a different warrior Clan
+            if new_clan_prefix != OUTSIDER_CLAN_PREFIX:
+                self.add_queen(clan_prefix=new_clan_prefix, professional=True, cat_obj=cat_obj)
+            # case 2: a professional Clan queen becomes an outsider
+            # do nothing
+            # case 3: an outsider joins a Clan (never automatically become a professional queen)
+            # do nothing
+
+        # nursing queens
+        # if a nursing queen switches clans, they automatically bring their kits with them
+
     def change_cat_clan(self, new_clan_prefix: str, cat_obj, moving_kit_with_queen=False):
         """ Change which Clan a living or dead cat belongs to. """
         old_clan_prefix: str = cat_obj.clan_prefix
@@ -193,7 +220,7 @@ class CatTracker:
         self.all_clans_ever[new_clan_prefix].add_cat_to_clan(cat_obj)
 
         # professional queens
-        # case 1: professional Clan queen moving to a new Clan
+        # case 1: professional Clan queen moving to a different warrior Clan
         if ((OUTSIDER_CLAN_PREFIX not in (new_clan_prefix, old_clan_prefix)) and
                 cat_obj in self.living_queens_and_kits_by_clan_prefix[old_clan_prefix][Rank.Queen]):
             self.remove_queen(clan_prefix=old_clan_prefix, professional=True, cat_obj=cat_obj)
@@ -214,7 +241,7 @@ class CatTracker:
                 self.give_kit_to_queen(clan_prefix=new_clan_prefix, kit_obj=kit, new_queen_obj=cat_obj)
 
         # kits who aren't automatically being moved with their queen
-        if cat_obj.moons < conf.cat_config.apprentice_age_moons and not moving_kit_with_queen:
+        if cat_obj.moons < config.cat_config.apprentice_age_moons and not moving_kit_with_queen:
             raise ValueError(f"Kits can't move Clans independently!")
             # FIXME handle foundlings
 
@@ -288,7 +315,7 @@ class CatTracker:
             self.living_medicine_cats.pop(cat_obj)
 
         # remove a kit
-        if cat_obj.moons < conf.cat_config.apprentice_age_moons:
+        if cat_obj.moons < config.cat_config.apprentice_age_moons:
             self.remove_kit_from_queen(kit_obj=cat_obj)
 
         # remove a nursing queen

@@ -1,0 +1,232 @@
+# clan_names.en.yaml - Name prefixes that Clans can have.
+biome:
+  Beach:
+    - Air
+    - Beach
+    - Bone
+    - Dawn
+    - Dusk
+    - Heat
+    - Ripple
+    - Sand
+    - Storm
+    - Sun
+    - Wave
+  Desert:
+    - Air
+    - Bleak
+    - Bone
+    - Day
+    - Desert
+    - Fig
+    - Fire
+    - Flame
+    - Flare
+    - Heat
+    - River
+    - Sand
+    - Storm
+    - Sun
+    - Twilight
+  Forest:
+    - Bat
+    - Branch
+    - Crocus
+    - Deer
+    - Doe
+    - Dove
+    - Forest
+    - Hawthorn
+    - Hickory
+    - Hollyhock
+    - Lake
+    - Log
+    - Night
+    - River
+    - Stag
+    - Thunder
+    - Tree
+    - Twig
+    - Wood
+  Mountainous:
+    - Air
+    - Bat
+    - Branch
+    - Cavern
+    - Cloud
+    - Cloudy
+    - Crocus
+    - Dawn
+    - Flurry
+    - Freeze
+    - Frost
+    - Frozen
+    - Grackle
+    - Hidden
+    - Ice
+    - Icicle
+    - Icy
+    - Mountain
+    - Night
+    - Rock
+    - Stone
+    - Snow
+    - Snowy
+  Plains:
+    - Air
+    - Buttercup
+    - Cloud
+    - Cloudy
+    - Cotton
+    - Crocus
+    - Dandelion
+    - Dusk
+    - Grass
+    - Heather
+    - Plain
+    - Prairie
+    - Sky
+    - Twilight
+    - Wind
+  Wetlands:
+    - Bog
+    - Branch
+    - Crow
+    - Fig
+    - Log
+    - Marsh
+    - Night
+    - Ripple
+    - Shadow
+    - Swamp
+    - Swan
+    - Storm
+    - Twilight
+    - Wet
+    - Wetland
+  Twolegplace:
+    - Bleak
+    - Dark
+    - Day
+    - Crow
+    - Night
+    - Twilight
+all: # TODO give all of these a default Clan symbol
+- Air
+- Ashen
+- Bat
+- Beach
+- Bleak
+- Bog
+- Bone
+- Branch
+- Burn
+- Burnet
+- Burrow
+- Buttercup
+- Canary
+- Cavern
+- Cinder
+- Cloud
+- Cloudy
+- Cotton
+- Crocus
+- Crow
+- Dandelion
+- Dark
+- Dawn
+- Day
+- Desert
+- Doe
+- Dove
+- Dusk
+- Egg
+- Ember
+- Fen
+- Fig
+- Fire
+- Flame
+- Flare
+- Flurry
+- Forest
+- Freeze
+- Frost
+- Frozen
+- Ghost
+- Glint
+- Gossamer
+- Grackle
+- Grass
+- Hawthorn
+- Heather
+- Hickory
+- Hidden
+- Hollyhock
+- Ibis
+- Ice
+- Icicle
+- Icy
+- Jasmine
+- Larkspur
+- Light
+- Log
+- Lyre
+- Magpie
+- Marsh # symbolSHADOW0
+- Midnight
+- Mist
+- Morel
+- Mountain
+- Mulberry
+- Night
+- Ocean
+- Oleander
+- Orchid
+- Otter
+- Owl
+- Pebble
+- Phlox
+- Pipit
+- Plain
+- Plume
+- Prairie
+- Privet
+- Rime
+- River
+- Rock
+- Rue
+- Saffron
+- Scale
+- Scrub
+- Shade
+- Shadow
+- Shatter
+- Sky
+- Smoke
+- Snapdragon
+- Snow
+- Snowy
+- Soot
+- Spindle
+- Stag
+- Stream
+- Stone
+- Storm
+- Sun
+- Swamp
+- Swan
+- Teasel
+- Thunder
+- Tree
+- Twig
+- Twilight
+- Verbena
+- Vervain
+- Violet
+- Vole
+- Warbler
+- Wave
+- Wetland
+- Wind
+- Wisp
+- Wood

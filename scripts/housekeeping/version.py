@@ -1,17 +1,18 @@
-import logging
 import os
 import subprocess
 import sys
 from configparser import ConfigParser
+from dataclasses import dataclass
 from importlib.util import find_spec
 
 from definitions import (
     # This is saved in the Clan save-file, and is used for save-file conversion.
     VERSION_CLANSIM_NUMBER, SAVE_CLANSIM_VERSION_NUMBER,
     VERSION_CLANGEN_NUMBER, SAVE_CLANGEN_VERSION_NUMBER
-    )
+)
 from platformdirs import user_data_dir
 
+import logging
 logger = logging.getLogger(__name__)
 
 
@@ -74,27 +75,19 @@ def get_version_info():
 get_version_info.instance = None
 
 
+@dataclass
 class VersionInfo:
-    def __init__(
-        self,
-        is_source_build: bool,
-        release_channel: str,
-        version_number: str,
-        upstream: str,
-        is_itch: bool,
-        is_sandboxed: bool,
-        git_installed: bool,
-        is_thonny: bool,
-    ):
-        self.is_source_build = is_source_build
-        self.release_channel = release_channel
-        self.version_number = version_number
-        self.upstream = upstream
-        self.is_itch = is_itch
-        self.is_sandboxed = is_sandboxed
-        self.is_thony = is_thonny
-        self.git_installed = git_installed
 
+    is_source_build: bool
+    release_channel: str
+    version_number: str
+    upstream: str
+    is_itch: bool
+    is_sandboxed: bool
+    git_installed: bool
+    is_thonny: bool
+
+    @property
     def is_dev(self) -> bool:
         if self.release_channel != "stable":
             return True

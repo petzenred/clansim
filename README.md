@@ -20,4 +20,3 @@ and between different Clans.
 ClanGen and fan-edit original creators: just-some-cat.tumblr.com, SableSteel, and many others
 
 ClanSim fan-edit creator: Red Petzen
-

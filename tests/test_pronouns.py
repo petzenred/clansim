@@ -9,7 +9,7 @@ This test checks that pronoun tags are formated correctly,
 """
 
 import os
-import re
+import re as regex
 import sys
 import unittest
 import ujson
@@ -36,20 +36,20 @@ def test():
     # should be the second provided conjugation.
     _r = ("Name", get_new_pronouns("female")[0])
     replacement_dict = {
-        "m_c": _r,
-        "r_c": _r,
-        "r_c1": _r,
-        "r_c2": _r,
-        "n_c": _r,
-        "app1": _r,
-        "app2": _r,
-        "app3": _r,
-        "app4": _r,
-        "app5": _r,
-        "app6": _r,
-        "p_l": _r,
-        "s_c": _r,
-        "(mentor)": _r,
+        "m_c": _r, # main cat
+        "r_c": _r, # random cat
+        "r_c1": _r, # random cat 1
+        "r_c2": _r, # random cat 2
+        "n_c": _r, # new cat
+        "app1": _r, # apprentice 1
+        "app2": _r, # apprentice 2
+        "app3": _r, # apprentice 3
+        "app4": _r, # apprentice 4
+        "app5": _r, # apprentice 5
+        "app6": _r, # apprentice 6
+        "p_l": _r, # patrol leader
+        "s_c": _r, # skilled cat - a cat who meets a specific stat_skill requirement
+        "(mentor)": _r, # current mentor
         "l_n": _r,
         "dead_par1": _r,
         "dead_par2": _r,
@@ -121,7 +121,7 @@ def test_replacement_failure(path: str, repl_dict: dict) -> bool:
             # This tests for any pronoun or verb tag fragments that might have
             # snuck through. This is most likely caused by using the incorrect type of
             # brackets
-            if re.search(r"\{PRONOUN|\(PRONOUN|\{VERB|\(VERB|\{ADJ|\(ADJ", processed):
+            if regex.search(r"\{PRONOUN|\(PRONOUN|\{VERB|\(VERB|\{ADJ|\(ADJ", processed):
                 print(
                     f'::error file={path}: "{_str}" contains pronoun tag fragments after replacment'
                 )
@@ -132,8 +132,8 @@ def test_replacement_failure(path: str, repl_dict: dict) -> bool:
             # includes ? and ! always (e.g. "...!" is included).
             # DOES NOT check the start of the string for capitalization
             elif (
-                re.search(r"(?<!\.\.)(?<!\.\s\.\s)\.\s+[a-z]", processed) is not None
-                or re.search(r"[?!]\s+[a-z]", processed) is not None
+                regex.search(r"(?<!\.\.)(?<!\.\s\.\s)\.\s+[a-z]", processed) is not None
+                or regex.search(r"[?!]\s+[a-z]", processed) is not None
             ):
                 print(f'::error file={path}: Capitalization errors in "{_str}"')
                 success = False

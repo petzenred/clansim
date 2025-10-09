@@ -138,7 +138,7 @@ want to make lag.
 - Inter-Clan romances might result in one cat moving to a new Clan. This does mean that your cats might move to be with 
 a loved one! If so, the cat who left your Clan will continue to be simulated and has a chance to return, if their 
 Clan is willing to take them back.
-	- If their mate dies or they break up, the cat who left your Clan might try to get back into your Clan. If they 
+	- If their mate dies without kits or they break up, the cat who left your Clan might try to get back into your Clan. If they 
 don't, or if they fail, they will become a loner.
 - Clans will go to war over territory claims.
 	
@@ -155,16 +155,16 @@ creating new Clans in ClanGen and ClanSim.
 
 | Step | ClanGen             | ClanSim                                                |
 |------|---------------------|--------------------------------------------------------|
-| 1    | Set game mode       | Set game mode and gameplay settings                    |
+| 1    | Set game mode       | Set game mode and Clan settings                        |
 | 2    | Name the Clan       | Pick or build leader                                   |
 | 3    | Pick leader         | Pick or build medicine cat                             |
 | 4    | Pick deputy         | Pick or build deputy, or leave choice up to the leader |
 | 5    | Pick medicine cat   | Pick or build 4-7 other cats                           |
-| 6    | Pick 4-7 other cats | Claim territory                                        |
-| 7    | Choose Clan camp    | Choose Clan camp location                              |
+| 6    | Pick 4-7 other cats | Choose Clan camp location                              |
+| 7    | Choose Clan camp    | Claim territory                                        |
 | 8    | Choose Clan icon    | Name the Clan and choose icon                          |
 
-### Game mode and gameplay settings
+### Game mode and Clan settings
 Settings which are **NOT** available after Clan creation
 - game mode (Classic Mode/Expanded Mode)
 - randomize relationship values when creating Clan
@@ -180,6 +180,9 @@ mainly a lag prevention feature.
   - There is a hard cap of 4 other Clans (so 5 Clans total, including your own).
 - Name the other Clans and choose their icons (or leave it to chance).
   - Are you going for a playthrough with a specific feeling? Make sure the other Clans' names don't harsh your vibe.
+
+### Matching backstories
+- All the starting cats will have backstories with a similar vibe (e.g. )
 
 ### Claim territory
 
@@ -221,7 +224,7 @@ A way to decide how cats are named in a way that's (hopefully) more coherent.
 
 ### Overpopulation
 This is one of the biggest problems with ordinary ClanGen, so I'm planning a few features to tackle it.
-- if kittens don't thrive, they will not survive to apprenticehood
+- If kittens don't thrive, they will not survive to apprenticehood.
   - based on similar feature from [FullGen]()
   - having more medicine cats and kit sitters/queens will reduce the likelihood of kittens not thriving
 
@@ -232,22 +235,43 @@ This is one of the biggest problems with ordinary ClanGen, so I'm planning a few
 toggle is on, though, just because of how complicated that would get.
 
 
+## Game Structure
+- Turn some things into dataclasses.
+  - [ ] scripts.clan_resources.herb.herb_supply.HerbSupply
+  - [ ] scripts.clan.Clan
+  - [ ] scripts.cat.Pelt
+- Turn string codes into StrEnum classes.
+  - [x] Season
+  - [x] Biome
+  - [x] PatrolType
+  - [x] Rank
+  - [ ] Age
+  - [ ] Backstory
+  - [ ] Skill
+  - [ ] Location
+
+### Save files
+- Import ClanGen Clans to play them as-is in ClanSim.
+  - You will need to manually set changed (hunter/fighter skills) and new (reputation) values for each cat.
+
+### Changelogs
+- Make different Changlog pop-up windows for `changelog.clangen.txt` and `changelog.clansim.txt`
+  - class `ChangelogPopup`
+
+
 ## Other random stuff
+- Game rule so that new cats who come in always get a new, Clan-style name.
 
 ### Mediators
 - The mediator is no longer an in-Clan position - it’s an external cat who your Clan can appeal to for inter-Clan 
 relationship help. This is more reflective of the position in the books and is a less broken game mechanic.
-	- If a cat in your Clan wants to become a mediator, they leave your control. Therefore, you will be asked before 
-this happens.
-
-### Save files
-- Import saves from JSON files.
-- Import ClanGen Clans to play them as-is in ClanSim.
-	- You will need to manually set changed (hunter/fighter skills) and new (reputation) values for each cat.
+  - If a cat in your Clan wants to become a mediator, they leave your control. Therefore, you will be asked before 
+  this happens.
 
 ### Visual changes
 - The relationships tab of the Events screen now uses arrows instead of a scroll bar to reduce rendering lag.
-	- I'm not the only person who had this issue with larger Clans, right?
+  - I'm not the only person who had this issue with larger Clans, right?
+  - class `RelationshipLog`
 - On the ClanCampScreen, a pile of freshkill appears near the `clearing` button that dynamically reflects how much 
 freshkill your Clan has.
 
@@ -257,4 +281,3 @@ a leader event is added (with VERY high difficulty) in which your Clan's leader 
 code - e.g. allowing cats to change Clans to follow loved ones. Whatever the current warrior code dictates would affect 
 how different actions are seen by other cats, and maybe I could add some tags that relate to this system - e.g. 
 traditionalist, progressive, etc.
-

@@ -6,7 +6,7 @@ import i18n
 import ujson
 
 from definitions import (
-    Age, Season, cast_to_season
+    cast_to_season, Age, Season, Rank
 )
 
 from scripts.cat.cats import Cat
@@ -16,6 +16,7 @@ from scripts.clan_resources.freshkill import (
     MAL_PERCENTAGE,
     STARV_PERCENTAGE,
 )
+from scripts._red.config_manager import config
 from scripts.conditions import (
     medical_cats_condition_fulfilled,
     get_amount_cat_for_one_medic,
@@ -30,6 +31,9 @@ from scripts.utility import (
     get_leader_life_notice,
 )
 from scripts.game_structure.localization import load_lang_resource
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 # ---------------------------------------------------------------------------- #
@@ -153,8 +157,8 @@ class Condition_Events:
             return
 
         if cat.ID not in nutrition_info.keys():
-            print(
-                f"WARNING: Could not find cat with ID {cat.ID}({cat.name}) in the nutrition information."
+            logger.warning(
+                f"Could not find cat with ID {cat.ID}({cat.name}) in the nutrition information."
             )
             return
 
@@ -170,8 +174,8 @@ class Condition_Events:
         # handle death first, if percentage is 0 or lower, the cat will die
         if cat_nutrition.percentage <= 0:
             text = ""
-            if cat.status == "leader":
-                game.clan.leader_lives -= 1
+            if cat.status == Rank.Leader:
+                game.clan_obj.leader_lives -= 1
                 # kill and retrieve leader life text
                 text = get_leader_life_notice()
 
@@ -182,7 +186,7 @@ class Condition_Events:
 
             event = event_text_adjust(Cat, event.strip(), main_cat=cat)
 
-            if cat.status == "leader":
+            if cat.status == Rank.Leader:
                 history_event = history_event.replace("m_c ", "").replace(".", "")
                 History.add_death(
                     cat, condition="starving", death_text=history_event.strip()
@@ -194,7 +198,7 @@ class Condition_Events:
 
             # if the cat is the leader and isn't full dead
             # make them malnourished and refill nutrition slightly
-            if cat.status == "leader" and game.clan.leader_lives > 0:
+            if cat.status == Rank.Leader and game.clan_obj.leader_lives > 0:
                 mal_score = (
                     nutrition_info[cat.ID].max_score / 100 * (MAL_PERCENTAGE + 1)
                 )
@@ -281,8 +285,8 @@ class Condition_Events:
             #                              make cats sick                                  #
             # ---------------------------------------------------------------------------- #
             random_number = int(
-                random.random()
-                * game.get_config_value("condition_related", f"{game.clan.game_mode}_illness_chance")
+                random.random()  # clan_at_war: bool = False,
+                * config.get_config_value("condition_related", f"{game.clan_obj.game_mode}_illness_chance")
             )
             if (
                 not cat.dead
@@ -291,8 +295,8 @@ class Condition_Events:
                 and not event_string
             ):
                 # CLAN FOCUS!
-                if game.clan.clan_settings.get("rest and recover"):
-                    stopping_chance = game.config["focus"]["rest and recover"]["illness_prevent"]
+                if game.clan_obj.clan_settings.get("rest and recover"):
+                    stopping_chance = game._game_config["focus"]["rest and recover"]["illness_prevent"]
                     if not int(random.random() * stopping_chance):
                         return triggered
 
@@ -360,9 +364,9 @@ class Condition_Events:
         """
         triggered = False
         random_number = int(
-            random.random()
-            * game.get_config_value(
-                "condition_related", f"{game.clan.game_mode}_injury_chance"
+            random.random()  # clan_at_war: bool = False,
+            * config.get_config_value(
+                "condition_related", f"{game.clan_obj.game_mode}_injury_chance"
             )
         )
 
@@ -373,9 +377,9 @@ class Condition_Events:
         # handle if the current cat is already injured
         if cat.is_injured():
             for injury in cat.injuries:
-                if injury == "pregnant" and cat.ID not in game.clan.pregnancy_data:
-                    print(
-                        f"INFO: deleted pregnancy condition of {cat.ID} due no pregnancy data in the clan."
+                if injury == "pregnant" and cat.ID not in game.clan_obj.pregnancy_data:
+                    logger.info(
+                        f"Deleted pregnancy condition of {cat.ID} due no pregnancy data in the clan."
                     )
                     del cat.injuries[injury]
                     return triggered
@@ -408,8 +412,8 @@ class Condition_Events:
 
             if triggered:
                 # CLAN FOCUS!
-                if game.clan.clan_settings.get("rest and recover"):
-                    stopping_chance = game.config["focus"]["rest and recover"][
+                if game.clan_obj.clan_settings.get("rest and recover"):
+                    stopping_chance = game._game_config["focus"]["rest and recover"][
                         "injury_prevent"
                     ]
                     if not int(random.random() * stopping_chance):
@@ -419,11 +423,11 @@ class Condition_Events:
                     event_type="health",
                     main_cat=cat,
                     random_cat=random_cat,
-                    freshkill_pile=game.clan.freshkill_pile,
+                    freshkill_pile=game.clan_obj.freshkill_pile,
                 )
 
         # just double-checking that trigger is only returned True if the cat is dead
-        if cat.status != "leader":
+        if cat.status != Rank.Leader:
             # only checks for non-leaders, as leaders will not be dead if they are just losing a life
             if cat.dead:
                 triggered = True
@@ -500,7 +504,7 @@ class Condition_Events:
                                 possible_conditions.append(x)
                         if len(possible_conditions) > 0 and not int(
                             random.random()
-                            * game.config["condition_related"][
+                            * game._game_config["condition_related"][
                                 "permanent_condition_chance"
                             ]
                         ):
@@ -508,13 +512,13 @@ class Condition_Events:
                         else:
                             return perm_condition
                 except KeyError:
-                    print(
-                        f"WARNING: {injury_name} couldn't be found in injury dict! no permanent condition is possible."
+                    logger.warning(
+                        f"{injury_name} couldn't be found in injury dict! no permanent condition is possible."
                     )
                     return perm_condition
             else:
-                print(
-                    f"WARNING: {scar} for {injury_name} is either None or is not in scar_to_condition dict. This is "
+                logger.warning(
+                    f"{scar} for {injury_name} is either None or is not in scar_to_condition dict. This is "
                     f"not necessarily a bug.  Only report if you feel the scar should have "
                     f"resulted in a permanent condition."
                 )
@@ -534,7 +538,7 @@ class Condition_Events:
 
     @staticmethod
     def handle_already_ill(cat):
-        starting_life_count = game.clan.leader_lives
+        starting_life_count = game.clan_obj.leader_lives
         cat.healed_condition = False
         event_list = []
         illness_progression = {
@@ -568,7 +572,7 @@ class Condition_Events:
 
             # death event text and break bc any other illnesses no longer matter
             if cat.dead or (
-                cat.status == "leader" and starting_life_count != game.clan.leader_lives
+                    cat.status == Rank.Leader and starting_life_count != game.clan_obj.leader_lives
             ):
                 try:
                     possible_string_list = Condition_Events.ILLNESS_DEATH_STRINGS[
@@ -578,19 +582,19 @@ class Condition_Events:
                     # first event in string lists is always appropriate for history formatting
                     history_event = possible_string_list[0]
                 except KeyError:
-                    print(
-                        f"WARNING: {illness} does not have an injury death string, placeholder used."
+                    logger.warning(
+                        f"{illness} does not have an injury death string, placeholder used."
                     )
                     event = i18n.t("defaults.illness_death_event")
                     history_event = (
                         i18n.t("defaults.illness_death_history")
-                        if cat.status != "leader"
+                        if cat.status != Rank.Leader
                         else i18n.t("defaults.illness_death_history_leader")
                     )
 
                 event = event_text_adjust(Cat, event, main_cat=cat)
 
-                if cat.status == "leader":
+                if cat.status == Rank.Leader:
                     event = event + " " + get_leader_life_notice()
                     history_event = history_event.replace("m_c ", "").replace(".", "")
                     History.add_death(
@@ -606,7 +610,7 @@ class Condition_Events:
                 break
 
             # if the leader died, then break before handling other illnesses cus they'll be fully healed or dead-dead
-            if cat.status == "leader" and starting_life_count != game.clan.leader_lives:
+            if cat.status == Rank.Leader and starting_life_count != game.clan_obj.leader_lives:
                 break
 
             # heal the cat
@@ -663,7 +667,7 @@ class Condition_Events:
         injury_progression = {"poisoned": "redcough", "shock": "lingering shock"}
 
         # need to hold this number so that we can check if the leader has died
-        starting_life_count = game.clan.leader_lives
+        starting_life_count = game.clan_obj.leader_lives
 
         injuries = deepcopy(cat.injuries)
         for injury in injuries:
@@ -675,7 +679,7 @@ class Condition_Events:
                 continue
 
             if cat.dead or (
-                cat.status == "leader" and starting_life_count != game.clan.leader_lives
+                    cat.status == Rank.Leader and starting_life_count != game.clan_obj.leader_lives
             ):
                 triggered = True
 
@@ -686,20 +690,20 @@ class Condition_Events:
                     # first string in the list is always appropriate for history text
                     history_text = possible_string_list[0]
                 except KeyError:
-                    print(
-                        f"WARNING: {injury} does not have an injury death string, placeholder used"
+                    logger.warning(
+                        f"{injury} does not have an injury death string, placeholder used"
                     )
 
                     event = i18n.t("defaults.injury_death_event")
                     history_text = (
                         i18n.t("defaults.injury_death_history")
-                        if cat.status != "leader"
+                        if cat.status != Rank.Leader
                         else i18n.t("injury_death_history_leader")
                     )
 
                 event = event_text_adjust(Cat, event, main_cat=cat)
 
-                if cat.status == "leader":
+                if cat.status == Rank.Leader:
                     event = event + " " + get_leader_life_notice()
                     history_text = history_text.replace("m_c", " ").replace(".", "")
                     History.add_death(
@@ -728,8 +732,8 @@ class Condition_Events:
                             Condition_Events.INJURY_HEALED_STRINGS[injury]
                         )
                     except KeyError:
-                        print(
-                            f"WARNING: {injury} couldn't be found in the healed strings dict! "
+                        logger.warning(
+                            f"{injury} couldn't be found in the healed strings dict! "
                             f"placeholder string was used."
                         )
                         # try to translate the string
@@ -763,8 +767,8 @@ class Condition_Events:
                             ]
                         )
                     except KeyError:
-                        print(
-                            f"WARNING: No entry in gain_permanent_condition_strings for injury '{injury}' causing "
+                        logger.warning(
+                            f"No entry in gain_permanent_condition_strings for injury '{injury}' causing "
                             f"condition '{condition_got}'. Using default."
                         )
 
@@ -791,7 +795,7 @@ class Condition_Events:
                     random_index = random.randrange(0, len(possible_string_list))
 
                     med_list = get_alive_status_cats(
-                        Cat, ["medicine cat", "medicine cat apprentice"], working=True
+                        Cat, [Rank.Healer, Rank.HealerApp], working=True
                     )
                     # If the cat is a med cat, don't consider them as one for the event.
 
@@ -861,11 +865,11 @@ class Condition_Events:
         conditions = deepcopy(cat.permanent_condition)
         for condition in conditions:
             # checking if the cat has a congenital condition to reveal and handling duration and death
-            prev_lives = game.clan.leader_lives
+            prev_lives = game.clan_obj.leader_lives
             status = cat.moon_skip_permanent_condition(condition)
 
             # if cat is dead, break
-            if cat.dead or game.clan.leader_lives < prev_lives:
+            if cat.dead or game.clan_obj.leader_lives < prev_lives:
                 triggered = True
                 event_types.append("birth_death")
                 translated_condition = i18n.t(
@@ -874,14 +878,14 @@ class Condition_Events:
                 event = i18n.t(
                     "defaults.complications_death_event", condition=translated_condition
                 )
-                if cat.status == "leader" and game.clan.leader_lives >= 1:
+                if cat.status == Rank.Leader and game.clan_obj.leader_lives >= 1:
                     event = i18n.t(
                         "defaults.complications_death_event_leader",
                         condition=translated_condition,
                     )
                 event_list.append(event)
 
-                if cat.status != "leader":
+                if cat.status != Rank.Leader:
                     History.add_death(
                         cat,
                         death_text=i18n.t("defaults.complications_death_history"),
@@ -914,7 +918,7 @@ class Condition_Events:
                 random_index = int(random.random() * len(possible_string_list))
                 med_list = get_alive_status_cats(
                     Cat,
-                    ["medicine cat", "medicine cat apprentice"],
+                    [Rank.Healer, Rank.HealerApp],
                     working=True,
                     sort=True,
                 )
@@ -927,14 +931,14 @@ class Condition_Events:
                     med_parent = False
                     if cat.parent1 in Cat.all_cats:
                         parent1_dead = Cat.all_cats[cat.parent1].dead
-                        if Cat.all_cats[cat.parent1].status == "medicine cat":
+                        if Cat.all_cats[cat.parent1].status == Rank.Healer:
                             med_parent = True
                     else:
                         parent1_dead = True
 
                     if cat.parent2 in Cat.all_cats:
                         parent2_dead = Cat.all_cats[cat.parent2].dead
-                        if Cat.all_cats[cat.parent2].status == "medicine cat":
+                        if Cat.all_cats[cat.parent2].status == Rank.Healer:
                             med_parent = True
                     else:
                         parent2_dead = True
@@ -982,7 +986,7 @@ class Condition_Events:
 
     @staticmethod
     def determine_retirement(cat, triggered):
-        if game.clan.clan_settings["retirement"] or cat.no_retire:
+        if game.clan_obj.clan_settings["retirement"] or cat.no_retire:
             return
 
         if (
@@ -990,14 +994,14 @@ class Condition_Events:
             and not cat.dead
             and cat.status
             not in [
-                "leader",
-                "medicine cat",
-                "kitten",
-                "newborn",
-                "medicine cat apprentice",
-                "mediator",
-                "mediator apprentice",
-                "elder",
+                Rank.Leader,
+                Rank.Healer,
+                Rank.HealerApp,
+                Rank.Mediator,
+                Rank.MediatorApp,
+                Rank.Elder,
+                Rank.Newborn,
+                Rank.Kit,
             ]
         ):
             for condition in cat.permanent_condition:
@@ -1038,14 +1042,14 @@ class Condition_Events:
                         event = i18n.t(
                             "hardcoded.condition_retire_adolescent", name=cat.name
                         )
-                    elif game.clan.leader is not None:
+                    elif game.clan_obj.leader is not None:
                         if (
-                            not game.clan.leader.dead
-                            and not game.clan.leader.exiled
-                            and not game.clan.leader.outside
+                            not game.clan_obj.leader.dead
+                            and not game.clan_obj.leader.exiled
+                            and not game.clan_obj.leader.outside
                             and cat.moons < 120
                         ):
-                            retire_involved.append(game.clan.leader.ID)
+                            retire_involved.append(game.clan_obj.leader.ID)
                             event = i18n.t("hardcoded.condition_retire_normal")
                         else:
                             event = i18n.t("hardcoded.condition_retire_no_leader")
@@ -1055,7 +1059,7 @@ class Condition_Events:
                     if cat.age == Age.Adolescent:
                         event += i18n.t(
                             "hardcoded.condition_retire_adolescent_ceremony",
-                            clan=game.clan.name,
+                            clan=game.clan_obj.name,
                             newname=cat.name.prefix + cat.name.suffix,
                         )
 
@@ -1089,10 +1093,10 @@ class Condition_Events:
             # adjust chance of risk gain if Clan has enough meds
             chance = risk["chance"]
             if medical_cats_condition_fulfilled(
-                Cat.all_cats.values(), get_amount_cat_for_one_medic(game.clan)
+                Cat.all_cats.values(), get_amount_cat_for_one_medic(game.clan_obj)
             ):
                 chance += 10  # lower risk if enough meds
-            if game.clan.medicine_cat is None and chance != 0:
+            if game.clan_obj.medicine_cat is None and chance != 0:
                 chance = int(
                     chance * 0.75
                 )  # higher risk if no meds and risk chance wasn't 0
@@ -1163,7 +1167,7 @@ class Condition_Events:
                     random_index = int(random.random() * len(possible_string_list))
                     med_list = get_alive_status_cats(
                         Cat,
-                        ["medicine cat", "medicine cat apprentice"],
+                        [Rank.Healer, Rank.HealerApp],
                         working=True,
                         sort=True,
                     )
@@ -1178,8 +1182,8 @@ class Condition_Events:
                             random_index = 1
                     event = possible_string_list[random_index]
                 except KeyError:
-                    print(
-                        f"WARNING: {condition} couldn't be found in the risk strings! placeholder string was used"
+                    logger.warning(
+                        f"{condition} couldn't be found in the risk strings! placeholder string was used"
                     )
                     event = i18n.t(
                         "conditions.permanent_conditions.unknown_condition_risk_given"

@@ -7,7 +7,8 @@ import pygame_gui
 from definitions import *
 from resources.audio.audio_directory import (MUSIC_PLAYLISTS, SOUND_INDEX)
 from scripts.game_structure.game_essentials import game
-import scripts.game_structure.ui_elements as ui_elements
+from scripts._red.config_manager import config
+import scripts.ui.ui_elements as ui_elements
 
 import logging
 
@@ -21,7 +22,7 @@ class MusicManager:
     queued_track: Optional[str]
 
     number_of_tracks: int
-    volume: float = game.settings["music_volume"] / 100
+    volume: float = config.settings["music_volume"] / 100
 
     muted_f: bool
     audio_disabled_f: bool
@@ -121,7 +122,7 @@ class MusicManager:
 
         # convert to a float and change volume accordingly
         self.volume = new_volume / 100
-        game.settings["music_volume"] = new_volume
+        config.settings["music_volume"] = new_volume
         if pygame.mixer.music.get_busy():
             pygame.mixer.music.set_volume(self.volume)
 
@@ -138,7 +139,7 @@ class MusicManager:
         """ Finds the active clan's biome and returns the appropriate playlist. """
         biome_playlist_key: str = Biome.Forest
         try:
-            biome = game.clan.biome
+            biome = game.clan_obj.biome
             if biome in self.playlists:
                 if self.playlists[biome]:
                     biome_playlist_key = biome
@@ -201,7 +202,7 @@ music_manager = MusicManager()
 
 
 class _SoundManager:
-    volume: float = game.settings["sound_volume"] / 100
+    volume: float = config.settings["sound_volume"] / 100
 
     def __init__(self):
         self.pressed = None
@@ -280,7 +281,7 @@ class _SoundManager:
 
         # convert to a float and change volume accordingly
         self.volume = new_volume / 100
-        game.settings["sound_volume"] = new_volume
+        config.settings["sound_volume"] = new_volume
         for sound in self.sounds:
             for each in self.sounds[sound]:
                 pygame.mixer.Sound.set_volume(each, self.volume)

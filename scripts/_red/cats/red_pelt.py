@@ -16,7 +16,7 @@ from definitions import (
     HETEROCHROMIA_CHANCE_MODIFIER_PER_PARENT, SpriteModifier,
 )
 from scripts._red.general_utils import one_in_num_chance
-from scripts._red.conf_manager import conf
+from scripts._red.config_manager import config
 
 import logging
 logger = logging.getLogger(__name__)
@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 # Constants
 ########################################################################################################################
 
-CAT_GENERATION_SETTINGS: dict = conf.get_config_value("cat_generation")
+CAT_GENERATION_SETTINGS: dict = config.get_config_value("cat_generation")
 
 
 ########################################################################################################################

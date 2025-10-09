@@ -5,6 +5,7 @@ from re import sub
 import i18n
 
 from scripts.cat.sprites import sprites
+from scripts._red.config_manager import config
 from scripts.game_structure.game_essentials import game
 from scripts.game_structure.localization import get_lang_config
 from scripts.utility import adjust_list_text
@@ -851,7 +852,6 @@ class Pelt:
         if isinstance(self.accessory, str):
             self.accessory = [self.accessory]
 
-
     def init_eyes(self, parents):
         if not parents:
             self.eye_colour = choice(Pelt.eye_colours)
@@ -861,7 +861,7 @@ class Pelt:
             )
 
         # White patches must be initalized before eye color.
-        num = game.config["cat_generation"]["base_heterochromia"]
+        num = game._game_config["cat_generation"]["base_heterochromia"]
         if (
             self.white_patches in [Pelt.high_white, Pelt.mostly_white, "FULLWHITE"]
             or self.colour == "WHITE"
@@ -933,7 +933,7 @@ class Pelt:
 
         # There is a 1/10 chance for kits to have the exact same pelt as one of their parents
         if not random.randint(
-            0, game.config["cat_generation"]["direct_inheritance"]
+            0, game._game_config["cat_generation"]["direct_inheritance"]
         ):  # 1/10 chance
             selected = choice(par_pelts)
             self.name = selected.name
@@ -982,10 +982,8 @@ class Pelt:
         )
 
         # Tortie chance
-        tortie_chance_f = game.config["cat_generation"][
-            "base_female_tortie"
-        ]  # There is a default chance for female tortie
-        tortie_chance_m = game.config["cat_generation"]["base_male_tortie"]
+        tortie_chance_f = config.get_config_value("cat_generation")["base_female_tortie"]  # There is a default chance for female tortie
+        tortie_chance_m = config.get_config_value("cat_generation")["base_male_tortie"]
         for p_ in par_pelts:
             if p_.name in Pelt.torties:
                 tortie_chance_f = int(tortie_chance_f / 2)
@@ -1109,8 +1107,8 @@ class Pelt:
 
         # Tortie chance
         # There is a default chance for female tortie, slightly increased for completely random generation.
-        tortie_chance_f = game.config["cat_generation"]["base_female_tortie"] - 1
-        tortie_chance_m = game.config["cat_generation"]["base_male_tortie"]
+        tortie_chance_f = game._game_config["cat_generation"]["base_female_tortie"] - 1
+        tortie_chance_m = game._game_config["cat_generation"]["base_male_tortie"]
         if gender == "female":
             torbie = random.getrandbits(tortie_chance_f) == 1
         else:
@@ -1164,7 +1162,7 @@ class Pelt:
     def init_pattern_color(self, parents, gender) -> bool:
         """Inits self.name, self.colour, self.length,
         self.tortiebase and determines if the cat
-        will have white patche or not.
+        will have white patches or not.
         Return TRUE is the cat should have white patches,
         false is not."""
 
@@ -1240,7 +1238,7 @@ class Pelt:
             if not self.pattern:
                 self.pattern = choice(Pelt.tortiepatterns)
 
-            wildcard_chance = game.config["cat_generation"]["wildcard_tortie"]
+            wildcard_chance = game._game_config["cat_generation"]["wildcard_tortie"]
             if self.colour:
                 # The "not wildcard_chance" allows users to set wildcard_tortie to 0
                 # and always get wildcard torties.
@@ -1327,7 +1325,7 @@ class Pelt:
 
         # Direct inheritance. Will only work if at least one parent has white patches, otherwise continue on.
         if par_whitepatches and not random.randint(
-            0, game.config["cat_generation"]["direct_inheritance"]
+            0, game._game_config["cat_generation"]["direct_inheritance"]
         ):
             # This ensures Torties and Calicos won't get direct inheritance of incorrect white patch types
             _temp = par_whitepatches.copy()
@@ -1428,7 +1426,7 @@ class Pelt:
     def randomize_white_patches(self):
         # Points determination. Tortie can't be pointed
         if self.name != "Tortie" and not random.getrandbits(
-            game.config["cat_generation"]["random_point_chance"]
+            game._game_config["cat_generation"]["random_point_chance"]
         ):
             # Cat has colorpoint!
             self.points = choice(Pelt.point_markings)
@@ -1470,7 +1468,7 @@ class Pelt:
                 if p.pelt.vitiligo:
                     par_vit.append(p.pelt.vitiligo)
 
-        vit_chance = max(game.config["cat_generation"]["vit_chance"] - len(par_vit), 0)
+        vit_chance = max(game._game_config["cat_generation"]["vit_chance"] - len(par_vit), 0)
         if not random.getrandbits(vit_chance):
             self.vitiligo = choice(Pelt.vit)
 

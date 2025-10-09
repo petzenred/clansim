@@ -1,0 +1,29 @@
+<strong>v0.1.0</strong>
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! UPDATE docs.dev.writing on Status/Rank changes, etc.! !!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+<b>Game Structure</b>
+- Strings starting with STATUS_ were sometimes described as age, sometimes described as location, sometimes described as rank. So I split them into enums: Age and Rank, both defined in `definitions.py`.
+- Replaced string codes with enums:
+    - Season
+    - Biome
+    - PatrolType
+    - Age
+    - Rank replaced `STATUS_` strings
+- Turned PatrolType into a dataclass
+- Made seasons, patrol_type, and biomes for PatrolEvent into lists
+- Changes to the Pelt class.
+    - Turned it into a dataclass.
+    - Eye color is now saved as a single tuple attribute, not as two different attributes.
+- Save file changes.
+    - Save files now use YAML, not JSON, since it's more human-readable and allows commenting.
+    - The 'conditions' folder is now a single file.
+- The `game` object now has a method called `game.one_in_chance`, which has replaced the use of `random.getrandbits` everywhere I could find the latter. It's a much more intuitive method of generating a random result with a controlled but variable probability.
+
+<b>Content</b>
+- Added a new half-Clan background, 'halfclan3', for when a half-Clan relationship results in the foreign parent moving to their mate's Clan after the birth of their kits (think Graystripe moving to RiverClan, but without the other parent dying, necessarily).
+
+<b>Bugfixes</b>
+- Romance patrols are now more likely to happen between two cats with positive personality compatibility, not less.

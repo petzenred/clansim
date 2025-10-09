@@ -13,7 +13,7 @@ class AddCatCommand(Command):
 
     def callback(self, args: List[str]):
         cat = Cat()
-        game.clan.add_cat(cat)
+        game.clan_obj.add_cat(cat)
         add_output_line_to_log(f"Added {cat.name} with ID {cat.ID}")
 
 
@@ -29,7 +29,7 @@ class RemoveCatCommand(Command):
             return
         for cat in Cat.all_cats_list:
             if str(cat.name).lower() == args[0].lower() or cat.ID == args[0]:
-                game.clan.remove_cat(cat.ID)
+                game.clan_obj.remove_cat(cat.ID)
                 add_output_line_to_log(f"Removed {cat.name} with ID {cat.ID}")
                 return
         add_output_line_to_log(f"Could not find cat with name or ID {args[0]}")

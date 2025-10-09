@@ -64,6 +64,7 @@ def medical_cats_condition_fulfilled(all_cats,
     return fulfilled
 
 
+# TODO use Clan.enough_healers_to_treat_cats()
 def get_amount_cat_for_one_medic(clan):
     """Returns """
     amount = 10
@@ -110,7 +111,7 @@ class Illness:
         self.current_duration = duration
         self.current_mortality = mortality
 
-        amount_per_med = get_amount_cat_for_one_medic(game.clan)
+        amount_per_med = get_amount_cat_for_one_medic(game.clan_obj)
         if medical_cats_condition_fulfilled(game.cat_class.all_cats.values(),
                                             amount_per_med):
             self.current_duration = medicine_duration
@@ -128,7 +129,7 @@ class Illness:
         """
         TODO: DOCS
         """
-        amount_per_med = get_amount_cat_for_one_medic(game.clan)
+        amount_per_med = get_amount_cat_for_one_medic(game.clan_obj)
         if medical_cats_condition_fulfilled(game.cat_class.all_cats.values(),
                                             amount_per_med):
             if value > self.medicine_duration:
@@ -148,7 +149,7 @@ class Illness:
         """
         TODO: DOCS
         """
-        amount_per_med = get_amount_cat_for_one_medic(game.clan)
+        amount_per_med = get_amount_cat_for_one_medic(game.clan_obj)
         if medical_cats_condition_fulfilled(game.cat_class.all_cats.values(),
                                             amount_per_med):
             if value < self.medicine_mortality:
@@ -194,7 +195,7 @@ class Injury:
         self.current_duration = duration
         self.current_mortality = mortality
 
-        amount_per_med = get_amount_cat_for_one_medic(game.clan)
+        amount_per_med = get_amount_cat_for_one_medic(game.clan_obj)
         if medical_cats_condition_fulfilled(game.cat_class.all_cats.values(),
                                             amount_per_med):
             self.current_duration = medicine_duration
@@ -208,7 +209,7 @@ class Injury:
 
     @current_duration.setter
     def current_duration(self, value):
-        amount_per_med = get_amount_cat_for_one_medic(game.clan)
+        amount_per_med = get_amount_cat_for_one_medic(game.clan_obj)
         if medical_cats_condition_fulfilled(game.cat_class.all_cats.values(),
                                             amount_per_med):
             if value > self.medicine_duration:

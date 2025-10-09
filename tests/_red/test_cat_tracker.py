@@ -190,12 +190,12 @@ class TestCatTracker(unittest.TestCase):
         print(f"Set up complete\n")
 
         print(f"Testing getting an existing cat from CatTracker")
-        self.assertEqual(leafdapple, ct.get_cat_object(cat_id=cat_id))
+        self.assertEqual(leafdapple, ct.get_cat_objects(cat_id=cat_id)[0])
         print(f"Test case passed!\n")
 
         print(f"Testing getting a cat which doesn't exist from CatTracker")
         with self.assertRaises(AttributeError):
-            ct.get_cat_object(echosong.id)
+            ct.get_cat_objects(echosong.id)[0]
         print(f"Test case passed!\n")
 
         del ct

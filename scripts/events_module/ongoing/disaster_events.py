@@ -20,10 +20,10 @@ class DisasterEvents():
         This function handles the disasters
         """
 
-        if game.clan.primary_disaster or game.clan.secondary_disaster:
-            if game.clan.secondary_disaster:
+        if game.clan_obj.primary_disaster or game.clan_obj.secondary_disaster:
+            if game.clan_obj.secondary_disaster:
                 self.handle_current_secondary_disaster()
-            if game.clan.primary_disaster:
+            if game.clan_obj.primary_disaster:
                 self.handle_current_primary_disaster()
 
             return
@@ -41,10 +41,10 @@ class DisasterEvents():
             if event.priority == 'secondary':
                 print('priority')
                 continue
-            if game.clan.current_season not in event.season:
+            if game.clan_obj.current_season not in event.season:
                 print('season')
                 continue
-            if (game.clan.camp_bg and 'any') not in event.camp:
+            if (game.clan_obj.camp_bg and 'any') not in event.camp:
                 print('camp')
                 continue
 
@@ -63,11 +63,11 @@ class DisasterEvents():
         # choose and save disaster
         chosen_disaster = random.choice(final_events)
         print('chosen disaster', chosen_disaster.event)
-        game.clan.primary_disaster = chosen_disaster
+        game.clan_obj.primary_disaster = chosen_disaster
 
         # display trigger event
         event = self.disaster_text(chosen_disaster.trigger_events)
-        event.replace("c_n", f"{game.clan.name}Clan")
+        event.replace("c_n", f"{game.clan_obj.name}Clan")
         game.cur_events_list.append(Single_Event(event, "misc"))
 
     def handle_current_primary_disaster(self):
@@ -76,31 +76,31 @@ class DisasterEvents():
         """
         # decreasing duration, default decrease is 1 with a chance to decrease by 2
         if not int(random.random() * 10):
-            game.clan.primary_disaster.current_duration += 2
+            game.clan_obj.primary_disaster.current_duration += 2
         else:
-            game.clan.primary_disaster.current_duration += 1
+            game.clan_obj.primary_disaster.current_duration += 1
 
         # triggering conclusion if duration reaches 0
-        if game.clan.primary_disaster.current_duration >= game.clan.primary_disaster.duration:
-            event = self.disaster_text(game.clan.primary_disaster.conclusion_events)
+        if game.clan_obj.primary_disaster.current_duration >= game.clan_obj.primary_disaster.duration:
+            event = self.disaster_text(game.clan_obj.primary_disaster.conclusion_events)
             game.cur_events_list.append(
                 Single_Event(event, "misc"))
-            game.clan.primary_disaster = None
+            game.clan_obj.primary_disaster = None
             return
         else:
             # giving a progression event
-            event_list = game.clan.primary_disaster.progress_events[f"moon{game.clan.primary_disaster.current_duration}"]
+            event_list = game.clan_obj.primary_disaster.progress_events[f"moon{game.clan_obj.primary_disaster.current_duration}"]
             event = self.disaster_text(event_list)
             game.cur_events_list.append(
                 Single_Event(event, "misc"))
 
             # checking if a secondary disaster is triggered
-            if game.clan.primary_disaster.secondary_disasters:
+            if game.clan_obj.primary_disaster.secondary_disasters:
                 print('secondary disaster rolling')
                 picked_disasters = []
-                for potential_disaster in game.clan.primary_disaster.secondary_disasters:
-                    current_primary_duration = game.clan.primary_disaster.current_duration
-                    default_primary_duration = game.clan.primary_disaster.duration
+                for potential_disaster in game.clan_obj.primary_disaster.secondary_disasters:
+                    current_primary_duration = game.clan_obj.primary_disaster.current_duration
+                    default_primary_duration = game.clan_obj.primary_disaster.duration
                     chance = potential_disaster["chance"]
 
                     # check when the secondary disaster is allowed to trigger
@@ -126,7 +126,7 @@ class DisasterEvents():
                     secondary_disaster = GenerateEvents.possible_ongoing_events(
                                                                     "disasters",
                                                                     specific_event=secondary_disaster["disaster"])
-                    game.clan.secondary_disaster = secondary_disaster
+                    game.clan_obj.secondary_disaster = secondary_disaster
             return
 
     def handle_current_secondary_disaster(self):
@@ -134,20 +134,20 @@ class DisasterEvents():
         handles the progression for a secondary disaster
         """
         if not int(random.random() * 10):
-            game.clan.secondary_disaster.current_duration += 2
+            game.clan_obj.secondary_disaster.current_duration += 2
         else:
-            game.clan.secondary_disaster.current_duration += 1
+            game.clan_obj.secondary_disaster.current_duration += 1
 
         # triggering conclusion if duration reaches 0
-        if game.clan.secondary_disaster.current_duration >= game.clan.secondary_disaster.duration:
-            event = self.disaster_text(game.clan.secondary_disaster.conclusion_events)
+        if game.clan_obj.secondary_disaster.current_duration >= game.clan_obj.secondary_disaster.duration:
+            event = self.disaster_text(game.clan_obj.secondary_disaster.conclusion_events)
             game.cur_events_list.append(
                 Single_Event(event, "misc"))
-            game.clan.secondary_disaster = None
+            game.clan_obj.secondary_disaster = None
             return
         else:
             # giving a progression event
-            event_list = game.clan.secondary_disaster.progress_events[f"moon{game.clan.secondary_disaster.current_duration}"]
+            event_list = game.clan_obj.secondary_disaster.progress_events[f"moon{game.clan_obj.secondary_disaster.current_duration}"]
             event = self.disaster_text(event_list)
             game.cur_events_list.append(
                 Single_Event(event, "misc"))
@@ -160,8 +160,8 @@ class DisasterEvents():
         dep_exists = False
         med_exists = False
 
-        leader = Cat.fetch_cat(game.clan.leader)
-        deputy = Cat.fetch_cat(game.clan.deputy)
+        leader = Cat.fetch_cat(game.clan_obj.leader)
+        deputy = Cat.fetch_cat(game.clan_obj.deputy)
         med_cats = get_alive_status_cats(Cat, ["medicine cat", "medicine cat apprentice"], sort=True)
 
         # checking if there are cats of the specified rank
@@ -186,6 +186,6 @@ class DisasterEvents():
         text = text.replace("lead_name", str(leader.name))
         text = text.replace("dep_name", str(deputy.name))
         text = text.replace("med_name", str(random.choice(med_cats).name))
-        text = text.replace("c_n", f"{game.clan.name}Clan")
+        text = text.replace("c_n", f"{game.clan_obj.name}Clan")
 
         return text

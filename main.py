@@ -16,7 +16,7 @@ It then loads the settings, and then loads the start screen.
 
 """  # pylint: enable=line-too-long
 # DO NOT ADD YOUR IMPORTS HERE.
-# Scroll down to the "Load game" comment and add them there.
+# Scroll down to the "Add your imports here!" comment and add them there.
 # Side effects of imports WILL BREAK crucial setup logic for logging and init
 import os
 import shutil
@@ -25,6 +25,14 @@ import threading
 import time
 from importlib import reload
 from importlib.util import find_spec
+
+
+
+########################################################################################################################
+# Pre-game setup
+########################################################################################################################
+
+# ---------------------------- CHECK REQUIRED MODULES ---------------------------- #
 
 if not getattr(sys, "frozen", False):
     requiredModules = [
@@ -45,12 +53,11 @@ if not getattr(sys, "frozen", False):
             break
 
     if isMissing:
-        print(
-            """You are missing some requirements to run ClanSim!
+        print("""
+        You are missing some requirements to run ClanSim!
                 
-                Please look at the "README.md" file for instructions on how to install them.
-            """
-        )
+        Please look at the "README.md" file for instructions on how to install them.
+        """)
 
         sys.exit(1)
 
@@ -59,8 +66,7 @@ if not getattr(sys, "frozen", False):
 del find_spec
 
 import definitions
-from scripts.housekeeping.stream_duplexer import UnbufferedStreamDuplexer
-from scripts.housekeeping.datadir import get_log_dir, setup_data_dir
+from scripts.housekeeping.datadir import setup_data_dir
 from scripts.housekeeping.version import get_version_info
 
 try:
@@ -70,96 +76,83 @@ except NameError:
 if directory:
     os.chdir(directory)
 
+# ------------------------------------ UPDATE ------------------------------------ #
+# check for downloaded updates
+
+# FIXME make sure this info gets saved in the logger too
 if os.path.exists("auto-updated"):
-    print("Clangen starting, deleting auto-updated file")
+    print("ClanSim starting, deleting auto-updated file")
     os.remove("auto-updated")
     shutil.rmtree("Downloads", ignore_errors=True)
     print("Update Complete!")
     print(f"New version: {get_version_info().version_number}")
 
 setup_data_dir()
-timestr = time.strftime("%Y%m%d_%H%M%S")
+timestr = time.strftime(definitions.TIMESTR_FORMAT)
 
-stdout_file = open(get_log_dir() + f"/stdout_{timestr}.log", "a")
-stderr_file = open(get_log_dir() + f"/stderr_{timestr}.log", "a")
-sys.stdout = UnbufferedStreamDuplexer(sys.stdout, stdout_file)
-sys.stderr = UnbufferedStreamDuplexer(sys.stderr, stderr_file)
+# ------------------------------- SET VERSION INFO ------------------------------- #
 
-# Setup logging
+# if user is developing in a Github codespace
+# TODO potentially replace Environment with a debug flag
+environment: definitions.Environment
+version_msg: str
+if os.environ.get("CODESPACES"):
+    environment = definitions.Environment.Codespace
+    web_vnc: str = (f"https://{os.environ.get('CODESPACE_NAME')}-6080"
+                    f".{os.environ.get('GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN')}"
+                    f"/?autoconnect=true&reconnect=true&password=clangen&resize=scale")
+    version_msg = (
+        f"\n"
+        f"Running in Github codespace\n"
+        f"Sorry, but sound *may* not work :(\n"
+        f"SDL_AUDIODRIVER is dsl. This is to avoid ALSA errors, but it may disable sound.\n"
+        f"Web VNC:\n"
+        f"{web_vnc}\n"
+        f"(use ClanSim in fullscreen mode for best results)\n"
+    )
+# FIXME can you be running the source code from Github Codespaces? If not, change to elif
+if get_version_info().is_source_build:
+    environment = definitions.Environment.SourceCode
+    version_msg = "Running on source code\n"
+    if get_version_info().version_number == definitions.VERSION_CLANSIM_NUMBER:
+        version_msg += (f"\n"
+                        f"Failed to get git commit hash, using hardcoded version number instead.\n"
+                        f"Hey testers! We recommend you use git to clone the repository, as it makes things easier "
+                        f"for everyone.\n"
+                        f"There are instructions at "
+                        f"https://discord.com/channels/1003759225522110524/1054942461178421289/1078170877117616169\n")
+else:
+    environment = definitions.Environment.Executable
+    version_msg = "Running on PyInstaller build\n"
+
+version_msg += (f"\nVersion Name: {definitions.VERSION_CLANSIM_NUMBER}\n"
+                f"Running on commit {get_version_info().version_number}\n")
+
+# -------------------------------- LOGGING SETUP --------------------------------- #
+
 import logging
 from utils.logger_utils import logger_setup
 
-logger_setup(logging.DEBUG)
+# use the version info to establish what level of message the log should show -
+#   to include debugging messages or not to include debugging messages?
+logger_setup(environment.log_level)
 logger = logging.getLogger(__name__)
 
-#
-# formatter = logging.Formatter(
-#     "%(name)s - %(levelname)s - %(filename)s / %(funcName)s / %(lineno)d - %(message)s"
-# )
-#
-# # Logging for file
-# timestr = time.strftime("%Y%m%d_%H%M%S")
-# log_file_name = get_log_dir() + f"/clansim_{timestr}.log"
-# file_handler = logging.FileHandler(log_file_name)
-# file_handler.setFormatter(formatter)
-# # Only log errors to file
-# file_handler.setLevel(logging.ERROR)
-# # Logging for console
-# stream_handler = logging.StreamHandler()
-# stream_handler.setFormatter(formatter)
-# # Log debugging statements to console
-# #stream_handler.setLevel(logging.DEBUG)
-#
-# logging.root.addHandler(file_handler)
-# logging.root.addHandler(stream_handler)
-#
-# prune_logs(logs_to_keep=10, retain_empty_logs=False)
-#
-#
-# def log_crash(logtype, value, tb):
-#     """
-#     Log uncaught exceptions to file
-#     """
-#     logging.critical("Uncaught exception", exc_info=(logtype, value, tb))
-#     sys.__excepthook__(type, value, tb)
-#
-#
-# sys.excepthook = log_crash
+# print the version message
+logger.info(version_msg)
 
-# if user is developing in a github codespace
-if os.environ.get("CODESPACES"):
-    logger.info("")
-    logger.info("Github codespace user!!! Sorry, but sound *may* not work :(")
-    logger.info(
-        "SDL_AUDIODRIVER is dsl. This is to avoid ALSA errors, but it may disable sound."
-    )
-    logger.info("")
-    logger.info("Web VNC:")
-    logger.info(
-        f"https://{os.environ.get('CODESPACE_NAME')}-6080"
-        + f".{os.environ.get('GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN')}"
-        + "/?autoconnect=true&reconnect=true&password=clangen&resize=scale"
-    )
-    logger.info("(use ClanSim in fullscreen mode for best results)")
-    logger.info("")
+########################################################################################################################
+# Game setup
+########################################################################################################################
 
-if get_version_info().is_source_build:
-    logger.info("Running on source code")
-    if get_version_info().version_number == definitions.VERSION_CLANSIM_NUMBER:
-        logger.info("Failed to get git commit hash, using hardcoded version number instead.")
-        logger.info(
-            "Hey testers! We recommend you use git to clone the repository, as it makes things easier for everyone."
-        )  # pylint: disable=line-too-long
-        logger.info(
-            "There are instructions at https://discord.com/channels/1003759225522110524/1054942461178421289/1078170877117616169"
-        )  # pylint: disable=line-too-long
-else:
-    logger.info("Running on PyInstaller build")
-
-logger.info(f"Version Name: {definitions.VERSION_CLANSIM_NUMBER}")
-logger.info(f"Running on commit {get_version_info().version_number}")
+# ------------------------------ PYGAME GUI MANAGER ------------------------------ #
+# this needs to happen before screens are initialized
 
 import pygame_gui
+
+# ------------------------ LANGUAGE AND TRANSLATION SETUP ------------------------ #
+# replace pygame's translate module with a custom one
+
 from scripts.game_structure.monkeypatch import translate
 
 # MONKEYPATCH
@@ -167,11 +160,11 @@ from scripts.game_structure.monkeypatch import translate
 pygame_gui.core.utility.translate = translate
 for module_name, module in list(sys.modules.items()):
     if module and hasattr(module, "translate"):  # Check for the attribute
-        if (
-            module.translate is pygame_gui.core.utility.translate
-        ):  # Ensure it's the original reference
+        if module.translate is pygame_gui.core.utility.translate:  # Ensure it's the original reference
             setattr(module, "translate", translate)
             break
+
+# ----------------------------- LOAD PYGAME MODULES ------------------------------ #
 
 for module_name, module in list(sys.modules.items()):
     if module_name.startswith(f"pygame_gui."):
@@ -185,74 +178,123 @@ for module_name, module in list(sys.modules.items()):
             # Reload the module
             reload(module)
 
-# Load game
-from scripts.game_structure.audio import sound_manager, music_manager
-from scripts.game_structure.load_cat import load_cats, version_convert
-from scripts.game_structure.windows import SaveCheck
-from scripts.game_structure.screen_settings import screen_scale, MANAGER, screen
+# --------------------------- CHECK AND SET DEBUG MODE --------------------------- #
+
+# from scripts.debug_menu import debugmode
+# FIXME turn this into debug for logger
+from scripts.debug_console import debug_mode
+
+########################################################################################################################
+# pygame Setup
+########################################################################################################################
+
+# -------------------------------- PYGAME OBJECT --------------------------------- #
+
+import pygame
+
+from scripts._red.config_manager import config
 from scripts.game_structure.game_essentials import game
-from scripts.game_structure.discord_rpc import _DiscordRPC
+from scripts._red.save_manager import SaveManager
+save_manager: SaveManager = SaveManager()
+
+# configuration manager setup
+config.assign_save_manager(save_manager=save_manager, currentclan=)
+config.read_game_settings_file()
+
+# game object setup
+game.assign_save_manager(save_manager=save_manager, currentclan=True)  # TODO when will autoload not be true?
+pygame.display.set_caption(definitions.APP_NAME_LONG)
+
+# --------------------------------- GAME IMPORTS --------------------------------- #
+
 from scripts.cat.sprites import sprites
 from scripts.clan import clan_class
+
+from conversion.conversion_manager import update_clansim_save
+from scripts._red.save_manager import load_cats, clangen_version_convert
+from scripts.game_structure.audio import sound_manager, music_manager
+from scripts.game_structure.windows import SaveCheck
 from scripts.utility import (
     quit,
 )  # pylint: disable=redefined-builtin
+# Add your imports here!
 
-# from scripts.debug_menu import debugmode
-from scripts.debug_console import debug_mode
-import pygame
-
-# import all screens for initialization (Note - must be done after pygame_gui manager is created)
+# import all screens for initialization (must be done after pygame_gui manager is created)
+from scripts.game_structure.screen_settings import screen_scale, MANAGER, screen, toggle_fullscreen
+toggle_fullscreen(
+    fullscreen=config.Fullscreen,
+    show_confirm_dialog=False,
+    ingame_switch=False,
+)
 from scripts.screens.all_screens import AllScreens
 import scripts.game_structure.screen_settings
-
-# P Y G A M E
 clock = pygame.time.Clock()
-pygame.display.set_icon(pygame.image.load("resources/images/icon.png"))
+pygame.display.set_icon(pygame.image.load("resources/images/icons/_icon_.png"))
 
+# ------------------------------- DISCORD PRESENCE ------------------------------- #
+
+from scripts.game_structure.discord_rpc import _DiscordRPC
 game.rpc = _DiscordRPC("1076277970060185701", daemon=True)
 game.rpc.start()
 game.rpc.start_rpc.set()
 
-# LOAD cats & clan
-finished_loading = False
+# TODO can I move the imports here?
 
+# --------------------------- LOAD SAVE AND ANIMATIONS --------------------------- #
+
+finished_loading_f = False
 
 def load_data():
-    global finished_loading
+    global finished_loading_f
+
+    # TODO new loading
+
+    # TODO handle what happens if any of the save files are malformed
+    # TODO create a custom MalformedSaveError to catch here to make that easier
 
     # load in the spritesheets
     sprites.load_all()
 
+    # if possible, load the save referred to in "currentclan.txt"
+    # loads Clans, cats, relationships, events, and history
+    game.load_active_clan_save_file()
+
+    # TODO update ClanSim saves from older versions
+    # ClanGen save files can be converted to ClanSim files from the game's main menu
+    update_clansim_save(old_version)
+
+    # TODO rebuild screens core
+
+    # TODO old loading
     clan_list = game.read_clans()
     if clan_list:
         game.switches["clan_list"] = clan_list
         try:
             load_cats()
             version_info = clan_class.load_clan()
-            version_convert(version_info)
+            clangen_version_convert(version_info)
             game.load_events()
             scripts.screens.screens_core.screens_core.rebuild_core()
         except Exception as e:
-            logging.exception("File failed to load")
             if not game.switches["error_message"]:
                 game.switches[
                     "error_message"
                 ] = "There was an error loading the cats file!"
                 game.switches["traceback"] = e
+            logging.exception("File failed to load", e)
 
-    finished_loading = True
+    finished_loading_f = True
 
 
 def loading_animation(scale: float = 1):
-    global finished_loading
+    global finished_loading_f
 
     # Load images, adjust color
     color = pygame.Surface((200 * scale, 210 * scale))
-    if game.settings["dark mode"]:
-        color.fill(game.config["theme"]["light_mode_background"])
+    if config.settings.DarkMode:
+        color.fill(config.get_config_value("theme")["dark_mode_background"])
     else:
-        color.fill(game.config["theme"]["dark_mode_background"])
+        color.fill(config.get_config_value("theme")["light_mode_background"])
 
     images = []
     for i in range(1, 11):
@@ -272,13 +314,13 @@ def loading_animation(scale: float = 1):
 
     i = 0
     total_frames = len(images)
-    while not finished_loading:
+    while not finished_loading_f: # wait until the game data is finished loading
         clock.tick(8)  # Loading screen is 8FPS
 
-        if game.settings["dark mode"]:
-            screen.fill(game.config["theme"]["dark_mode_background"])
+        if config.settings.DarkMode:
+            screen.fill(config.get_config_value("theme")["dark_mode_background"])
         else:
-            screen.fill(game.config["theme"]["light_mode_background"])
+            screen.fill(config.get_config_value("theme")["light_mode_background"])
 
         screen.blit(
             images[i], (x - images[i].get_width() / 2, y - images[i].get_height() / 2)
@@ -294,7 +336,7 @@ def loading_animation(scale: float = 1):
 
         pygame.display.update()
 
-
+# load the game data in another thread
 loading_thread = threading.Thread(target=load_data)
 loading_thread.start()
 
@@ -304,9 +346,11 @@ loading_animation(screen_scale)
 # is just for safety. Plus some cleanup.
 loading_thread.join()
 del loading_thread
-del finished_loading
+del finished_loading_f
 del loading_animation
 del load_data
+
+# ----------------------------- LOAD SOUND AND MUSIC ----------------------------- #
 
 pygame.mixer.pre_init(buffer=44100)
 try:
@@ -317,19 +361,18 @@ except pygame.error:
     music_manager.muted_f = True
 AllScreens.main_menu_screen.screen_switches()
 # start main menu screen music here
-from definitions import MAIN_MENU_SCREEN_NAME
-music_manager.check_music(MAIN_MENU_SCREEN_NAME)
+music_manager.check_music(definitions.ScreenName.MainMenu)
 
 # dev screen info now lives in scripts/screens/screens_core
 
-cursor_img = pygame.image.load("resources/images/cursor.png").convert_alpha()
+cursor_img = pygame.image.load("resources/images/paw_cursor.png").convert_alpha()
 cursor = pygame.cursors.Cursor((9, 0), cursor_img)
 disabled_cursor = pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_ARROW)
 
 while True:
     time_delta = clock.tick(game.switches["fps"]) / 1000.0
 
-    if game.settings["custom cursor"]:
+    if config.settings.UsePawCursor:
         if pygame.mouse.get_cursor() == disabled_cursor:
             pygame.mouse.set_cursor(cursor)
     elif pygame.mouse.get_cursor() == cursor:
@@ -341,7 +384,7 @@ while True:
     for event in pygame.event.get():
         if (
             event.type == pygame.KEYDOWN
-            and game.settings["keybinds"]
+            and config.settings.UseKeybinds
             and debug_mode.debug_menu.visible
         ):
             pass
@@ -358,10 +401,9 @@ while True:
                     definitions.MAIN_MENU_SCREEN_NAME,
                     definitions.SWITCH_CLAN_SCREEN_NAME,
                     definitions.MAIN_SETTINGS_SCREEN_NAME,
-                    "info screen",
                     definitions.NEW_CLAN_SCREEN_NAME,
                 ]
-                or not game.clan
+                or not game.clan_obj
             ):
                 quit(savesettings=False)
             else:
@@ -371,15 +413,15 @@ while True:
         if event.type == pygame.MOUSEBUTTONDOWN:
             game.clicked = True
 
-            if MANAGER.visual_debug_active:
+            if MANAGER.visual_debug_active: # TODO 'visual debug' should be 'console debug'
                 _ = pygame.mouse.get_pos()
-                if game.settings["fullscreen"]:
+                if config.settings.Fullscreen:
                     logger.info(f"(x: {_[0]}, y: {_[1]})")
                 else:
                     logger.info(f"(x: {_[0] * screen_scale}, y: {_[1] * screen_scale})")
                 del _
 
-        # F2 turns toggles visual debug mode for pygame_gui, allowed for easier bug fixes.
+        # F2 toggles visual debug mode for pygame_gui, allowed for easier bug fixes.
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_F2:
                 MANAGER.logger.info_layer_debug()

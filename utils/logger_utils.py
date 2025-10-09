@@ -13,7 +13,7 @@ TIMESTR_FORMAT: str = "%Y%m%d_%H%M%S"
 LOG_FILE_DIR = f"{get_log_dir()}/"
 LOG_FILE_NAME = f"clansim_{TIMESTR_FORMAT}.log"
 
-LOGGER_LEVEL_DEFAULT = logging.ERROR
+LOGGER_LEVEL_DEFAULT = logging.INFO
 LOGGER_LEVEL_BETA = logging.DEBUG
 
 
@@ -49,7 +49,6 @@ def _set_up_file_handler(formatter, logging_level, log_file_path) -> logging.Fil
     # Logging for file
     file_handler = logging.FileHandler(log_file_path)
     file_handler.setFormatter(formatter)
-    # Only log errors to file
     file_handler.setLevel(logging_level)
     return file_handler
 

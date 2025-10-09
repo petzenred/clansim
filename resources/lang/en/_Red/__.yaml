@@ -1,0 +1,63 @@
+event:
+  text:
+  filter:
+    cats:
+      app:
+        OR:
+          traits:
+            - kit_attention_seeker # attention-seeker
+            - kit_bossy # bossy
+            - kit_bullying # bullying
+            - kit_charming # charming
+            - kit_daydreamer # daydreamer
+            - kit_fearless # fearless
+            - kit_impulsive # impulsive
+            - kit_know_it_all # know-it-all
+            - kit_noisy # noisy
+            - kit_polite # polite
+            - kit_quiet # quiet
+            - kit_self_conscious # self-conscious
+            - kit_shy # shy
+            - kit_skittish # skittish
+            - kit_sweet # sweet
+            - kit_unruly # unruly
+
+            - adventurous
+            - ambitious
+            - arrogant
+            - bloodthirsty
+            - bold
+            - charismatic
+            - calm
+            - careful
+            - childish
+            - cold
+            - compassionate
+            - competitive
+            - confident
+            - cunning
+            - daring
+            - faithful
+            - fierce
+            - flamboyant
+            - gloomy
+            - grumpy
+            - insecure
+            - lonesome
+            - loving
+            - loyal
+            - nervous
+            - oblivious
+            - playful
+            - rebellious
+            - responsible
+            - righteous
+            - shameless
+            - sincere
+            - sneaky
+            - strange
+            - strict
+            - thoughtful
+            - troublesome
+            - vengeful
+            - wise

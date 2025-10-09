@@ -1126,7 +1126,7 @@ def ea_problems():
         no_mc_errors = False
 
     if invalid_records["m_c"]["status"]:
-        ea_header(normal_text="Status")
+        ea_header(normal_text="Rank")
         ea_dump_records(invalid_records["m_c"]["status"])
         no_mc_errors = False
 
@@ -1177,7 +1177,7 @@ def ea_problems():
         no_rc_errors = False
 
     if invalid_records["r_c"]["status"]:
-        ea_header(normal_text="Status")
+        ea_header(normal_text="Rank")
         ea_dump_records(invalid_records["r_c"]["status"])
         no_rc_errors = False
 

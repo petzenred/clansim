@@ -1,0 +1,397 @@
+# conversion_dict.yaml -
+# Remember that in some cases I want the dictionaries to be COMBINED, not replaced.
+# E.g. SingleColour and TwoColour pelts - don't overwrite SingleColour with TwoColour.
+
+# if the conversion value is a list, it means "pick a random value from the list to replace it with"
+# TODO plan for if this - if value is None, don't do anything
+
+# old_key: new_key
+
+# moved "mates" from "<cat_id>_relations.json" to a cat's history
+
+backstory:
+  text:
+    m_c: {CAT/main}
+    r_c: {CAT/second}
+    c_n: {CLAN/main}Clan
+    o_c_n: {CLAN/other}Clan
+  keys:
+    step_1:
+
+      refugee: refugee2
+      # refugee2: x : "{CAT/main} used to live as a loner, but after another cat chased {PRONOUN/main/object}
+      #    from {PRONOUN/main/poss} home, {PRONOUN/main/subject} took refuge in {CLAN/main}Clan."
+
+      otherclan: otherclan1
+      # otherclan1: Clans_Other : "{CAT/main} was born into another Clan, but came to {CLAN/main}Clan by choice."
+
+      tragedy_survivor: tragedy_survivor1
+      # tragedy_survivor1: ClansOtherTragedy: "Something horrible happened to m_c's previous Clan.
+      # {PRONOUN/m_c/subject/CAP} {VERB/m_c/refuse/refuses} to speak about it."
+
+      disgraced: disgraced1
+      # disgraced1: ClansOtherExileCrime: "m_c was cast out of {PRONOUN/m_c/poss} old Clan for some transgression
+      # that {PRONOUN/m_c/subject}{VERB/m_c/'re/'s} not keen on talking about."
+
+      orphaned: orphaned1
+      # orphaned1: Kit_Aware: "m_c was found with a deceased parent. The Clan took {PRONOUN/m_c/object} in, but
+      # doesn't hide where {PRONOUN/m_c/subject} came from."
+
+
+      other_clan1: otherclan4
+      # otherclan4: Clans_Choice: # "m_c grew up in another Clan, but chose to leave that life and join the
+      # Clan {PRONOUN/m_c/subject} now {VERB/m_c/live/lives} in."
+
+      outsider: outsider1
+      # outsider1: Kit_Outsider : # "{CAT/main} was born outside of the Clans."
+    step_2:
+      # otherclan1: Clans_Other: "m_c was born into another Clan, but came to this Clan by choice."
+      otherclan1:
+        - abandoned3
+        - guided4
+        - halfclan2
+        - medicine_cat
+        - otherclan3
+        - refugee1
+        - refugee5
+        - tragedy_survivor1
+
+      # otherclan4: Clans_Choice: "m_c grew up in another Clan, but chose to leave that life and join the Clan
+      #   {PRONOUN/m_c/subject} now {VERB/m_c/live/lives} in."
+      otherclan4:
+        - abandoned3
+        - guided4
+        - halfclan2
+        - medicine_cat
+        - orphaned4
+        - otherclan3
+        - refugee1
+        - tragedy_survivor1
+
+      # ostracized_warrior: Clans_Exile_Ostracized: "m_c was ostracized from {PRONOUN/m_c/poss} old Clan,
+      # but no one really knows why."
+      ostracized_warrior:
+        - disgraced1
+        - disgraced2
+        - disgraced3
+
+      # outsider1: Kit_Outsider: "m_c was born outside of a Clan."
+      outsider1:
+        - abandoned1
+        - abandoned4
+        - orphaned1
+        - orphaned2
+        - orphaned3
+        - orphaned5
+        - outsider2
+        - abandoned2 # "m_c was born outside of the Clan, but was brought to the Clan as a kit and has lived here ever since."
+        - outsider_roots2 # "m_c was born outside the Clan but came to live there with {PRONOUN/m_c/poss} parent at a young age."
+
+      # loner1: Loner_Choice: "m_c joined the Clan by choice after living life as a loner."
+      loner1:
+        - guided3
+        - loner2
+        - loner3
+        # - loner4 # only if they have a mate
+        - refugee2
+        - tragedy_survivor4
+      
+      # rogue1: Rogue_Choice: "m_c joined the Clan by choice after living life as a rogue."
+      rogue1:
+        - guided2
+        - refugee4
+        - rogue3
+        - tragedy_survivor2
+
+      # kittypet1: Kittypet_Choice: "m_c joined the Clan by choice after living life with Twolegs as a kittypet."
+      kittypet1:
+        - abandoned4
+        - guided1
+        - kittypet2
+        - kittypet3
+        - kittypet4
+        - orphaned3
+        - refugee3
+        - refugee6
+        - tragedy_survivor3
+pelt:
+  calico_map:
+    BLUEFOUR:
+      pattern: PALEFOUR
+      tortie_base: tabby
+      tortie_color: SILVER
+      tortie_pattern: tortietabby
+    BLUEONE:
+      pattern: PALETHREE
+      tortie_base: single
+      tortie_color: SILVER
+      tortie_pattern: tortiesolid
+    BLUETHREE:
+      pattern: PALETHREE
+      tortie_base: tabby
+      tortie_color: SILVER
+      tortie_pattern: tortietabby
+    BLUETWO:
+      pattern: PALEFOUR
+      tortie_base: single
+      tortie_color: SILVER
+      tortie_pattern: tortiesolid
+    FADEDFOUR:
+      pattern: GOLDFOUR
+      tortie_base: tabby
+      tortie_color: BROWN
+      tortie_pattern: tortietabby
+    FADEDONE:
+      pattern: GOLDTHREE
+      tortie_base: single
+      tortie_color: BROWN
+      tortie_pattern: tortiesolid
+    FADEDTHREE:
+      pattern: GOLDTHREE
+      tortie_base: tabby
+      tortie_color: BROWN
+      tortie_pattern: tortietabby
+    FADEDTWO:
+      pattern: GOLDFOUR
+      tortie_base: single
+      tortie_color: BROWN
+      tortie_pattern: tortiesolid
+    FOUR:
+      pattern: GOLDFOUR
+      tortie_base: single
+      tortie_color: BLACK
+      tortie_pattern: tortietabby
+    ONE:
+      pattern: GOLDTHREE
+      tortie_base: single
+      tortie_color: BLACK
+      tortie_pattern: tortiesolid
+    THREE:
+      pattern: GOLDTHREE
+      tortie_base: single
+      tortie_color: BLACK
+      tortie_pattern: tortietabby
+    TWO:
+      pattern: GOLDFOUR
+      tortie_base: single
+      tortie_color: BLACK
+      tortie_pattern: tortiesolid
+  old_creamy_patches:
+    ANY2CREAMY: ANYTWO
+    ANYCREAMY: ANY
+    COLOURPOINTCREAMY: COLOURPOINT
+    LITTLECREAMY: LITTLE
+    TUXEDOCREAMY: TUXEDO
+    VANCREAMY: VAN
+  old_tortie_patches:
+    CREAMFOUR:
+    - CREAM
+    - FOUR
+    CREAMONE:
+    - CREAM
+    - ONE
+    CREAMTHREE:
+    - CREAM
+    - THREE
+    CREAMTWO:
+    - CREAM
+    - TWO
+    DARKFOUR:
+    - DARKGINGER
+    - FOUR
+    DARKONE:
+    - DARKGINGER
+    - ONE
+    DARKTHREE:
+    - DARKGINGER
+    - THREE
+    DARKTWO:
+    - DARKGINGER
+    - TWO
+    GINGERFOUR:
+    - GINGER
+    - FOUR
+    GINGERONE:
+    - GINGER
+    - ONE
+    GINGERTHREE:
+    - GINGER
+    - THREE
+    GINGERTWO:
+    - GINGER
+    - TWO
+    GOLDFOUR:
+    - GOLDEN
+    - FOUR
+    GOLDONE:
+    - GOLDEN
+    - ONE
+    GOLDTHREE:
+    - GOLDEN
+    - THREE
+    GOLDTWO:
+    - GOLDEN
+    - TWO
+    PALEFOUR:
+    - PALEGINGER
+    - FOUR
+    PALEONE:
+    - PALEGINGER
+    - ONE
+    PALETHREE:
+    - PALEGINGER
+    - THREE
+    PALETWO:
+    - PALEGINGER
+    - TWO
+  tortie_map:
+    BLUEONE:
+      pattern: PALEONE
+      tortie_base: single
+      tortie_color: SILVER
+      tortie_pattern: tortiesolid
+    BLUETWO:
+      pattern: PALETWO
+      tortie_base: single
+      tortie_color: SILVER
+      tortie_pattern: tortiesolid
+    FADEDONE:
+      pattern: GOLDONE
+      tortie_base: single
+      tortie_color: BROWN
+      tortie_pattern: tortiesolid
+    FADEDTWO:
+      pattern: GOLDTWO
+      tortie_base: single
+      tortie_color: BROWN
+      tortie_pattern: tortiesolid
+    ONE:
+      pattern: GOLDONE
+      tortie_base: single
+      tortie_color: BLACK
+      tortie_pattern: tortiesolid
+    TWO:
+      pattern: GOLDTWO
+      tortie_base: single
+      tortie_color: BLACK
+      tortie_pattern: tortiesolid
+  skin_colour:
+    DARK: chocolate
+    DARKGREY: dark_grey
+    DARKBLUE: dark_blue
+    LIGHTBLUE: light_blue
+    DARKSALMON: dark_salmon
+    DARKBROWN: dark_brown
+    LIGHTBROWN: light_brown
+    DARKMARBLED: dark_marbled
+    LIGHTMARBLED: light_marbled
+  eye_colour:
+    PALEGREEN: pale_green
+    DARKBLUE: dark_blue
+    HEATHERBLUE: heather_blue
+    SUNLITICE: sunlit_ice
+    PALEBLUE: pale_blue
+    PALEYELLOW: pale_yellow
+    GREENYELLOW: green_yellow
+skill:
+  TEACHER: teach
+  HUNTER:
+    - stalk
+    - fish
+    - ambush
+  FIGHTER: fight
+  RUNNER: run
+  CLIMBER: climb
+  SWIMMER: swim
+  SPEAKER: speech
+  MEDIATOR: mediate
+  CLEVER: reason
+  INSIGHTFUL: advice
+  SENSE: observe
+  KIT: kit
+  STORY: story
+  LORE: history
+  CAMP: camp
+  HEALER: herb
+  STAR: starclan
+  OMEN: interpret
+  DREAM: interpret
+  CLAIRVOYANT: clairvoyant
+  PROPHET: interpret
+  GHOST: ghost
+  DARK: dark_forest
+  # remove the 'hidden knowledge' skills, which aren't used in any events, as far as I can find
+  # TODO while converting, give a heads-up if those words are found
+  ROGUE:  # ROGUE = "rogue's knowledge"
+    - ambush
+    - scavenge
+  LONER: # LONER = "loner's knowledge"
+    - stalk
+    - speak
+  KITTYPET: # KITTYPET = "kittypet's knowledge"
+    - story
+    - observe
+camp:
+  default: camp_forest_0
+  Forestcamp2: camp_forest_1
+  Forestcamp3: camp_forest_2
+  Forestcamp4: camp_forest_3
+  Mountainouscamp1: camp_mountainous_0
+  Mountainouscamp2: camp_mountainous_1
+  Mountainouscamp3: camp_mountainous_2
+  Mountainouscamp4: camp_mountainous_3
+  Beachcamp1: camp_beach_0
+  Beachcamp2: camp_beach_1
+  Beachcamp3: camp_beach_2
+  Beachcamp4: camp_beach_3
+  Plainscamp1: camp_plains_0
+  Plainscamp2: camp_plains_1
+images:
+  # "adoption.png" : "icons/icon_adoption.png"
+  # "mentor.png": "icons/icon_mentor.png"
+  "cursor.png": "paw_cursor.png"
+  "bar.png": "bar_horizontal.png"
+  "vertical_bar.png" : "bar_vertical.png"
+  "rank.png": "buttons/rank.png"
+  "fav_marker.png": "marker_favourite.png"
+  # Icons
+  "icon.png": "icons/_icon_.png"
+  "deputy_icon.png": "icons/icon_deputy.png"
+  "elder_icon.png": "icons/icon_elder.png"
+  "kit_icon.png": "icons/icon_kit.png"
+  "leader_icon.png": "icons/icon_leader.png"
+  "mediator_app_icon.png": "icons/icon_mediator_app.png"
+  "mediator_icon.png": "icons/icon_mediator.png"
+  "medic_app_icon.png": "icons/icon_medicine_app.png"
+  "medic_icon.png": "icons/icon_medicine.png"
+  "warrior_app_icon.png": "icons/icon_warrior_app.png"
+  "warrior_icon.png": "icons/icon_warrior.png"
+  "icon_greenleaf.png": "icons/icon_greenleaf.png"
+  "icon_leafbare.png": "icons/icon_leafbare.png"
+  "icon_leaffall.png": "icons/icon_leaffall.png"
+  "icon_newleaf.png": "icons/icon_newleaf.png"
+  "icon_moon.png": "icons/icon_moon.png"
+  "adoption.png": "icons/icon_adoption.png"
+  "mentor.png": "icons/icon_mentor.png"
+  "dot_big.png": "icons/icon_dot_big.png""
+  # Backgrounds
+  "camp_bg/": "backgrounds/camp_bg/"
+  "lead_den_bg/": "backgrounds/lead_den_bg/"
+  "darkforestbg.png": "backgrounds/darkforestbg.png"
+  "mac_installer_bg_blank.png": "backgrounds/mac_installer_bg_blank.png"
+  "menu.png": "backgrounds/menu.png"
+  "menu_logoless.png": "backgrounds/menu_logoless.png"
+  "outside_clan_bg.png": "backgrounds/outside_clan_bg.png"
+  "starclanbg.png": "backgrounds/starclanbg.png"
+  "urbg.png": "backgrounds/urbg.png"
+  # Profile Screen
+  "family_mate.png": "screens/profile_screen/family_mate.png"
+  "family_parents.png": "screens/profile_screen/family_parents.png"
+  "familytree_bigcatbox.png": "screens/profile_screen/familytree_bigcatbox.png"
+  "choosing_cat1_frame_mate.png.png": "screens/profile_screen/choosing_cat1_frame_mate.png.png"
+  "choosing_cat1_frame_ment.png.png": "screens/profile_screen/choosing_cat1_frame_ment.png.png"
+  "choosing_cat2_frame_mate.png.png": "screens/profile_screen/choosing_cat2_frame_mate.png.png"
+  "choosing_cat2_frame_ment.png.png": "screens/profile_screen/choosing_cat2_frame_ment.png.png"
+  "pers_compatible.png": "screens/profile_screen/pers_compatible.png"
+  "pers_incompatible.png": "screens/profile_screen/pers_incompatible.png"
+  "pers_neutral.png": "screens/profile_screen/pers_neutral.png"

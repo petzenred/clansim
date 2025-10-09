@@ -11,6 +11,7 @@ from scripts.game_structure.localization import load_lang_resource
 from scripts.utility import adjust_list_text, event_text_adjust, PERMANENT, ILLNESSES, INJURIES
 
 
+## TODO HerbSupply should be a dataclass
 class HerbSupply:
     """Handles managing the Clan's herb supply."""
 
@@ -34,7 +35,7 @@ class HerbSupply:
 
         self.herb = {}
         self.base_herb_list = HERBS
-        if game.clan:
+        if game.clan_obj:
             for name in self.base_herb_list:
                 self.herb[name] = Herb(
                     name
@@ -117,7 +118,7 @@ class HerbSupply:
         """
         returns the lowest qualifier for an adequate supply
         """
-        return round(self.required_herb_count / game.config["clan_resources"]["herbs"]["adequate"])
+        return round(self.required_herb_count / game._game_config["clan_resources"]["herbs"]["adequate"])
 
     @property
     def full_qualifier(self) -> int:
@@ -131,7 +132,7 @@ class HerbSupply:
         """
         returns the lowest qualifier for an adequate supply
         """
-        return self.required_herb_count * game.config["clan_resources"]["herbs"]["excess"]
+        return self.required_herb_count * game._game_config["clan_resources"]["herbs"]["excess"]
 
     def convert_old_save(self, herb_list):
         """
@@ -145,7 +146,7 @@ class HerbSupply:
         """
         takes given clan_size and multiplies it by the required_herbs_per_cat from game.config
         """
-        self.required_herb_count = clan_size * game.config["clan_resources"]["herbs"]["required_herbs_per_cat"]
+        self.required_herb_count = clan_size * game._game_config["clan_resources"]["herbs"]["required_herbs_per_cat"]
 
     def start_storage(self, clan_size):
         """
@@ -289,16 +290,16 @@ class HerbSupply:
         """
         messages: list = MESSAGES["storage_status"][self.get_overall_rating()]
         for message in messages.copy():
-            if "lead_name" in message and (not game.clan.leader or game.clan.leader.dead or game.clan.leader.outside):
+            if "lead_name" in message and (not game.clan_obj.leader or game.clan_obj.leader.dead or game.clan_obj.leader.outside):
                 messages.remove(message)
-            if "dep_name" in message and (not game.clan.deputy or game.clan.deputy.dead or game.clan.deputy.outside):
+            if "dep_name" in message and (not game.clan_obj.deputy or game.clan_obj.deputy.dead or game.clan_obj.deputy.outside):
                 messages.remove(message)
 
         return event_text_adjust(
             Cat=med_cat,
             text=choice(messages),
             main_cat=med_cat,
-            clan=game.clan
+            clan=game.clan_obj
         )
 
     def get_single_herb_total(self, herb: str) -> int:
@@ -356,12 +357,12 @@ class HerbSupply:
         list_of_herb_strs = []
         for med in med_cats:
             if assistants:
-                list_of_herb_strs, found_herbs = game.clan.herb_supply.get_found_herbs(
+                list_of_herb_strs, found_herbs = game.clan_obj.herb_supply.get_found_herbs(
                     med,
                     general_amount_bonus=True,
                     specific_quantity_bonus=len(assistants))
             else:
-                list_of_herb_strs, found_herbs = game.clan.herb_supply.get_found_herbs(
+                list_of_herb_strs, found_herbs = game.clan_obj.herb_supply.get_found_herbs(
                     med)
             herb_list.extend(found_herbs)
 
@@ -370,7 +371,7 @@ class HerbSupply:
         # get display strings for herbs
         herb_strs = []
         for herb in herb_list:
-            herb_strs.append(game.clan.herb_supply.herb[herb].plural_display)
+            herb_strs.append(game.clan_obj.herb_supply.herb[herb].plural_display)
 
         herb_list = adjust_list_text(herb_strs)
 
@@ -412,14 +413,14 @@ class HerbSupply:
         quantity_modifier = 1
 
         if primary == SkillPath.SENSE:
-            amount_modifier = game.config["clan_resources"]["herbs"]["primary_sense"]
+            amount_modifier = game._game_config["clan_resources"]["herbs"]["primary_sense"]
         elif primary == SkillPath.CLEVER:
-            quantity_modifier = game.config["clan_resources"]["herbs"]["primary_clever"]
+            quantity_modifier = game._game_config["clan_resources"]["herbs"]["primary_clever"]
 
         if secondary == SkillPath.SENSE:
-            amount_modifier = game.config["clan_resources"]["herbs"]["secondary_sense"]
+            amount_modifier = game._game_config["clan_resources"]["herbs"]["secondary_sense"]
         elif secondary == SkillPath.CLEVER:
-            quantity_modifier = game.config["clan_resources"]["herbs"]["secondary_clever"]
+            quantity_modifier = game._game_config["clan_resources"]["herbs"]["secondary_clever"]
 
         # list of the herbs, sorted by most need
         herb_list = self.sorted_by_need
@@ -428,12 +429,12 @@ class HerbSupply:
         found_herbs = {}
 
         # adjust weighting according to season
-        weight = game.config["clan_resources"]["herbs"][game.clan.biome.casefold()][game.clan.current_season.casefold()]
+        weight = game._game_config["clan_resources"]["herbs"][game.clan_obj.biome.casefold()][game.clan_obj.current_season.casefold()]
 
         # the amount of herb types the med has found
         amount_of_herbs = choices(population=[1, 2, 3], weights=weight, k=1)[0] + amount_modifier
         if general_amount_bonus:
-            amount_of_herbs *= game.config["clan_resources"]["herbs"]["general_amount_bonus"]
+            amount_of_herbs *= game._game_config["clan_resources"]["herbs"]["general_amount_bonus"]
 
         # adding herb quantity bonus
         if specific_quantity_bonus:
@@ -445,11 +446,11 @@ class HerbSupply:
                 break
 
             # rarity is set to 0 if the herb can't be found in the current season
-            if not self.herb[herb].get_rarity(game.clan.biome, game.clan.current_season):
+            if not self.herb[herb].get_rarity(game.clan_obj.biome, game.clan_obj.current_season):
                 continue
 
             # chance to find a herb is based on it's rarity
-            if randint(1, self.herb[herb].get_rarity(game.clan.biome, game.clan.current_season)) == 1:
+            if randint(1, self.herb[herb].get_rarity(game.clan_obj.biome, game.clan_obj.current_season)) == 1:
                 found_herbs[herb] = choices(population=[1, 2, 3], weights=weight, k=1)[0] * quantity_modifier
                 amount_of_herbs -= 1
 
@@ -573,7 +574,7 @@ class HerbSupply:
 
             chosen_effect = choice(possible_effects)
 
-            if game.clan.game_mode == "classic":
+            if game.clan_obj.game_mode == "classic":
                 # classic always applies basic treatment, regardless of herb supply
                 self.__apply_herb_effect(treatment_cat, name, "cobwebs", chosen_effect, amount_used=1, strength=1)
                 return
@@ -654,7 +655,7 @@ class HerbSupply:
         # apply mortality effect
         if effect == HerbEffect.MORTALITY:
             con_info[effect] += (
-                    game.config["clan_resources"]["herbs"]["base_mortality_effect"] * strength + amt_modifier
+                    game._game_config["clan_resources"]["herbs"]["base_mortality_effect"] * strength + amt_modifier
             )
             effect_message = i18n.t("screens.med_den.mortality_down")
 
@@ -662,7 +663,7 @@ class HerbSupply:
         elif effect == HerbEffect.DURATION:
             # duration doesn't get amt_modifier, as that would be far too strong an affect
             con_info[effect] -= (
-                    game.config["clan_resources"]["herbs"]["base_duration_effect"] * strength
+                    game._game_config["clan_resources"]["herbs"]["base_duration_effect"] * strength
             )
             if con_info["duration"] < 0:
                 con_info["duration"] = 0
@@ -672,11 +673,11 @@ class HerbSupply:
         elif effect == HerbEffect.RISK:
             for risk in con_info[effect]:
                 risk["chance"] += (
-                        game.config["clan_resources"]["herbs"]["base_risk_effect"] * strength + amt_modifier
+                        game._game_config["clan_resources"]["herbs"]["base_risk_effect"] * strength + amt_modifier
                 )
                 effect_message = i18n.t("screens.med_den.risks_down")
 
-        if game.clan.game_mode == "classic":
+        if game.clan_obj.game_mode == "classic":
             # classic doesn't get logs
             return
 
@@ -693,7 +694,7 @@ class HerbSupply:
             Cat=treated_cat,
             text=message,
             main_cat=treated_cat,
-            clan=game.clan
+            clan=game.clan_obj
         )
         self.log.append(message)
 

@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 import ujson
 
 # from resources.game_config import SCREEN_CONFIG
-from scripts._red.conf_manager import conf
+from scripts._red.config_manager import config
 from scripts.housekeeping.datadir import get_save_dir
 
 if TYPE_CHECKING:
@@ -39,7 +39,7 @@ curr_variable_dict = {}
 
 display_change_in_progress = False  # this acts as a lock to ensure we don't end up in a loop of fullscreen changes
 
-SCREEN_CONFIG: dict = conf.get_config_value("cat_generation")
+SCREEN_CONFIG: dict = config.get_config_value("cat_generation")
 
 ########################################################################################################################
 # Methods

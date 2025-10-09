@@ -142,17 +142,17 @@ def get_custom_pronouns(lang=None):
     if lang is None:
         lang = i18n.config.get("locale")
     try:
-        return game.clan.custom_pronouns[lang]
+        return game.clan_obj.custom_pronouns[lang]
     except KeyError:
-        game.clan.custom_pronouns[lang] = []
-    return game.clan.custom_pronouns[lang]
+        game.clan_obj.custom_pronouns[lang] = []
+    return game.clan_obj.custom_pronouns[lang]
 
 
 def add_custom_pronouns(pronouns, lang=None):
     if lang is None:
         lang = i18n.config.get("locale")
     try:
-        game.clan.custom_pronouns[lang].append(pronouns)
+        game.clan_obj.custom_pronouns[lang].append(pronouns)
     except KeyError:
-        game.clan.custom_pronouns[lang] = []
-        game.clan.custom_pronouns[lang].append(pronouns)
+        game.clan_obj.custom_pronouns[lang] = []
+        game.clan_obj.custom_pronouns[lang].append(pronouns)

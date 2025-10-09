@@ -16,9 +16,9 @@ class OutsiderEvents:
 
     @staticmethod
     def killing_outsiders(cat: Cat):
-        if "lead_den_outsider_event" in game.clan.clan_settings:
-            if game.clan.clan_settings["lead_den_outsider_event"]:
-                info_dict = game.clan.clan_settings["lead_den_outsider_event"]
+        if "lead_den_outsider_event" in game.clan_obj.clan_settings:
+            if game.clan_obj.clan_settings["lead_den_outsider_event"]:
+                info_dict = game.clan_obj.clan_settings["lead_den_outsider_event"]
                 if cat.ID == info_dict["cat_ID"]:
                     return
 

@@ -225,7 +225,7 @@ class PatrolOutcome:
             patrol_cats=patrol.patrol_cats,
             patrol_apprentices=patrol.patrol_apprentices,
             new_cats=patrol.new_cats,
-            clan=game.clan,
+            clan=game.clan_obj,
             other_clan=patrol.other_clan,
         )
 
@@ -248,7 +248,7 @@ class PatrolOutcome:
                         patrol_cats=patrol.patrol_cats,
                         patrol_apprentices=patrol.patrol_apprentices,
                         new_cats=patrol.new_cats,
-                        clan=game.clan,
+                        clan=game.clan_obj,
                         other_clan=patrol.other_clan,
                     )
                 elif isinstance(log, list):
@@ -262,7 +262,7 @@ class PatrolOutcome:
                             patrol_cats=patrol.patrol_cats,
                             patrol_apprentices=patrol.patrol_apprentices,
                             new_cats=patrol.new_cats,
-                            clan=game.clan,
+                            clan=game.clan_obj,
                             other_clan=patrol.other_clan,
                         )
 
@@ -418,11 +418,11 @@ class PatrolOutcome:
     def _handle_exp(self, patrol: "Patrol") -> str:
         """Handle giving exp"""
 
-        if game.clan.game_mode == "classic":
+        if game.clan_obj.game_mode == "classic":
             gm_modifier = 1
-        elif game.clan.game_mode == "expanded":
+        elif game.clan_obj.game_mode == "expanded":
             gm_modifier = 3
-        elif game.clan.game_mode == "cruel season":
+        elif game.clan_obj.game_mode == "cruel season":
             gm_modifier = 6
         else:
             gm_modifier = 1
@@ -439,7 +439,7 @@ class PatrolOutcome:
         )
 
         # Apprentice exp, does not depend on success
-        if game.clan.game_mode != "classic":
+        if game.clan_obj.game_mode != "classic":
             app_exp = max(random.randint(1, 7) * (1 - 0.1 * len(patrol.patrol_cats)), 1)
         else:
             app_exp = 0
@@ -481,15 +481,15 @@ class PatrolOutcome:
         for _cat in cats_to_kill:
             if _cat.status == "leader":
                 if "all_lives" in self.dead_cats:
-                    game.clan.leader_lives = 0
+                    game.clan_obj.leader_lives = 0
                     results.append(
                         event_text_adjust(
                             Cat, i18n.t("cat.history.leader_death_all"), main_cat=_cat
                         )
                     )
                 elif "some_lives" in self.dead_cats:
-                    lives_lost = random.randint(1, max(1, game.clan.leader_lives - 1))
-                    game.clan.leader_lives -= lives_lost
+                    lives_lost = random.randint(1, max(1, game.clan_obj.leader_lives - 1))
+                    game.clan_obj.leader_lives -= lives_lost
                     results.append(
                         event_text_adjust(
                             Cat,
@@ -498,7 +498,7 @@ class PatrolOutcome:
                         )
                     )
                 else:
-                    game.clan.leader_lives -= 1
+                    game.clan_obj.leader_lives -= 1
                     results.append(
                         event_text_adjust(
                             Cat,
@@ -672,7 +672,7 @@ class PatrolOutcome:
     def _handle_herbs(self, patrol: "Patrol") -> str:
         """Handle giving herbs"""
 
-        if not self.herbs or game.clan.game_mode == "classic":
+        if not self.herbs or game.clan_obj.game_mode == "classic":
             return ""
 
         list_of_herb_strs = []
@@ -688,7 +688,7 @@ class PatrolOutcome:
 
         if "random_herbs" in self.herbs:
             # get random herbs, add to storage, and get patrol outcome msg
-            list_of_herb_strs, found_herbs = game.clan.herb_supply.get_found_herbs(
+            list_of_herb_strs, found_herbs = game.clan_obj.herb_supply.get_found_herbs(
                 med_cat=patrol.patrol_leader,
                 general_amount_bonus=large_bonus,
                 specific_quantity_bonus=patrol_size_modifier,
@@ -707,7 +707,7 @@ class PatrolOutcome:
                 found_herbs[herb] = amount
 
             # add found_herbs to storage and get patrol outcome msg
-            list_of_herb_strs, found_herbs = game.clan.herb_supply.handle_found_herbs_outcomes(found_herbs)
+            list_of_herb_strs, found_herbs = game.clan_obj.herb_supply.handle_found_herbs_outcomes(found_herbs)
 
         herb_string = adjust_list_text(list_of_herb_strs).capitalize()
 
@@ -729,11 +729,11 @@ class PatrolOutcome:
         if not FRESHKILL_ACTIVE:
             return ""
 
-        if not self.prey or game.clan.game_mode == "classic":
+        if not self.prey or game.clan_obj.game_mode == "classic":
             return ""
 
         basic_amount = PREY_REQUIREMENT["warrior"]
-        if game.clan.game_mode == "expanded":
+        if game.clan_obj.game_mode == "expanded":
             basic_amount += ADDITIONAL_PREY
         prey_types = {
             "very_small": basic_amount / 2,
@@ -782,7 +782,7 @@ class PatrolOutcome:
                 )
 
         # additional hunter buff for expanded mode
-        if game.clan.game_mode == "expanded" and highest_hunter_tier:
+        if game.clan_obj.game_mode == "expanded" and highest_hunter_tier:
             total_amount = int(
                 total_amount * (HUNTER_BONUS[str(highest_hunter_tier)] / 20 + 1)
             )
@@ -794,7 +794,7 @@ class PatrolOutcome:
             game.freshkill_event_list.append(
                 f"{total_amount} pieces of prey were caught on a patrol."
             )
-            game.clan.freshkill_pile.add_freshkill(total_amount)
+            game.clan_obj.freshkill_pile.add_freshkill(total_amount)
             results = i18n.t(f"screens.patrol.prey_{used_tag}")
 
         return results
@@ -856,7 +856,7 @@ class PatrolOutcome:
                         sub_sub[0] != sub[0]
                         and (
                             sub_sub[0].gender == "female"
-                            or game.clan.clan_settings["same sex birth"]
+                            or game.clan_obj.clan_settings["same sex birth"]
                         )
                         and sub_sub[0].ID in (sub[0].parent1, sub[0].parent2)
                         and not (sub_sub[0].dead or sub_sub[0].outside)

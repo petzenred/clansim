@@ -1,0 +1,511 @@
+backstories:
+  abandoned1: {CAT/main} was found by {CLAN/main}Clan as a kit and has been living with them ever
+    since.
+    # TODO brought by who?
+#  abandoned2: {CAT/main} was born outside of {CLAN/main}Clan, but was brought by {CAT/main/rel.parent} as a kit
+#    and has lived here ever since.
+  # TODO replace the random {CLAN/other} with a specific reference to whichever Clan that main was born into
+  abandoned3: {CAT/main} was born in {CLAN/other}, but {PRONOUN/main/subject} {CONJU/main/were/was}
+    left here as a kit for {CLAN/main}Clan to raise.
+  abandoned4: {CAT/main} was found and taken in after being abandoned by {PRONOUN/main/poss}
+    Twolegs as a kit.
+  clan_founder: {CAT/main} is one of the founding members of {CLAN/main}Clan.
+  clan_founder1: {CAT/main} was originally a kittypet, but was recruited to help found {CLAN/main}Clan.
+  clan_founder2: {CAT/main} was originally a loner, but was recruited to help found the Clan.
+  clan_founder3: {CAT/main} was originally a rogue, but was recruited to help found the Clan.
+  clan_founder4: {CAT/main} belonged to the original {CLAN/main}Clan, but {PRONOUN/main/subject} lost
+    {PRONOUN/main/poss} territory to a disaster. Now, {PRONOUN/main/subject} {CONJU/main/have/has}
+    come to help rebuild.
+  clan_founder5: {CAT/main} was originally a member of another Clan, but decided to leave
+    to help create a Clan of {PRONOUN/main/poss} own where {PRONOUN/main/subject} could
+    have more influence.
+  clan_founder6: {CAT/main} was exiled from {PRONOUN/main/poss} original Clan for breaking
+    the Warrior Code, and decided to help found the Clan for a shot at redemption.
+  clan_founder7: {CAT/main} received a prophecy about founding a new Clan to bring balance
+    to the territories, and joined the Clan's efforts.
+  clan_founder8: {CAT/main} left {CLAN/other}Clan due to religious differences, and decided to help
+    found {CLAN/main}Clan in hopes it would align more with - or at least be tolerant of - 
+    {PRONOUN/main/poss} practices.
+  clan_founder9: {CAT/main} was originally reluctant to help found {CLAN/main}Clan, but decided to
+    join after {CAT/second} convinced {PRONOUN/main/object}.
+  clan_founder10: {CAT/main} followed {CAT/second} into {CLAN/main}Clan.
+  clan_founder11: {CAT/main} was sent by the leader of {CLAN/other}Clan to gather secrets and intel
+    on the newly formed {CLAN/main}Clan.
+  clan_founder12: {CAT/main} was sent by the leader of a rogue group to gather secrets and
+    intel on the newly formed {CLAN/main}Clan.
+  clan_founder13: {CAT/main} belonged to the original {CLAN/main}Clan, whose territory was taken
+    over by {CLAN/other}Clan. Lost with a Clan, {PRONOUN/main/subject} {CONJU/main/have/has} come to 
+    rebuild {PRONOUN/main/poss} life.
+  clan_founder14: {CAT/main} belonged to the original {CLAN/main}Clan, whose territory was lost in
+    a war against rogues. Now, {PRONOUN/main/subject} {CONJU/main/have/has} come to rebuild.
+  clan_founder15: {CAT/main} belonged to the original {CLAN/main}Clan, whose territory is now a Twolegplace.
+    Now, {PRONOUN/main/subject} {CONJU/main/have/has} come to rebuild.
+  clan_founder16: {CAT/main} received a prophecy that the creation of {CLAN/main}Clan would lead
+    to the downfall of the territories, and came to stop it from happening.
+  clan_founder17: {CAT/main} came to fulfill {PRONOUN/main/poss} destiny of helping to found
+    {CLAN/main}Clan after receiving a prophecy from StarClan.
+  clan_founder18: {CAT/main} was originally reluctant to help found {CLAN/main}Clan, but decided to
+    join after {CAT/second} convinced {PRONOUN/main/object}.
+  clanborn: {CAT/main} was born into the Clan where {PRONOUN/main/subject} currently {CONJU/main/reside/resides}.
+  dead1: {CAT/main} died due to an illness outbreak.
+  dead10: {CAT/main} died a noble death, protecting {PRONOUN/main/poss} loved ones from harm.
+  dead11: {CAT/main} was killed in a war against another Clan.
+  dead12: {CAT/main} was killed by Twolegs.
+  dead13: {CAT/main} was struck down by StarClan for failing to fulfill a prophecy.
+  dead14: {CAT/main} was struck down by StarClan for failing to heed an omen.
+  dead15: {CAT/main} died peacefully in {PRONOUN/main/poss} sleep.
+  dead2: {CAT/main} was murdered long ago by an assailant on whom {PRONOUN/main/subject} {CONJU/main/continue/continues}
+    to swear {PRONOUN/main/poss} revenge.
+  dead3: {CAT/main} died peacefully, surrounded by loved ones.
+  dead4: A horrific tragedy befell {CAT/main}, which led to {PRONOUN/main/poss} demise. {PRONOUN/main/subject/CAP}'d
+    prefer not to speak of it.
+  dead5: {CAT/main} was injured during a fight and died due to complications from {PRONOUN/main/poss}
+    injuries.
+  dead6: {CAT/main} had a lifelong illness that eventually took {PRONOUN/main/poss} life.
+  dead7: {CAT/main} was executed by the Clan leader due to {PRONOUN/main/poss} crimes.
+  dead8: {CAT/main} can't remember how {PRONOUN/main/subject} died.
+  dead9: {CAT/main} attempted to murder one of {PRONOUN/main/poss} clanmates, but was killed
+    in the ensuing fight.
+  disgraced1: {CAT/main} was cast out of {PRONOUN/main/poss} old Clan for some transgression
+    that {PRONOUN/main/subject}{CONJU/main/'re/'s} not keen on talking about.
+  disgraced2: {CAT/main} was exiled from {PRONOUN/main/poss} old Clan for something {PRONOUN/main/subject}
+    didn't do and came here to seek safety.
+  disgraced3: {CAT/main} once held a high rank in another Clan but was exiled for reasons
+    {PRONOUN/main/subject} {CONJU/main/refuse/refuses} to share.
+  guided1: {CAT/main} used to be a kittypet, but after dreaming of starry-furred cats, {PRONOUN/main/subject}
+    followed their whispers to the Clan.
+  guided2: {CAT/main} used to live a rough life as a rogue. While wandering, {PRONOUN/main/subject}
+    found a set of starry pawprints, and followed them to the Clan.
+  guided3: {CAT/main} used to live as a loner. A starry-furred cat appeared to {PRONOUN/main/object}
+    one day, and then led {PRONOUN/main/object} to the Clan.
+  guided4: {CAT/main} used to live in a different Clan, until a sign from StarClan told {PRONOUN/main/object}
+    to leave.
+  guided5: {CAT/main} used to live outside the Clans, but came here after a deceased loved
+    one told {PRONOUN/main/object} that {PRONOUN/main/subject} must follow {PRONOUN/main/poss}
+    heart to find {PRONOUN/main/poss} true home.
+  guided6: {CAT/main} is a descendant of a long-since disbanded Clan. Following the wishes
+    of a ghostly cat with a pelt full of stars, {PRONOUN/main/subject} joined the Clan
+    to continue the legacy.
+  halfclan1: {CAT/main} was born into the Clan, but one of {PRONOUN/main/poss} parents resides
+    in another Clan.
+  halfclan10: One of {CAT/main}'s parents is the deputy of another Clan, and {PRONOUN/main/subject}
+    {CONJU/main/visit/visits} regularly.
+  halfclan2: {CAT/main} was born in another Clan, but chose to come to {CLAN/main}Clan to be with
+    {PRONOUN/main/poss} other parent.
+  halfclan3: One of {CAT/main}'s parents is a mediator in another Clan, and {PRONOUN/main/subject}
+    {CONJU/main/have/has} never met them.
+  halfclan4: One of {CAT/main}'s parents is a mediator in another Clan, and {PRONOUN/main/subject}
+    {CONJU/main/visit/visits} regularly.
+  halfclan5: One of {CAT/main}'s parents is the leader of another Clan, but {PRONOUN/main/subject}
+    {CONJU/main/have/has} never met them.
+  halfclan6: One of {CAT/main}'s parents is the deputy of another Clan, but {PRONOUN/main/subject}
+    {CONJU/main/have/has} never met them.
+  halfclan7: One of {CAT/main}'s parents is the healer of another Clan, {PRONOUN/main/subject}
+    {CONJU/main/have/has} never met them.
+  halfclan8: One of {CAT/main}'s parents is the healer of another Clan, and {PRONOUN/main/subject}
+    {CONJU/main/visit/visits} regularly.
+  halfclan9: One of {CAT/main}'s parents is the leader of another Clan, and {PRONOUN/main/subject}
+    {CONJU/main/visit/visits} regularly.
+  healer: {CAT/main} was once a healer in another Clan.
+  kittypet1: {CAT/main} joined the Clan by choice after living life with Twolegs as a kittypet.
+  kittypet10: {CAT/main} was a kittypet in the same house as their mate, but when their mate
+    began to have visions of starry-furred cats and left for the Clan, {CAT/main} followed
+    them.
+  kittypet2: {CAT/main} used to live on something called a 'boat' with Twolegs, but decided
+    to join the Clan.
+  kittypet3: {CAT/main} used to be a kittypet. {PRONOUN/main/subject/CAP} got lost after wandering
+    away, and when {PRONOUN/main/subject} returned home, {PRONOUN/main/subject} found
+    {PRONOUN/main/poss} Twolegs were gone. {PRONOUN/main/subject/CAP} eventually found
+    {PRONOUN/main/poss} way to the Clan.
+  kittypet4: {CAT/main} used to be a kittypet. One day, {PRONOUN/main/subject} got sick, and
+    {PRONOUN/main/poss} Twolegs brought {PRONOUN/main/object} into the belly of a monster.
+    The Twolegs then left {PRONOUN/main/object} to fend for {PRONOUN/main/self}.
+  kittypet5: {CAT/main} was originally a kittypet, but left home with big dreams of becoming
+    a legendary warrior!
+  kittypet6: {CAT/main} was born as a kittypet, but abandonment led {PRONOUN/main/object}
+    to joining the Clan.
+  kittypet7: {CAT/main} always longed for a life beyond the fence. One day, {PRONOUN/main/subject}
+    finally gathered {PRONOUN/main/poss} courage and joined the Clan, where {PRONOUN/main/subject}
+    currently reside.
+  kittypet8: {CAT/main} used to be a kittypet, but was forced to leave {PRONOUN/main/poss}
+    housefolk after {PRONOUN/main/poss} home burned down.
+  kittypet9: {CAT/main} was originally a kittypet, but left after {PRONOUN/main/poss} housefolk
+    brought home a large dog.
+  loner1: {CAT/main} joined the Clan by choice after living life as a loner.
+  loner2: {CAT/main} used to live in a barn, but mostly stayed away from Twolegs. {PRONOUN/main/subject/CAP}
+    decided Clan life might be an interesting change of pace.
+  loner3: {CAT/main} didn't get to see {PRONOUN/main/poss} parent alive, and was found by
+    a Clan patrol.
+  loner4: {CAT/main} joined the Clan after becoming weary of living alone.
+  loner5: {CAT/main} wandered the world, aimless and free, but always alone.
+  loner6: {CAT/main} wandered the world, aimless and free, but always alone - until {PRONOUN/main/subject}
+    found someone worth staying for.
+  loner7: {CAT/main} was joined by {CAT/travel_comp} on {PRONOUN/main/poss} travels across the lands, and
+    after seeing everything life has to offer, decided to settle down in {CLAN/main}Clan.
+  newdfguide1: {CAT/main} sensed darkness within the newly formed {CLAN/main}Clan and decided to
+    become their new Dark Forest guide.
+  newdfguide2: Betrayed by {PRONOUN/main/poss} Clan in life, this ancient spirit now
+    lures cats to the Dark Forest, promising the revenge {PRONOUN/main/subject} never
+    achieved.
+  newdfguide3: Consumed in life by ambition that led to murder and exile, {CAT/main} now recruits 
+    like-minded souls to bolster the Dark Forest's ranks.
+  newdfguide4: {CAT/main} fell to darkness after a devastating loss. Now {PRONOUN/main/subject}
+    {CONJU/main/guide/guides} others who have lost their way to the Dark Forest.
+  # TODO which ancient group of cats?
+  newscguide1: {CAT/main} was originally from an ancient group of cats but decided to watch
+    and protect the newly formed {CLAN/main}Clan.
+  newscguide2: Known for {PRONOUN/main/poss} unwavering fairness in life, {CAT/main} now guides
+    others to StarClan, ensuring each spirit finds its rightful place.
+  newscguide3: Having sacrificed {PRONOUN/main/poss} life to save {PRONOUN/main/poss}
+    family, {CAT/main} now guides worthy cats to StarClan.
+  newscguide4: A peacemaker in life, {CAT/main} now unites spirits from the new Clans in
+    StarClan.
+  newscguide5: A healer in life, {CAT/main} now protects the Clans from StarClan.
+  exstarclan1: {CAT/main} snuck into StarClan when {PRONOUN/main/subject} died, but was discovered
+    and exiled back to the Dark Forest after many years.
+  exstarclan2: {CAT/main} was originally from StarClan, but after getting lost in the Dark
+    Forest one day, {PRONOUN/main/subject} {CONJU/main/were/was} unable to find {PRONOUN/main/poss}
+    way back. Now, {PRONOUN/main/subject} belong to the Place of No Stars, resenting
+    {PRONOUN/main/poss} StarClan family who never came to find {PRONOUN/main/object}.
+  exstarclan3: {CAT/main} belonged to StarClan once, but got lost outside of StarClan territory
+    one day and has been bitterly wandering the Dark Forest ever since.
+  orphaned1: {CAT/main} was found with a deceased parent. The Clan took {PRONOUN/main/object}
+    in, but doesn't hide where {PRONOUN/main/subject} came from.
+  orphaned2: {CAT/main} was found with a deceased parent. The Clan took {PRONOUN/main/object}
+    in, but doesn't tell {PRONOUN/main/object} where {PRONOUN/main/subject} really came
+    from.
+  orphaned3: {CAT/main} was found as a kit among the wreckage of a Monster with no parents
+    in sight and got brought to live in the Clan.
+  orphaned4: {CAT/main} was found as a kit hiding near a place of battle where there were
+    no survivors and got brought to live in the Clan.
+  orphaned5: {CAT/main} was found as a kit hiding near {PRONOUN/main/poss} parent's bodies
+    and got brought to live in the Clan.
+  orphaned6: {CAT/main} was found flailing in the ocean as a teeny kitten, no parent in sight.
+  orphaned7: {CAT/main} was found stashed high up in a tree with claw marks marking the base.
+    No parents were found nearby, however there were fox paw prints not too far away.
+  ostracized_warrior: {CAT/main} was ostracized from {PRONOUN/main/poss} old Clan, but no
+    one really knows why.
+  otherclan1: {CAT/main} was born into another Clan, but came to {CLAN/main}Clan by choice.
+  otherclan10: {CAT/main} was originally a member of {CLAN/other}Clan, but left because {PRONOUN/main/subject}
+    couldn't stand the tragic loss of a loved one.
+  otherclan11: When {CAT/main} became lost and tried to find {PRONOUN/main/poss} former Clan,
+    {CAT/second} joined {PRONOUN/main/object} on {PRONOUN/main/poss} journey. However, the two
+    arrived too late and ultimately decided to make {CLAN/main}Clan their new home.
+  otherclan12: {CAT/main} caused a tragedy in {PRONOUN/main/poss} original Clan, and fled to
+    avoid facing the consequences from {PRONOUN/main/poss} former Clanmates.
+  # TODO
+  otherclan13: {CAT/main} left {PRONOUN/main/poss} former Clan to be with {PRONOUN/main/poss}
+    lover, but {PRONOUN/main/poss} leader refused and chased {PRONOUN/main/object} out
+    of the territory and into {CLAN/main}Clan's, where they were offered sanctuary.
+  # TODO change to {CAT/main} was unhappy in {CLAN/main/birth} and decided to move to {CLAN/main/current} instead.
+  otherclan2: {CAT/main} was unhappy in {PRONOUN/main/poss} old Clan and decided to come here
+    instead.
+  otherclan3: {CAT/main}\'s Clan stayed with the Clan after a disaster struck {PRONOUN/main/poss}
+    old one, and decided to stay after the rest of {PRONOUN/main/poss} Clan returned
+    home.
+  otherclan4: {CAT/main} grew up in another Clan, but chose to leave that life and join the
+    Clan {PRONOUN/main/subject} now {CONJU/main/live/lives} in.
+  otherclan5: {CAT/main} never really fit in with {PRONOUN/main/poss} original Clan, always
+    feeling out of place. {PRONOUN/main/subject/CAP} found solace and purpose in this
+    new Clan.
+  otherclan6: The rules and rigidity of {PRONOUN/main/poss} previous Clan stifled {CAT/main}.
+    {PRONOUN/main/subject/CAP} sought a place where {PRONOUN/main/subject} could truly
+    be {PRONOUN/main/self}.
+  otherclan7: {CAT/main} decided to leave {PRONOUN/main/poss} previous Clan for completely normal,
+    innocent reasons... Totally not because {PRONOUN/main/subject} {CONJU/main/have/has}
+    a crush on someone in {CLAN/main}Clan, or anything.
+  # TODO can I use {CLAN/other/emo.neg} like this?
+  otherclan8: {CAT/main} was sent by the leader of {CLAN/other/emo.neg}Clan to gather secrets and 
+                intel on {CLAN/main}Clan.
+  otherclan9: {CAT/main} was stolen from a rival Clan due to underpopulation.
+  outsider1: {CAT/main} was born outside of the Clans.
+  outsider2: {CAT/main} was born outside of a Clan, but at {PRONOUN/main/poss} birth one parent
+    was a member of a Clan.
+  outsider3: {CAT/main} was born outside of a Clan, while {PRONOUN/main/poss} parent was lost.
+  outsider4: {CAT/main} joined {CLAN/main}Clan after {PRONOUN/main/poss} need to wander died out.
+  outsider5: {CAT/main} joined {CLAN/main}Clan in hopes of a new adventure.
+  outsider6: {CAT/main} visited {CLAN/main}Clan almost every single day despite living outside the
+    Clan. {PRONOUN/main/subject/CAP} finally decided to join one day, since {PRONOUN/main/subject}
+    already spent so much time at the Clan.
+  outsider_roots1: {CAT/main} was born into {CLAN/main}Clan, but one of {PRONOUN/main/poss} parents
+    is an outsider that belongs to no Clan.
+  # TODO {CLAN/cat.main/birth.loc}
+  outsider_roots2: {CAT/main} was born outside {CLAN/cat.main/birth.loc}, but came to live in {CLAN/main}Clan with
+    {PRONOUN/main/poss} parent at a young age.
+  outsider_roots3: {CAT/main} was born into {CLAN/main}Clan, but one of {PRONOUN/main/poss} parents
+    is a loner who {PRONOUN/main/subject} {CONJU/main/have/has} never met.
+  outsider_roots4: {CAT/main} was born into {CLAN/main}Clan, but one of {PRONOUN/main/poss} parents
+    is a loner, who visits {PRONOUN/main/object} regularly at the border.
+  outsider_roots5: {CAT/main} was born into {CLAN/main}Clan, but one of {PRONOUN/main/poss} parents
+    is a kittypet who {PRONOUN/main/subject} {CONJU/main/have/has} never met.
+  outsider_roots6: {CAT/main} was born into {CLAN/main}Clan, but one of {PRONOUN/main/poss} parents
+    is a kittypet, who visits {PRONOUN/main/object} regularly at the border.
+  outsider_roots7: {CAT/main} was born into {CLAN/main}Clan, but one of {PRONOUN/main/poss} parents
+    is a rogue who {PRONOUN/main/subject} {CONJU/main/have/has} never met.
+  outsider_roots8: {CAT/main} was born into {CLAN/main}Clan, but one of {PRONOUN/main/poss} parents
+    is a rogue who visits {PRONOUN/main/object} regularly at the border.
+  refugee1: {CAT/main} came to {CLAN/main}Clan after fleeing from {PRONOUN/main/poss} former Clan
+    and the tyrannical leader that had taken over.
+  refugee2: {CAT/main} used to live as a loner, but after another cat chased {PRONOUN/main/object}
+    from {PRONOUN/main/poss} home, {PRONOUN/main/subject} took refuge in {CLAN/main}Clan.
+  refugee3: {CAT/main} used to be a kittypet, but joined {CLAN/main}Clan after fleeing from {PRONOUN/main/poss}
+    cruel Twoleg.
+  refugee4: {CAT/main} used to be in a rogue group, but joined {CLAN/main}Clan after fleeing from
+    the group's tyrannical leader.
+  refugee5: {CAT/main} got washed away from {PRONOUN/main/poss} former territory in a flood
+    that destroyed {PRONOUN/main/poss} home but was glad to find a new home in {PRONOUN/main/poss}
+    new Clan here.
+  refugee6: {CAT/main} used to be a kittypet, but joined {CLAN/main}Clan after being found sick
+    and weak after eating something {PRONOUN/main/subject} shouldn't have.
+  refugee7: {CAT/main} saw something {PRONOUN/main/subject} shouldn't have and fled to {CLAN/main}Clan
+    to lay low for a while.
+  retired_leader: {CAT/main} used to be the leader of {CLAN/other} before deciding {PRONOUN/main/subject}
+    needed a change of scenery after leadership became too much. {PRONOUN/main/subject/CAP}
+    returned {PRONOUN/main/poss} nine lives and let {PRONOUN/main/poss} deputy take
+    over before coming here.
+  rogue1: {CAT/main} joined {CLAN/main}Clan by choice after tiring of life as a rogue.
+  rogue2: {CAT/main} used to live in a Twolegplace, scrounging for what {PRONOUN/main/subject}
+    could find. {PRONOUN/main/subject/CAP} thought living in a Clan might offer {PRONOUN/main/object}
+    more security.
+  rogue3: {CAT/main} used to live alone in {PRONOUN/main/poss} own territory, but was chased
+    out by something and eventually found {CLAN/main}Clan.
+  rogue4: {CAT/main} was sent by the leader of a group of rogues to gather secrets and intel
+    on {CLAN/main}Clan.
+  rogue5: {CAT/main} was originally a member of a group of rogues, but defected after being
+    mistreated by the leader.
+#  rogue6: {CAT/main} was captured by a group of Clan cats on patrol, and decided to join
+#    {CLAN/main}Clan in return for {PRONOUN/main/poss} life being spared.
+#  rogue7: {CAT/main} woke up with no memory of {PRONOUN/main/poss} old life, and has lived
+#    with the Clan since.
+  rogue8: {CAT/main} was formerly a rogue, but joined {CLAN/main}Clan after being enticed by the thought
+    of more prey.
+  tragedy_survivor1: Something horrible happened to {CAT/main}'s previous Clan. {PRONOUN/main/subject/CAP}
+    {CONJU/main/refuse/refuses} to speak about it.
+  tragedy_survivor2: {CAT/main} used to be part of a rogue group, but joined {CLAN/main}Clan after
+    something terrible happened to it.
+  tragedy_survivor3: {CAT/main} used to be a kittypet, but joined {CLAN/main}Clan after something
+    terrible happened to {PRONOUN/main/poss} Twolegs.
+  tragedy_survivor4: {CAT/main} used to be a loner, but joined {CLAN/main}Clan after something terrible
+    made {PRONOUN/main/object} leave {PRONOUN/main/poss} old home behind.
+  tragedy_survivor5: {CAT/main} was saved by {CLAN/main}Clan and {PRONOUN/main/subject} joined as
+    a way to repay {PRONOUN/main/poss} life debt.
+  tragedy_survivor6: {CAT/main} refuses to tell {CLAN/main}Clan why {PRONOUN/main/subject} left {PRONOUN/main/poss}
+    past home.
+  wandering_healer1: {CAT/main} used to wander, helping those where {PRONOUN/main/subject}
+    could, and eventually found {CLAN/main}Clan.
+  wandering_healer2: {CAT/main} used to live in a specific spot, offering help to all who
+    wandered by, but eventually found {PRONOUN/main/poss} way to {CLAN/main}Clan.
+  wandering_healer3: {CAT/main} joined {CLAN/main}Clan to hone in on {PRONOUN/main/poss} healing
+    skills.
+backstory_categories:
+  abandoned_backstories:
+  - abandoned1
+  - abandoned2
+  - abandoned3
+  - abandoned4
+  clan_founder_backstories:
+  - clan_founder
+  - clan_founder1
+  - clan_founder10
+  - clan_founder11
+  - clan_founder12
+  - clan_founder13
+  - clan_founder14
+  - clan_founder15
+  - clan_founder16
+  - clan_founder17
+  - clan_founder2
+  - clan_founder3
+  - clan_founder4
+  - clan_founder5
+  - clan_founder6
+  - clan_founder7
+  - clan_founder8
+  - clan_founder9
+  clanborn_backstories:
+  - clanborn
+  dark_forest_kits:
+  - dfkit1
+  - dfkit2
+  dead_cat_backstories:
+  - dead1
+  - dead10
+  - dead11
+  - dead12
+  - dead2
+  - dead3
+  - dead4
+  - dead5
+  - dead6
+  - dead8
+  - dead9
+  df_backstories:
+  - dead11
+  - dead12
+  - dead13
+  - dead14
+  - dead2
+  - dead5
+  - dead7
+  - dead8
+  - dead9
+  former_clancat_backstories:
+  - disgraced1
+  - disgraced2
+  - disgraced3
+  - guided4
+  - healer
+  - ostracized_warrior
+  - otherclan1
+  - otherclan10
+  - otherclan11
+  - otherclan12
+  - otherclan13
+  - otherclan2
+  - otherclan3
+  - otherclan4
+  - otherclan5
+  - otherclan6
+  - otherclan7
+  - otherclan8
+  - otherclan9
+  - refugee1
+  - refugee5
+  - retired_leader
+  - tragedy_survivor1
+  half_clan_backstories:
+  - halfclan1
+  - halfclan10
+  - halfclan2
+  - halfclan3
+  - halfclan4
+  - halfclan5
+  - halfclan6
+  - halfclan7
+  - halfclan8
+  - halfclan9
+  healer_backstories:
+  - healer
+  - wandering_healer1
+  - wandering_healer2
+  - wandering_healer3
+  kittypet_backstories:
+  - guided1
+  - kittypet1
+  - kittypet2
+  - kittypet3
+  - kittypet4
+  - kittypet5
+  - kittypet6
+  - kittypet7
+  - kittypet8
+  - kittypet9
+  - refugee3
+  - refugee6
+  - tragedy_survivor3
+  loner_backstories:
+  - guided3
+  - loner1
+  - loner2
+  - loner3
+  - loner4
+  - loner5
+  - loner6
+  - loner7
+  - refugee2
+  - refugee5
+  - refugee7
+  - tragedy_survivor4
+  - wandering_healer2
+  new_df_guide_backstories:
+  - newdfguide1
+  - newdfguide2
+  - newdfguide3
+  - newdfguide4
+  new_sc_guide_backstories:
+  - newscguide1
+  - newscguide2
+  - newscguide3
+  - newscguide4
+  oldstarclan_backstories:
+  - oldstarclan1
+  - oldstarclan2
+  - oldstarclan3
+  orphaned_backstories:
+  - orphaned1
+  - orphaned2
+  - orphaned3
+  - orphaned4
+  - orphaned5
+  - orphaned6
+  - orphaned7
+  outsider_backstories:
+  - outsider1
+  - outsider2
+  - outsider3
+  - outsider4
+  - outsider5
+  - outsider6
+  outsider_roots_backstories:
+  - guided5
+  - guided6
+  - outsider_roots1
+  - outsider_roots2
+  - outsider_roots3
+  - outsider_roots4
+  - outsider_roots5
+  - outsider_roots6
+  - outsider_roots7
+  - outsider_roots8
+  - tragedy_survivor5
+  - tragedy_survivor6
+  rogue_backstories:
+  - guided2
+  - refugee4
+  - refugee5
+  - rogue1
+  - rogue2
+  - rogue3
+  - rogue4
+  - rogue5
+  - rogue6
+  - rogue7
+  - rogue8
+  - tragedy_survivor2
+  - wandering_healer1
+  starclan_backstories:
+  - dead1
+  - dead10
+  - dead12
+  - dead15
+  - dead3
+  - dead4
+  - dead6
+  - dead8
+backstory_display:
+  abandoned_backstories: abandoned
+  clan_founder_backstories: Clan founder
+  clanborn_backstories: Clanborn
+  dark_forest_kits: from the Dark Forest
+  dead_cat_backstories: ancient spirit
+  df_backstories: ancient spirit
+  former_clancat_backstories: originally from another Clan
+  half_clan_backstories: half-Clan
+  kittypet_backstories: formerly a kittypet
+  loner_backstories: formerly a loner
+  new_df_guide_backstories: ancient spirit
+  new_sc_guide_backstories: ancient spirit
+  oldstarclan_backstories: ancient spirit
+  orphaned_backstories: orphaned
+  outsider_backstories: formerly an outsider
+  outsider_roots_backstories: outsider roots
+  rogue_backstories: formerly a rogue
+  starclan_backstories: ancient spirit
+conversion:
+  disgraced: disgraced1
+  orphaned: orphaned1
+  other_clan1: otherclan4
+  otherclan: otherclan1
+  outsider: outsider1
+  refugee: refugee1
+  tragedy_survivor: tragedy_survivor1

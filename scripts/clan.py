@@ -9,15 +9,18 @@ TODO: Docs
 # pylint: enable=line-too-long
 
 import os
-import random
 import statistics
+from dataclasses import dataclass
 from random import choice, randint
 
-import i18n
 import pygame
 import ujson
 
-from definitions import *
+from definitions import (
+    Biome, Season, Rank,
+    YEAR_SEASONS,
+)
+from resources._red.camps import CAMP_DEN_PLACEMENTS
 from scripts.cat.cats import Cat # , cat_class
 from scripts.cat.history import History
 from scripts.cat.names import names
@@ -37,6 +40,12 @@ from scripts.utility import (
 import logging
 logger = logging.getLogger(__name__)
 
+@dataclass
+class Camp:
+    biome: Biome
+    bg: str
+    layouts: dict
+
 # TODO Clan should be a dataclass
 class Clan:
     """
@@ -48,7 +57,7 @@ class Clan:
     seasons = YEAR_SEASONS
 
     leader_lives = 0
-    clan_cats = []
+    clan_cats = [] # TODO make this is a list of Cat objects, not of integers
     starclan_cats = []
     darkforest_cats = []
     unknown_cats = []
@@ -59,12 +68,17 @@ class Clan:
         "high_social": ["gracious", "mellow", "logical"],
     }
 
-    with open("resources/placements.json", "r", encoding="utf-8") as read_file:
-        layouts = ujson.loads(read_file.read())
+    # with open("resources/camp_den_placements.json", "r", encoding="utf-8") as read_file:
+    #     layouts = ujson.loads(read_file.read())
+
+    layouts = CAMP_DEN_PLACEMENTS
 
     age = 0
     current_season = Season.Spring
     all_clans = []
+
+    camp: Camp
+    mediator_list: list
 
     def __init__(
         self,
@@ -80,6 +94,9 @@ class Clan:
         starting_season=Season.Spring,
         self_run_init_functions=True,
     ):
+        # TODO REPLACE THIS ONCE CAMPS ARE IMPLEMENTED
+        self.camp = Camp(biome=biome, bg=camp_bg, layouts=self.layouts[camp_bg])
+
         self.history = History()
         if name == "":
             return
@@ -162,18 +179,18 @@ class Clan:
     # The clan couldn't save itself in time due to issues arising, for example, from this function: "if deputy is not None: self.deputy.status_change('deputy') -> game.clan.remove_med_cat(self)"
     def post_initialization_functions(self):
         if self.deputy is not None:
-            self.deputy.status_change(Status.Deputy)
+            self.deputy.status_change(Rank.Deputy)
             self.clan_cats.append(self.deputy.ID)
 
         if self.leader:
-            self.leader.status_change(Status.Leader)
+            self.leader.status_change(Rank.Leader)
             self.clan_cats.append(self.leader.ID)
 
         if self.medicine_cat is not None:
             self.clan_cats.append(self.medicine_cat.ID)
             self.med_cat_list.append(self.medicine_cat.ID)
-            if self.medicine_cat.status != Status.Medicine:
-                Cat.all_cats[self.medicine_cat.ID].status_change(Status.Medicine)
+            if self.medicine_cat.status != Rank.Healer:
+                Cat.all_cats[self.medicine_cat.ID].status_change(Rank.Healer)
 
     def create_clan(self):
         """
@@ -184,15 +201,15 @@ class Clan:
         self.instructor = Cat(
             status=choice(
                 [
-                    Status.WarriorApp,
-                    Status.MediatorApp,
-                    Status.MedicineApp,
-                    Status.Warrior,
-                    Status.Mediator,
-                    Status.Medicine,
-                    Status.Leader,
-                    Status.Deputy,
-                    Status.Elder,
+                    Rank.WarriorApp,
+                    Rank.MediatorApp,
+                    Rank.HealerApp,
+                    Rank.Warrior,
+                    Rank.Mediator,
+                    Rank.Healer,
+                    Rank.Leader,
+                    Rank.Deputy,
+                    Rank.Elder,
                 ]
             ),
         )
@@ -231,7 +248,7 @@ class Clan:
         game.save_cats()
         number_other_clans = randint(3, 5)
         for _ in range(number_other_clans):
-            other_clan_names = [str(i.name) for i in self.all_clans] + [game.clan.name]
+            other_clan_names = [str(i.name) for i in self.all_clans] + [game.clan_obj.name]
             other_clan_name = choice(
                 names.names_dict["normal_prefixes"] + names.names_dict["clan_prefixes"]
             )
@@ -336,7 +353,7 @@ class Clan:
         ):
             # The outside-value must be set to True before the cat can go to cotc
             Cat.outside_cats.pop(cat.ID)
-            cat.clan = str(game.clan.name)
+            cat.clan_obj = str(game.clan_obj.name)
 
     def add_to_outside(self, cat):  # same as add_cat
         """
@@ -386,7 +403,7 @@ class Clan:
         if leader:
             self.history.add_lead_ceremony(leader)
             self.leader = leader
-            Cat.all_cats[leader.ID].status_change(Status.Leader)
+            Cat.all_cats[leader.ID].status_change(Rank.Leader)
             self.leader_predecessors += 1
             self.leader_lives = 9
         game.switches["new_leader"] = None
@@ -397,7 +414,7 @@ class Clan:
         """
         if deputy:
             self.deputy = deputy
-            Cat.all_cats[deputy.ID].status_change(Status.Deputy)
+            Cat.all_cats[deputy.ID].status_change(Rank.Deputy)
             self.deputy_predecessors += 1
 
     def new_medicine_cat(self, medicine_cat):
@@ -405,8 +422,8 @@ class Clan:
         TODO: DOCS
         """
         if medicine_cat:
-            if medicine_cat.status != Status.Medicine:
-                Cat.all_cats[medicine_cat.ID].status_change(Status.Medicine)
+            if medicine_cat.status != Rank.Healer:
+                Cat.all_cats[medicine_cat.ID].status_change(Rank.Healer)
             if medicine_cat.ID not in self.med_cat_list:
                 self.med_cat_list.append(medicine_cat.ID)
             medicine_cat = self.med_cat_list[0]
@@ -418,18 +435,18 @@ class Clan:
         Removes a med cat. Use when retiring, or switching to warrior
         """
         if medicine_cat:
-            if medicine_cat.ID in game.clan.med_cat_list:
-                game.clan.med_cat_list.remove(medicine_cat.ID)
-                game.clan.med_cat_number = len(game.clan.med_cat_list)
+            if medicine_cat.ID in game.clan_obj.med_cat_list:
+                game.clan_obj.med_cat_list.remove(medicine_cat.ID)
+                game.clan_obj.med_cat_number = len(game.clan_obj.med_cat_list)
             if self.medicine_cat:
                 if medicine_cat.ID == self.medicine_cat.ID:
-                    if game.clan.med_cat_list:
-                        game.clan.medicine_cat = Cat.fetch_cat(
-                            game.clan.med_cat_list[0]
+                    if game.clan_obj.med_cat_list:
+                        game.clan_obj.medicine_cat = Cat.fetch_cat(
+                            game.clan_obj.med_cat_list[0]
                         )
-                        game.clan.med_cat_number = len(game.clan.med_cat_list)
+                        game.clan_obj.med_cat_number = len(game.clan_obj.med_cat_list)
                     else:
-                        game.clan.medicine_cat = None
+                        game.clan_obj.medicine_cat = None
 
     @staticmethod
     def switch_clans(clan):
@@ -466,18 +483,18 @@ class Clan:
 
         # LEADER DATA
         if self.leader:
-            clan_data[Status.Leader] = self.leader.ID
+            clan_data[Rank.Leader] = self.leader.ID
             clan_data["leader_lives"] = self.leader_lives
         else:
-            clan_data[Status.Leader] = None
+            clan_data[Rank.Leader] = None
 
         clan_data["leader_predecessors"] = self.leader_predecessors
 
         # DEPUTY DATA
         if self.deputy:
-            clan_data[Status.Deputy] = self.deputy.ID
+            clan_data[Rank.Deputy] = self.deputy.ID
         else:
-            clan_data[Status.Deputy] = None
+            clan_data[Rank.Deputy] = None
 
         clan_data["deputy_predecessors"] = self.deputy_predecessors
 
@@ -502,13 +519,13 @@ class Clan:
 
         clan_data["war"] = self.war
 
-        self.save_herb_supply(game.clan)
-        self.save_disaster(game.clan)
-        self.save_pregnancy(game.clan)
+        self.save_herb_supply(game.clan_obj)
+        self.save_disaster(game.clan_obj)
+        self.save_pregnancy(game.clan_obj)
 
         self.save_clan_settings()
-        if game.clan.game_mode in ["expanded", "cruel season"]:
-            self.save_freshkill_pile(game.clan)
+        if game.clan_obj.game_mode in ["expanded", "cruel season"]:
+            self.save_freshkill_pile(game.clan_obj)
 
         game.safe_save(f"{get_save_dir()}/{self.name}clan.json", clan_data)
 
@@ -558,7 +575,7 @@ class Clan:
         else:
             game.switches["error_message"] = "There was an error loading the clan.json"
 
-        game.clan.load_clan_settings()
+        game.clan_obj.read_clan_settings_file()
 
         return version_info
 
@@ -619,7 +636,7 @@ class Clan:
                 general[7] = "classic"
             elif general[8] == "None":
                 general[8] = 50
-            game.clan = Clan(
+            game.clan_obj = Clan(
                 name=general[0],
                 leader=Cat.all_cats[leader_info[0]],
                 deputy=Cat.all_cats.get(deputy_info[0], None),
@@ -629,8 +646,8 @@ class Clan:
                 game_mode=general[7],
                 self_run_init_functions=False,
             )
-            game.clan.post_initialization_functions()
-            game.clan.reputation = general[8]
+            game.clan_obj.post_initialization_functions()
+            game.clan_obj.reputation = general[8]
         elif len(general) == 8:
             if general[3] == "None":
                 general[3] = "camp1"
@@ -638,7 +655,7 @@ class Clan:
                 general[4] = 0
             elif general[7] == "None":
                 general[7] = "classic"
-            game.clan = Clan(
+            game.clan_obj = Clan(
                 name=general[0],
                 leader=Cat.all_cats[leader_info[0]],
                 deputy=Cat.all_cats.get(deputy_info[0], None),
@@ -648,13 +665,13 @@ class Clan:
                 game_mode=general[7],
                 self_run_init_functions=False,
             )
-            game.clan.post_initialization_functions()
+            game.clan_obj.post_initialization_functions()
         elif len(general) == 7:
             if general[4] == "None":
                 general[4] = 0
             elif general[3] == "None":
                 general[3] = "camp1"
-            game.clan = Clan(
+            game.clan_obj = Clan(
                 name=general[0],
                 leader=Cat.all_cats[leader_info[0]],
                 deputy=Cat.all_cats.get(deputy_info[0], None),
@@ -663,9 +680,9 @@ class Clan:
                 camp_bg=general[3],
                 self_run_init_functions=False,
             )
-            game.clan.post_initialization_functions()
+            game.clan_obj.post_initialization_functions()
         elif len(general) == 3:
-            game.clan = Clan(
+            game.clan_obj = Clan(
                 name=general[0],
                 leader=Cat.all_cats[leader_info[0]],
                 deputy=Cat.all_cats.get(deputy_info[0], None),
@@ -673,40 +690,40 @@ class Clan:
                 biome=general[2],
                 self_run_init_functions=False,
             )
-            game.clan.post_initialization_functions()
+            game.clan_obj.post_initialization_functions()
         else:
-            game.clan = Clan(
+            game.clan_obj = Clan(
                 general[0],
                 Cat.all_cats[leader_info[0]],
                 Cat.all_cats.get(deputy_info[0], None),
                 Cat.all_cats.get(med_cat_info[0], None),
                 self_run_init_functions=False,
             )
-            game.clan.post_initialization_functions()
-        game.clan.age = int(general[1])
-        if not game.config["lock_season"]:
-            game.clan.current_season = YEAR_SEASONS[game.clan.age % 12]
+            game.clan_obj.post_initialization_functions()
+        game.clan_obj.age = int(general[1])
+        if not game._game_config["lock_season"]:
+            game.clan_obj.current_season = YEAR_SEASONS[game.clan_obj.age % 12]
         else:
-            game.clan.current_season = game.clan.starting_season
-        game.clan.leader_lives, game.clan.leader_predecessors = int(
+            game.clan_obj.current_season = game.clan_obj.starting_season
+        game.clan_obj.leader_lives, game.clan_obj.leader_predecessors = int(
             leader_info[1]
         ), int(leader_info[2])
 
         if len(deputy_info) > 1:
-            game.clan.deputy_predecessors = int(deputy_info[1])
+            game.clan_obj.deputy_predecessors = int(deputy_info[1])
         if len(med_cat_info) > 1:
-            game.clan.med_cat_predecessors = int(med_cat_info[1])
+            game.clan_obj.med_cat_predecessors = int(med_cat_info[1])
         if len(med_cat_info) > 2:
-            game.clan.med_cat_number = int(med_cat_info[2])
+            game.clan_obj.med_cat_number = int(med_cat_info[2])
         if len(sections) > 4:
             if instructor_info in Cat.all_cats:
-                game.clan.instructor = Cat.all_cats[instructor_info]
-                game.clan.add_cat(game.clan.instructor)
+                game.clan_obj.instructor = Cat.all_cats[instructor_info]
+                game.clan_obj.add_cat(game.clan_obj.instructor)
         else:
-            game.clan.instructor = Cat(status=choice([Status.Warrior, Status.Warrior, Status.Elder]))
+            game.clan_obj.instructor = Cat(status=choice([Rank.Warrior, Rank.Warrior, Rank.Elder]))
             # update_sprite(game.clan.instructor)
-            game.clan.instructor.dead = True
-            game.clan.add_cat(game.clan.instructor)
+            game.clan_obj.instructor.dead = True
+            game.clan_obj.add_cat(game.clan_obj.instructor)
         if other_clans != [""]:
             for other_clan in other_clans:
                 other_clan_info = other_clan.split(";")
@@ -723,14 +740,14 @@ class Clan:
 
         for cat in members:
             if cat in Cat.all_cats:
-                game.clan.add_cat(Cat.all_cats[cat])
-                game.clan.add_to_starclan(Cat.all_cats[cat])
+                game.clan_obj.add_cat(Cat.all_cats[cat])
+                game.clan_obj.add_to_starclan(Cat.all_cats[cat])
             else:
                 logger.warning(f"Cat not found: {cat}")
-        self.load_pregnancy(game.clan)
+        self.load_pregnancy(game.clan_obj)
 
         # assigning a symbol, since this save would be too old to have a chosen symbol
-        game.clan.chosen_symbol = clan_symbol_sprite(game.clan, return_string=True)
+        game.clan_obj.chosen_symbol = clan_symbol_sprite(game.clan_obj, return_string=True)
 
         game.switches["error_message"] = ""
 
@@ -758,15 +775,15 @@ class Clan:
         ) as read_file:  # pylint: disable=redefined-outer-name
             clan_data = ujson.loads(read_file.read())
 
-        if clan_data[Status.Leader]:
-            leader = Cat.all_cats[clan_data[Status.Leader]]
+        if clan_data[Rank.Leader]:
+            leader = Cat.all_cats[clan_data[Rank.Leader]]
             leader_lives = clan_data["leader_lives"]
         else:
             leader = None
             leader_lives = 0
 
-        if clan_data[Status.Deputy]:
-            deputy = Cat.all_cats[clan_data[Status.Deputy]]
+        if clan_data[Rank.Deputy]:
+            deputy = Cat.all_cats[clan_data[Rank.Deputy]]
         else:
             deputy = None
 
@@ -775,7 +792,7 @@ class Clan:
         else:
             med_cat = None
 
-        game.clan = Clan(
+        game.clan_obj = Clan(
             name=clan_data["clanname"],
             leader=leader,
             deputy=deputy,
@@ -785,52 +802,52 @@ class Clan:
             game_mode=clan_data["gamemode"],
             self_run_init_functions=False,
         )
-        game.clan.post_initialization_functions()
+        game.clan_obj.post_initialization_functions()
 
-        game.clan.reputation = int(clan_data["reputation"])
+        game.clan_obj.reputation = int(clan_data["reputation"])
 
-        game.clan.age = clan_data["clanage"]
-        game.clan.starting_season = (
+        game.clan_obj.age = clan_data["clanage"]
+        game.clan_obj.starting_season = (
             clan_data["starting_season"]
             if "starting_season" in clan_data
             else Season.Spring
         )
         get_current_season()
 
-        game.clan.leader_lives = leader_lives
-        game.clan.leader_predecessors = clan_data["leader_predecessors"]
+        game.clan_obj.leader_lives = leader_lives
+        game.clan_obj.leader_predecessors = clan_data["leader_predecessors"]
 
-        game.clan.deputy_predecessors = clan_data["deputy_predecessors"]
-        game.clan.med_cat_predecessors = clan_data["med_cat_predecessors"]
-        game.clan.med_cat_number = clan_data["med_cat_number"]
+        game.clan_obj.deputy_predecessors = clan_data["deputy_predecessors"]
+        game.clan_obj.med_cat_predecessors = clan_data["med_cat_predecessors"]
+        game.clan_obj.med_cat_number = clan_data["med_cat_number"]
         # Allows for the custom pronouns to show up in the add pronoun list after the game has closed and reopened.
         if "custom_pronouns" in clan_data.keys():
             if clan_data["custom_pronouns"]:
                 if isinstance(clan_data["custom_pronouns"], list):
                     # english-only pronouns from an old version
-                    game.clan.custom_pronouns["en"] = clan_data["custom_pronouns"]
+                    game.clan_obj.custom_pronouns["en"] = clan_data["custom_pronouns"]
                 else:
-                    game.clan.custom_pronouns = clan_data["custom_pronouns"]
+                    game.clan_obj.custom_pronouns = clan_data["custom_pronouns"]
 
         # Instructor Info
         if clan_data["instructor"] in Cat.all_cats:
-            game.clan.instructor = Cat.all_cats[clan_data["instructor"]]
-            game.clan.add_cat(game.clan.instructor)
+            game.clan_obj.instructor = Cat.all_cats[clan_data["instructor"]]
+            game.clan_obj.add_cat(game.clan_obj.instructor)
         else:
-            game.clan.instructor = Cat(status=choice([Status.Warrior, Status.Warrior, Status.Elder]))
+            game.clan_obj.instructor = Cat(status=choice([Rank.Warrior, Rank.Warrior, Rank.Elder]))
             # update_sprite(game.clan.instructor)
-            game.clan.instructor.dead = True
-            game.clan.add_cat(game.clan.instructor)
+            game.clan_obj.instructor.dead = True
+            game.clan_obj.add_cat(game.clan_obj.instructor)
 
         # check for symbol
         if "clan_symbol" in clan_data:
-            game.clan.chosen_symbol = clan_data["clan_symbol"]
+            game.clan_obj.chosen_symbol = clan_data["clan_symbol"]
         else:
-            game.clan.chosen_symbol = clan_symbol_sprite(game.clan, return_string=True)
+            game.clan_obj.chosen_symbol = clan_symbol_sprite(game.clan_obj, return_string=True)
 
         if "other_clans" in clan_data:
             for other_clan in clan_data["other_clans"]:
-                game.clan.all_clans.append(
+                game.clan_obj.all_clans.append(
                     OtherClan(
                         other_clan["name"],
                         int(other_clan["relations"]),
@@ -845,7 +862,7 @@ class Clan:
                     clan_data["other_clans_relations"].split(","),
                     clan_data["other_clan_temperament"].split(","),
                 ):
-                    game.clan.all_clans.append(OtherClan(name, int(relation), temper))
+                    game.clan_obj.all_clans.append(OtherClan(name, int(relation), temper))
             else:
                 for name, relation, temper, symbol in zip(
                     clan_data["other_clans_names"].split(","),
@@ -853,28 +870,28 @@ class Clan:
                     clan_data["other_clan_temperament"].split(","),
                     clan_data["other_clan_chosen_symbol"].split(","),
                 ):
-                    game.clan.all_clans.append(
+                    game.clan_obj.all_clans.append(
                         OtherClan(name, int(relation), temper, symbol)
                     )
 
         for cat in clan_data["clan_cats"].split(","):
             if cat in Cat.all_cats:
-                game.clan.add_cat(Cat.all_cats[cat])
-                game.clan.add_to_starclan(Cat.all_cats[cat])
-                game.clan.add_to_darkforest(Cat.all_cats[cat])
-                game.clan.add_to_unknown(Cat.all_cats[cat])
+                game.clan_obj.add_cat(Cat.all_cats[cat])
+                game.clan_obj.add_to_starclan(Cat.all_cats[cat])
+                game.clan_obj.add_to_darkforest(Cat.all_cats[cat])
+                game.clan_obj.add_to_unknown(Cat.all_cats[cat])
             else:
                 logger.warning(f"WARNING: Cat not found: {cat}")
         if "war" in clan_data:
-            game.clan.war = clan_data["war"]
+            game.clan_obj.war = clan_data["war"]
 
         if "faded_cats" in clan_data:
             if clan_data["faded_cats"].strip():  # Check for empty string
                 for cat in clan_data["faded_cats"].split(","):
-                    game.clan.faded_ids.append(cat)
+                    game.clan_obj.faded_ids.append(cat)
 
-        game.clan.last_focus_change = clan_data.get("last_focus_change")
-        game.clan.clans_in_focus = clan_data.get("clans_in_focus", [])
+        game.clan_obj.last_focus_change = clan_data.get("last_focus_change")
+        game.clan_obj.clans_in_focus = clan_data.get("clans_in_focus", [])
 
         # Patrolled cats
         if "patrolled_cats" in clan_data:
@@ -887,11 +904,11 @@ class Clan:
             else:
                 game.mediated = clan_data["mediated"]
 
-        self.load_pregnancy(game.clan)
-        self.load_herb_supply(game.clan)
-        self.load_disaster(game.clan)
-        if game.clan.game_mode != "classic":
-            self.load_freshkill_pile(game.clan)
+        self.load_pregnancy(game.clan_obj)
+        self.load_herb_supply(game.clan_obj)
+        self.load_disaster(game.clan_obj)
+        if game.clan_obj.game_mode != "classic":
+            self.load_freshkill_pile(game.clan_obj)
         game.switches["error_message"] = ""
 
         # Return Version Info.
@@ -920,9 +937,9 @@ class Clan:
         """
         Load the information about what cat is pregnant and in what 'state' they are in the pregnancy.
         """
-        if not game.clan.name:
+        if not game.clan_obj.name:
             return
-        file_path = get_save_dir() + f"/{game.clan.name}/pregnancy.json"
+        file_path = get_save_dir() + f"/{game.clan_obj.name}/pregnancy.json"
         if os.path.exists(file_path):
             with open(
                 file_path, "r", encoding="utf-8"
@@ -935,21 +952,21 @@ class Clan:
         """
         Save the information about what cat is pregnant and in what 'state' they are in the pregnancy.
         """
-        if not game.clan.name:
+        if not game.clan_obj.name:
             return
 
         game.safe_save(
-            f"{get_save_dir()}/{game.clan.name}/pregnancy.json", clan.pregnancy_data
+            f"{get_save_dir()}/{game.clan_obj.name}/pregnancy.json", clan.pregnancy_data
         )
 
     def load_disaster(self, clan):
         """
         TODO: DOCS
         """
-        if not game.clan.name:
+        if not game.clan_obj.name:
             return
 
-        file_path = get_save_dir() + f"/{game.clan.name}/disasters/primary.json"
+        file_path = get_save_dir() + f"/{game.clan_obj.name}/disasters/primary.json"
         try:
             if os.path.exists(file_path):
                 with open(
@@ -975,7 +992,7 @@ class Clan:
                     else:
                         clan.primary_disaster = {}
             else:
-                os.makedirs(get_save_dir() + f"/{game.clan.name}/disasters")
+                os.makedirs(get_save_dir() + f"/{game.clan_obj.name}/disasters")
                 clan.primary_disaster = None
                 with open(file_path, "w", encoding="utf-8") as rel_file:
                     json_string = ujson.dumps(clan.primary_disaster, indent=4)
@@ -983,7 +1000,7 @@ class Clan:
         except:
             clan.primary_disaster = None
 
-        file_path = get_save_dir() + f"/{game.clan.name}/disasters/secondary.json"
+        file_path = get_save_dir() + f"/{game.clan_obj.name}/disasters/secondary.json"
         try:
             if os.path.exists(file_path):
                 with open(file_path, "r", encoding="utf-8") as read_file:
@@ -1005,7 +1022,7 @@ class Clan:
                     else:
                         clan.secondary_disaster = {}
             else:
-                os.makedirs(get_save_dir() + f"/{game.clan.name}/disasters")
+                os.makedirs(get_save_dir() + f"/{game.clan_obj.name}/disasters")
                 clan.secondary_disaster = None
                 with open(file_path, "w", encoding="utf-8") as rel_file:
                     json_string = ujson.dumps(clan.secondary_disaster, indent=4)
@@ -1014,7 +1031,7 @@ class Clan:
         except:
             clan.secondary_disaster = None
 
-    def save_disaster(self, clan=game.clan):
+    def save_disaster(self, clan=game.clan_obj):
         """
         TODO: DOCS
         """
@@ -1063,13 +1080,13 @@ class Clan:
         """
         Loads the Clan's saved herb supply info
         """
-        if not game.clan.name:
+        if not game.clan_obj.name:
             return
 
         save_dir = get_save_dir()
 
-        current_file_path = save_dir + f"/{game.clan.name}/herb_supply.json"
-        old_file_path = save_dir + f"/{game.clan.name}/herbs.json"
+        current_file_path = save_dir + f"/{game.clan_obj.name}/herb_supply.json"
+        old_file_path = save_dir + f"/{game.clan_obj.name}/herbs.json"
 
         try:
             # load the old file path and convert the save data into current format
@@ -1105,23 +1122,23 @@ class Clan:
             return
 
         game.safe_save(
-            f"{get_save_dir()}/{game.clan.name}/herb_supply.json",
+            f"{get_save_dir()}/{game.clan_obj.name}/herb_supply.json",
             clan.herb_supply.combined_supply_dict
         )
 
         # delete old herb save file if it exists
-        if os.path.exists(get_save_dir() + f"/{game.clan.name}/herbs.json"):
-            os.remove(get_save_dir() + f"/{game.clan.name}/herbs.json")
+        if os.path.exists(get_save_dir() + f"/{game.clan_obj.name}/herbs.json"):
+            os.remove(get_save_dir() + f"/{game.clan_obj.name}/herbs.json")
 
 
     def load_freshkill_pile(self, clan):
         """
         TODO: DOCS
         """
-        if not game.clan.name or clan.game_mode == "classic":
+        if not game.clan_obj.name or clan.game_mode == "classic":
             return
 
-        file_path = get_save_dir() + f"/{game.clan.name}/freshkill_pile.json"
+        file_path = get_save_dir() + f"/{game.clan_obj.name}/freshkill_pile.json"
         try:
             if os.path.exists(file_path):
                 with open(
@@ -1130,7 +1147,7 @@ class Clan:
                     pile = ujson.load(read_file)
                     clan.freshkill_pile = FreshkillPile(pile)
 
-                file_path = get_save_dir() + f"/{game.clan.name}/nutrition_info.json"
+                file_path = get_save_dir() + f"/{game.clan_obj.name}/nutrition_info.json"
                 if os.path.exists(file_path) and clan.freshkill_pile:
                     with open(file_path, "r", encoding="utf-8") as read_file:
                         nutritions = ujson.load(read_file)
@@ -1155,7 +1172,7 @@ class Clan:
             return
 
         game.safe_save(
-            f"{get_save_dir()}/{game.clan.name}/freshkill_pile.json",
+            f"{get_save_dir()}/{game.clan_obj.name}/freshkill_pile.json",
             clan.freshkill_pile.pile,
         )
 
@@ -1167,7 +1184,7 @@ class Clan:
                 "percentage": nutr.percentage,
             }
 
-        game.safe_save(f"{get_save_dir()}/{game.clan.name}/nutrition_info.json", data)
+        game.safe_save(f"{get_save_dir()}/{game.clan_obj.name}/nutrition_info.json", data)
 
     ## Properties
 
@@ -1193,7 +1210,7 @@ class Clan:
         all_cats = [
             i
             for i in Cat.all_cats_list
-            if i.status not in [Status.Leader, Status.Deputy] and not i.dead and not i.outside
+            if i.status not in [Rank.Leader, Rank.Deputy] and not i.dead and not i.outside
         ]
         leader = (
             Cat.fetch_cat(self.leader)
