@@ -7,6 +7,7 @@
 import os
 from copy import copy
 from enum import EnumType, StrEnum
+from pathlib import Path
 from typing import Optional
 
 import pygame
@@ -253,7 +254,7 @@ class SpriteManager:
                 self.sprites[SpriteGroup.Effect][EffectType.Gradient] = {}
             for loc in effects[effect_type]:
                 spritesheet = effect_type.value + loc
-                self._save_spritesheet(spritesheet=spritesheet, subfolder=fp.SPRITE_EFFECTS_DIRNAME)
+                self._save_spritesheet(spritesheet=spritesheet, folder=fp.SPRITE_EFFECTS_DIRNAME)
                 if effect_type is not EffectType.Gradient:
                     self.make_group(spritesheet=spritesheet, sprite_group=SpriteGroup.Effect, name_to_cast=effect_type,
                                     loc=loc)
@@ -264,7 +265,7 @@ class SpriteManager:
         fogs: list[str] = [DF_CLAN_TOKEN, STAR_CLAN_TOKEN, UR_CLAN_TOKEN, EFFECT_MASK]
         for loc in fogs:
             spritesheet: str = EffectType.FadeFog + loc
-            self._save_spritesheet(spritesheet=spritesheet, subfolder=fp.SPRITE_FADE_FOG_DIRNAME)
+            self._save_spritesheet(spritesheet=spritesheet, folder=fp.SPRITE_FADE_FOG_DIRNAME)
             for fade_level in range(3): # FIXME hardcoded, replace with MAX_FADE_LEVEL
                 self.make_group(spritesheet=spritesheet, sprite_group=SpriteGroup.Effect,
                                 name_to_cast=EffectType.FadeFog, pos=(fade_level, 0), loc=loc)
@@ -397,13 +398,14 @@ class SpriteManager:
                 self.make_group(spritesheet=spritesheet, sprite_group=sprite_group, name_to_cast=sprite_set,
                                 palette_colours=[], pos=(row, col))
 
-    def _save_spritesheet(self, spritesheet: str, subfolder: str = ""):
+    def _save_spritesheet(self, spritesheet: str, folder: Path = fp.SPRITE_DATA_DICTS_DIRPATH):
         """ Save a spritesheet to SpriteManager.spritesheets.
 
         :param str spritesheet: name of the file in the "sprites/" directory
-        :param str subfolder: optional name of the subfolder in the "sprites/" directory; should include "/"
+        :param Path folder: optional name of the subfolder in the "sprites" directory
         """
-        filepath: str = f"sprites/{subfolder}{spritesheet}.png"
+        filename = spritesheet + ".png"
+        filepath: Path = Path(folder, filename)
         self.spritesheets[spritesheet] = self._load_spritesheet(filepath=filepath)
 
     # TODO consider moving this to io_manager
@@ -535,7 +537,8 @@ class SpriteManager:
         :param list[str] palette_colours: list of palette names
         """
         # first we create an array of our palette map
-        filepath: str = fp.SPRITE_PALETTES_DIR_PATH + style_name + "_palette.png" # FIXME filepath
+        filename: str = "acc_collars_" + style_name + "_palette.png"
+        filepath: Path = Path(fp.SPRITE_PALETTES_DIR_PATH, filename)
         full_map = pygame.image.load(file=filepath)
         map_array = pygame.PixelArray(full_map)
 

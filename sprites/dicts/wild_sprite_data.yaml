@@ -1,0 +1,17 @@
+sprite_group: acc
+spritesheet: acc_wild
+sprite_list:
+  - 
+    - red_feathers
+    - blue_feathers
+    - jay_feathers
+    - gull_feathers
+    - sparrow_feathers
+    - moth_wings
+    - rosy_moth_wings
+    - morpho_butterfly
+    - monarch_butterfly
+    - cicada_wings
+    - black_cicada
+  - 
+    - roadrunner_feather

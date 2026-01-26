@@ -1,0 +1,12 @@
+sprite_group: scars
+spritesheet: scars_missing_part
+sprite_list:
+  - 
+    - torn_left_ear
+    - torn_right_ear
+    - no_tail
+    - no_left_ear
+    - no_right_ear
+    - no_ears
+    - half_tail
+    - no_leg

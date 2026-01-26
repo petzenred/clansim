@@ -1,0 +1,118 @@
+sprite_group: acc
+spritesheet: acc_collar
+sprite_dict:
+  bows:
+    bow:
+      - crimson
+      - blue
+      - yellow
+      - cyan
+      - orange
+      - lime
+      - white
+      - black
+      - green
+      - pink
+      - purple
+      - rose
+      - indigo
+    bow_foil:
+      - black_gold
+    bow_gradient:
+      - rainbow
+  leather:
+    leather:
+      - crimson
+      - blue
+      - yellow
+      - cyan
+      - orange
+      - lime
+      - white
+      - black
+      - green
+      - pink
+      - purple
+      - rose
+      - indigo
+    leather_spike:
+      - crimson_gold
+      - blue_gold
+      - yellow_silver
+      - cyan_gold
+      - orange_silver
+      - lime_silver
+      - white_gold
+      - black_gold
+      - green_silver
+      - pink_gold
+      - purple_gold
+      - rose_gold
+      - indigo_gold
+    leather_gradient:
+      - rainbow
+    leather_bell:
+      - crimson
+      - blue
+      - yellow
+      - cyan
+      - orange
+      - lime
+      - white
+      - black
+      - green
+      - pink
+      - purple
+      - rose
+      - indigo
+    leather_bell_spike:
+      - crimson_gold
+      - blue_gold
+      - yellow_silver
+      - cyan_gold
+      - orange_silver
+      - lime_silver
+      - white_gold
+      - black_gold
+      - green_silver
+      - pink_gold
+      - purple_gold
+      - rose_gold
+      - indigo_gold
+    leather_bell_gradient:
+      - rainbow
+  nylon:
+    nylon:
+      - crimson
+      - blue
+      - yellow
+      - cyan
+      - orange
+      - lime
+      - white
+      - black
+      - black_gold
+      - green
+      - pink
+      - purple
+      - rose
+      - indigo
+    nylon_gradient:
+      - rainbow
+    nylon_bell:
+      - crimson
+      - blue
+      - yellow
+      - cyan
+      - orange
+      - lime
+      - white
+      - black
+      - black_gold
+      - green
+      - pink
+      - purple
+      - rose
+      - indigo
+    nylon_bell_gradient:
+      - rainbow

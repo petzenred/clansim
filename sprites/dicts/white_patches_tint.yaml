@@ -1,0 +1,34 @@
+"colour_groups":
+    "white": "white"
+    "pale_grey": "gray"
+    "silver": "gray"
+    "grey": "gray"
+    "dark_grey": "black"
+    "ghost": "black"
+    "black": "black"
+    "cream": "ginger"
+    "pale_ginger": "ginger"
+    "golden": "ginger"
+    "ginger": "ginger"
+    "dark_ginger": "ginger"
+    "sienna": "ginger"
+    "light_brown": "brown"
+    "lilac": "brown"
+    "brown": "brown"
+    "golden_brown": "brown"
+    "dark_brown": "brown"
+    "chocolate": "brown"
+"possible_tints":
+    "basic": ["offwhite", "offwhite"]
+    "black": ["gray", "darkcream", "cream"]
+    "gray": ["gray"]
+    "ginger": ["darkcream", "cream", "pink"]
+    "brown": ["darkcream", "cream"]
+    "white": []
+"tint_colours":
+    "darkcream": [236, 229, 208]
+    "cream": [247, 241, 225]
+    "offwhite": [238, 249, 252]
+    "gray": [208, 225, 229]
+    "pink": [254, 248, 249]
+    "none": null

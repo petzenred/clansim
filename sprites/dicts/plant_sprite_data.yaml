@@ -1,0 +1,54 @@
+sprite_group: acc
+spritesheet: acc_plant
+sprite_list:
+  -
+    - maple_leaf
+    - holly
+    - blueberries
+    - forget_me_nots
+    - rye_stalk
+    - cattail
+    - red_poppy
+    - orange_poppy
+    - cyan_poppy
+    - white_poppy
+    - pink_poppy
+  -
+    - bluebells
+    - lily_of_the_valley
+    - snapdragon
+    - herbs
+    - petals
+    - nettle
+    - heather
+    - gorse
+    - juniper
+    - raspberry
+    - lavender
+  -
+    - oak_leaf
+    - catmint
+    - maple_seed
+    - laurel
+    - bulb_white
+    - bulb_yellow
+    - bulb_orange
+    - bulb_pink
+    - bulb_blue
+    - closer
+    - daisy
+  -
+    - wisteria
+    - rose_mallow
+    - pickleweed
+    - golden_creeping_jenny
+    - desert_willow
+    - cactus_flower
+    - prairie_fire
+    - verbena_ear
+    - verbena_pelt
+  -
+    - dry_herbs
+    - dry_catmint
+    - dry_nettles
+    - dry_laurels

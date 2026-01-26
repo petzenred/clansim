@@ -1,0 +1,27 @@
+sprite_group: eyes_both
+spritesheet: eyes_both
+sprite_list:
+  -
+    - yellow
+    - amber
+    - hazel
+    - pale_green
+    - green
+    - blue
+    - dark_blue
+    - grey
+    - cyan
+    - emerald
+    - heather_blue
+    - sunlit_ice
+  -
+    - copper
+    - sage
+    - cobalt
+    - pale_blue
+    - bronze
+    - silver
+    - pale_yellow
+    - gold
+    - green_yellow
+    - orange

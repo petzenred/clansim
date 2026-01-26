@@ -1,0 +1,24 @@
+sprite_group: skin
+spritesheet: skin
+sprite_list:
+  -
+    - black
+    - red
+    - pink
+    - dark_brown
+    - brown
+    - light_brown
+  -
+    - dark
+    - dark_grey
+    - grey
+    - dark_salmon
+    - salmon
+    - peach
+  -
+    - dark_marbled
+    - marbled
+    - light_marbled
+    - dark_blue
+    - blue
+    - light_blue

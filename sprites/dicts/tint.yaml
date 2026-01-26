@@ -1,0 +1,42 @@
+colour_groups:
+  white: white
+  pale_grey: cool
+  silver: cool
+  grey: monochrome
+  dark_grey: monochrome
+  ghost: monochrome
+  black: monochrome
+  cream: warm
+  pale_ginger: warm
+  golden: warm
+  ginger: warm
+  dark_ginger: warm
+  sienna: brown
+  light_brown: brown
+  lilac: brown
+  brown: brown
+  golden_brown: brown
+  dark_brown: brown
+  chocolate: brown
+possible_tints:
+  basic: [pink, gray, red, orange, warm_dilute]
+  warm: [yellow, purple, dilute, cool_dilute]
+  cool: [purple, black, dilute]
+  white: [yellow]
+  monochrome: [blue, black, dilute, cool_dilute]
+  brown: [yellow, purple, black, dilute, cool_dilute]
+tint_colours:
+  pink: [253, 237, 237]
+  gray: [225, 225, 225]
+  red: [248, 226, 228]
+  black: [195, 195, 195]
+  orange: [255, 247, 235]
+  yellow: [250, 248, 225]
+  purple: [235, 225, 244]
+  blue: [218, 237, 245]
+  none: null
+dilute_tint_colours:
+  dilute: [20, 20, 20]
+  warm_dilute: [25, 15, 7]
+  cool_dilute: [7, 15, 25]
+  none: null

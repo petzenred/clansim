@@ -1,0 +1,143 @@
+sprite_group: white
+spritesheet: patches_white
+sprite_list:
+  - 
+    - fullwhite
+    - wrap
+    - tuxedo
+    - little
+    - colourpoint
+    - van
+    - coat
+    - moon
+    - phantom
+    - powder
+    - bleached
+    - savannah
+    - fadespots
+    - pebbleshine
+  - 
+    - extra
+    - oneear
+    - broken
+    - lighttuxedo
+    - buzzardfang
+    - ragdoll
+    - lightsong
+    - vitiligo
+    - blackstar
+    - piebald
+    - curved
+    - petal
+    - shibainu
+    - owl
+  - 
+    - tip
+    - fancy
+    - freckles
+    - ringtail
+    - halfface
+    - pantstwo
+    - goatee
+    - vitiligotwo
+    - paws
+    - mitaine
+    - brokenblaze
+    - scourge
+    - diva
+    - beard
+  - 
+    - tail
+    - blaze
+    - prince
+    - bib
+    - vee
+    - unders
+    - honey
+    - farofa
+    - damien
+    - mister
+    - belly
+    - tailtip
+    - toes
+    - topcover
+  - 
+    - apron
+    - capsaddle
+    - maskmantle
+    - squeaks
+    - star
+    - toestail
+    - ravenpaw
+    - pants
+    - reversepants
+    - skunk
+    - karpati
+    - halfwhite
+    - appaloosa
+    - dapplepaw
+  - 
+    - heart
+    - liltwo
+    - glass
+    - moorish
+    - sepiapoint
+    - minkpoint
+    - sealpoint
+    - mao
+    - luna
+    - chestspeck
+    - wings
+    - painted
+    - hearttwo
+    - woodpecker
+  - 
+    - boots
+    - miss
+    - cow
+    - cowtwo
+    - bub
+    - bowtie
+    - mustache
+    - reverseheart
+    - sparrow
+    - vest
+    - lovebug
+    - trixie
+    - sammy
+    - sparkle
+  - 
+    - rightear
+    - leftear
+    - estrella
+    - shootingstar
+    - eyespot
+    - reverseeye
+    - fadebelly
+    - front
+    - blossomstep
+    - pebble
+    - tailtwo
+    - buddy
+    - backspot
+    - eyebags
+  - 
+    - bullseye
+    - finn
+    - digit
+    - kropka
+    - fctwo
+    - fcone
+    - mia
+    - scar
+    - buster
+    - smokey
+    - hawkblaze
+    - cake
+    - rosina
+    - princess
+  - 
+    - locket
+    - blazemask
+    - tears
+    - dougie

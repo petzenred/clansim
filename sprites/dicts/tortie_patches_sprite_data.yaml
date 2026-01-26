@@ -1,0 +1,51 @@
+sprite_group: tortie
+spritesheet: patches_tortie
+sprite_list:
+  - 
+    - one
+    - two
+    - three
+    - four
+    - redtail
+    - delilah
+    - half
+    - streak
+    - mask
+    - smoke
+  - 
+    - minimal_one
+    - minimal_two
+    - minimal_three
+    - minimal_four
+    - oreo
+    - swoop
+    - chimera
+    - chest
+    - armtail
+    - grumpyface
+  - 
+    - mottled
+    - sidemask
+    - eyedot
+    - bandana
+    - pacman
+    - streamstrike
+    - smudged
+    - daub
+    - ember
+    - brie
+  - 
+    - oriole
+    - robin
+    - brindle
+    - paige
+    - rosetail
+    - safi
+    - dapplenight
+    - blanket
+    - beloved
+    - body
+  - 
+    - shiloh
+    - freckled
+    - heartbeat

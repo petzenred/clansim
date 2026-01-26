@@ -1,0 +1,52 @@
+sprite_group: scars
+spritesheet: scars_pelt
+sprite_list:
+  -
+    - scratch_chest
+    - scratch_back
+    - scratch_back_paw # FIXME
+    - mangled_leg
+    - brightheart
+    - mangled_tail
+    - bridge
+    - blind_right
+    - blind_left
+    - blind_both
+    - burn_paws
+    - burn_tail
+  -
+    - burn_belly
+    - beak_cheek
+    - beak_lower
+    - burn_rump
+    - cat_bite_chest
+    - rat_bite
+    - frost_face
+    - frost_tail
+    - frost_fore
+    - frost_hind
+    - quill_chunk
+    - quill_scratch
+  -
+    - tail_scar
+    - snout
+    - cheek
+    - side
+    - throat
+    - tail_base
+    - belly
+    - toe_trap
+    - snake_shoulder
+    - leg_bite
+    - neck_bite
+    - face
+  -
+    - hindleg
+    - back
+    - quill_side
+    - scratch_side
+    - toe
+    - beak_side
+    - cat_bite_leg
+    - snake_leg
+    - scratch_back_paw # FIXME

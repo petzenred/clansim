@@ -1,0 +1,38 @@
+spritesheets:
+    - colours_agouti
+    - colours_bengal
+    - colours_classic
+    - colours_mackerel
+    - colours_marbled
+    - colours_masked
+    - colours_rosette
+    - colours_solid_colour
+    - colours_single_stripe
+    - colours_smoke
+    - colours_sokoke
+    - colours_speckled
+    - colours_tabby
+    - colours_ticked
+sprite_list:
+  -
+    - white
+    - pale_grey
+    - silver
+    - grey
+    - dark_grey
+    - ghost
+    - black
+  -
+    - cream
+    - pale_ginger
+    - golden
+    - ginger
+    - dark_ginger
+    - sienna
+  -
+    - light_brown
+    - lilac
+    - brown
+    - golden_brown
+    - dark_brown
+    - chocolate
