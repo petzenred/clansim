@@ -25,9 +25,9 @@
             "one": "warrior",
             "many": "warriors"
         },
-        "medicine cat": {
-            "one": "medicine cat",
-            "many": "medicine cats"
+        "healer": {
+            "one": "healer",
+            "many": "healers"
         },
         "mediator": {
             "one": "mediator",
@@ -37,9 +37,9 @@
             "one": "apprentice",
             "many": "apprentices"
         },
-        "medicine cat apprentice": {
-            "one": "medicine cat apprentice",
-            "many": "medicine cat apprentices"
+        "healer apprentice": {
+            "one": "healer apprentice",
+            "many": "healer apprentices"
         },
         "mediator apprentice": {
             "one": "mediator apprentice",
@@ -48,6 +48,10 @@
         "queen": {
             "one": "queen",
             "many": "queens"
+        },
+        "queen apprentice": {
+            "one": "queen apprentice",
+            "many": "queen apprentices"
         },
         "queen/pregnant": {
             "one": "queen/pregnant cat",
@@ -103,11 +107,11 @@
         "she-cat": "she-cat",
         "tom": "tom",
         "cat": "cat",
-        "female": "female",
-        "male": "male",
-        "trans female": "trans female",
-        "trans male": "trans male",
-        "nonbinary": "nonbinary",
+        "female": "molly",
+        "male": "tom",
+        "trans female": "molly",
+        "trans male": "tom",
+        "nonbinary": "sam",
         "is": "is",
         "are": "are",
         "can_work": "This cat can work",
@@ -116,8 +120,8 @@
         "exp_label": "exp: %{exp}",
         "newleaf": "newleaf",
         "greenleaf": "greenleaf",
-        "leaf-fall": "leaf-fall",
-        "leaf-bare": "leaf-bare",
+        "leaffall": "leaf-fall",
+        "leafbare": "leaf-bare",
         "relation_BLOOD": "",
         "relation_ADOPTIVE": "adoptive",
         "relation_HALF_BLOOD": "half sibling",
@@ -182,7 +186,7 @@
         "has_permanent_condition": "has a permanent condition",
         "born_with": "born with this condition",
         "had_perm_condition_for": {
-            "one": "has had this condtion for %{count} moon",
+            "one": "has had this condition for %{count} moon",
             "many": "has had this condition for %{count} moons"
         },
         "had_injury_for": "has been hurt for %{moons}",

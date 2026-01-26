@@ -52,15 +52,15 @@
             "There are so many herbs stored that m_c's only worry is finding the specific herb {PRONOUN/m_c/subject}{VERB/m_c/'re/'s} looking for.",
             "m_c has trouble making {PRONOUN/m_c/poss} nest - the herb supply is literally overflowing and threatening to invade m_c's bedding.",
             "Sure, m_c has no idea where to put all these extra herbs, but it's a refreshing and reassuring problem to have.",
-            "No cat can twitch a whisker in the medicine den right now without bumping into the herb supplies. Herb gathering is not one of c_n's problems.",
+            "No cat can twitch a whisker in the healer den right now without bumping into the herb supplies. Herb gathering is not one of c_n's problems.",
             "There are few things better at putting a skip in m_c's steps than having such an overflowing supply of herbs available."
         ]
     },
     "no_meds_warning": [
-        "With no cat assigned to the medicine den, the Clan is at risk of injuries progressing to infection and fever.",
-        "The cats eye the empty medicine den uneasily. They're missing a crucial component of the Clan.",
-        "Death and sickness haunt the Clan more often without medicine cats to keep them at bay.",
-        "The absence of a medicine cats in the den sticks out like a thorn in a paw.",
+        "With no cat assigned to the healer den, the Clan is at risk of injuries progressing to infection and fever.",
+        "The cats eye the empty healer den uneasily. They're missing a crucial component of the Clan.",
+        "Death and sickness haunt the Clan more often without healers to keep them at bay.",
+        "The absence of a healers in the den sticks out like a thorn in a paw.",
         "This isn't right - there should be a source of comfort and guidance in this den, not an uneasy absence and unsettling silence."
     ],
     "single_not_working": [
@@ -71,9 +71,9 @@
         "Hopefully c_n won't miss m_c's efforts this moon, because {PRONOUN/m_c/subject} aren't in any condition to work."
     ],
     "many_not_working": [
-        "The medicine cats aren't seeing patients this moon, they <i>are</i> the patients.",
-        "Hopefully nothing goes wrong this moon, given that the medicine cats are all unable to work.",
-        "Medicine cats make terrible patients, it turns out. Add that to the pile of reasons that c_n hopes they'll be back on their paws soon.",
-        "With no working medicine cats, c_n is vulnerable."
+        "The healers aren't seeing patients this moon, they <i>are</i> the patients.",
+        "Hopefully nothing goes wrong this moon, given that the healers are all unable to work.",
+        "Healers make terrible patients, it turns out. Add that to the pile of reasons that c_n hopes they'll be back on their paws soon.",
+        "With no working healers, c_n is vulnerable."
     ]
 }
