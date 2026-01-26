@@ -186,3 +186,6 @@ cache/
 download.tmp
 version.ini
 *.xml
+
+# developer notes
+/.dev_notes
