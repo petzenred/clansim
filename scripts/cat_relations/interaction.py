@@ -26,7 +26,7 @@ class SingleInteraction:
     ):
         self.id = interact_id
         self.intensity = intensity
-        self.biome = biome if biome else ["Any"]
+        self.biome = biome if biome else ["NoBiome"]
         self.season = season if season else ["Any"]
         self.interactions = (
             interactions
@@ -82,7 +82,7 @@ class GroupInteraction:
     ):
         self.id = interact_id
         self.intensity = intensity
-        self.biome = biome if biome else ["Any"]
+        self.biome = biome if biome else ["NoBiome"]
         self.season = season if season else ["Any"]
         self.cat_amount = cat_amount
         self.interactions = (
@@ -295,7 +295,7 @@ def create_interaction(inter_list) -> list:
         created_list.append(
             SingleInteraction(
                 interact_id=inter["cat_id"],
-                biome=inter["biome"] if "biome" in inter else ["Any"],
+                biome=inter["biome"] if "biome" in inter else ["NoBiome"],
                 season=inter["season"] if "season" in inter else ["Any"],
                 intensity=inter["intensity"] if "intensity" in inter else "medium",
                 interactions=inter["interactions"] if "interactions" in inter else None,
@@ -360,7 +360,7 @@ def create_group_interaction(inter_list) -> list:
         created_list.append(
             GroupInteraction(
                 interact_id=inter["cat_id"],
-                biome=inter["biome"] if "biome" in inter else ["Any"],
+                biome=inter["biome"] if "biome" in inter else ["NoBiome"],
                 season=inter["season"] if "season" in inter else ["Any"],
                 cat_amount=inter["cat_amount"] if "cat_amount" in inter else None,
                 intensity=inter["intensity"] if "intensity" in inter else "medium",

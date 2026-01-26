@@ -173,7 +173,7 @@ class GroupEvents:
         """
         filtered_interactions = []
         allowed_season = [season, "Any", "any"]
-        allowed_biome = [biome, "Any", "any"]
+        allowed_biome = [biome, "NoBiome", "any"]
         main_cat = Cat.all_cats[abbreviations_cat_id["m_c"]]
         for interact in interactions:
             in_tags = [i for i in interact.biome if i in allowed_biome]

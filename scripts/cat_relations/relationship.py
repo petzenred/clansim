@@ -485,7 +485,7 @@ class Relationship:
         """
         filtered = []
         _season = [season, "Any", "any"]
-        _biome = [biome, "Any", "any"]
+        _biome = [biome, "NoBiome", "any"]
         # if there are no loaded interactions, return empty list
         if not interactions:
             return filtered

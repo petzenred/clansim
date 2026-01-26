@@ -20,7 +20,7 @@ from scripts.game_structure.game_essentials import game
 from scripts.housekeeping.datadir import get_save_dir
 
 
-class Name:
+class OldName:
     """
     Stores & handles name generation.
     """
@@ -302,5 +302,5 @@ class Name:
         return self.prefix + self.suffix
 
 
-names = Name()
+names = OldName()
 names.prefix_history = []

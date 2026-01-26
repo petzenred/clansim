@@ -23,7 +23,7 @@ event_flat = {}
 
 valid_records = {
     "location": {
-        Biome.Any: [],
+        Biome.NoBiome: [],
         Biome.Beach: {},
         Biome.Desert: {},
         Biome.Forest: {},
@@ -33,7 +33,7 @@ valid_records = {
     },
     "weight": {},
     "season": {
-        Season.Any: [],
+        Season.NoSeason: [],
         Season.Spring: [],
         Season.Summer: [],
         Season.Autumn: [],

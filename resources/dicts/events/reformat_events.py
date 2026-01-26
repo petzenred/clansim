@@ -135,7 +135,7 @@ def reformat(path):
             new_format.update({"season": new_format_season})
 
         if new_format["season"] == [Season.Spring, Season.Summer, Season.Autumn, Season.Winter]:
-            new_format["season"] = [Season.Any]
+            new_format["season"] = [Season.NoSeason]
 
         new_format["tags"] = []
 

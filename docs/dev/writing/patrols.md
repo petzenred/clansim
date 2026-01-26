@@ -938,8 +938,8 @@ This is a perfectly good patrol, with the bare minimum features needed!
 ```py
 {
 	"patrol_id": "some_unique_id",
-	"biome": ["Any"],
-	"season": ["Any"],
+	"biome": ["NoBiome"],
+	"season": ["NoSeason"],
 	"types": ["hunting"],
 	"tags": [],
 	"patrol_art": "hunt_general_intro",
@@ -975,8 +975,8 @@ This uses almost all features somewhere. Yes, it is long. Most patrols are not t
 ```py
 {
 	"patrol_id": "some_unique_id",
-	"biome": ["Any"],
-	"season": ["Any"],
+	"biome": ["NoBiome"],
+	"season": ["NoSeason"],
 	"types": ["hunting"],
 	"tags": ["disaster", "new_cat"],
 	"patrol_art": "explict_art_name"

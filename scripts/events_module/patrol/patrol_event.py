@@ -29,8 +29,8 @@ class PatrolEvent:
 
     # patrol constraints
     tags: List[str] = field(default_factory=list)
-    biomes: List[Biome] = (Biome.Any,)
-    seasons: List[Season] = (Biome.Any,)
+    biomes: List[Biome] = (Biome.NoBiome,)
+    seasons: List[Season] = (Season.NoSeason,)
     patrol_types: List[PatrolType] = field(default_factory=list)
     min_max_status: dict = field(default_factory=dict)
     relationship_constraints: List = field(default_factory=list)

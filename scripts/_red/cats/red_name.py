@@ -11,50 +11,21 @@ TODO
  - Prefixes and suffixes shouldn't use the same source.
 """
 
-import os
 import random
-import ujson
-from typing import Optional
-
 
 from definitions import (
-    Age, Biome, Location,
-    EyeColour, PeltColour, PeltPattern, TortiePattern,
-    Rank, RedSkill,
+    Biome, EyeColour, PeltColour, PeltPattern,
+    TortiePatches, Rank, RedSkill, WhitePatches,
+    cast_to_biome, cast_to_skill
 )
+from resources._red.cat_names import SPECIAL_NAMES, OTHER, OUTSIDERS, PREFIXES, SUFFIXES
 from scripts.game_structure.game_essentials import game
+from scripts._red.io_manager import io_manager
 from scripts._red.config_manager import config
-from scripts._red.general_utils import one_in_num_chance
-from scripts._red.cats.history.red_backstory import RedBackstoryCategory
-from scripts.housekeeping.datadir import get_save_dir
 
 import logging
+
 logger = logging.getLogger(__name__)
-
-########################################################################################################################
-# Constants
-########################################################################################################################
-
-GAME_CONFIG_CAT_NAME_CONTROLS: dict = config.get_config_value("cat_name_controls")
-GAME_CONFIG_FUN: dict = config.get_config_value("fun")
-
-# FIXME remove the manual dictionary below
-# GAME_CONFIG_CAT_NAME_CONTROLS: dict = {
-#     "always_name_after_appearance": False,
-#     "allow_eye_names": True,
-# }
-# GAME_CONFIG_FUN: dict = {
-#     "april_fools": False,
-#     "all_cats_are_newborn": False,
-#     "newborns_can_roam": False,
-#     "newborns_can_patrol": False,
-#     "always_halloween": False
-# }
-
-NAMES_DICT_PATH: str = "../../../resources/dicts/names/names.json"
-PREFIX_LIST_PATH: str = str(get_save_dir() + "/prefixlist.txt")
-SUFFIX_LIST_PATH: str = str(get_save_dir() + "/suffixlist.txt")
-SPEC_SUFFIX_LIST_PATH: str = str(get_save_dir() + "/specialsuffixes.txt")
 
 
 ########################################################################################################################
@@ -62,321 +33,269 @@ SPEC_SUFFIX_LIST_PATH: str = str(get_save_dir() + "/specialsuffixes.txt")
 ########################################################################################################################
 
 class RedName:
+    """ Stores & handles name generation.
+
+    TODO
+     - legacy naming (prefix and suffix)
+     - personalities (prefix and suffix)
+     - skill (suffix) - this would require re-rolling their last name when they graduate
+     - white patch pattern (prefix and suffix)
+     - tortie pattern (prefix and suffix)
     """
-    Stores & handles name generation.
-    """
 
-    cat = None
-    prefix: str = None
-    suffix: str = None
-    special_suffix_hidden: bool = None
+    cat_obj = None  # this is a RedCat object but the RedCat class imports RedName so it can't be type-hinted here
+    biome: Biome
+    prefix: str
+    suffix: str
 
-    prefix_source = None # used on the Allegiances screen
-    suffix_source = None
+    special_ranks: dict[Rank, str] = None
 
-    if os.path.exists(NAMES_DICT_PATH):
-        logger.debug(f"Loading names dictionary from {NAMES_DICT_PATH}")
-        with open(NAMES_DICT_PATH, encoding="utf-8") as read_file:
-            names_dict = ujson.loads(read_file.read())
+    _blacklist: list[str] = None
+    _animal_names: list[str] = None
 
-        if os.path.exists(PREFIX_LIST_PATH):
-            logger.debug(f"Loading prefix lists from {PREFIX_LIST_PATH}")
-            with open(
-                PREFIX_LIST_PATH, "r", encoding="utf-8"
-            ) as read_file:
-                name_list = read_file.read()
-                if_names = len(name_list)
-            if if_names > 0:
-                new_names = name_list.split("\n")
-                for new_name in new_names:
-                    if new_name != "":
-                        if new_name.startswith("-"):
-                            while new_name[1:] in names_dict["normal_prefixes"]:
-                                names_dict["normal_prefixes"].remove(new_name[1:])
-                        else:
-                            names_dict["normal_prefixes"].append(new_name)
+    prefix_source = None  # used (A) on the Allegiances screen (e.g. if a cat was named after their
+    # eye colour, that will show up in their description in the allegiances)
+    # (B) to make sure that cats' prefixes and suffixes don't contradict each other TODO
+    # (C) to influence their warrior ceremony text TODO
 
-        if os.path.exists(SUFFIX_LIST_PATH):
-            logger.debug(f"Loading suffix lists from {SUFFIX_LIST_PATH}")
-            with open(SUFFIX_LIST_PATH, "r", encoding="utf-8") as read_file:
-                name_list = read_file.read()
-                if_names = len(name_list)
-            if if_names > 0:
-                new_names = name_list.split("\n")
-                for new_name in new_names:
-                    if new_name != "":
-                        if new_name.startswith("-"):
-                            while new_name[1:] in names_dict["normal_suffixes"]:
-                                names_dict["normal_suffixes"].remove(new_name[1:])
-                        else:
-                            names_dict["normal_suffixes"].append(new_name)
-
-        if os.path.exists(SPEC_SUFFIX_LIST_PATH):
-            logger.debug(f"Loading special suffix lists from {SPEC_SUFFIX_LIST_PATH}")
-            with open(SPEC_SUFFIX_LIST_PATH, "r", encoding="utf-8") as read_file:
-                name_list = read_file.read()
-                if_names = len(name_list)
-            if if_names > 0:
-                new_names = name_list.split("\n")
-                for new_name in new_names:
-                    if new_name != "":
-                        if new_name.startswith("-"):
-                            del names_dict["special_suffixes"][new_name[1:]]
-                        elif ":" in new_name:
-                            _tmp = new_name.split(":")
-                            names_dict["special_suffixes"][_tmp[0]] = _tmp[1]
-    else:
-        logger.error(f"Could not find the name dictionary file at {NAMES_DICT_PATH}! "
-                     f"Importing names from module instead")
-        from resources.dicts.names.names import names_dict as ND
-        names_dict = ND
+    special_suffix_hidden_f: bool
 
     def __init__(
-        self,
-        prefix: str = None,
-        suffix: str = None,
-        special_suffix_hidden: bool = False,
-        load_existing_name: bool = False,
-        biome: Biome = None,
-        cat_obj=None, # this is a RedCat object but the RedCat class imports RedName so it can't be type-hinted here
+            self,
+            cat_obj,
+            save_file: dict = None,
+            **kwargs
     ):
-        self.prefix = prefix
-        self.suffix = suffix
-        self.special_suffix_hidden = special_suffix_hidden
-        self.cat = cat_obj
-        try:
-            colour: Optional[PeltColour] = cat_obj.pelt.colour
-            tortie_colour: Optional[PeltColour] = cat_obj.pelt.tortie_colour
-            eyes: Optional[tuple[EyeColour, EyeColour]] = cat_obj.pelt.eye_colour
-            pattern: Optional[PeltPattern] = cat_obj.pelt.pattern
-            tortie_pattern: Optional[TortiePattern] = cat_obj.pelt.tortie_pattern
-            skills: Optional = cat_obj.skills
-            backstory = cat_obj.backstory
-            rank = cat_obj.rank
-        except AttributeError:
-            colour = None
-            tortie_colour = None
-            eyes = None
-            pattern = None
-            tortie_pattern = None
-            skills = None
-            backstory = None
-            rank = None
+        """ TODO """
+        self._blacklist = OTHER["blacklist"]
+        self.special_ranks = OTHER["special_ranks_and_suffixes"]
+        self._animal_names = OTHER["animal_parts"]
 
-        if not load_existing_name:
+        self.cat_obj = cat_obj
+        if save_file:
+            self.prefix = save_file["prefix"]
+            self.prefix_source = save_file["prefix_source"] # TODO this should be a TypeType, e.g. Biome
+            self.suffix = save_file["suffix"]
+            if self.suffix is None:
+                self.suffix = ""
+            self.special_suffix_hidden_f = bool(save_file["special_suffix_hidden_f"])
+            pass
+        else:
+            if "prefix" in kwargs:
+                self.prefix = kwargs["prefix"]
+            if "prefix_source" in kwargs:
+                self.prefix_source = kwargs["prefix_source"] # TODO this should be a TypeType, e.g. Biome
+            if "suffix" in kwargs:
+                self.suffix = kwargs["suffix"]
+                if self.suffix is None:
+                    self.suffix = ""
+            if "biome" in kwargs:
+                self.biome = cast_to_biome(to_cast=kwargs["biome"])
+            if "special_suffix_hidden_f" in kwargs:
+                self.special_suffix_hidden_f = bool(kwargs["special_suffix_hidden_f"])
+
             # decide prefix first
-            while not self._verify_prefix():
-                if backstory and backstory.category in (RedBackstoryCategory.Loner, RedBackstoryCategory.Rogue):
-                    self.prefix = self.names_dict["loner_names"]
-                elif backstory and backstory.category is RedBackstoryCategory.Kittypet:
-                    self.prefix = self.names_dict["loner_names"] + self.names_dict["kittypet_names"]
-                else:
-                    self.prefix_source = None
-                    self._give_prefix(eye_colour=eyes, pelt_colour=colour, tortie_colour=tortie_colour, biome=biome)
+            # if the cat isn't a Clan cat, give them an appropriate name
+            if hasattr(self.cat_obj, "rank") and self.cat_obj.rank.is_outsider:
+                self.prefix_source = None
+                self.prefix = random.choice(OUTSIDERS[self.cat_obj.rank])
+            else:
+                # generate a Clan cat prefix
+                self.prefix_source, self.prefix = self.get_random_prefix()
+                self.prefix = self.prefix.title()
+            logger.debug(f"Attempting to verify name prefix for cat #{self.cat_obj.cat_id}")
 
             # decide suffix next
-            while not self._verify_suffix():
-                if rank and rank.outsider:
-                    self.suffix = ""
-                    continue
-                else:
-                    self.suffix_source = None
-                    self._give_suffix(pattern=pattern, tortie_pattern=tortie_pattern, biome=biome, skills=skills)
+            if hasattr(self.cat_obj, "rank") and not self.cat_obj.rank.is_outsider:
+                self.suffix = self.get_random_suffix()
+            logger.debug(f"Attempting to verify name suffix for cat #{self.cat_obj.cat_id}")
 
         return
 
     def __str__(self):
         return self.__repr__()
 
-    def _verify_prefix(self) -> bool:
-        """ Check the chosen prefix is acceptable. """
-        # Make sure the prefix exists before checking anything else
-        if not self.prefix:
-            return False
-        # Check for prefix duplication within the cat's Clan. It's not unheard of for cats in different Clans
-        #   to be using the same prefix (e.g. Lionblaze and Lioneye), so that's allowed.\
-        if self.prefix in game.cat_tracker.get_name_prefixes_of_clan(clan_prefix = self.cat.clan_prefix):
-            return False
-        return True
-
-    def _give_prefix(self,
-                    eye_colour: tuple[EyeColour, EyeColour] = None,
-                    pelt_colour: PeltColour = None,
-                    tortie_colour: PeltColour = None,
-                    biome: Biome = None,
-                    skills: dict[RedSkill: int] = None
-        ):
-        """ Generate a name prefix. """
-        prefix_source: dict = {}
-
-        try:
-            def add_pelt_colour_prefix():
-                if pelt_colour and pelt_colour.value.casefold() in self.names_dict["colour_prefixes"]:
-                    prefix_source.update({
-                        pelt_colour: self.names_dict["colour_prefixes"][pelt_colour.value.casefold()]
-                    })
-                    # if the cat is a tortoiseshell, include their tortie colour
-                    if tortie_colour and tortie_colour.value.casefold() in self.names_dict["colour_prefixes"]:
-                        prefix_source.update({
-                            tortie_colour: self.names_dict["colour_prefixes"][tortie_colour.value.casefold()]
-                        })
-                return
-
-            def add_eye_colour_prefix():
-                if (eye_colour and
-                        (
-                                eye_colour[0].value.casefold() in self.names_dict["eye_prefixes"]
-                                or
-                                eye_colour[1].value.casefold() in self.names_dict["eye_prefixes"]
-                        )
-                ):
-                    if eye_colour[0].value.casefold() in self.names_dict["eye_prefixes"]:
-                        prefix_source.update({
-                            eye_colour[0]: self.names_dict["eye_prefixes"][eye_colour[0].value.casefold()]
-                        })
-                    # account for heterochromia
-                    if (eye_colour[0] is not eye_colour[1]
-                            and eye_colour[1].value.casefold() in self.names_dict["eye_prefixes"]):
-                        prefix_source.update({
-                            eye_colour[1]: self.names_dict["eye_prefixes"][eye_colour[1].value.casefold()]
-                        })
-                return
-
-            def add_biome_colour_prefixes():
-                if biome and biome.value.casefold() in self.names_dict["biome_prefixes"]:
-                    prefix_source.update({
-                        biome: self.names_dict["biome_prefixes"][biome.value.casefold()]
-                    })
-                return
-
-            # decide if the cat should be named after their eye colour, pelt colour, the biome they're from,
-            #   or an ancestor
-            if GAME_CONFIG_CAT_NAME_CONTROLS["always_name_after_appearance"]:
-                if pelt_colour:
-                    add_pelt_colour_prefix()
-                if eye_colour:
-                    add_eye_colour_prefix()
-                # TODO chance for a cat to be named after their white patch pattern
-                if not prefix_source:
-                    raise KeyError(f"Game config says to only use appearances to name cats, "
-                                   f"but no appearance data is available")
-
-            else:
-                 # chance for a cat to be named after their eye colour
-                if one_in_num_chance(num=4):
-                    add_eye_colour_prefix()
-                # chance for a cat to be named after their pelt colour
-                if one_in_num_chance(num=4):
-                    add_pelt_colour_prefix()
-                # TODO chance for a cat to be named after their white patch pattern
-                # chance for a cat to be named after the biome they're from
-                if one_in_num_chance(num=8):
-                    add_biome_colour_prefixes()
-                # TODO chance for a cat to be named after an ancestor
-                # TODO chance for a cat to be named after their primary skill
-
-            # pick a prefix
-            self.prefix_source = random.choice( list(prefix_source.keys()) )
-            self.prefix = random.choice( prefix_source[self.prefix_source] )
-
-        except IndexError:
-            logger.error(f"Chosen prefix sources didn't provide any possible prefixes - defaulting to normal_prefixes")
-            self.prefix = random.choice(self.names_dict["normal_prefixes"])
-
-        except Exception as e:
-            logger.exception(e)
-            logger.error(f"Something went wrong while trying to choose a prefix source - defaulting to normal_prefixes")
-            self.prefix = random.choice(self.names_dict["normal_prefixes"])
-
-        return
-
-    def _verify_suffix(self) -> bool:
-        """ Ensure the chosen suffix is acceptable. """
-        # Make sure the suffix has been set before checking anything
-        if not self.suffix:
-            return False
-        # Prevent the inappropriate names
-        if str(self.prefix + self.suffix).casefold() in self.names_dict["inappropriate_names"]:
-            return False
-        # Prevent triple letter names from joining prefix and suffix from occurring (ex. Beeeye)
-        if (self.prefix[-2:] + self.suffix[0]) or (self.prefix[-1] + self.suffix[:2]):
-            return False
-        # Prevent double animal names (ex. Spiderfalcon)
-        if self.prefix in self.names_dict["animal_prefixes"] and self.suffix in self.names_dict["animal_suffixes"]:
-            return False
-        # Prevent double names (ex. Iceice)
-        if self.prefix.casefold() != self.suffix.casefold():
-            return False
-        # Prevent suffixes containing the prefix (ex. Butterflyfly)
-        if self.prefix in self.suffix or self.suffix in self.prefix:
-            return False
-        # TODO Prevent legacy-named cats from sharing a suffix with their namesake as well as a prefix
-        return True
-
-
-    def _give_suffix(self,
-                    pattern: PeltPattern = None,
-                    tortie_pattern: PeltPattern = None,
-                    biome: Biome = None,
-                    skills: dict = None
-                    ):
-        """ Generate a name suffix. """
-        try:
-            if pattern and GAME_CONFIG_CAT_NAME_CONTROLS["always_name_after_appearance"]:
-                suffix_source: list[str] = self.names_dict["pattern_suffixes"][pattern.value.casefold()]
-                if tortie_pattern and tortie_pattern.value in self.names_dict["tortie_pattern_suffixes"]:
-                    suffix_source.extend(self.names_dict["tortie_pattern_suffixes"][tortie_pattern.value.casefold()])
-                # TODO chance for a cat to be named after their white patch pattern
-
-            else:
-                suffix_source: list[str] = self.names_dict["normal_suffixes"]
-                # chance for cat to be named after their pelt pattern or tortie pattern
-                if (pattern and
-                        pattern.value in self.names_dict["pattern_suffixes"] and
-                        one_in_num_chance(num=8)):
-                    # Chance for True is '1/8'.
-                    suffix_source.extend(self.names_dict["pattern_suffixes"][pattern.value.casefold()])
-                    if tortie_pattern and tortie_pattern.value in self.names_dict["tortie_pattern_suffixes"]:
-                        suffix_source.extend(self.names_dict["tortie_pattern_suffixes"][tortie_pattern.value.casefold()])
-                # TODO chance for a cat to be named after their white patch pattern
-                # chance for cat to be named after the biome they're from
-                if (biome and
-                      biome.value in self.names_dict["biome_suffixes"] and
-                      one_in_num_chance(num=8)):
-                    # Chance for True is '1/8'.
-                    suffix_source.extend(self.names_dict["biome_suffixes"][biome.value.casefold()])
-                # TODO chance for cat to be named after their highest skill
-
-        except:
-            logger.error(f"Something went wrong while trying to choose a suffix source. Defaulting to normal suffixes")
-            suffix_source = self.names_dict["normal_suffixes"]
-
-        # pick a suffix
-        self.suffix = random.choice(suffix_source)
-        return
-
-
     def __repr__(self):
         # Handles predefined suffixes (such as leaders being -star),
         # and suffixes based on ages (fixes #2004, just trust me)
 
-        # Handles suffix assignment with outside cats
-        # FIXME this isn't how it works - Ravenpaw kept his name, and cats shouldn't get a warrior name unless and until they return to their Clan
+        # ClanGen adjusts ranks automatically for cats who are lost and exiled (e.g. 6-month-olds always go from
+        #   -kit to -paw), but that's not how it works (e.g. Ravenpaw kept his name, and cats shouldn't get a
+        #   warrior name unless and until they return to their Clan) so ClanSim does not.
 
-        adjusted_status = Rank.Any
-        if self.cat.location not in [Location.Exiled, Location.Lost]:
-            if self.cat.moons == 0:
-                adjusted_status = Age.Newborn
-            elif self.cat.moons < 6:
-                adjusted_status = Rank.Kit
-            elif (self.cat.rank.value.casefold() in self.names_dict["special_suffixes"] and
-                  not self.special_suffix_hidden):
-                adjusted_status = self.cat.rank.value.casefold()
-            elif GAME_CONFIG_FUN["april_fools"]:
-                return f"{self.prefix}egg"
+        if config.game_config.april_fools:
+            return f"{self.prefix}egg"
 
-        if adjusted_status is not Rank.Any:
-            return self.prefix + self.names_dict["special_suffixes"][adjusted_status.casefold()]
+        if self.cat_obj.rank in self.special_ranks:
+            return self.prefix + self.special_ranks[self.cat_obj.rank]
         else:
             return self.prefix + self.suffix
 
+    def get_random_prefix(self) -> tuple:
+        """ Generate a name prefix.
+
+        :return Any | None: prefix source (a class like EyeColour, PeltColour, etc.). None indicates the name is
+            from the 'normal'/random list
+        :return str: a randomly chosen prefix from the indicated source
+        """
+        _the_cat_prefixes: dict = {}
+
+        # name after appearance
+        # TODO game setting for only naming cats after their appearance?
+        if hasattr(self.cat_obj, "pelt") and self.cat_obj.pelt is not None:
+            # name after pelt colour
+            if config.settings.NamesUsePeltColour:
+                # if the cat's pelt is covered up by a full-body white patch, it makes no
+                # sense for them to be named after their pelt's underlying/invisible colour
+                if self.cat_obj.white_patches is not WhitePatches.FullWhite \
+                    and self.cat_obj.pelt.colour in PREFIXES[PeltColour]:
+                    _the_cat_prefixes[PeltColour] = PREFIXES[PeltColour][self.cat_obj.pelt.colour]
+
+            # name after eye colour
+            if config.settings.NamesUseEyeColour:
+                if self.cat_obj.pelt.eye_colour in PREFIXES[EyeColour]:
+                    _the_cat_prefixes[EyeColour] = PREFIXES[EyeColour][self.cat_obj.pelt.eye_colour]
+
+            # name after pelt pattern # TODO also tortie_pattern, if that comes back
+            if config.settings.NamesUsePeltPattern:
+                # if the cat's pelt is covered up by a full-body white patch, it makes no
+                # sense for them to be named after their pelt's underlying/invisible pattern
+                if self.cat_obj.white_patches is not WhitePatches.FullWhite \
+                    and self.cat_obj.pelt.pattern in PREFIXES[PeltPattern]:
+                    _the_cat_prefixes[PeltPattern] = PREFIXES[PeltPattern][self.cat_obj.pelt.pattern]
+
+            # name after white patch pattern
+            if config.settings.NamesUseWhitePatchPattern:
+                if self.cat_obj.pelt.white_patches in PREFIXES[WhitePatches]:
+                    _the_cat_prefixes[WhitePatches] = PREFIXES[WhitePatches][
+                        self.cat_obj.pelt.white_patches]
+
+            # name after tortie patches
+            if config.settings.NamesUseTortiePatches:
+                # if the cat's pelt is covered up by a full-body white patch, it makes no
+                # sense for them to be named after their pelt's underlying/invisible pattern
+                if self.cat_obj.white_patches is not WhitePatches.FullWhite \
+                        and self.cat_obj.pelt.tortie_patches in PREFIXES[TortiePatches]:
+                    _the_cat_prefixes[TortiePatches] = PREFIXES[TortiePatches][self.cat_obj.pelt.tortie_patches]
+
+        # name after Clan biome
+        if config.settings.NamesUseBiome:
+            if self.biome is not Biome.NoBiome and self.biome in PREFIXES[Biome]:
+                _the_cat_prefixes[Biome] = PREFIXES[Biome][self.biome]
+
+        # TODO name after a dead cat
+        if config.settings.NamesUseLegacy:
+            pass
+
+        # TODO name after personality
+
+        # pick a valid prefix and return it
+        prefix = ""
+        if not _the_cat_prefixes:
+            logger.warning(f"Couldn't find any potential prefixes for cat #{self.cat_obj.cat_id}; "
+                           f"defaulting to random prefix")
+            # None is the key for the list of "normal"/random names
+            prefix_source = None
+            while not self._verify_prefix(prefix=prefix):
+                prefix = random.choice(PREFIXES[prefix_source])
+        else:
+            while not self._verify_prefix(prefix=prefix):
+                prefix_source = random.choice(list(_the_cat_prefixes.keys()))
+                prefix = random.choice(_the_cat_prefixes[prefix_source])
+        return prefix_source, prefix
+
+    def get_random_suffix(self) -> str:
+        """ Generate a name suffix. """
+        # no need to track suffix source
+        _the_cat_suffixes: dict = {}
+
+        # decide if the cat should be named after their appearance, the biome they're from, their strongest skill,
+        #   or a dead cat
+
+        # TODO implement prefix-suffix matching using self.prefix_source
+        #   For example, if the cat is solid black with amber eyes, and the chosen prefix is "Amber"
+        #   after the eye colour, don't let the suffix be "fur" or "pelt"
+
+        # name after Clan biome
+        if config.settings.NamesUseBiome:
+            if self.biome is not Biome.NoBiome and self.biome in SUFFIXES[Biome]:
+                _the_cat_suffixes[Biome] = SUFFIXES[Biome][self.biome]
+
+        # name after appearance
+        if hasattr(self.cat_obj, "pelt") and self.cat_obj.pelt is not None:
+            # name after pelt pattern # TODO also tortie_pattern, if that comes back
+            if (config.settings.NamesUsePeltPattern
+                    and self.cat_obj.pelt.pattern in SUFFIXES[PeltPattern]):
+                _the_cat_suffixes[PeltPattern] = SUFFIXES[PeltPattern][self.cat_obj.pelt.pattern]
+
+            # name after tortie patches
+            if (config.settings.NamesUseTortiePatches
+                    and self.cat_obj.pelt.tortie_patches in SUFFIXES[TortiePatches]):
+                _the_cat_suffixes[TortiePatches] = SUFFIXES[TortiePatches][self.cat_obj.pelt.tortie_patches]
+
+            # name after white patch pattern
+            if (config.settings.NamesUseWhitePatchPattern
+                    and self.cat_obj.pelt.white_patches in SUFFIXES[WhitePatches]):
+                _the_cat_suffixes[WhitePatches] = \
+                    SUFFIXES[WhitePatches][self.cat_obj.pelt.white_patches]
+
+        # TODO name after the cat's strongest skill
+        if config.settings.NamesUseSkill:
+            pass
+
+        # TODO name after a dead cat
+        if config.settings.NamesUseLegacy:
+            pass
+
+        # pick a suffix
+        suffix = ""
+        if not _the_cat_suffixes:
+            logger.warning(f"Couldn't find any potential suffixes for cat #{self.cat_obj.cat_id}; "
+                           f"defaulting to random suffix")
+            # None is the key for the list of "normal"/random names
+            while not self._verify_suffix(suffix=suffix):
+                suffix = random.choice(SUFFIXES[None])
+        else:
+            while not self._verify_suffix(suffix=suffix):
+                suffix_source = random.choice(_the_cat_suffixes)
+                suffix = random.choice(SUFFIXES[suffix_source])
+        return suffix
+
+    def _verify_prefix(self, prefix: str) -> bool:
+        """ Check the chosen prefix is acceptable. """
+        # Make sure the prefix exists before checking anything else
+        if not prefix:
+            return False
+        # Check for prefix duplication within the cat's Clan. It's not unheard of for cats in different Clans
+        #   to be using the same prefix (e.g. Lionblaze and Lioneye), so that's allowed.
+        if prefix in game.cat_tracker.get_name_prefixes_of_clan(clan_token=self.cat_obj.clan_token):
+            return False
+        return True
+
+    def _verify_suffix(self, suffix: str) -> bool:
+        """ Ensure the chosen suffix is acceptable. """
+        # Some checks only make sense for Clan cats
+        if not self.cat_obj.rank.is_outsider:
+            # Make sure the suffix has been set before checking anything
+            if not suffix:
+                return False
+            # Prevent triple letter names from joining prefix and suffix from occurring (ex. Beeeye)
+            # FIXME: this assumes both a prefix and a suffix of at least 3 letters
+            if (self.prefix[-2:] + suffix[0]) or (self.prefix[-1] + suffix[:2]):
+                return False
+            # Prevent suffixes containing the prefix (ex. Butterflyfly)
+            if self.prefix in suffix or suffix in self.prefix:
+                return False
+
+        # Prevent the inappropriate names
+        if str(self.prefix + suffix).casefold() in self._blacklist:
+            return False
+        # Prevent double animal names (ex. Spiderfalcon)
+        if self.prefix in self._animal_names and suffix in self._animal_names:
+            return False
+        # Prevent double names (ex. Iceice)
+        if self.prefix.casefold() == suffix.casefold():
+            return False
+        # TODO Prevent legacy-named cats from sharing a suffix with their namesake as well as a prefix
+        #   It is fine for the prefix and suffix to both be legacy names, as long as they're from different cats
+        return True

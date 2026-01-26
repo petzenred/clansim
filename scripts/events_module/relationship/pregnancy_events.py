@@ -9,7 +9,7 @@ from definitions import (
 )
 from scripts.cat.cats import Cat, create_new_cat
 from scripts.cat.history import History
-from scripts.cat.names import names, Name
+from scripts.cat.names import names, OldName
 from scripts.cat_relations.relationship import Relationship
 from scripts.event_class import Single_Event
 from scripts.events_module.short.condition_events import Condition_Events
@@ -403,7 +403,7 @@ class Pregnancy_Events:
                 if cat.exiled:
                     kit.status = "loner"
                     name = choice(names.names_dict["normal_prefixes"])
-                    kit.name = Name(prefix=name, suffix="", cat=kit)
+                    kit.name = OldName(prefix=name, suffix="", cat=kit)
                 if other_cat and not other_cat.outside:
                     kit.backstory = "outsider2"
                 if cat.outside and not cat.exiled:
@@ -840,7 +840,7 @@ class Pregnancy_Events:
 
             # Prevent duplicate prefixes in the same litter
             while kit.name.prefix in [kitty.name.prefix for kitty in all_kitten]:
-                kit.name = Name("newborn")
+                kit.name = OldName("newborn")
 
             all_kitten.append(kit)
             # adoptive parents are set at the end, when everything else is decided

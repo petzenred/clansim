@@ -1,7 +1,12 @@
 # game_essentials.py - Create the game object, a semi-global object which updates the screens and acts
 #   as a central databank to access all game information.
 
+########################################################################################################################
+# Imports
+########################################################################################################################
+
 import os
+from sys import exit as sys_exit
 from typing import Optional
 
 import pygame
@@ -11,23 +16,25 @@ from shutil import move as shutil_move
 from types import FunctionType
 
 from scripts._red.cat_tracker import CatTracker
-from scripts._red.save_manager import SaveManager
 from scripts._red.config_manager import config
 from scripts._red.io_manager import io_manager
 from scripts._red.red_exceptions import InitializationError
 
 from scripts.event_class import Single_Event
-from scripts.game_structure.screen_settings import toggle_fullscreen
 from scripts.housekeeping.datadir import get_save_dir, get_temp_dir
 
 from definitions import (
-    APP_NAME_LONG, CLAN_MEMBERS_SCREEN_NAME, GAME_SETTINGS_FILENAME, MAIN_MENU_SCREEN_NAME,
-    GameMode, LanguageCode, ScreenName,
-    cast_to_language, Season,
+    CLAN_MEMBERS_SCREEN_NAME, GAME_SETTINGS_FILENAME, MAIN_MENU_SCREEN_NAME,
+    GameMode, LanguageCode, Season,
 )
 
 import logging
 logger = logging.getLogger(__name__)
+
+
+########################################################################################################################
+# Classes
+########################################################################################################################
 
 pygame.init()
 
@@ -36,15 +43,33 @@ pygame.init()
 class Game:
     """ The pygame Game object. """
 
-    _save_manager = None
-    language_code: LanguageCode = LanguageCode.Unset
-    game_mode: GameMode = GameMode.Unset
+    # ################## NEW GAME PARAMS ##################
+
+    language_code: LanguageCode = LanguageCode.UnsetLanguage
+    game_mode: GameMode = GameMode.UnsetGameMode
     cat_tracker: CatTracker = None
-    active_clan_prefix: str = None
+    active_clan_token: str = None
     current_moon: int = 0
     current_season: Season = Season.Spring
 
     clansim_version: str # TODO set this
+
+    fps: int = 30
+
+    # game managers
+    _save_manager = None # this is a SaveManager object, but can't be type hinted to avoid circular imports
+    _screen_manager = None # this is the ScreenManager object, but can't be type hinted to avoid initialization problems
+
+    error_msg: str = ""
+    error_trace = None
+
+    # ################## OLD GAME PARAMS ##################
+
+    # Keeping track of various screens for various purposes
+    current_screen_obj = None # TODO get rid of this - replace with screen_manager.curr_screen_name
+    last_screen_forupdate = MAIN_MENU_SCREEN_NAME
+    last_screen_forProfile = CLAN_MEMBERS_SCREEN_NAME
+    last_list_forProfile = None
 
     # max_events_displayed = 10
     # event_scroll_ct = 0
@@ -208,34 +233,19 @@ class Game:
 
     is_close_menu_open = False
 
-    # Keeping track of various screens for various purposes
-    current_screen: ScreenName = ScreenName.MainMenu
-    last_screen_forupdate = MAIN_MENU_SCREEN_NAME
-    last_screen_forProfile = CLAN_MEMBERS_SCREEN_NAME
-    last_list_forProfile = None
+    # ------------------------------------- INIT ------------------------------------- #
+
+    def initialize(self, save_manager, screen_manager):
+        config.load_game_settings()
+        self._save_manager = save_manager
+        self._screen_manager = screen_manager
+        return
 
     def __init__(self):
         """ Create the Game object. """
-        self.clicked = False
+        self.clicked = False # TODO can I get rid of this?
         self.keyspressed = []
         self.switch_screens = False
-        return
-
-    def assign_save_manager(self, save_manager, currentclan: bool):
-        """ Set the game's save manager.
-
-        Used by the main script.
-        """
-        self._save_manager = save_manager
-
-        if currentclan:
-            self._load_currentclan()
-        return
-
-    def _load_currentclan(self):
-        """ Load the save designated by the file `currentclan.txt` if possible. """
-        current_clan_prefix = io_manager.get_last_played_clan_prefix()
-        self.update_active_clan_prefix_everywhere(new_active_clan_prefix=current_clan_prefix)
         return
 
     def _ready_to_go(self):
@@ -247,33 +257,56 @@ class Game:
             raise InitializationError(f"game hasn't been fully initialized yet")
         return
 
+    # ------------------------------------ PUBLIC ------------------------------------ #
+
+    def get_valid_invalid_saves(self) -> tuple[list[str], list[str]]:
+        """ Return two lists of Clan prefixes, separated into valid save files and invalid save files."""
+        return self._save_manager.get_available_saves()
+
     # ------------------------------------ PRIVATE ----------------------------------- #
 
-    def update_active_clan_prefix_everywhere(self, new_active_clan_prefix: Optional[str]) -> bool:
-        """ Update the active Clan in the game object, the save manager, and the I/O manager.
+    def update_active_clan_token_everywhere(self, new_active_clan_token: Optional[str]) -> bool:
+        """ Update the active Clan.
 
-        :param new_active_clan_prefix: the name of the Clan in the save file you want to try to update the game to
+        Updates: the game object, the save manager, the I/O manager, and the screen manager.
+
+        :param new_active_clan_token: the name of the Clan in the save file you want to try to update the game to
         :return bool: True if the active Clan prefix was updated, False otherwise
         """
-        if new_active_clan_prefix is None:
-            logger.info(f"Setting active Clan to None")
-            self.active_clan_prefix = None
-            self._save_manager.update_active_clan_prefix(new_active_clan_prefix=None)
-            io_manager.update_active_clan_prefix(new_active_clan_prefix=None)
-            return True
-        elif io_manager.check_save_validity(new_active_clan_prefix):
-            logger.info(f"Setting active Clan to {new_active_clan_prefix}Clan")
-            self.active_clan_prefix = new_active_clan_prefix
-            self._save_manager.update_active_clan_prefix(new_active_clan_prefix=new_active_clan_prefix)
-            io_manager.update_active_clan_prefix(new_active_clan_prefix=new_active_clan_prefix)
-            return True
-        else:
-            logger.warning(f"Can't change active Clan to '{new_active_clan_prefix}' "
+        # if new_active_clan_prefix is None:
+        #     logger.info(f"Setting active Clan to None")
+        #     self.active_clan_token = None
+        #     self._save_manager.update_active_clan_prefix(new_active_clan_prefix=None)
+        #     io_manager.update_active_clan_prefix(new_active_clan_prefix=None)
+        #     return True
+        # elif io_manager.check_save_validity(new_active_clan_prefix):
+        #     logger.info(f"Setting active Clan to {new_active_clan_prefix}")
+        #     self.active_clan_token = new_active_clan_prefix
+        #     self._save_manager.update_active_clan_prefix(new_active_clan_prefix=new_active_clan_prefix)
+        #     io_manager.update_active_clan_prefix(new_active_clan_prefix=new_active_clan_prefix)
+        #     return True
+        # else:
+        #     logger.warning(f"Can't change active Clan to '{new_active_clan_prefix}' "
+        #                    f"because there is no corresponding valid save")
+        #     logger.warning(f"Setting active Clan to None")
+        #     self.update_active_clan_prefix_everywhere(new_active_clan_prefix=None)
+        #     return False
+
+        logger.info(f"Setting active Clan to {new_active_clan_token}")
+        self.active_clan_token = new_active_clan_token
+        io_manager.update_active_clan_token(new_active_clan_token=new_active_clan_token)
+        self._save_manager.update_active_clan_token(new_active_clan_token=new_active_clan_token)
+        self._screen_manager.update_active_clan_token(new_active_clan_token=new_active_clan_token)
+
+        if new_active_clan_token and not io_manager.check_save_validity(new_active_clan_token):
+            logger.warning(f"Can't change active Clan to '{new_active_clan_token}' "
                            f"because there is no corresponding valid save")
             logger.warning(f"Setting active Clan to None")
-            self.update_active_clan_prefix_everywhere(new_active_clan_prefix=None)
+            self.update_active_clan_token_everywhere(new_active_clan_token=None)
             return False
+        return True
 
+    # TODO use time_manager here
     def _update_future_events(self):
         """ Runs any events that are scheduled. """
         # update all events so they're one moon closer
@@ -292,24 +325,24 @@ class Game:
                 function: FunctionType = event[0]
                 kwargs: dict = event[1]
                 args: list = event[2]
-                function(**kwargs, *args)
+                function(*args, **kwargs)
         return
 
     # ------------------------------------ PUBLIC ------------------------------------ #
+
+    def update_game(self):
+        if self.current_screen_obj != self.switches["cur_screen"]:
+            self.current_screen_obj = self.switches["cur_screen"]
+            self.switch_screens = True
+        self.clicked = False
+        self.keyspressed = []
+        self._update_future_events()
 
     def add_to_future_events(self, moons: int, function: FunctionType, kwargs: dict = {}, args: list = []):
         """ Schedule an event to be run at a specified point in the future. """
         if moons not in self._future_events.keys():
             self._future_events[moons] = []
         self._future_events[moons].append((function, kwargs, args))
-
-    def update_game(self):
-        if self.current_screen != self.switches["cur_screen"]:
-            self.current_screen = self.switches["cur_screen"]
-            self.switch_screens = True
-        self.clicked = False
-        self.keyspressed = []
-        self._update_future_events()
 
     def switch_to_new_save(self, new_active_clan_prefix: Optional[str]) -> bool:
         """ Switch to a different game save.
@@ -319,24 +352,56 @@ class Game:
         :param new_active_clan_prefix: the name of the Clan in the save file you want to try to update the game to
         :return bool: True if the game successfully switched to the new save file, False otherwise
         """
-        if self.update_active_clan_prefix_everywhere(new_active_clan_prefix=new_active_clan_prefix):
+        if self.update_active_clan_token_everywhere(new_active_clan_token=new_active_clan_prefix):
             # delete the old cat tracker
-            del self.cat_tracker
+            if self.cat_tracker:
+                del self.cat_tracker
             self.cat_tracker = None
             # load the new save file
-            self.load_active_clan_save_file()
+            self._load_active_clan_save_file()
             return True
         else:
             logger.error(f"Couldn't switch to new save {new_active_clan_prefix}Clan")
             return False
 
-    def load_active_clan_save_file(self):
-        """ Load the save file corresponding to the given clan name. """
+    def _load_active_clan_save_file(self):
+        """ Load the save file corresponding to the active Clan prefix. """
         self.cat_tracker = CatTracker()
-        config.read_clan_settings_file()
+        config.load_clan_settings()
+        # TODO handle what happens if any of the save files are malformed
+        # TODO create a custom MalformedSaveError to catch here to make that easier
         self._save_manager.load_save(game_obj=self)
+        # TODO move the stuff below to self.update_active_clan_prefix_everywhere
+        clan_obj = self.cat_tracker.get_clan_object(clan_token=self.active_clan_token)
+        self._screen_manager.set_active_clan_camp(camp_key=clan_obj.camp.camp_key)
         return
 
+    def save(self):
+        self._save_clans_and_cats()
+        self._save_events()
+        raise NotImplementedError("game.save")
+
+    def quit(self, savesettings: bool = False, clearevents: bool = False):
+        """ Quits the game, avoids a bunch of repeated lines. """
+        if savesettings:
+            self._save_manager.save_game_settings()
+        if clearevents:
+            game.cur_events_list.clear()
+        game.rpc.close_rpc.set()
+        game.rpc.update_rpc.set()
+        pygame.display.quit()
+        pygame.quit()
+        if game.rpc.is_alive():
+            game.rpc.join(1)
+        sys_exit()
+
+    # ------------------------------------- SAVE ------------------------------------- #
+
+    def _save_clans_and_cats(self):
+        raise NotImplementedError("game._save_clans_and_cats")
+
+    def _save_events(self):
+        raise NotImplementedError("game._save_events")
 
     # ----------------------------------- OUTDATED ----------------------------------- #
 
@@ -483,7 +548,7 @@ class Game:
         try:
             game.safe_save(get_save_dir() + GAME_SETTINGS_FILENAME, self.settings)
         except RuntimeError:
-            from scripts.game_structure.windows import SaveError
+            from scripts._red.screens.windows import SaveError
 
             SaveError(traceback.format_exc())
             if currentscreen is not None:

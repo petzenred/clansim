@@ -1,21 +1,21 @@
 # red_pelt.py - Enums, dataclasses, and classes related to cat appearance.
 import random
-from dataclasses import dataclass, field
-from enum import StrEnum, Enum
-from operator import index
+from dataclasses import dataclass
 from random import choice
+from sys import exc_info
 from typing import Optional
 
 from definitions import (
-    Age, GenderKits,
-    PeltPatternCategory, PeltColourCategory, PeltLengthCategory, WhitePatchPatternCategory,
-    EyeColourCategory, SkinColourCategory, ScarCategory, AccessoryCategory,
-    PeltPattern, TortiePattern, PeltColour, ColourTint, PeltLength, WhitePatchPattern, WhitePatchTint,
-    EyeColour, SkinColour, ScarPelt, PeltAccessories,
+    GenderKits,
+    PeltPatternCategory, PeltColourCategory, PeltLengthCategory, WhitePatchCategory,
+    EyeColourCategory, SkinColourCategory, PeltPattern, TortiePatches, PeltColour, ColourTint, PeltLength,
+    WhitePatches, WhitePatchTint,
+    EyeColour, SkinColour, ScarName, AccessoryName,
     SPRITE_RANGES, VITILIGO_CHANCE_MODIFIER_PER_PARENT, POINT_CHANCE_MODIFIER_PER_PARENT,
-    HETEROCHROMIA_CHANCE_MODIFIER_PER_PARENT, SpriteModifier,
+    HETEROCHROMIA_CHANCE_MODIFIER_PER_PARENT, SpritePose,
 )
-from scripts._red.general_utils import one_in_num_chance
+from scripts._red.red_exceptions import InitializationError
+from scripts._red.utils.general_utils import one_in_num_chance
 from scripts._red.config_manager import config
 
 import logging
@@ -23,37 +23,36 @@ logger = logging.getLogger(__name__)
 
 
 ########################################################################################################################
-# Constants
-########################################################################################################################
-
-CAT_GENERATION_SETTINGS: dict = config.get_config_value("cat_generation")
-
-
-########################################################################################################################
 # Classes
 ########################################################################################################################
 
-# @dataclass
+@dataclass
 class Genome:
-    """ Holds integer chances for each inheritable trait category. Default values are for random cat generation. """
+    """ Holds integer weights for each inheritable trait category. Default values are for random cat generation. """
     tortie_possible_f: bool = True
     tortie_chance_modifier: int = 0 # "base_male_tortie", "base_female_tortie"
     heterochromatic_chance_modifier: int = 0
     point_chance_modifier: int = 0
     vitiligo_chance_modifier: int = 0
-    # permanent_condition_chance: int = CAT_GENERATION_SETTINGS["base_permanent_condition"]
-    pattern: list[int] = PeltPatternCategory.Random.genetic_inheritance
-    length: list[int] = PeltLengthCategory.Random.genetic_inheritance
-    colour: list[int] = PeltColourCategory.Random.genetic_inheritance
-    tortie_colour: list[int] = PeltColourCategory.Random.genetic_inheritance
-    white_patch_pattern: list[int] = WhitePatchPatternCategory.Random.genetic_inheritance
-    eye_colour: list[int] = EyeColourCategory.Random.genetic_inheritance
-    skin_colour: list[int] = SkinColourCategory.Random.genetic_inheritance
+    # permanent_condition_chance: int = config.cat_config.hance_permanent_condition
 
-    def get_lists(self):
-        return ["pattern", "length", "colour", "tortie_colour", "white_patch_pattern", "eye_colour", "skin_colour"]
-        # return [self.pattern, self.length, self.colour, self.tortie_colour,
-        #         self.white_patch_pattern, self.eye_colour, self.skin_colour]
+    # *.genetic_inheritance is a list of integers, which I don't want to change to tuples for forward-compatibility
+    #   reasons, but which can't be type-hinted because you can't type hint a mutable type in a dataclass.
+    length = PeltLengthCategory.Random.genetic_inheritance
+    colour = PeltColourCategory.Random.genetic_inheritance
+    pattern = PeltPatternCategory.Random.genetic_inheritance
+    tortie_colour = PeltColourCategory.Random.genetic_inheritance
+    # TODO find a better name for tortie_patches_pattern - it's too easy to confuse it with tortie_patches
+    tortie_patches_pattern = PeltPatternCategory.Random.genetic_inheritance
+    # TODO change name to white_patches and WhitePatches, like TortiePatches
+    white_patch_pattern = WhitePatchCategory.Random.genetic_inheritance
+    eye_colour = EyeColourCategory.Random.genetic_inheritance
+    skin_colour = SkinColourCategory.Random.genetic_inheritance
+
+    def get_gene_names(self) -> list[str]:
+        return ["length", "colour", "pattern",
+                "tortie_colour", "tortie_patches_pattern",
+                "white_patches", "eye_colour", "skin_colour"]
 
 
 @dataclass
@@ -73,33 +72,34 @@ class CatPelt:
         - add an accessory
         - remove an accessory
     """
+
+    sprites: dict[str, SpritePose]
+    sprite_reverse: bool = False
+    sprite_opacity: int = 100
+
     _genome: Genome = None
     _genetic_code_set_f: bool = False
 
     # TODO should be generated automatically by TextHandler
-    short_text: str = None # this will appear on the cat's Profile
-    text: str = None # name = "SingleColour"
+    short_text: str = None # this will appear on the cat's Profile screen
+    text: str = None # this will appear in the allegiances
 
-    length: PeltLength = None # "short"
-    colour: PeltColour = None # "WHITE"
-    tortie_colour: Optional[PeltColour] = None # tortiecolour: str = None
-    colour_tint: ColourTint = None # str = "none"
-    pattern: Optional[PeltPattern] = None # None # this is also tortiebase, a str
-    tortie_pattern: Optional[TortiePattern] = None # tortiepattern: str = None
-    white_patch_pattern: Optional[WhitePatchPattern] = None # str
-    white_patch_tint: WhitePatchTint = None # str = "none"
-    skin_colour: SkinColour = None # skin: str = "BLACK"
-    eye_colour: tuple[EyeColour, EyeColour] = None # "BLUE", eye_colour2 = None
-    accessories: tuple = () # accessory: list = None # TODO
+    # TODO should defaults be No* (e.g. ColourTint.NoTint) or None? Having
+    #  both is confusing, but None doesn't work for StrEnum classes
+    length: PeltLength = None
+    colour: PeltColour = None
+    tortie_colour: Optional[PeltColour] = None # tortie_colour: str | None, default = None
+    colour_tint: ColourTint = None # tint: str, default="none"
+    pattern: Optional[PeltPattern] = None # tortie_base: str
+    tortie_patches: Optional[TortiePatches] = None # tortie_marking: str | None, default = None
+    tortie_patches_pattern: Optional[PeltPattern] = None # tortie_pattern: str | None, default = None
+    white_patches: Optional[WhitePatches] = None # white_patches: str | None, default = None
+    white_patch_tint: WhitePatchTint = None # white_patches_tint: str | None, default = None
+    skin_colour: SkinColour = None # skin: str
+    eye_colour: tuple[EyeColour, EyeColour] = None # "BLUE", eye_colour2: str | None, default = None
+    accessories: tuple = () # accessory: list[str] = [] # TODO
     scars: tuple = () # TODO
 
-    curr_sprite: int = 0 # TODO
-    cat_sprite_reverse: bool = False
-    cat_sprite_kit: int = 0
-    cat_sprite_adolescent: int = 0
-    cat_sprite_adult: int = 0
-    cat_sprite_elder: int = 0
-    cat_sprite_opacity: int = 100
 
     def __init__(self, gender: GenderKits = None, parent_pelts: list = None, mother_pelt=None, father_pelt=None,
                  loading_from_save: bool = False, save_file: dict = None):
@@ -131,16 +131,16 @@ class CatPelt:
 
             # Decide if the cat is a tortoiseshell
             if not parent_pelts:
-                tortie_f: bool = one_in_num_chance(num=CAT_GENERATION_SETTINGS["wildcard_tortie"])
+                tortie_f: bool = one_in_num_chance(num=config.cat_config.tortie_chance_wildcard)
             else:
                 if self._genome.tortie_possible_f:
                     if gender is GenderKits.Male:
                         tortie_f: bool = one_in_num_chance(
-                            num=CAT_GENERATION_SETTINGS["base_male_tortie"],
+                            num=config.cat_config.tortie_chance_male,
                             modifier=self._genome.tortie_chance_modifier)
                     else:
                         tortie_f: bool = one_in_num_chance(
-                            num=CAT_GENERATION_SETTINGS["base_female_tortie"],
+                            num=config.cat_config.tortie_chance_female,
                             modifier=self._genome.tortie_chance_modifier)
                 else:
                     tortie_f = False
@@ -150,7 +150,7 @@ class CatPelt:
             self._pick_colours_and_colour_tint(tortie_f=tortie_f, parent_pelts=parent_pelts)
             self._pick_patterns(parent_pelts=parent_pelts)
             self._pick_white_patches_and_white_patch_tint(parent_pelts=parent_pelts)
-            self._pick_sprites()
+            self._pick_sprite_poses() # this has to go after length is chosen
             self._pick_eye_colours(parent_pelts=parent_pelts)
             self._pick_skin_colour(parent_pelts=parent_pelts)
 
@@ -158,79 +158,108 @@ class CatPelt:
 
     # ------------------------------------ PUBLIC ------------------------------------ #
 
-    def update_sprite(self, sprite_mod: SpriteModifier, age: Age = None):
-        # Cat gets sick/hurt, heals, and becomes paralyzed
-        if sprite_mod is SpriteModifier.GetSick:
-            pass
-        if sprite_mod is SpriteModifier.FeelBetter:
-            pass
-        if sprite_mod is SpriteModifier.Paralyze:
-            pass
+    # TODO call this from RedCat.save_cat()
+    def save_cat_pelt(self) -> dict[str, str | int | None]:
+        """ Method called when saving the RedCat object that this pelt belongs to.
 
-        # Cat gets new swag or gives their swag away
-        if sprite_mod is SpriteModifier.GiveAccessory:
-            pass
-        if sprite_mod is SpriteModifier.TakeAccessory:
-            pass
-
-        # Cat ages up
-        if sprite_mod is SpriteModifier.AgeChange:
-            pass
-            # if age is None:
-            #     raise TypeError(f"Tried to update cat age without a valid Age parameter")
-            # else:
-            #     pass
-
-        # Sucks to suck
-        if sprite_mod is SpriteModifier.StarClan:
-            pass
-        if sprite_mod is SpriteModifier.DarkForest:
-            pass
-        if sprite_mod is SpriteModifier.UnknownResidence:
-            pass
-        if sprite_mod is SpriteModifier.Faded:
-            pass
-
-        raise NotImplementedError("CatPelt.update_sprite")
+        :return dict: strings and ints that should be saved as-is in the save file
+        """
+        return {
+            "length": self.length.value,
+            "colour": self.colour.value,
+            "colour_tint": self.colour_tint.value,
+            "tortie_colour": self.tortie_colour.value,
+            "pattern": self.pattern.value,
+            "tortie_patches": self.tortie_patches.value,
+            "tortie_patches_pattern": self.tortie_patches_pattern.value,
+            "white_patches": self.white_patches.value,
+            "white_patch_tint": self.white_patch_tint.value,
+            "skin_colour": self.skin_colour.value,
+            "eye_colour": [self.eye_colour[0].value, self.eye_colour[1].value],
+            "accessories": [acc.value for acc in self.accessories],
+            "scars": [scar.value for scar in self.scars],
+            "sprite": {
+                "reverse": self.sprite_reverse,
+                "opacity": self.sprite_opacity,
+                "newborn": self.sprites["newborn"].name,
+                "kitten": self.sprites["kitten"].name,
+                "adolescent": self.sprites["adolescent"].name,
+                "adult": self.sprites["adult"].name,
+                "senior": self.sprites["senior"].name
+            }
+        }
 
     # ------------------------------------ PRIVATE ----------------------------------- #
 
     def _load_pelt_from_save(self, save: dict):
         """ Parse the dictionary from a save file to buld this CatPelt object. """
-        self.length = PeltLength(save["length"])
-        self.colour = PeltColour(save["colour"])
-        self.colour_tint = ColourTint(save["colour_tint"])
-        self.tortie_colour = PeltColour(save["tortie_colour"])
-        self.pattern = PeltPattern(save["pattern"])
-        self.tortie_pattern = TortiePattern(save["tortie_pattern"])
-        self.white_patch_pattern = WhitePatchPattern(save["white_patch_pattern"])
-        self.white_patch_tint = WhitePatchTint(save["white_patch_tint"])
-        self.skin_colour = SkinColour(save["skin_colour"])
-        self.eye_colour = tuple( EyeColour(save["eye_colour"][0]), EyeColour(save["eye_colour"][1]) )
-        accessories = []
-        for a in save["accessories"]:
-            accessories.append(PeltAccessories(a))
-        self.accessories = tuple(accessories)
-        scars = []
-        for s in save["scars"]:
-            scars.append(ScarPelt(s))
-        self.scars = tuple(scars)
+        try:
+            self._genome = Genome()
 
-        sprites = save["sprite"]
-        self.curr_sprite = sprites["curr_sprite"]
-        self.cat_sprite_reverse = sprites["reverse"]
-        self.cat_sprite_kit = sprites["kitten"]
-        self.cat_sprite_adolescent = sprites["adolescent"]
-        self.cat_sprite_adult = sprites["adult"]
-        self.cat_sprite_elder = sprites["senior"]
-        self.cat_sprite_opacity = sprites["opacity"]
+            # set pelt aspects without genetic inheritance
+            self.colour_tint = ColourTint(save["colour_tint"])
+            self.white_patch_tint = WhitePatchTint(save["white_patch_tint"])
+
+            # set pelt aspects and genetic inheritance
+            # set genome so genetic inheritance works for any kittens this cat has
+            self.length = PeltLength(save["length"])
+            self._genome.length = self.length.genetic_inheritance
+            self.colour = PeltColour(save["colour"])
+            self._genome.colour = self.colour.genetic_inheritance
+            self.pattern = PeltPattern(save["pattern"])
+            self._genome.pattern = self.pattern.genetic_inheritance
+            # TODO make white_patches a list
+            self.white_patches = WhitePatches(save["white_patches"])
+            self._genome.white_patch_pattern = self.white_patches.genetic_inheritance
+            self.skin_colour = SkinColour(save["skin_colour"])
+            self._genome.skin_colour = self.skin_colour.genetic_inheritance
+            self.eye_colour = ( EyeColour(save["eye_colour"][0]), EyeColour(save["eye_colour"][1]) )
+            self._genome.eye_colour = self.eye_colour[0].genetic_inheritance
+            if self.eye_colour[0].category != self.eye_colour[1].category: # heterochromia
+                self._genome.eye_colour += self.eye_colour[1].genetic_inheritance
+
+            # tortoiseshells
+            # TODO test these with save["tortie_key"] = None
+            if save["tortie_patches"]:
+                self.tortie_patches = TortiePatches(save["tortie_patches"])
+                self.tortie_colour = PeltColour(save["tortie_colour"])
+                self.tortie_patches_pattern = PeltPattern(save["tortie_patches_pattern"])
+                self._genome.tortie_colour = self.tortie_colour.genetic_inheritance
+                self._genome.tortie_patches_pattern = self.tortie_patches_pattern.genetic_inheritance
+
+            # set scars and accessories
+            accessories = []
+            for a in save["accessories"]:
+                accessories.append(AccessoryName(a))
+            self.accessories = tuple(accessories)
+            scars = []
+            for s in save["scars"]:
+                scars.append(ScarName(s))
+            self.scars = tuple(scars)
+
+            # sprite poses
+            sprites = save["sprite"]
+            self.sprite_reverse = sprites.pop("reverse")
+            self.sprite_opacity = sprites.pop("opacity")
+            self.sprites = {}
+            for age, name in sprites.items():
+                if age == "adult":
+                    if self.length is PeltLength.Long:
+                        self.sprites[age] = SpritePose.__getitem__(name=name)
+                    else:
+                        self.sprites[age] = SpritePose.__getitem__(name=name)
+                else:
+                    self.sprites[age] = SpritePose.__getitem__(name=name)
+
+            self._genetic_code_set_f = True
+        except Exception as e:
+            raise e
 
         return
 
     def _set_genetic_code(self, parent_pelts: list = None):
         """ Set the weights for all aspects of the pelt. """
         self._genome = Genome()
-
         if parent_pelts:
             if len(parent_pelts) == 1:
                 # if we only have one parent, then use random genetics for the second parent
@@ -245,7 +274,8 @@ class CatPelt:
 
                 # cats can be torties if one of their parents is a tortie OR if their parents are ginger and black
                 tortie_condition = any([temp_pelt.tortie_colour, p_pelt.tortie_colour])
-                no_tortie_condition = [temp_pelt.colour.category, p_pelt.colour.category].count(PeltColourCategory.Ginger) != 1
+                no_tortie_condition = [temp_pelt.colour.category, p_pelt.colour.category]\
+                                          .count(PeltColourCategory.Ginger) != 1
                 if tortie_condition and not no_tortie_condition:
                     self._genome.tortie_possible_f = True
                 else:
@@ -255,29 +285,30 @@ class CatPelt:
                 # self._genome.length = temp_pelt._genome.length.genetic_inheritance
                 # self._genome.colour = temp_pelt._genomecolour.genetic_inheritance
                 # self._genome.tortie_colour = temp_pelt._genome.tortie_colour.genetic_inheritance
-                # self._genome.white_patch_pattern = temp_pelt._genome.white_patch_pattern.genetic_inheritance
+                # self._genome.white_patches = temp_pelt._genome.white_patches.genetic_inheritance
                 # self._genome.eye_colour = temp_pelt._genome.eye_colour.genetic_inheritance
                 # self._genome.skin_colour = temp_pelt._genome.skin_colour.genetic_inheritance
 
-            for gene_name in self._genome.get_lists():
+            for gene_name in self._genome.get_gene_names():
                 p_gene = p_pelt._genome.__getattribute__(gene_name)
                 gene = self._genome.__getattribute__(gene_name)
                 # logger.debug(f"{gene_name} : gene={gene}\tp_gene={p_gene}")
                 for i in range(len(gene)):
-                    gene[i] += p_gene[i]
+                    self._genome.__setattr__(gene_name, gene[i] + p_gene[i])
             # if the parent has vitiligo, colour points, or heterochromia, make those more likely
-            if p_pelt.white_patch_pattern.category is WhitePatchPatternCategory.Vitiligo:
+            if p_pelt.white_patches.category is WhitePatchCategory.Vitiligo:
                 self._genome.vitiligo_chance_modifier += VITILIGO_CHANCE_MODIFIER_PER_PARENT
-            if p_pelt.white_patch_pattern.category is WhitePatchPatternCategory.Point:
+            if p_pelt.white_patches.category is WhitePatchCategory.Point:
                 self._genome.point_chance_modifier += POINT_CHANCE_MODIFIER_PER_PARENT
             if p_pelt.eye_colour[0] is not p_pelt.eye_colour[1]:
                 self._genome.point_chance_modifier += HETEROCHROMIA_CHANCE_MODIFIER_PER_PARENT
 
         self._genetic_code_set_f = True
+        return
 
     def _pick_pelt_length(self, parent_pelts):
         # depending on game settings, there is a chance that one of the parent's traits is directly inherited
-        if parent_pelts and one_in_num_chance(num=CAT_GENERATION_SETTINGS["direct_inheritance"]):
+        if parent_pelts and one_in_num_chance(num=config.cat_config.chance_direct_inheritance):
             self.length = choice(parent_pelts).length
             return
 
@@ -322,7 +353,7 @@ class CatPelt:
             return
 
         # depending on game settings, there is a chance that one of the parent's traits is directly inherited
-        if parent_pelts and one_in_num_chance(num=CAT_GENERATION_SETTINGS["direct_inheritance"]):
+        if parent_pelts and one_in_num_chance(num=config.cat_config.chance_direct_inheritance):
             if len(parent_pelts) == 1:
                 # if only one parent, give them the parent's colour
                 self.colour = parent_pelts[0].colour
@@ -375,18 +406,28 @@ class CatPelt:
         return
 
     def _pick_patterns(self, parent_pelts: list):
-        # depending on game settings, there is a chance that one of the parent's traits is directly inherited
-        if parent_pelts and one_in_num_chance(num=CAT_GENERATION_SETTINGS["direct_inheritance"]):
-            self.pattern = choice(parent_pelts).pattern
-        else:
-            pattern_category = random.choices(
-                population=[p for p in list(PeltPatternCategory) if p is not PeltPatternCategory.Random],
-                weights=self._genome.pattern,
-                k=1)[0]
-            self.pattern = choice([p for p in PeltPattern if p.category is pattern_category])
+        """ Pick a pelt pattern (and potentially pattern for tortie patches) based on genetics. """
+        pelts = []
+        pelts_to_pick: int = 1 if not self.tortie_colour else 2
+        for pelt_no in range(pelts_to_pick):
+            # depending on game settings, there is a chance that some of the parents' traits are directly inherited
+            if parent_pelts and one_in_num_chance(num=config.cat_config.chance_direct_inheritance):
+                inherited_pelts = [pp.pattern for pp in parent_pelts]
+                inherited_pelts.extend([pp.tortie_patches_pattern for pp in parent_pelts if pp.tortie_patches_pattern])
+                pelts.append(choice(inherited_pelts))
+            else:
+                pattern_category = random.choices(
+                    population=[p for p in list(PeltPatternCategory) if p is not PeltPatternCategory.Random],
+                    weights=self._genome.pattern,
+                    k=1)[0]
+                pelts.append(choice([p for p in PeltPattern if p.category is pattern_category]))
+
+        self.pattern = pelts[0]
         if self.tortie_colour:
+            self.tortie_patches_pattern = pelts[1]
             # IRL tortie patterns are always 100% random so this works
-            self.tortie_pattern = choice(list(TortiePattern))
+            self.tortie_patches = choice(list(TortiePatches))
+
         return
 
     def _pick_white_patches_and_white_patch_tint(self, parent_pelts: list):
@@ -395,36 +436,37 @@ class CatPelt:
         """
         # TODO white patches
         #  points
-        #       CAT_GENERATION_SETTINGS["random_point_chance"]
+        #       config.cat_config.["random_point_chance"]
         #       torties can't be pointed in ClanGen/Clan Sim (they can in IRL)
         #       your white patches are high_white or higher
         #  vitiligo
-        #       CAT_GENERATION_SETTINGS["vit_chance"]
+        #       config.cat_config.["vit_chance"]
         #       anyone can roll vitiligo, not just cats who rolled to have white in their pelt
         #       if your white patch qualifies as vitiligo, don't use a white patch tint
         #  other white patches
         #       Calicos with white patches are Torties
         # Roll for the random chance of being pointed or having vitiligo
-        # if one_in_num_chance(num=CAT_GENERATION_SETTINGS["random_point_chance"],
+        # if one_in_num_chance(num=config.cat_config.["random_point_chance"],
         #                           modifier=self._genome.point_chance_modifier):
-        #     points = [point for point in WhitePatchPattern if point.category is WhitePatchPatternCategory.Point]
-        #     white_patch_pattern = random.choice(points)
-        # elif one_in_num_chance(num=CAT_GENERATION_SETTINGS["vit_chance"],
+        #     points = [point for point in WhitePatches if point.category is WhitePatchCategory.Point]
+        #     white_patches = random.choice(points)
+        # elif one_in_num_chance(num=config.cat_config.["vit_chance"],
         #                             modifier=self._genome.vitiligo_chance_modifier):
-        #     vitiligo = [point for point in WhitePatchPattern if point.category is WhitePatchPatternCategory.Vitiligo]
-        #     white_patch_pattern = random.choice(vitiligo)
+        #     vitiligo = [point for point in WhitePatches if point.category is WhitePatchCategory.Vitiligo]
+        #     white_patches = random.choice(vitiligo)
         # else:
-        #     unallowed: list[WhitePatchPatternCategory] = [
-        #         WhitePatchPatternCategory.Point, WhitePatchPatternCategory.Vitiligo, WhitePatchPatternCategory.Random]
+        #     unallowed: list[WhitePatchCategory] = [
+        #         WhitePatchCategory.Point, WhitePatchCategory.Vitiligo, WhitePatchCategory.Random]
         white_patch_pattern = None
         white_patch_tint = None
 
         try:
             if self.colour is PeltColour.White:
                 # white cats don't have white patches
-                white_patch_pattern = WhitePatchPattern.NoWhitePatch
+                # TODO change this so the white patch isn't rendered, but the data is kept for inheritance reasons
+                white_patch_pattern = WhitePatches.NoWhitePatch
                 white_patch_tint = WhitePatchTint.NoTint
-            elif parent_pelts and one_in_num_chance(num=CAT_GENERATION_SETTINGS["direct_inheritance"]):
+            elif parent_pelts and one_in_num_chance(num=config.cat_config.chance_direct_inheritance):
                 # depending on game settings, there is a chance that one of the parent's traits is directly inherited
                 lucky_parent_pelt = choice(parent_pelts)
                 white_patch_pattern = lucky_parent_pelt.white_patch_pattern
@@ -435,19 +477,19 @@ class CatPelt:
             else:
                 white_patch_pattern_category = random.choices(
                     population=[
-                        p for p in list(WhitePatchPatternCategory) if p is not WhitePatchPatternCategory.Random],
+                        p for p in list(WhitePatchCategory) if p is not WhitePatchCategory.Random],
                     weights=self._genome.white_patch_pattern,
                     k=1)[0]
-                if white_patch_pattern_category is WhitePatchPatternCategory.NoWhitePatch:
+                if white_patch_pattern_category is WhitePatchCategory.NoWhitePatch:
                     # Cats without white patches don't get white patch tints
-                    white_patch_pattern = WhitePatchPattern.NoWhitePatch
+                    white_patch_pattern = WhitePatches.NoWhitePatch
                     white_patch_tint = WhitePatchTint.NoTint
                 elif self.tortie_colour:
                     # Torties and calicos don't get white patch tints
                     white_patch_tint = WhitePatchTint.NoTint
-                if white_patch_pattern_category is not WhitePatchPatternCategory.NoWhitePatch:
+                if white_patch_pattern_category is not WhitePatchCategory.NoWhitePatch:
                     white_patch_pattern = choice(
-                        [p for p in WhitePatchPattern if p.category is white_patch_pattern_category])
+                        [p for p in WhitePatches if p.category is white_patch_pattern_category])
 
             # Now that we have a white patch pattern picked out, pick a tint and we're done.
             white_patch_tint = choice(self.colour.white_patch_tints)
@@ -457,21 +499,21 @@ class CatPelt:
             logger.error(f"After failing to pick a white patch pattern, "
                          f"CatPelt is defaulting to a random low-white patch with no tint.")
             white_patch_pattern = choice(
-                [p for p in WhitePatchPattern if p.category is WhitePatchPatternCategory.Low])
+                [p for p in WhitePatches if p.category is WhitePatchCategory.Low])
 
         except AttributeError as e:
-            logger.exception(f"Somehow CatPelt managed to set self.white_patch_pattern as a member of the "
-                             f"WhitePatchPatternCategory class, instead of the WhitePatchPattern class.", e)
+            logger.exception(f"Somehow CatPelt managed to set self.white_patches as a member of the "
+                             f"WhitePatchCategory class, instead of the WhitePatches class.", e)
             logger.error(f"After failing to pick a white patch pattern, "
                          f"CatPelt is defaulting to a random low-white patch with no tint.")
             white_patch_pattern = choice(
-                [p for p in WhitePatchPattern if p.category is WhitePatchPatternCategory.Low])
+                [p for p in WhitePatches if p.category is WhitePatchCategory.Low])
 
         finally:
             if white_patch_pattern:
-                self.white_patch_pattern = white_patch_pattern
+                self.white_patches = white_patch_pattern
             else:
-                self.white_patch_pattern = WhitePatchPattern.NoWhitePatch
+                self.white_patches = WhitePatches.NoWhitePatch
             if white_patch_tint:
                 self.white_patch_tint = white_patch_tint
             else:
@@ -479,21 +521,26 @@ class CatPelt:
 
         return
 
-    def _pick_sprites(self):
+    def _pick_sprite_poses(self):
+        """ Randomly pick sprite poses for each stage of the cat's life. """
         # Pick the cat's sprites
-        self.cat_sprite_reverse = one_in_num_chance(num=2)
-        self.cat_sprite_kit = random.randint(*SPRITE_RANGES['sprite_kit'])
-        self.cat_sprite_adolescent = random.randint(*SPRITE_RANGES['sprite_adolescent'])
+        self.sprite_reverse = random.choice([True, False])
+        self.sprite_opacity = 100
+        self.sprites = {
+            "newborn": random.choice(SpritePose.get_age_sprites(age="newborn")),
+            "kitten": random.choice(SpritePose.get_age_sprites(age="kitten")),
+            "adolescent": random.choice(SpritePose.get_age_sprites(age="adolescent")),
+            "senior": random.choice(SpritePose.get_age_sprites(age="senior")),
+        }
         if self.length is PeltLength.Long:
-            self.cat_sprite_adult = random.randint(*SPRITE_RANGES['sprite_adult_long'])
+            self.sprites["adult"] = random.choice(SpritePose.get_age_sprites(age="adult")[PeltLength.Long])
         else:
-            self.cat_sprite_adult = random.randint(*SPRITE_RANGES['sprite_adult_short_med'])
-        self.cat_sprite_elder = random.randint(*SPRITE_RANGES['sprite_elder'])
+            self.sprites["adult"] = random.choice(SpritePose.get_age_sprites(age="adult")[PeltLength.Short])
         return
 
     def _pick_eye_colours(self, parent_pelts: list):
         # depending on game settings, there is a chance that one of the parent's traits is directly inherited
-        if parent_pelts and one_in_num_chance(num=CAT_GENERATION_SETTINGS["direct_inheritance"]):
+        if parent_pelts and one_in_num_chance(num=config.cat_config.chance_direct_inheritance):
             self.eye_colour = choice(parent_pelts).eye_colour
             return
         # Set the first eye's colour
@@ -504,7 +551,7 @@ class CatPelt:
             k=1)[0]
         new_eyes.append(choice([c for c in EyeColour if c.category is eye_colour_category]))
         # Set second eye's colour
-        if one_in_num_chance(num=CAT_GENERATION_SETTINGS["base_heterochromia"],
+        if one_in_num_chance(num=config.cat_config.base_chance_heterochromia,
                              modifier=self._genome.heterochromatic_chance_modifier):
             eye_colour_category = random.choices(
                 population=[c for c in list(EyeColourCategory) if c is not EyeColourCategory.Random],
@@ -521,7 +568,7 @@ class CatPelt:
 
     def _pick_skin_colour(self, parent_pelts: list):
         # depending on game settings, there is a chance that one of the parent's traits is directly inherited.
-        if parent_pelts and one_in_num_chance(num=CAT_GENERATION_SETTINGS["direct_inheritance"]):
+        if parent_pelts and one_in_num_chance(num=config.cat_config.chance_direct_inheritance):
             self.skin_colour = choice(parent_pelts).skin_colour
             return
         skin_colour_category = random.choices(

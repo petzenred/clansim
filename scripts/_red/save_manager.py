@@ -23,15 +23,26 @@ from random import choice
 from shutil import move as shutil_move  # Recursively move a file or directory to another location.
                                         # This is similar to the Unix "mv" command. Return the file
                                         # or directory's destination.
+
+from definitions import (  # SAVE_CLANGEN_VERSION_NUMBER
+
+    SAVE_VERSION_FILENAME, cast_to_season, SpecialClanToken, Location,
+
+)
+import scripts._red.cats.red_name
 from scripts._red.cats.red_cat import RedCat
-from scripts._red.clans.red_clan import RedClan, Camp
+from scripts._red.clans.red_clan import RedClan
 from scripts._red.io_manager import io_manager
+from scripts._red.red_exceptions import InitializationError
 # from scripts.game_structure.localization import get_new_pronouns
 from scripts.housekeeping.datadir import get_save_dir, get_temp_dir
 
-import definitions # definitions.SAVE_CLANGEN_VERSION_NUMBER
+
 
 import logging
+
+from scripts.housekeeping.version import get_version_info
+
 logger = logging.getLogger(__name__)
 
 ########################################################################################################################
@@ -67,50 +78,54 @@ class SaveManager:
     iom = io_manager
 
     save_version: int
-    game_version: str
-    active_clan_prefix: Optional[str]
+    game_version: tuple[int]
+    active_clan_token: Optional[str] = None
 
     # ------------------------------------- INIT ------------------------------------- #
 
     # ------------------------------------ SETTER ------------------------------------ #
 
-    def update_active_clan_prefix(self, new_active_clan_prefix: Optional[str]):
+    def update_active_clan_token(self, new_active_clan_token: Optional[str]):
         """ Set the current Clan's name so the correct save files will be read.
 
-        Called by the game.update_active_clan_prefix_everywhere() ONLY.
+        Called by the game.update_active_clan_token_everywhere() ONLY.
         """
-        if new_active_clan_prefix is None:
-            self.active_clan_prefix = None
+        if new_active_clan_token is None:
+            self.active_clan_token = None
         # make sure you aren't trying to switch to the Clan you're already using
-        elif new_active_clan_prefix.casefold() == self.active_clan_prefix:
+        elif new_active_clan_token.casefold() == self.active_clan_token:
             logger.warning(f"Can't switch to the save that's already active: tried to switch from save "
-                           f"'{self.active_clan_prefix}' to save '{new_active_clan_prefix}' in SaveManager")
+                           f"'{self.active_clan_token}' to save '{new_active_clan_token}' in SaveManager")
         else:
-            self.active_clan_prefix = new_active_clan_prefix
+            self.active_clan_token = new_active_clan_token
         return
 
     # ------------------------------------ GETTER ------------------------------------ #
 
     # TODO
-    def get_available_saves(self) -> tuple(list[str], list[str]):
+    def get_available_saves(self) -> tuple[list[str], list[str]]:
         """ Load the names of save files present in the saves/ directory. """
         saves = self.iom.get_valid_save_names()
-        saved_clans = [filename for filename in saves if "." not in filename]
-        invalid_clans = []
-        for clan_name in saved_clans:
-            if f"{clan_name}Clan.yaml" not in saves:
+        valid_clans, invalid_clans = [filename for filename in saves if "." not in filename]
+        for clan_name in valid_clans:
+            clan_save_version_filepath = SAVE_VERSION_FILENAME.replace("*", clan_name)
+            if clan_save_version_filepath not in saves:
                 invalid_clans.append(clan_name)
-                saved_clans.pop(clan_name)
-        return saved_clans, invalid_clans
+                valid_clans.remove(clan_name)
+        return valid_clans, invalid_clans
+
+    def check_save_version_is_current(self) -> bool:
+        """ Make sure the save's version is up-to-date. """
+        if self.active_clan_token:
+            file_contents = self.iom.read_save_version_file()
+            self.save_version = int(file_contents["save_version"])
+            self.game_version = tuple(file_contents["game_version"])
+        else:
+            self.save_version = get_version_info().save_version
+            self.game_version = get_version_info().game_version
+        return self.save_version == get_version_info().save_version
 
     # ------------------------------------ LOADER ------------------------------------ #
-
-    def load_game_settings(self):
-        """ Read the settings that apply across all save files.
-
-        Called by config.
-        """
-        return self.iom.read_game_settings_file()
 
     def load_clan_settings(self):
         """ Read the settings that apply across all save files.
@@ -120,204 +135,122 @@ class SaveManager:
         return self.iom.read_clan_settings_file()
 
     def load_save(self, game_obj):
-        """ Load the save where the player's Clan is named `player_clan_name`. """
-        # create RedClan objects and Clan-related objects (e.g. Camp objects)
-        self._load_clan_details(game_obj=game_obj)
-        # create RedCat objects
-        self._load_cats()
-        # TODO load conditions
-        # TODO load relationships
+        """ Load the save where the player's Clan is named `player_clan_name`.
 
-        # TODO load ongoing events
-        raise NotImplementedError("SaveManager.load_save")
-
-    # TODO load_camp()
-    def _load_clan_details(self, game_obj):
-        """ Load the Clan details file ('saves/ExampleClan.yaml') and use it to create RedClan objects.
-        Then, register those RedClans in the game object's cat tracker.
+        This should ONLY BE CALLED BY game._load_active_clan_save_file().
         """
+        try:
+            # make sure the save's version is up-to-date
+            if not self.check_save_version_is_current():
+                raise NotImplementedError(f"The save version isn't current, but save "
+                                          f"conversion hasn't been implemented yet")
 
-        def load_camp() -> Camp:
-            """ Parse the camp details file. """
-            camp_details = self.iom.load_camp_details_file()
+            # create RedCat objects
+            self._load_cats()
 
-        clan_details: dict = self.iom.read_clan_details_file()
+            # create RedClan objects and Clan-related objects (e.g. Camp objects)
+            self._load_clan_details(game_obj=game_obj)
 
-        game_obj.current_season = definitions.cast_to_season(clan_details.pop("current_season")) # starting_season
-        game_obj.current_moon = int(clan_details.pop("current_moon"))
+            # TODO load conditions
+
+            # TODO load relationships
+
+            # TODO history has its own separate file? Or is it part of cats'?
+
+            # TODO use InitializationError
+
+            # TODO load ongoing events
+            # TODO DEBUG remove this
+            logger.debug(f"Living cats: {game_obj.cat_tracker.living_cats}")
+
+        except BaseException as err:
+            logger.exception(f"Something went wrong loading loading save \'{self.active_clan_token}\'",
+                             exc_info=err)
+            game_obj.quit(savesettings=False)
+
+        else:
+            return
+
+    def _load_clan_details(self, game_obj):
+        """ Load the Clan details file and use it to create RedClan objects.
+        Then, register those RedClans in the game object's cat tracker.
+
+        :param game_obj: the pygame Game object
+        """
+        clan_details: dict = self.iom.read_clan_info_file()
 
         # game details and afterlife guides
-        game_obj.save_version = clan_details.pop("save_version")
-        game_obj.game_version = clan_details.pop("game_version")
         game_obj.cat_tracker._last_id = clan_details.pop("last_id")
-        game_obj.cat_tracker.set_afterlife_guides(
-            sc_cat_id=int(clan_details.pop("sc_guide")),
-            df_cat_id=int(clan_details.pop("df_guide"))
-        )
-
-        # NB: Clan details are added here, not in a function like RedCat._parse_save_file, since the way
-        #   the player's Clan, other warrior Clans, and the 'Clan' of outsiders are treated is very different
+        game_obj.cat_tracker.sc_guide_cat_id = int(clan_details.pop("sc_guide"))
+        game_obj.cat_tracker.df_guide_cat_id = int(clan_details.pop("df_guide"))
+        game_obj.current_season = cast_to_season(clan_details.pop("current_season")) # starting_season
+        game_obj.current_moon = int(clan_details.pop("current_moon"))
 
         # Clans
-        for clan_prefix in clan_details:
-            clan_info: dict = clan_details[clan_prefix]
+        for clan_token in clan_details:
+            try:
+                clan_info: dict = clan_details[clan_token]
+                llr: int = clan_info.pop("leader_lives_remaining") if "leader_lives_remaining" in clan_info else 0
+                clan_cat_objs: list[RedCat] = []
+                if clan_info["cat_ids"]:
+                    clan_cat_objs = game_obj.cat_tracker.get_cat_objects(cat_id=clan_info.pop("cat_ids"))
+                else:
+                    clan_info.pop("cat_ids")
 
-            # the player's Clan
-            if clan_prefix == self.active_clan_prefix:
-                clan_obj = RedClan(clan_prefix=self.active_clan_prefix,
-                                   afterlife=clan_info.pop("default_afterlife"),
-                                   moon_established=clan_info.pop("moon_established"))
-                clan_obj.camp = load_camp() # camp_bg
-                clan_obj.clan_symbol = clan_info.pop("clan_symbol")
-                # ["cats"]["special"]["leader"]["leader_lives"]
-                clan_obj.leader_lives_remaining = int(clan_info.pop("leader_lives_remaining"))
-                clan_obj.past_leader_ids = clan_info.pop("past_leader_ids")
-                clan_obj.past_deputy_ids = clan_info.pop("past_deputy_ids")
-                clan_obj.past_healer_ids = clan_info.pop("past_healer_ids")
+                # the player's Clan, which is more detailed and thereby saved differently than other Clans
+                if clan_token == self.active_clan_token:
+                    clan_obj = RedClan(save_file=clan_info, clan_token=clan_token,
+                                       camp_details=self.iom.read_camp_save_file())
 
-                leader_focus: Optional[dict] = clan_info.pop("leader_focus")
-                if leader_focus:
-                    clan_obj.leader_focus_clan_prefix = leader_focus.pop("leader_focus_clan_prefix")
-                    clan_obj.leader_focus_clan_purpose = definitions.cast_to_leader_focus(
-                        leader_focus.pop("clan_purpose"))
-                    clan_obj.leader_focus_outsider_id = leader_focus.pop("outsider_in_focus_id")
-                    clan_obj.leader_focus_outsider_purpose = definitions.cast_to_leader_focus(
-                        leader_focus.pop("clan_purpose"))
-                    del leader_focus
+                # loners and dead cats
+                elif clan_token in list(SpecialClanToken):
+                    clan_obj = RedClan(save_file=clan_info, clan_token=clan_token)
 
-                warrior_focus: Optional[dict] = clan_info.pop("warrior_focus")
-                if warrior_focus:
-                    clan_obj.last_focus_change = warrior_focus.pop("last_focus_change")
-                    clan_obj.warrior_focus = definitions.cast_to_warrior_focus(
-                        warrior_focus.pop("warrior_focus_purpose"))
-                    clan_obj.warrior_focus_arg = clan_info.pop("warrior_focus_arg") # this is a Clan prefix
-                    del warrior_focus
+                # other warrior Clans # "other_clans"
+                else:
+                    clan_obj = RedClan(save_file=clan_info, clan_token=clan_token)
 
-            # outsiders
-            elif clan_prefix == definitions.OUTSIDER_CLAN_PREFIX:
-                RedClan(clan_prefix=clan_prefix,
-                        afterlife=definitions.Location.OutsiderAfterlife,
-                        moon_established=0)
-                # outsiders don't have a camp, a clan symbol, or special positions
+                pass
 
-            # other warrior Clans # "other_clans"
-            else:
-                clan_obj = RedClan(clan_prefix=clan_prefix,
-                                   afterlife=clan_info.pop("default_afterlife"),
-                                   moon_established=clan_info.pop("moon_established"))
-                clan_obj.camp = definitions.cast_to_camp_key(clan_info.pop("camp_key")) # camp_bg
-                clan_obj.clan_symbol = clan_info.pop("clan_symbol")
-                clan_obj.leader_lives_remaining = int(clan_info.pop("leader_lives_remaining"))
-                clan_obj.past_leader_ids = clan_info.pop("past_leader_ids")
-                clan_obj.past_deputy_ids = clan_info.pop("past_deputy_ids")
-                clan_obj.past_healer_ids = clan_info.pop("past_healer_ids")
+                # add RedCat objects (which should have already been made) to the Clan
+                for cat_obj in clan_cat_objs:
+                    clan_obj.add_cat_to_clan(rank=cat_obj.rank, cat_obj=cat_obj, leader_lives_remaining=llr)
+
+            except KeyError as err:
+                logger.error(f"Missing key \"{err.args[0]}\" in save file for clan token \"{clan_token}\"")
+                raise
 
         return
 
     def _load_cats(self):
         """ Load the files containing details about the cats and use them to create RedCat objects.
-         Register those RedCats in the game object's cat tracker.
 
-         TODO add them to RedClan objects here?
-         """
+        Register those RedCats in the game object's cat tracker.
+        """
         cats_per_clan: dict = self.iom.read_cats_files()
 
-        # afterlives
-        for afterlife in (definitions.Location.StarClan.value,
-                          definitions.Location.DarkForest.value,
-                          definitions.Location.OutsiderAfterlife.value):
-            cats_in_afterlife: dict = cats_per_clan.pop(afterlife)
-            for cat_id in cats_in_afterlife:
-                # cat is added to the cat tracker in the RedCat class
-                RedCat(save_file=cats_in_afterlife[cat_id], cat_id=cat_id)
+        clan_tokens: list = list(cats_per_clan.keys())
 
-        # outsiders
-        outsiders = cats_per_clan.pop(definitions.OUTSIDER_CLAN_PREFIX)
-        for cat_id in outsiders:
-            # cat is added to the cat tracker in the RedCat class
-            RedCat(save_file=outsiders[cat_id], cat_id=cat_id)
-
-        # warrior Clans
-        clan_prefixes = cats_per_clan.keys()
-        for clan_prefix in clan_prefixes:
-            clan_cats = cats_per_clan.pop(clan_prefix)
-            for cat_id in clan_cats:
+        for clan_token in clan_tokens:
+            cats_in_clan: dict = cats_per_clan.pop(clan_token) if cats_per_clan[clan_token] else []
+            for cat_id in cats_in_clan:
                 # cat is added to the cat tracker in the RedCat class
-                RedCat(save_file=clan_cats[cat_id], cat_id=cat_id)
+                RedCat(save_file=cats_in_clan[cat_id], cat_id=cat_id, clan_token=clan_token)
+
         return
 
     # ------------------------------------- SAVER ------------------------------------ #
 
+    # We want currentclan.txt to contain ONLY the name of the Clan that is currently loaded.
+    # We will get the list of clans from the saves folder each Clan has its own folder,
+    # and the name of the folder is the name of the clan so we can just get a list of all
+    # the folders in the saves folder.
+
+    # TODO split game and Clan settings, since this actually saves both
     def save_game_settings(self, settings):
-        """ """
+        """ Save the non-Clan specific settings. """
         return self.iom.write_game_settings_file(game_settings=settings)
 
-    # ------------------------------------ PRIVATE ----------------------------------- #
-
-    # TODO
-    def read_clans(self):
-        """ Check which save files exist (e.g. which Clans the player has created). """
-        # We want clanlist.txt to contain ONLY the name of the Clan that is currently loaded.
-        # We will get the list of clans from the saves folder each Clan has its own folder,
-        # and the name of the folder is the name of the clan so we can just get a list of all
-        # the folders in the saves folder.
-
-        # First, we need to make sure the saves folder exists.
-        if not os.path.exists(get_save_dir()):
-            os.makedirs(get_save_dir())
-            logger.debug(f"Created saves folder")
-            return None
-
-        # Now we can get a list of all the folders in the saves folder.
-        #   If there are none, return None.
-        clan_list = [f.name for f in os.scandir(get_save_dir()) if f.is_dir()]
-        if not clan_list:
-            logger.debug("No clans found in saves folder")
-            return None
-
-        # The Clan specified in saves/currentclan.txt should be
-        #   first in the list so we can load it automatically.
-        if os.path.exists(get_save_dir() + "/clanlist.txt"):
-            # TODO replace clanlist.txt with currentclan.txt
-            pass
-        if os.path.exists(definitions.CURRENTCLAN_FILENAME):
-            # TODO load this clan?
-            pass
-
-
-
-
-        if os.path.exists(get_save_dir() + "/clanlist.txt"):
-            with open(get_save_dir() + "/clanlist.txt", "r", encoding="utf-8") as f:
-                loaded_clan = f.read().strip().splitlines()
-                if loaded_clan:
-                    loaded_clan = loaded_clan[0]
-                else:
-                    loaded_clan = None
-            os.remove(get_save_dir() + "/clanlist.txt")
-            if loaded_clan:
-                self.safe_save(get_save_dir() + "/currentclan.txt", loaded_clan)
-        elif os.path.exists(get_save_dir() + "/currentclan.txt"):
-            with open(get_save_dir() + "/currentclan.txt", "r", encoding="utf-8") as f:
-                loaded_clan = f.read().strip()
-        else:
-            loaded_clan = None
-
-        if loaded_clan and loaded_clan in clan_list:
-            clan_list.remove(loaded_clan)
-            clan_list.insert(0, loaded_clan)
-        return clan_list
-
-    # TODO
-    def _load_clans(self):
-        """ Read """
-        pass
-
-    # TODO
-    def _load_cats(self, file_contents: dict):
-        """ Read the JSON-formatted file contents and put it in the CatTracker. """
-        pass
-    #
     # def _parse_csv_txt(self, raw_file_contents: str):
     #     """ Parse the way cat.csv files are written to a JSON format.
     #
@@ -561,7 +494,7 @@ class SaveManager:
             i = 0
             while True:
                 # Attempt to write to temp file and read the entire file back again
-                _read_data = self.iom._read_file(filepath=temp_file_path)
+                _read_data = self.iom.read_file(filepath=temp_file_path)
 
                 # If the read data is not the same as the written data, the save attempt failed. Try again
                 if _data != _read_data:
@@ -576,4 +509,4 @@ class SaveManager:
                 shutil_move(temp_file_path, path)
                 return
         else:
-            self.iom._read_file(filepath=path)
+            self.iom.read_file(filepath=path)

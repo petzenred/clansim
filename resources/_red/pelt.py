@@ -1,20 +1,20 @@
 from definitions import (
-  PeltColour, ColourTint, WhitePatchPattern, PeltPattern,
-  ScreenName, WhitePatchPatternCategory, EyeColour, ScarPelt, ScarCategory
+  PeltColour, ColourTint, WhitePatches, PeltPattern,
+  ScreenName, WhitePatchCategory, EyeColour, ScarName, ScarCategory
 )
 
 WHITE_PATCH_PATTERN_CATEGORY_TEXT = {
-  WhitePatchPatternCategory.Point: "darker paws, tail, and face" # also works for WhitePatchPattern.Bleached
+  WhitePatchCategory.Point: "darker paws, tail, and face" # also works for WhitePatches.Bleached
 }
 
 WHITE_PATCH_PATTERN_TEXT = {
-  WhitePatchPattern.Vitiligo: "dots of differently-coloured fur",
-  WhitePatchPattern.VitiligoTwo: "white patches spotted along {PRONOUN/main/poss} back",
-  WhitePatchPattern.Moon: "a white tailtip, ears, and paws",
-  WhitePatchPattern.Phantom: "a patch of white fur over one eye",
-  WhitePatchPattern.Karpati: "a white nose, tail, ears, and paws",
-  WhitePatchPattern.Powder: "dusted white fur on their face and back",
-  WhitePatchPattern.Smokey: "white speckles"
+  WhitePatches.Vitiligo: "dots of differently-coloured fur",
+  WhitePatches.VitiligoTwo: "white patches spotted along {PRONOUN/main/poss} back",
+  WhitePatches.Moon: "a white tailtip, ears, and paws",
+  WhitePatches.Phantom: "a patch of white fur over one eye",
+  WhitePatches.Karpati: "a white nose, tail, ears, and paws",
+  WhitePatches.Powder: "dusted white fur on their face and back",
+  WhitePatches.Smokey: "white speckles"
 }
 
 PELT_COLOUR_TEXT = {
@@ -41,7 +41,7 @@ PELT_COLOUR_TEXT = {
 
 PELT_PATTERN_TEXT = {
   ScreenName.Profile: {
-    PeltPattern.SingleColour: "solid",
+    PeltPattern.SolidColour: "solid",
     PeltPattern.Tabby: "tabby",
     PeltPattern.Marbled: "marbled tabby",
     PeltPattern.Rosette: "rosette",
@@ -57,7 +57,7 @@ PELT_PATTERN_TEXT = {
     PeltPattern.Masked: "masked tabby"
   },
   ScreenName.Allegiances: {
-    PeltPattern.SingleColour: {
+    PeltPattern.SolidColour: {
       "before_colour": "",
       "after_colour": "",
       "after_gender": ""
@@ -166,15 +166,15 @@ SCAR_TEXT = {
     ScarCategory.Burn: " with burn scarring",
     ScarCategory.Frostbite: " with frostbite scarring",
   },
-  ScarPelt: [
-    (ScarPelt.ScratchEye, " with a scar over one eye"),
-    (ScarPelt.NoLeftEar, " missing one ear"),
-    (ScarPelt.NoRightEar, " missing one ear"),
-    (ScarPelt.NoEars, " missing both ears"),
-    (ScarPelt.TornLeftEar, " with a torn ear"),
-    (ScarPelt.TornRightEar, " with a torn ear"),
-    (ScarPelt.NoPaw, " with a missing paw"),
-    (ScarPelt.NoTail, " without a tail"),
-    (ScarPelt.HalfTail, " with half a tail"),
+  ScarName: [
+    (ScarName.ScratchEye, " with a scar over one eye"),
+    (ScarName.NoLeftEar, " missing one ear"),
+    (ScarName.NoRightEar, " missing one ear"),
+    (ScarName.NoEars, " missing both ears"),
+    (ScarName.TornLeftEar, " with a torn ear"),
+    (ScarName.TornRightEar, " with a torn ear"),
+    (ScarName.NoPaw, " with a missing paw"),
+    (ScarName.NoTail, " without a tail"),
+    (ScarName.HalfTail, " with half a tail"),
   ]
 }

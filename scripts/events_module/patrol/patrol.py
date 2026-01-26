@@ -547,11 +547,11 @@ class Patrol:
             if flag:
                 continue
 
-            if not [biome for biome in patrol_to_filter.biomes if biome in [*biomes, Biome.Any]]:
+            if not [biome for biome in patrol_to_filter.biomes if biome in [*biomes, Biome.NoBiome]]:
                 continue
             if not camp not in patrol_to_filter.camp and "any" not in patrol_to_filter.camp:
                 continue
-            if not [season for season in patrol_to_filter.seasons if season in [*seasons, Season.Any]]:
+            if not [season for season in patrol_to_filter.seasons if season in [*seasons, Season.NoSeason]]:
                 continue
 
             if self.patrol_type not in patrol_to_filter.patrol_types and self.patrol_type == PatrolType.Hunting:

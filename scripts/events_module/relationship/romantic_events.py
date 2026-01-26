@@ -180,7 +180,7 @@ class RomanticEvents:
         )
         filtered_interactions = []
         _season = [str(game.clan_obj.current_season).casefold(), "Any", "any"]
-        _biome = [str(game.clan_obj.biome).casefold(), "Any", "any"]
+        _biome = [str(game.clan_obj.biome).casefold(), "NoBiome", "any"]
         for interaction in possible_interactions:
             in_tags = [i for i in interaction.biome if i not in _biome]
             if len(in_tags) > 0:
