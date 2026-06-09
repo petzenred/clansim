@@ -66,7 +66,7 @@ CLAN_SETTINGS: dict = {
         ],
         "moons and seasons": [
             "Show moons and seasons widget",
-            "Displays Clan age and current Clan season on several pages.",
+            "Displays Clan age and current Clan season on several screens.",
             False
         ]
     },

@@ -1,2216 +1,2081 @@
-# conditions.py -
+# conditions.py - TODO
 # If you add new conditions, make sure to add their key to conditions.en.yaml otherwise they will not display.
 
 ########################################################################################################################
 # Imports
 ########################################################################################################################
 
-from definitions import ConditionCategory, ConditionSeverity, Herb
-
+from definitions import ConditionCategory, ConditionName, ConditionSeverity, HerbName, AgeCategory
 
 ########################################################################################################################
 # Constants
 ########################################################################################################################
 
 ILLNESSES: dict = {
-    "festering_wound": {
-    "category": ConditionCategory.Illness,
-    "duration_moons": 3,
-    "herbs": {
-    "1": [
-    Herb.Marigold,
-    Herb.Burdock,
-    Herb.OakLeaf,
-    Herb.Ragwort,
-    Herb.JuniperBerry,
-    Herb.Poppy,
-    Herb.Moss
-    ],
-    "2": [],
-    "3": []
-    },
-    "infectiousness": 0,
-    "medicine_duration_moons": 2,
-    "medicine_mortality_risk": {
-    "adolescent": 5,
-    "adult": 10,
-    "kitten": 3,
-    "newborn": 3,
-    "senior": 3,
-    "senior adult": 8,
-    "young adult": 8
-    },
-    "mortality_risk": {
-    "adolescent": 3,
-    "adult": 5,
-    "kitten": 1,
-    "newborn": 1,
-    "senior": 2,
-    "senior adult": 5,
-    "young adult": 3
-    },
-    "complication_risks": [],
-    "severity": ConditionSeverity.Severe
-    },
-    "infected_wound": {
-    "category": ConditionCategory.Illness,
-    "duration_moons": 3,
-    "herbs": {
-    "1": [
-    Herb.Marigold,
-    Herb.Burdock,
-    Herb.WildGarlic,
-    Herb.Poppy
-    ],
-    "2": [],
-    "3": []
-    },
-    "infectiousness": 0,
-    "medicine_duration_moons": 2,
-    "medicine_mortality_risk": {
-    "adolescent": 13,
-    "adult": 20,
-    "kitten": 8,
-    "newborn": 5,
-    "senior": 13,
-    "senior adult": 15,
-    "young adult": 15
-    },
-    "mortality_risk": {
-    "adolescent": 8,
-    "adult": 10,
-    "kitten": 3,
-    "newborn": 3,
-    "senior": 5,
-    "senior adult": 8,
-    "young adult": 8
-    },
-    "complication_risks": [
-    {
-    "chance": 10,
-    "name": "festering_wound"
-    }
-    ],
-    "severity": ConditionSeverity.Major
-    },
-    "carrionplace_disease": {
-    "category": ConditionCategory.Illness,
-    "duration_moons": 3,
-    "herbs": {
-    "1": [
-    Herb.Marigold,
-    Herb.Burdock,
-    Herb.WildGarlic,
-    Herb.Poppy
-    ],
-    "2": [],
-    "3": []
-    },
-    "infectiousness": 0,
-    "medicine_duration_moons": 2,
-    "medicine_mortality_risk": {
-    "adolescent": 3,
-    "adult": 3,
-    "kitten": 2,
-    "newborn": 2,
-    "senior": 2,
-    "senior adult": 3,
-    "young adult": 3
-    },
-    "mortality_risk": {
-    "adolescent": 2,
-    "adult": 2,
-    "kitten": 1,
-    "newborn": 1,
-    "senior": 1,
-    "senior adult": 2,
-    "young adult": 2
-    },
-    "complication_risks": [],
-    "severity": ConditionSeverity.Severe
-    },
-    "constant_nightmares": {
-    "category": ConditionCategory.Illness,
-    "duration_moons": 2,
-    "herbs": {
-    "1": [
-    Herb.JuniperBerry,
-    Herb.Thyme,
-    Herb.Poppy
-    ],
-    "2": [],
-    "3": []
-    },
-    "infectiousness": 0,
-    "medicine_duration_moons": 1,
-    "medicine_mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "complication_risks": [],
-    "severity": ConditionSeverity.Major
-    },
-    "diarrhea": {
-    "category": ConditionCategory.Illness,
-    "duration_moons": 2,
-    "herbs": {
-    "1": [
-    Herb.Betony,
-    Herb.Mullein,
-    Herb.JuniperBerry,
-    Herb.Mallow
-    ],
-    "2": [],
-    "3": []
-    },
-    "infectiousness": 0,
-    "medicine_duration_moons": 2,
-    "medicine_mortality_risk": {
-    "adolescent": 15,
-    "adult": 45,
-    "kitten": 10,
-    "newborn": 10,
-    "senior": 13,
-    "senior adult": 30,
-    "young adult": 30
-    },
-    "mortality_risk": {
-    "adolescent": 8,
-    "adult": 15,
-    "kitten": 3,
-    "newborn": 3,
-    "senior": 5,
-    "senior adult": 10,
-    "young adult": 10
-    },
-    "complication_risks": [],
-    "severity": ConditionSeverity.Major
-    },
-    "fleas": {
-    "category": ConditionCategory.Illness,
-    "duration_moons": 4,
-    "herbs": {
-    "1": [
-    Herb.Plantain
-    ],
-    "2": [],
-    "3": []
-    },
-    "infectiousness": 15,
-    "medicine_duration_moons": 2,
-    "medicine_mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "complication_risks": [
-    {
-    "chance": 20,
-    "name": "torn_pelt"
-    }
-    ],
-    "severity": ConditionSeverity.Minor
-    },
-    "greencough": {
-    "category": ConditionCategory.Illness,
-    "duration_moons": 3,
-    "herbs": {
-    "1": [
-    Herb.Catmint,
-    Herb.Tansy,
-    Herb.Mullein,
-    Herb.Plantain,
-    Herb.JuniperBerry,
-    Herb.Poppy,
-    Herb.Moss
-    ],
-    "2": [],
-    "3": []
-    },
-    "infectiousness": 30,
-    "medicine_duration_moons": 2,
-    "medicine_mortality_risk": {
-    "adolescent": 12,
-    "adult": 25,
-    "kitten": 7,
-    "newborn": 7,
-    "senior": 7,
-    "senior adult": 20,
-    "young adult": 20
-    },
-    "mortality_risk": {
-    "adolescent": 8,
-    "adult": 10,
-    "kitten": 3,
-    "newborn": 3,
-    "senior": 3,
-    "senior adult": 8,
-    "young adult": 8
-    },
-    "complication_risks": [
-    {
-    "chance": 60,
-    "name": "yellowcough"
-    }
-    ],
-    "severity": ConditionSeverity.Severe
-    },
-    "grief_stricken": {
-    "category": ConditionCategory.Illness,
-    "duration_moons": 5,
-    "herbs": {
-    "1": [
-    Herb.JuniperBerry,
-    Herb.Thyme,
-    Herb.Poppy
-    ],
-    "2": [],
-    "3": []
-    },
-    "infectiousness": 0,
-    "medicine_duration_moons": 3,
-    "medicine_mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "complication_risks": [
-    {
-    "chance": 100,
-    "name": "lasting grief"
-    },
-    {
-    "chance": 15,
-    "name": "constant_nightmares"
-    }
-    ],
-    "severity": ConditionSeverity.Major
-    },
-    "heat_exhaustion": {
-    "category": ConditionCategory.Illness,
-    "duration_moons": 2,
-    "herbs": {
-    "1": [
-    Herb.JuniperBerry,
-    Herb.Ragwort,
-    Herb.Moss
-    ],
-    "2": [],
-    "3": []
-    },
-    "infectiousness": 0,
-    "medicine_duration_moons": 2,
-    "medicine_mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "complication_risks": [
-    {
-    "chance": 5,
-    "name": "heat_stroke"
-    }
-    ],
-    "severity": ConditionSeverity.Major
-    },
-    "heat_stroke": {
-    "category": ConditionCategory.Illness,
-    "duration_moons": 1,
-    "herbs": {
-    "1": [
-    Herb.JuniperBerry,
-    Herb.Ragwort,
-    Herb.Moss
-    ],
-    "2": [],
-    "3": []
-    },
-    "infectiousness": 0,
-    "medicine_duration_moons": 1,
-    "medicine_mortality_risk": {
-    "adolescent": 10,
-    "adult": 20,
-    "kitten": 5,
-    "newborn": 5,
-    "senior": 10,
-    "senior adult": 25,
-    "young adult": 15
-    },
-    "mortality_risk": {
-    "adolescent": 5,
-    "adult": 8,
-    "kitten": 2,
-    "newborn": 2,
-    "senior": 3,
-    "senior adult": 8,
-    "young adult": 5
-    },
-    "complication_risks": [],
-    "severity": ConditionSeverity.Severe
-    },
-    "kittencough": {
-    "category": ConditionCategory.Illness,
-    "duration_moons": 3,
-    "herbs": {
-    "1": [
-    Herb.Catmint,
-    Herb.Tansy,
-    Herb.Mullein,
-    Herb.Plantain,
-    Herb.JuniperBerry,
-    Herb.Poppy,
-    Herb.Moss
-    ],
-    "2": [],
-    "3": []
-    },
-    "infectiousness": 15,
-    "medicine_duration_moons": 2,
-    "medicine_mortality_risk": {
-    "adolescent": 60,
-    "adult": 0,
-    "kitten": 5,
-    "newborn": 5,
-    "senior": 10,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "mortality_risk": {
-    "adolescent": 15,
-    "adult": 0,
-    "kitten": 2,
-    "newborn": 2,
-    "senior": 5,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "complication_risks": [
-    {
-    "chance": 10,
-    "name": "whitecough"
-    }
-    ],
-    "severity": ConditionSeverity.Severe
-    },
-    "malnourished": {
-    "category": ConditionCategory.Illness,
-    "duration_moons": 100,
-    "herbs": {
-    "1": [
-    Herb.Thyme
-    ],
-    "2": [],
-    "3": []
-    },
-    "infectiousness": 0,
-    "medicine_duration_moons": 100,
-    "medicine_mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "complication_risks": [],
-    "severity": ConditionSeverity.Minor
-    },
-    "redcough": {
-    "category": ConditionCategory.Illness,
-    "duration_moons": 50,
-    "herbs": {
-    "1": [
-    Herb.Lungwort,
-    Herb.Mullein,
-    Herb.Tansy,
-    Herb.Plantain,
-    Herb.JuniperBerry,
-    Herb.Ragwort,
-    Herb.Poppy,
-    Herb.Moss
-    ],
-    "2": [],
-    "3": []
-    },
-    "infectiousness": 0,
-    "medicine_duration_moons": 40,
-    "medicine_mortality_risk": {
-    "adolescent": 3,
-    "adult": 3,
-    "kitten": 2,
-    "newborn": 2,
-    "senior": 2,
-    "senior adult": 3,
-    "young adult": 3
-    },
-    "mortality_risk": {
-    "adolescent": 2,
-    "adult": 2,
-    "kitten": 1,
-    "newborn": 1,
-    "senior": 1,
-    "senior adult": 2,
-    "young adult": 2
-    },
-    "complication_risks": [],
-    "severity": ConditionSeverity.Severe
-    },
-    "running_nose": {
-    "category": ConditionCategory.Illness,
-    "duration_moons": 3,
-    "herbs": {
-    "1": [
-    Herb.Ragwort,
-    Herb.JuniperBerry,
-    Herb.Poppy
-    ],
-    "2": [],
-    "3": []
-    },
-    "infectiousness": 0,
-    "medicine_duration_moons": 2,
-    "medicine_mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "complication_risks": [
-    {
-    "chance": 15,
-    "name": "whitecough"
-    }
-    ],
-    "severity": ConditionSeverity.Minor
-    },
-    "seizure": {
-    "category": ConditionCategory.Illness,
-    "duration_moons": 1,
-    "herbs": {
-    "1": [
-    Herb.JuniperBerry,
-    Herb.Poppy,
-    Herb.Thyme,
-    Herb.Ragwort
-    ],
-    "2": [],
-    "3": []
-    },
-    "infectiousness": 0,
-    "medicine_duration_moons": 1,
-    "medicine_mortality_risk": {
-    "adolescent": 70,
-    "adult": 100,
-    "kitten": 50,
-    "newborn": 30,
-    "senior": 70,
-    "senior adult": 100,
-    "young adult": 100
-    },
-    "mortality_risk": {
-    "adolescent": 10,
-    "adult": 20,
-    "kitten": 5,
-    "newborn": 2,
-    "senior": 5,
-    "senior adult": 20,
-    "young adult": 20
-    },
-    "complication_risks": [],
-    "severity": ConditionSeverity.Severe
-    },
-    "starving": {
-    "category": ConditionCategory.Illness,
-    "duration_moons": 100,
-    "herbs": {
-    "1": [
-    Herb.Thyme
-    ],
-    "2": [],
-    "3": []
-    },
-    "infectiousness": 0,
-    "medicine_duration_moons": 100,
-    "medicine_mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "complication_risks": [],
-    "severity": ConditionSeverity.Severe
-    },
-    "stomachache": {
-    "category": ConditionCategory.Illness,
-    "duration_moons": 2,
-    "herbs": {
-    "1": [
-    Herb.JuniperBerry,
-    Herb.Mallow,
-    Herb.Ragwort,
-    Herb.Poppy
-    ],
-    "2": [],
-    "3": []
-    },
-    "infectiousness": 0,
-    "medicine_duration_moons": 1,
-    "medicine_mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "complication_risks": [
-    {
-    "chance": 8,
-    "name": "diarrhea"
-    }
-    ],
-    "severity": ConditionSeverity.Minor
-    },
-    "whitecough": {
-    "category": ConditionCategory.Illness,
-    "duration_moons": 3,
-    "herbs": {
-    "1": [
-    Herb.Catmint,
-    Herb.Plantain,
-    Herb.Tansy,
-    Herb.Mullein,
-    Herb.JuniperBerry,
-    Herb.Ragwort,
-    Herb.Poppy,
-    Herb.Moss
-    ],
-    "2": [],
-    "3": []
-    },
-    "infectiousness": 30,
-    "medicine_duration_moons": 2,
-    "medicine_mortality_risk": {
-    "adolescent": 60,
-    "adult": 70,
-    "kitten": 15,
-    "newborn": 15,
-    "senior": 15,
-    "senior adult": 70,
-    "young adult": 70
-    },
-    "mortality_risk": {
-    "adolescent": 20,
-    "adult": 60,
-    "kitten": 10,
-    "newborn": 10,
-    "senior": 10,
-    "senior adult": 50,
-    "young adult": 60
-    },
-    "complication_risks": [
-    {
-    "chance": 18,
-    "name": "greencough"
-    }
-    ],
-    "severity": ConditionSeverity.Major
-    },
-    "yellowcough": {
-    "category": ConditionCategory.Illness,
-    "duration_moons": 3,
-    "herbs": {
-    "1": [
-    Herb.Lungwort
-    ],
-    "2": [],
-    "3": []
-    },
-    "infectiousness": 30,
-    "medicine_duration_moons": 3,
-    "medicine_mortality_risk": {
-    "adolescent": 10,
-    "adult": 15,
-    "kitten": 5,
-    "newborn": 5,
-    "senior": 5,
-    "senior adult": 15,
-    "young adult": 15
-    },
-    "mortality_risk": {
-    "adolescent": 3,
-    "adult": 5,
-    "kitten": 2,
-    "newborn": 2,
-    "senior": 3,
-    "senior adult": 5,
-    "young adult": 5
-    },
-    "complication_risks": [
-    {
-    "chance": 80,
-    "name": "redcough"
-    }
-    ],
-    "severity": ConditionSeverity.Major
+    ConditionName.Festering: {
+        "category": ConditionCategory.Illness,
+        "duration_moons": 3,
+        "herbs": {
+            "1": [
+                HerbName.Marigold,
+                HerbName.BurdockRoot,
+                HerbName.OakLeaf,
+                HerbName.RagwortLeaf,
+                HerbName.JuniperBerry,
+                HerbName.PoppySeed,
+                HerbName.Moss
+            ],
+            "2": [],
+            "3": []
+        },
+        "infectiousness": 0,
+        "medicine_duration_moons": 2,
+        "medicated_mortality_risk": {
+            AgeCategory.Newborn: 3,
+            AgeCategory.Kitten: 3,
+            AgeCategory.Adolescent: 5,
+            AgeCategory.YoungAdult: 8,
+            AgeCategory.SeniorAdult: 8,
+            AgeCategory.Elder: 3,
+        },
+        "mortality_risk": {
+            AgeCategory.Newborn: 1,
+            AgeCategory.Kitten: 1,
+            AgeCategory.Adolescent: 3,
+            AgeCategory.YoungAdult: 3,
+            AgeCategory.SeniorAdult: 5,
+            AgeCategory.Elder: 8,
+        },
+        "complication_risks": [],
+        "severity": ConditionSeverity.Major
+    },
+    ConditionName.Infected: {
+        "category": ConditionCategory.Illness,
+        "duration_moons": 3,
+        "herbs": {
+            "1": [
+                HerbName.Marigold,
+                HerbName.BurdockRoot,
+                HerbName.WildGarlic,
+                HerbName.PoppySeed
+            ],
+            "2": [],
+            "3": []
+        },
+        "infectiousness": 0,
+        "medicine_duration_moons": 2,
+        "medicated_mortality_risk": {
+            AgeCategory.Newborn: 5,
+            AgeCategory.Kitten: 8,
+            AgeCategory.Adolescent: 13,
+            AgeCategory.YoungAdult: 15,
+            AgeCategory.SeniorAdult: 15,
+            AgeCategory.Elder: 13,
+        },
+        "mortality_risk": {
+            AgeCategory.Newborn: 3,
+            AgeCategory.Kitten: 3,
+            AgeCategory.Adolescent: 8,
+            AgeCategory.YoungAdult: 8,
+            AgeCategory.SeniorAdult: 8,
+            AgeCategory.Elder: 5,
+        },
+        "complication_risks": [
+            {
+                "chance": 10,
+                "name": ConditionName.Festering
+            }
+        ],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.CarrionplaceDisease: {
+        "category": ConditionCategory.Illness,
+        "duration_moons": 3,
+        "herbs": {
+            "1": [
+                HerbName.Marigold,
+                HerbName.BurdockRoot,
+                HerbName.WildGarlic,
+                HerbName.PoppySeed
+            ],
+            "2": [],
+            "3": []
+        },
+        "infectiousness": 0,
+        "medicine_duration_moons": 2,
+        "medicated_mortality_risk": {
+            AgeCategory.Newborn: 2,
+            AgeCategory.Kitten: 2,
+            AgeCategory.Adolescent: 3,
+            AgeCategory.YoungAdult: 3,
+            AgeCategory.SeniorAdult: 3,
+            AgeCategory.Elder: 2,
+        },
+        "mortality_risk": {
+            AgeCategory.Newborn: 1,
+            AgeCategory.Kitten: 1,
+            AgeCategory.Adolescent: 2,
+            AgeCategory.YoungAdult: 2,
+            AgeCategory.SeniorAdult: 2,
+            AgeCategory.Elder: 1,
+        },
+        "complication_risks": [],
+        "severity": ConditionSeverity.Major
+    },
+    ConditionName.Nightmares: {
+        "category": ConditionCategory.Illness,
+        "duration_moons": 2,
+        "herbs": {
+            "1": [
+                HerbName.JuniperBerry,
+                HerbName.ThymeLeaf,
+                HerbName.PoppySeed
+            ],
+            "2": [],
+            "3": []
+        },
+        "infectiousness": 0,
+        "medicine_duration_moons": 1,
+        "medicated_mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.Diarrhea: {
+        "category": ConditionCategory.Illness,
+        "duration_moons": 2,
+        "herbs": {
+            "1": [
+                HerbName.BetonyLeaf,
+                HerbName.MulleinLeaf,
+                HerbName.JuniperBerry,
+                HerbName.Mallow
+            ],
+            "2": [],
+            "3": []
+        },
+        "infectiousness": 0,
+        "medicine_duration_moons": 2,
+        "medicated_mortality_risk": {
+            AgeCategory.Newborn: 10,
+            AgeCategory.Kitten: 10,
+            AgeCategory.Adolescent: 15,
+            AgeCategory.YoungAdult: 30,
+            AgeCategory.SeniorAdult: 30,
+            AgeCategory.Elder: 13,
+        },
+        "mortality_risk": {
+            AgeCategory.Newborn: 3,
+            AgeCategory.Kitten: 3,
+            AgeCategory.Adolescent: 8,
+            AgeCategory.YoungAdult: 10,
+            AgeCategory.SeniorAdult: 10,
+            AgeCategory.Elder: 5,
+        },
+        "complication_risks": [],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.Fleas: {
+        "category": ConditionCategory.Illness,
+        "duration_moons": 4,
+        "herbs": {
+            "1": [
+                HerbName.PlantainFlower
+            ],
+            "2": [],
+            "3": []
+        },
+        "infectiousness": 15,
+        "medicine_duration_moons": 2,
+        "medicated_mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "mortality_risk": {
+            AgeCategory.Newborn: 30,
+            AgeCategory.Kitten: 20,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [
+            {
+                "chance": 20,
+                "name": ConditionName.TornPelt
+            }
+        ],
+        "severity": ConditionSeverity.Minor
+    },
+    ConditionName.Greencough: {
+        "category": ConditionCategory.Illness,
+        "duration_moons": 3,
+        "herbs": {
+            "1": [
+                HerbName.Catmint,
+                HerbName.TansyStem,
+                HerbName.MulleinLeaf,
+                HerbName.PlantainFlower,
+                HerbName.JuniperBerry,
+                HerbName.PoppySeed,
+                HerbName.Moss
+            ],
+            "2": [],
+            "3": []
+        },
+        "infectiousness": 30,
+        "medicine_duration_moons": 2,
+        "medicated_mortality_risk": {
+            AgeCategory.Newborn: 7,
+            AgeCategory.Kitten: 7,
+            AgeCategory.Adolescent: 12,
+            AgeCategory.YoungAdult: 25,
+            AgeCategory.SeniorAdult: 20,
+            AgeCategory.Elder: 7,
+        },
+        "mortality_risk": {
+            AgeCategory.Newborn: 3,
+            AgeCategory.Kitten: 4,
+            AgeCategory.Adolescent: 8,
+            AgeCategory.YoungAdult: 10,
+            AgeCategory.SeniorAdult: 8,
+            AgeCategory.Elder: 3,
+        },
+        "complication_risks": [
+            {
+                "chance": 60,
+                "name": ConditionName.Yellowcough
+            }
+        ],
+        "severity": ConditionSeverity.Major
+    },
+    ConditionName.Grieving: {
+        "category": ConditionCategory.Illness,
+        "duration_moons": 5,
+        "herbs": {
+            "1": [
+                HerbName.JuniperBerry,
+                HerbName.ThymeLeaf,
+                HerbName.PoppySeed
+            ],
+            "2": [],
+            "3": []
+        },
+        "infectiousness": 0,
+        "medicine_duration_moons": 3,
+        "medicated_mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [
+            {
+                "chance": 100,
+                "name": ConditionName.LastingGrief
+            },
+            {
+                "chance": 15,
+                "name": ConditionName.Nightmares
+            }
+        ],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.HeatExhaustion: {
+        "category": ConditionCategory.Illness,
+        "duration_moons": 2,
+        "herbs": {
+            "1": [
+                HerbName.JuniperBerry,
+                HerbName.RagwortLeaf,
+                HerbName.Moss
+            ],
+            "2": [],
+            "3": []
+        },
+        "infectiousness": 0,
+        "medicine_duration_moons": 2,
+        "medicated_mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [
+            {
+                "chance": 5,
+                "name": ConditionName.HeatStroke
+            }
+        ],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.HeatStroke: {
+        "category": ConditionCategory.Illness,
+        "duration_moons": 1,
+        "herbs": {
+            "1": [
+                HerbName.JuniperBerry,
+                HerbName.RagwortLeaf,
+                HerbName.Moss
+            ],
+            "2": [],
+            "3": []
+        },
+        "infectiousness": 0,
+        "medicine_duration_moons": 1,
+        "medicated_mortality_risk": {
+            AgeCategory.Newborn: 5,
+            AgeCategory.Kitten: 5,
+            AgeCategory.Adolescent: 10,
+            AgeCategory.YoungAdult: 15,
+            AgeCategory.SeniorAdult: 25,
+            AgeCategory.Elder: 10,
+        },
+        "mortality_risk": {
+            AgeCategory.Newborn: 2,
+            AgeCategory.Kitten: 4,
+            AgeCategory.Adolescent: 5,
+            AgeCategory.YoungAdult: 5,
+            AgeCategory.SeniorAdult: 8,
+            AgeCategory.Elder: 3,
+        },
+        "complication_risks": [],
+        "severity": ConditionSeverity.Major
+    },
+    ConditionName.Kittencough: {
+        "category": ConditionCategory.Illness,
+        "duration_moons": 3,
+        "herbs": {
+            "1": [
+                HerbName.Catmint,
+                HerbName.TansyStem,
+                HerbName.MulleinLeaf,
+                HerbName.PlantainFlower,
+                HerbName.JuniperBerry,
+                HerbName.PoppySeed,
+                HerbName.Moss
+            ],
+            "2": [],
+            "3": []
+        },
+        "infectiousness": 15,
+        "medicine_duration_moons": 2,
+        "medicated_mortality_risk": {
+            AgeCategory.Newborn: 5,
+            AgeCategory.Kitten: 5,
+            AgeCategory.Adolescent: 60,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 10,
+        },
+        "mortality_risk": {
+            AgeCategory.Newborn: 2,
+            AgeCategory.Kitten: 2,
+            AgeCategory.Adolescent: 15,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 5,
+        },
+        "complication_risks": [
+            {
+                "chance": 10,
+                "name": ConditionName.Whitecough
+            }
+        ],
+        "severity": ConditionSeverity.Major
+    },
+    ConditionName.Malnourished: {
+        "category": ConditionCategory.Illness,
+        "duration_moons": 100,
+        "herbs": {
+            "1": [
+                HerbName.ThymeLeaf
+            ],
+            "2": [],
+            "3": []
+        },
+        "infectiousness": 0,
+        "medicine_duration_moons": 100,
+        "medicated_mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [],
+        "severity": ConditionSeverity.Minor
+    },
+    ConditionName.Redcough: {
+        "category": ConditionCategory.Illness,
+        "duration_moons": 50,
+        "herbs": {
+            "1": [
+                HerbName.LungwortLeaf,
+                HerbName.MulleinLeaf,
+                HerbName.TansyStem,
+                HerbName.PlantainFlower,
+                HerbName.JuniperBerry,
+                HerbName.RagwortLeaf,
+                HerbName.PoppySeed,
+                HerbName.Moss
+            ],
+            "2": [],
+            "3": []
+        },
+        "infectiousness": 0,
+        "medicine_duration_moons": 40,
+        "medicated_mortality_risk": {
+            AgeCategory.Newborn: 2,
+            AgeCategory.Kitten: 2,
+            AgeCategory.Adolescent: 3,
+            AgeCategory.YoungAdult: 3,
+            AgeCategory.SeniorAdult: 3,
+            AgeCategory.Elder: 2,
+        },
+        "mortality_risk": {
+            AgeCategory.Newborn: 1,
+            AgeCategory.Kitten: 1,
+            AgeCategory.Adolescent: 2,
+            AgeCategory.YoungAdult: 2,
+            AgeCategory.SeniorAdult: 2,
+            AgeCategory.Elder: 1,
+        },
+        "complication_risks": [],
+        "severity": ConditionSeverity.Major
+    },
+    ConditionName.RunningNose: {
+        "category": ConditionCategory.Illness,
+        "duration_moons": 3,
+        "herbs": {
+            "1": [
+                HerbName.RagwortLeaf,
+                HerbName.JuniperBerry,
+                HerbName.PoppySeed
+            ],
+            "2": [],
+            "3": []
+        },
+        "infectiousness": 0,
+        "medicine_duration_moons": 2,
+        "medicated_mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [
+            {
+                "chance": 15,
+                "name": ConditionName.Whitecough
+            }
+        ],
+        "severity": ConditionSeverity.Minor
+    },
+    ConditionName.Seizure: {
+        "category": ConditionCategory.Illness,
+        "duration_moons": 1,
+        "herbs": {
+            "1": [
+                HerbName.JuniperBerry,
+                HerbName.PoppySeed,
+                HerbName.ThymeLeaf,
+                HerbName.RagwortLeaf
+            ],
+            "2": [],
+            "3": []
+        },
+        "infectiousness": 0,
+        "medicine_duration_moons": 1,
+        "medicated_mortality_risk": {
+            AgeCategory.Newborn: 30,
+            AgeCategory.Kitten: 50,
+            AgeCategory.Adolescent: 70,
+            AgeCategory.YoungAdult: 150,
+            AgeCategory.SeniorAdult: 150,
+            AgeCategory.Elder: 70,
+        },
+        "mortality_risk": {
+            AgeCategory.Newborn: 15,
+            AgeCategory.Kitten: 25,
+            AgeCategory.Adolescent: 50,
+            AgeCategory.YoungAdult: 100,
+            AgeCategory.SeniorAdult: 100,
+            AgeCategory.Elder: 35,
+        },
+        "complication_risks": [],
+        "severity": ConditionSeverity.Major
+    },
+    ConditionName.Starving: {
+        "category": ConditionCategory.Illness,
+        "duration_moons": 100,
+        "herbs": {
+            "1": [
+                HerbName.ThymeLeaf
+            ],
+            "2": [],
+            "3": []
+        },
+        "infectiousness": 0,
+        "medicine_duration_moons": 100,
+        "medicated_mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [],
+        "severity": ConditionSeverity.Major
+    },
+    ConditionName.Stomachache: {
+        "category": ConditionCategory.Illness,
+        "duration_moons": 2,
+        "herbs": {
+            "1": [
+                HerbName.JuniperBerry,
+                HerbName.Mallow,
+                HerbName.RagwortLeaf,
+                HerbName.PoppySeed
+            ],
+            "2": [],
+            "3": []
+        },
+        "infectiousness": 0,
+        "medicine_duration_moons": 1,
+        "medicated_mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [
+            {
+                "chance": 8,
+                "name": ConditionName.Diarrhea
+            }
+        ],
+        "severity": ConditionSeverity.Minor
+    },
+    ConditionName.Whitecough: {
+        "category": ConditionCategory.Illness,
+        "duration_moons": 3,
+        "herbs": {
+            "1": [
+                HerbName.Catmint,
+                HerbName.PlantainFlower,
+                HerbName.TansyStem,
+                HerbName.MulleinLeaf,
+                HerbName.JuniperBerry,
+                HerbName.RagwortLeaf,
+                HerbName.PoppySeed,
+                HerbName.Moss
+            ],
+            "2": [],
+            "3": []
+        },
+        "infectiousness": 30,
+        "medicine_duration_moons": 2,
+        "medicated_mortality_risk": {
+            AgeCategory.Newborn: 15,
+            AgeCategory.Kitten: 15,
+            AgeCategory.Adolescent: 60,
+            AgeCategory.YoungAdult: 70,
+            AgeCategory.SeniorAdult: 70,
+            AgeCategory.Elder: 15,
+        },
+        "mortality_risk": {
+            AgeCategory.Newborn: 10,
+            AgeCategory.Kitten: 10,
+            AgeCategory.Adolescent: 20,
+            AgeCategory.YoungAdult: 60,
+            AgeCategory.SeniorAdult: 50,
+            AgeCategory.Elder: 10,
+        },
+        "complication_risks": [
+            {
+                "chance": 18,
+                "name": ConditionName.Greencough
+            }
+        ],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.Yellowcough: {
+        "category": ConditionCategory.Illness,
+        "duration_moons": 3,
+        "herbs": {
+            "1": [
+                HerbName.LungwortLeaf
+            ],
+            "2": [],
+            "3": []
+        },
+        "infectiousness": 30,
+        "medicine_duration_moons": 3,
+        "medicated_mortality_risk": {
+            AgeCategory.Newborn: 5,
+            AgeCategory.Kitten: 5,
+            AgeCategory.Adolescent: 10,
+            AgeCategory.YoungAdult: 15,
+            AgeCategory.SeniorAdult: 15,
+            AgeCategory.Elder: 5,
+        },
+        "mortality_risk": {
+            AgeCategory.Newborn: 2,
+            AgeCategory.Kitten: 2,
+            AgeCategory.Adolescent: 3,
+            AgeCategory.YoungAdult: 5,
+            AgeCategory.SeniorAdult: 5,
+            AgeCategory.Elder: 3,
+        },
+        "complication_risks": [
+            {
+                "chance": 80,
+                "name": ConditionName.Redcough
+            }
+        ],
+        "severity": ConditionSeverity.Medium
     },
 }
 
 INJURIES: dict = {
-    "beak_bite": {
-    "category": ConditionCategory.Injury,
-    "also_got": [
-    "torn_pelt",
-    "blood_loss"
-    ],
-    "cause_permanent": [],
-    "duration_moons": 2,
-    "herbs": {
-    "1": [
-    Herb.Cobweb,
-    Herb.Goldenrod,
-    Herb.Marigold,
-    Herb.OakLeaf,
-    Herb.WildGarlic,
-    Herb.Tansy,
-    Herb.Poppy,
-    Herb.Ragwort,
-    Herb.Moss
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 1,
-    "mortality_risk": {
-    "adolescent": 45,
-    "adult": 60,
-    "kitten": 10,
-    "newborn": 10,
-    "senior": 15,
-    "senior adult": 60,
-    "young adult": 60
-    },
-    "complication_risks": [
-    {
-    "chance": 5,
-    "name": "infected_wound"
-    }
-    ],
-    "severity": ConditionSeverity.Major
-    },
-    "bee_sting": {
-    "category": ConditionCategory.Injury,
-    "also_got": [],
-    "cause_permanent": [],
-    "duration_moons": 2,
-    "herbs": {
-    "1": [
-    Herb.BlackberryLeaf,
-    Herb.Dandelion,
-    Herb.Poppy
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 1,
-    "mortality_risk": {
-    "adolescent": 30,
-    "adult": 50,
-    "kitten": 20,
-    "newborn": 10,
-    "senior": 30,
-    "senior adult": 50,
-    "young adult": 50
-    },
-    "complication_risks": [],
-    "severity": ConditionSeverity.Minor
-    },
-    "bite_wound": {
-    "category": ConditionCategory.Injury,
-    "also_got": [
-    "torn_pelt",
-    "blood_loss"
-    ],
-    "cause_permanent": [],
-    "duration_moons": 3,
-    "herbs": {
-    "1": [
-    Herb.Cobweb,
-    Herb.Goldenrod,
-    Herb.Marigold,
-    Herb.OakLeaf,
-    Herb.WildGarlic,
-    Herb.Tansy,
-    Herb.Poppy,
-    Herb.Ragwort,
-    Herb.Moss
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 2,
-    "mortality_risk": {
-    "adolescent": 45,
-    "adult": 60,
-    "kitten": 10,
-    "newborn": 10,
-    "senior": 15,
-    "senior adult": 60,
-    "young adult": 60
-    },
-    "complication_risks": [
-    {
-    "chance": 5,
-    "name": "infected_wound"
-    }
-    ],
-    "severity": ConditionSeverity.Major
-    },
-    "blood_loss": {
-    "category": ConditionCategory.Injury,
-    "also_got": [
-    "shock"
-    ],
-    "cause_permanent": [],
-    "duration_moons": 1,
-    "herbs": {
-    "1": [
-    Herb.Cobweb,
-    Herb.Horsetail,
-    Herb.Marigold,
-    Herb.Ragwort,
-    Herb.JuniperBerry,
-    Herb.Moss,
-    Herb.Poppy
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 1,
-    "mortality_risk": {
-    "adolescent": 10,
-    "adult": 25,
-    "kitten": 5,
-    "newborn": 5,
-    "senior": 15,
-    "senior adult": 25,
-    "young adult": 20
-    },
-    "complication_risks": [],
-    "severity": ConditionSeverity.Minor
-    },
-    "broken_back": {
-    "category": ConditionCategory.Injury,
-    "also_got": [],
-    "cause_permanent": [
-    "paralyzed"
-    ],
-    "duration_moons": 8,
-    "herbs": {
-    "1": [
-    Herb.JuniperBerry,
-    Herb.Ragwort,
-    Herb.Poppy
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 6,
-    "mortality_risk": {
-    "adolescent": 25,
-    "adult": 30,
-    "kitten": 5,
-    "newborn": 3,
-    "senior": 10,
-    "senior adult": 25,
-    "young adult": 30
-    },
-    "complication_risks": [
-    {
-    "chance": 10,
-    "name": "infected_wound"
-    }
-    ],
-    "severity": ConditionSeverity.Severe
-    },
-    "broken_bone": {
-    "category": ConditionCategory.Injury,
-    "also_got": [
-    "torn_pelt",
-    "mangled_leg",
-    "blood_loss",
-    "scrapes",
-    "bruises"
-    ],
-    "cause_permanent": [
-    "weak_leg",
-    "twisted_leg"
-    ],
-    "duration_moons": 5,
-    "herbs": {
-    "1": [
-    Herb.Cobweb,
-    Herb.Marigold,
-    Herb.OakLeaf,
-    Herb.WildGarlic,
-    Herb.JuniperBerry,
-    Herb.Ragwort,
-    Herb.Poppy,
-    Herb.Moss
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 3,
-    "mortality_risk": {
-    "adolescent": 45,
-    "adult": 60,
-    "kitten": 10,
-    "newborn": 10,
-    "senior": 15,
-    "senior adult": 60,
-    "young adult": 60
-    },
-    "complication_risks": [
-    {
-    "chance": 5,
-    "name": "infected_wound"
-    }
-    ],
-    "severity": ConditionSeverity.Severe
-    },
-    "broken_jaw": {
-    "category": ConditionCategory.Injury,
-    "also_got": [
-    "blood_loss",
-    "scrapes",
-    "bruises"
-    ],
-    "cause_permanent": [
-    "crooked_jaw"
-    ],
-    "duration_moons": 4,
-    "herbs": {
-    "1": [
-    Herb.Cobweb,
-    Herb.Marigold,
-    Herb.OakLeaf,
-    Herb.WildGarlic,
-    Herb.JuniperBerry,
-    Herb.Ragwort,
-    Herb.Poppy,
-    Herb.Moss
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 3,
-    "mortality_risk": {
-    "adolescent": 35,
-    "adult": 50,
-    "kitten": 10,
-    "newborn": 10,
-    "senior": 10,
-    "senior adult": 50,
-    "young adult": 50
-    },
-    "complication_risks": [
-    {
-    "chance": 5,
-    "name": "infected_wound"
-    }
-    ],
-    "severity": ConditionSeverity.Severe
-    },
-    "bruises": {
-    "category": ConditionCategory.Injury,
-    "also_got": [],
-    "cause_permanent": [],
-    "duration_moons": 1,
-    "herbs": {
-    "1": [],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 1,
-    "mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "complication_risks": [],
-    "severity": ConditionSeverity.Minor
-    },
-    "burn": {
-    "category": ConditionCategory.Injury,
-    "also_got": [],
-    "cause_permanent": [],
-    "duration_moons": 2,
-    "herbs": {
-    "1": [
-    Herb.Cobweb,
-    Herb.Marigold,
-    Herb.WildGarlic,
-    Herb.OakLeaf,
-    Herb.Goldenrod,
-    Herb.JuniperBerry,
-    Herb.Ragwort,
-    Herb.Poppy,
-    Herb.Moss
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 2,
-    "mortality_risk": {
-    "adolescent": 30,
-    "adult": 60,
-    "kitten": 10,
-    "newborn": 10,
-    "senior": 30,
-    "senior adult": 50,
-    "young adult": 50
-    },
-    "complication_risks": [
-    {
-    "chance": 25,
-    "name": "infected_wound"
-    }
-    ],
-    "severity": ConditionSeverity.Major
-    },
-    "cat_bite": {
-    "category": ConditionCategory.Injury,
-    "also_got": [
-    "torn_pelt",
-    "blood_loss"
-    ],
-    "cause_permanent": [],
-    "duration_moons": 2,
-    "herbs": {
-    "1": [
-    Herb.Cobweb,
-    Herb.Goldenrod,
-    Herb.Marigold,
-    Herb.OakLeaf,
-    Herb.WildGarlic,
-    Herb.Tansy,
-    Herb.Poppy,
-    Herb.Ragwort,
-    Herb.Moss
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 2,
-    "mortality_risk": {
-    "adolescent": 45,
-    "adult": 60,
-    "kitten": 10,
-    "newborn": 10,
-    "senior": 15,
-    "senior adult": 60,
-    "young adult": 60
-    },
-    "complication_risks": [
-    {
-    "chance": 5,
-    "name": "infected_wound"
-    }
-    ],
-    "severity": ConditionSeverity.Major
-    },
-    "claw_wound": {
-    "category": ConditionCategory.Injury,
-    "also_got": [
-    "torn_pelt",
-    "torn_ear",
-    "blood_loss"
-    ],
-    "cause_permanent": [],
-    "duration_moons": 3,
-    "herbs": {
-    "1": [
-    Herb.Cobweb,
-    Herb.Goldenrod,
-    Herb.Marigold,
-    Herb.OakLeaf,
-    Herb.WildGarlic,
-    Herb.Tansy,
-    Herb.Poppy,
-    Herb.Ragwort,
-    Herb.Moss
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 2,
-    "mortality_risk": {
-    "adolescent": 40,
-    "adult": 50,
-    "kitten": 5,
-    "newborn": 5,
-    "senior": 10,
-    "senior adult": 50,
-    "young adult": 50
-    },
-    "complication_risks": [
-    {
-    "chance": 5,
-    "name": "infected_wound"
-    }
-    ],
-    "severity": ConditionSeverity.Major
-    },
-    "cracked_pads": {
-    "category": ConditionCategory.Injury,
-    "also_got": [],
-    "cause_permanent": [],
-    "duration_moons": 1,
-    "herbs": {
-    "1": [
-    Herb.OakLeaf,
-    Herb.Marigold,
-    Herb.WildGarlic,
-    Herb.Poppy
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 1,
-    "mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "complication_risks": [
-    {
-    "chance": 20,
-    "name": "infected_wound"
-    }
-    ],
-    "severity": ConditionSeverity.Minor
-    },
-    "damaged_eyes": {
-    "category": ConditionCategory.Injury,
-    "also_got": [],
-    "cause_permanent": [
-    "blind",
-    "one_bad_eye",
-    "failing_eyesight"
-    ],
-    "duration_moons": 6,
-    "herbs": {
-    "1": [
-    Herb.Celandine,
-    Herb.Cobweb,
-    Herb.Goldenrod,
-    Herb.Marigold,
-    Herb.OakLeaf,
-    Herb.WildGarlic,
-    Herb.JuniperBerry,
-    Herb.Ragwort,
-    Herb.Poppy,
-    Herb.Moss
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 4,
-    "mortality_risk": {
-    "adolescent": 50,
-    "adult": 70,
-    "kitten": 30,
-    "newborn": 30,
-    "senior": 50,
-    "senior adult": 70,
-    "young adult": 70
-    },
-    "complication_risks": [
-    {
-    "chance": 4,
-    "name": "infected_wound"
-    }
-    ],
-    "severity": ConditionSeverity.Major
-    },
-    "dehydrated": {
-    "also_got": [
-    "heat_exhaustion"
-    ],
-    "category": ConditionCategory.Injury,
-    "cause_permanent": [],
-    "duration_moons": 1,
-    "herbs": {
-    "1": [
-    Herb.Ragwort,
-    Herb.JuniperBerry,
-    Herb.Moss
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 1,
-    "mortality_risk": {
-    "adolescent": 30,
-    "adult": 80,
-    "kitten": 10,
-    "newborn": 10,
-    "senior": 20,
-    "senior adult": 50,
-    "young adult": 50
-    },
-    "complication_risks": [
-    {
-    "chance": 10,
-    "name": "heat_exhaustion"
-    }
-    ],
-    "severity": ConditionSeverity.Major
-    },
-    "dislocated_joint": {
-    "also_got": [
-    "bruises",
-    "sore",
-    "joint_pain"
-    ],
-    "category": ConditionCategory.Injury,
-    "cause_permanent": [
-    "constant_joint_pain"
-    ],
-    "duration_moons": 2,
-    "herbs": {
-    "1": [
-    Herb.Marigold,
-    Herb.Ragwort,
-    Herb.Daisy,
-    Herb.Poppy
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 1,
-    "mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "complication_risks": [],
-    "severity": ConditionSeverity.Major
-    },
-    "frostbite": {
-    "also_got": [],
-    "cause_permanent": [
-    "lost_a_leg",
-    "lost_their_tail"
-    ],
-    "category": ConditionCategory.Injury,
-    "duration_moons": 2,
-    "herbs": {
-    "1": [
-    Herb.JuniperBerry,
-    Herb.Ragwort,
-    Herb.Poppy,
-    Herb.Moss,
-    Herb.Dandelion
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 2,
-    "mortality_risk": {
-    "adolescent": 20,
-    "adult": 30,
-    "kitten": 10,
-    "newborn": 10,
-    "senior": 10,
-    "senior adult": 20,
-    "young adult": 25
-    },
-    "complication_risks": [
-    {
-    "chance": 4,
-    "name": "running_nose"
-    }
-    ],
-    "severity": ConditionSeverity.Major
-    },
-    "head_damage": {
-    "also_got": [],
-    "category": ConditionCategory.Injury,
-    "cause_permanent": [
-    "failing_eyesight",
-    "one_bad_eye",
-    "blind",
-    "constantly_dizzy",
-    "partial_hearing_loss",
-    "persistent_headaches"
-    ],
-    "duration_moons": 5,
-    "herbs": {
-    "1": [
-    Herb.JuniperBerry,
-    Herb.Ragwort,
-    Herb.Thyme
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 2,
-    "mortality_risk": {
-    "adolescent": 30,
-    "adult": 50,
-    "kitten": 15,
-    "newborn": 20,
-    "senior": 20,
-    "senior adult": 40,
-    "young adult": 40
-    },
-    "complication_risks": [
-    {
-    "chance": 20,
-    "name": "headache"
-    },
-    {
-    "chance": 20,
-    "name": "severe_headache"
-    }
-    ],
-    "severity": ConditionSeverity.Major
-    },
-    "headache": {
-    "also_got": [],
-    "category": ConditionCategory.Injury,
-    "cause_permanent": [],
-    "duration_moons": 1,
-    "herbs": {
-    "1": [
-    Herb.Poppy,
-    Herb.JuniperBerry
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 1,
-    "mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "complication_risks": [],
-    "severity": ConditionSeverity.Minor
-    },
-    "joint_pain": {
-    "also_got": [],
-    "category": ConditionCategory.Injury,
-    "cause_permanent": [],
-    "duration_moons": 2,
-    "herbs": {
-    "1": [
-    Herb.Marigold,
-    Herb.Ragwort,
-    Herb.Daisy,
-    Herb.Poppy
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 2,
-    "mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "complication_risks": [],
-    "severity": ConditionSeverity.Minor
-    },
-    "lingering_shock": {
-    "also_got": [],
-    "category": ConditionCategory.Injury,
-    "cause_permanent": [
-    "recurring_shock"
-    ],
-    "duration_moons": 12,
-    "herbs": {
-    "1": [
-    Herb.Thyme,
-    Herb.JuniperBerry,
-    Herb.Ragwort,
-    Herb.Poppy
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 8,
-    "mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "complication_risks": [],
-    "severity": ConditionSeverity.Major
-    },
-    "mangled_leg": {
-    "also_got": [
-    "torn_pelt",
-    "broken_bone",
-    "dislocated_joint",
-    "blood_loss",
-    "scrapes",
-    "bruises"
-    ],
-    "category": ConditionCategory.Injury,
-    "cause_permanent": [
-    "lost_a_leg",
-    "weak_leg",
-    "twisted_leg"
-    ],
-    "duration_moons": 3,
-    "herbs": {
-    "1": [
-    Herb.Cobweb,
-    Herb.Goldenrod,
-    Herb.Marigold,
-    Herb.WildGarlic,
-    Herb.OakLeaf,
-    Herb.Tansy,
-    Herb.Poppy,
-    Herb.Ragwort,
-    Herb.JuniperBerry,
-    Herb.Moss
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 3,
-    "mortality_risk": {
-    "adolescent": 50,
-    "adult": 60,
-    "kitten": 15,
-    "newborn": 15,
-    "senior": 15,
-    "senior adult": 60,
-    "young adult": 60
-    },
-    "complication_risks": [
-    {
-    "chance": 5,
-    "name": "infected_wound"
-    }
-    ],
-    "severity": ConditionSeverity.Severe
-    },
-    "mangled_tail": {
-    "also_got": [
-    "torn_pelt",
-    "blood_loss"
-    ],
-    "category": ConditionCategory.Injury,
-    "cause_permanent": [
-    "lost_their_tail"
-    ],
-    "duration_moons": 3,
-    "herbs": {
-    "1": [
-    Herb.Cobweb,
-    Herb.Goldenrod,
-    Herb.Marigold,
-    Herb.WildGarlic,
-    Herb.OakLeaf,
-    Herb.Tansy,
-    Herb.Poppy,
-    Herb.Ragwort,
-    Herb.JuniperBerry,
-    Herb.Moss
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 3,
-    "mortality_risk": {
-    "adolescent": 50,
-    "adult": 60,
-    "kitten": 15,
-    "newborn": 15,
-    "senior": 15,
-    "senior adult": 60,
-    "young adult": 60
-    },
-    "complication_risks": [
-    {
-    "chance": 5,
-    "name": "infected_wound"
-    }
-    ],
-    "severity": ConditionSeverity.Severe
-    },
-    "phantom_pain": {
-    "also_got": [],
-    "category": ConditionCategory.Injury,
-    "cause_permanent": [],
-    "duration_moons": 2,
-    "herbs": {
-    "1": [
-    Herb.Dandelion,
-    Herb.Poppy,
-    Herb.RaspberryLeaf
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 1,
-    "mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "complication_risks": [],
-    "severity": ConditionSeverity.Major
-    },
-    "poisoned": {
-    "also_got": [
-    "shock"
-    ],
-    "category": ConditionCategory.Injury,
-    "cause_permanent": [],
-    "duration_moons": 2,
-    "herbs": {
-    "1": [
-    Herb.Dandelion,
-    Herb.Tansy,
-    Herb.JuniperBerry,
-    Herb.Ragwort,
-    Herb.Poppy
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 1,
-    "mortality_risk": {
-    "adolescent": 15,
-    "adult": 30,
-    "kitten": 5,
-    "newborn": 10,
-    "senior": 15,
-    "senior adult": 20,
-    "young adult": 20
-    },
-    "complication_risks": [
-    {
-    "chance": 10,
-    "name": "redcough"
-    }
-    ],
-    "severity": ConditionSeverity.Major
-    },
-    "pregnant": {
-    "also_got": [],
-    "category": ConditionCategory.Injury,
-    "cause_permanent": [],
-    "duration_moons": 2,
-    "herbs": {
-    "1": [],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 3,
-    "mortality_risk": {
-    "adolescent": 0,
-    "adult": 40,
-    "kitten": 0,
-    "senior": 20,
-    "senior adult": 30,
-    "young adult": 40
-    },
-    "complication_risks": [],
-    "severity": ConditionSeverity.Major
-    },
-    "quilled_by_a_porcupine": {
-    "also_got": [
-    "torn_pelt"
-    ],
-    "category": ConditionCategory.Injury,
-    "cause_permanent": [],
-    "duration_moons": 2,
-    "herbs": {
-    "1": [
-    Herb.Cobweb,
-    Herb.Goldenrod,
-    Herb.Marigold,
-    Herb.OakLeaf,
-    Herb.WildGarlic,
-    Herb.JuniperBerry,
-    Herb.Ragwort,
-    Herb.Poppy,
-    Herb.Moss
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 1,
-    "mortality_risk": {
-    "adolescent": 40,
-    "adult": 60,
-    "kitten": 20,
-    "newborn": 10,
-    "senior": 30,
-    "senior adult": 50,
-    "young adult": 50
-    },
-    "complication_risks": [
-    {
-    "chance": 5,
-    "name": "infected_wound"
-    }
-    ],
-    "severity": ConditionSeverity.Minor
-    },
-    "rat_bite": {
-    "also_got": [
-    "torn_pelt"
-    ],
-    "category": ConditionCategory.Injury,
-    "cause_permanent": [],
-    "duration_moons": 2,
-    "herbs": {
-    "1": [
-    Herb.WildGarlic,
-    Herb.Burdock,
-    Herb.Tansy,
-    Herb.Cobweb,
-    Herb.Marigold,
-    Herb.OakLeaf,
-    Herb.Goldenrod,
-    Herb.JuniperBerry,
-    Herb.Poppy,
-    Herb.Moss
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 1,
-    "mortality_risk": {
-    "adolescent": 45,
-    "adult": 60,
-    "kitten": 10,
-    "newborn": 10,
-    "senior": 15,
-    "senior adult": 60,
-    "young adult": 60
-    },
-    "complication_risks": [
-    {
-    "chance": 5,
-    "name": "infected_wound"
-    },
-    {
-    "chance": 5,
-    "name": "festering_wound"
-    }
-    ],
-    "severity": ConditionSeverity.Major
-    },
-    "recovering_from_birth": {
-    "also_got": [
-    "blood_loss"
-    ],
-    "category": ConditionCategory.Injury,
-    "cause_permanent": [],
-    "duration_moons": 3,
-    "herbs": {
-    "1": [
-    Herb.OakLeaf,
-    Herb.JuniperBerry,
-    Herb.Ragwort,
-    Herb.Moss
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 5,
-    "mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "complication_risks": [
-    {
-    "chance": 15,
-    "name": "infected_wound"
-    }
-    ],
-    "severity": ConditionSeverity.Major
-    },
-    "scrapes": {
-    "also_got": [],
-    "category": ConditionCategory.Injury,
-    "cause_permanent": [],
-    "duration_moons": 1,
-    "herbs": {
-    "1": [
-    Herb.Cobweb,
-    Herb.Marigold,
-    Herb.OakLeaf,
-    Herb.WildGarlic
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 1,
-    "mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "complication_risks": [
-    {
-    "chance": 30,
-    "name": "infected_wound"
-    }
-    ],
-    "severity": ConditionSeverity.Minor
-    },
-    "severe_burn": {
-    "also_got": [],
-    "category": ConditionCategory.Injury,
-    "cause_permanent": [
-    "lost_their_tail",
-    "lost_a_leg"
-    ],
-    "duration_moons": 4,
-    "herbs": {
-    "1": [
-    Herb.Cobweb,
-    Herb.Marigold,
-    Herb.WildGarlic,
-    Herb.OakLeaf,
-    Herb.Goldenrod,
-    Herb.JuniperBerry,
-    Herb.Ragwort,
-    Herb.Poppy,
-    Herb.Moss
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 3,
-    "mortality_risk": {
-    "adolescent": 10,
-    "adult": 30,
-    "kitten": 5,
-    "newborn": 5,
-    "senior": 10,
-    "senior adult": 30,
-    "young adult": 30
-    },
-    "complication_risks": [
-    {
-    "chance": 15,
-    "name": "infected_wound"
-    }
-    ],
-    "severity": ConditionSeverity.Severe
-    },
-    "severe_headache": {
-    "also_got": [],
-    "category": ConditionCategory.Injury,
-    "cause_permanent": [],
-    "duration_moons": 1,
-    "herbs": {
-    "1": [
-    Herb.Poppy,
-    Herb.JuniperBerry
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 1,
-    "mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "complication_risks": [],
-    "severity": ConditionSeverity.Major
-    },
-    "shivering": {
-    "also_got": [
-    "frostbite"
-    ],
-    "category": ConditionCategory.Injury,
-    "cause_permanent": [],
-    "duration_moons": 2,
-    "herbs": {
-    "1": [
-    Herb.JuniperBerry,
-    Herb.Ragwort,
-    Herb.Tansy
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 1,
-    "mortality_risk": {
-    "adolescent": 30,
-    "adult": 80,
-    "kitten": 10,
-    "newborn": 10,
-    "senior": 20,
-    "senior adult": 50,
-    "young adult": 50
-    },
-    "complication_risks": [
-    {
-    "chance": 5,
-    "name": "frostbite"
-    }
-    ],
-    "severity": ConditionSeverity.Minor
-    },
-    "shock": {
-    "also_got": [],
-    "category": ConditionCategory.Injury,
-    "cause_permanent": [],
-    "duration_moons": 1,
-    "herbs": {
-    "1": [
-    Herb.Thyme,
-    Herb.JuniperBerry,
-    Herb.Ragwort,
-    Herb.Poppy
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 1,
-    "mortality_risk": {
-    "adolescent": 15,
-    "adult": 30,
-    "kitten": 8,
-    "newborn": 10,
-    "senior": 15,
-    "senior adult": 30,
-    "young adult": 30
-    },
-    "complication_risks": [
-    {
-    "chance": 15,
-    "name": "lingering_shock"
-    }
-    ],
-    "severity": ConditionSeverity.Major
-    },
-    "small_cut": {
-    "also_got": [],
-    "category": ConditionCategory.Injury,
-    "cause_permanent": [],
-    "duration_moons": 1,
-    "herbs": {
-    "1": [
-    Herb.Marigold,
-    Herb.OakLeaf,
-    Herb.WildGarlic
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 1,
-    "mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "complication_risks": [
-    {
-    "chance": 40,
-    "name": "infected_wound"
-    }
-    ],
-    "severity": ConditionSeverity.Minor
-    },
-    "snake_bite": {
-    "also_got": [
-    "poisoned"
-    ],
-    "category": ConditionCategory.Injury,
-    "cause_permanent": [],
-    "duration_moons": 2,
-    "herbs": {
-    "1": [
-    Herb.Tansy,
-    Herb.Marigold,
-    Herb.OakLeaf,
-    Herb.Goldenrod,
-    Herb.WildGarlic,
-    Herb.JuniperBerry,
-    Herb.Ragwort,
-    Herb.Poppy
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 1,
-    "mortality_risk": {
-    "adolescent": 45,
-    "adult": 60,
-    "kitten": 10,
-    "newborn": 10,
-    "senior": 15,
-    "senior adult": 60,
-    "young adult": 60
-    },
-    "complication_risks": [
-    {
-    "chance": 5,
-    "name": "infected_wound"
-    }
-    ],
-    "severity": ConditionSeverity.Major
-    },
-    "sore": {
-    "also_got": [],
-    "category": ConditionCategory.Injury,
-    "cause_permanent": [],
-    "duration_moons": 1,
-    "herbs": {
-    "1": [
-    Herb.Daisy,
-    Herb.Dandelion,
-    Herb.Marigold,
-    Herb.Ragwort,
-    Herb.Poppy
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 1,
-    "mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "complication_risks": [],
-    "severity": ConditionSeverity.Minor
-    },
-    "sprain": {
-    "also_got": [],
-    "category": ConditionCategory.Injury,
-    "cause_permanent": [],
-    "duration_moons": 2,
-    "herbs": {
-    "1": [
-    Herb.ElderLeaf,
-    Herb.Dandelion,
-    Herb.Poppy
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 1,
-    "mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "complication_risks": [],
-    "severity": ConditionSeverity.Major
-    },
-    "tick_bites": {
-    "also_got": [],
-    "category": ConditionCategory.Injury,
-    "cause_permanent": [],
-    "duration_moons": 2,
-    "herbs": {
-    "1": [
-    Herb.Moss,
-    Herb.Plantain
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 1,
-    "mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "complication_risks": [
-    {
-    "chance": 40,
-    "name": "infected_wound"
-    }
-    ],
-    "severity": ConditionSeverity.Minor
-    },
-    "torn_ear": {
-    "also_got": [],
-    "category": ConditionCategory.Injury,
-    "cause_permanent": [
-    "partial_hearing_loss"
-    ],
-    "duration_moons": 1,
-    "herbs": {
-    "1": [
-    Herb.Cobweb,
-    Herb.Goldenrod,
-    Herb.Marigold,
-    Herb.OakLeaf,
-    Herb.WildGarlic
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 1,
-    "mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "complication_risks": [
-    {
-    "chance": 25,
-    "name": "infected_wound"
-    }
-    ],
-    "severity": ConditionSeverity.Minor
-    },
-    "torn_pelt": {
-    "also_got": [],
-    "category": ConditionCategory.Injury,
-    "cause_permanent": [],
-    "duration_moons": 1,
-    "herbs": {
-    "1": [
-    Herb.Cobweb,
-    Herb.Goldenrod,
-    Herb.Marigold,
-    Herb.OakLeaf,
-    Herb.WildGarlic,
-    Herb.RaspberryLeaf
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 1,
-    "mortality_risk": {
-    "adolescent": 0,
-    "adult": 0,
-    "kitten": 0,
-    "newborn": 0,
-    "senior": 0,
-    "senior adult": 0,
-    "young adult": 0
-    },
-    "complication_risks": [
-    {
-    "chance": 25,
-    "name": "infected_wound"
-    }
-    ],
-    "severity": ConditionSeverity.Minor
-    },
-    "water_in_their_lungs": {
-    "also_got": [],
-    "category": ConditionCategory.Injury,
-    "cause_permanent": [
-    "raspy_lungs"
-    ],
-    "duration_moons": 3,
-    "herbs": {
-    "1": [
-    Herb.JuniperBerry,
-    Herb.Betony,
-    Herb.Mullein,
-    Herb.Tansy,
-    Herb.Plantain,
-    Herb.Ragwort
-    ],
-    "2": [],
-    "3": []
-    },
-    "medicine_duration_moons": 2,
-    "mortality_risk": {
-    "adolescent": 50,
-    "adult": 60,
-    "kitten": 15,
-    "newborn": 10,
-    "senior": 30,
-    "senior adult": 60,
-    "young adult": 60
-    },
-    "complication_risks": [
-    {
-    "chance": 10,
-    "name": "running_nose"
-    },
-    {
-    "chance": 20,
-    "name": "whitecough"
-    }
-    ],
-    "severity": ConditionSeverity.Major
+    ConditionName.BeakBite: {
+        "category": ConditionCategory.Injury,
+        "also_got": [
+            ConditionName.TornPelt,
+            ConditionName.BloodLoss
+        ],
+        "cause_permanent": [],
+        "duration_moons": 2,
+        "herbs": {
+            "1": [
+                HerbName.Cobweb,
+                HerbName.Goldenrod,
+                HerbName.Marigold,
+                HerbName.OakLeaf,
+                HerbName.WildGarlic,
+                HerbName.TansyStem,
+                HerbName.PoppySeed,
+                HerbName.RagwortLeaf,
+                HerbName.Moss
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 1,
+        "mortality_risk": {
+            AgeCategory.Newborn: 10,
+            AgeCategory.Kitten: 10,
+            AgeCategory.Adolescent: 45,
+            AgeCategory.YoungAdult: 60,
+            AgeCategory.SeniorAdult: 60,
+            AgeCategory.Elder: 15,
+        },
+        "complication_risks": [
+            {
+                "chance": 5,
+                "name": ConditionName.Infected
+            }
+        ],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.BeeSting: {
+        "category": ConditionCategory.Injury,
+        "also_got": [],
+        "cause_permanent": [],
+        "duration_moons": 2,
+        "herbs": {
+            "1": [
+                HerbName.BlackberryLeaf,
+                HerbName.DandelionLeaf,
+                HerbName.PoppySeed
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 1,
+        "mortality_risk": {
+            AgeCategory.Newborn: 10,
+            AgeCategory.Kitten: 20,
+            AgeCategory.Adolescent: 30,
+            AgeCategory.YoungAdult: 50,
+            AgeCategory.SeniorAdult: 50,
+            AgeCategory.Elder: 30,
+        },
+        "complication_risks": [],
+        "severity": ConditionSeverity.Minor
+    },
+    ConditionName.BiteWound: {
+        "category": ConditionCategory.Injury,
+        "also_got": [
+            ConditionName.TornPelt,
+            ConditionName.BloodLoss
+        ],
+        "cause_permanent": [],
+        "duration_moons": 3,
+        "herbs": {
+            "1": [
+                HerbName.Cobweb,
+                HerbName.Goldenrod,
+                HerbName.Marigold,
+                HerbName.OakLeaf,
+                HerbName.WildGarlic,
+                HerbName.TansyStem,
+                HerbName.PoppySeed,
+                HerbName.RagwortLeaf,
+                HerbName.Moss
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 2,
+        "mortality_risk": {
+            AgeCategory.Newborn: 10,
+            AgeCategory.Kitten: 10,
+            AgeCategory.Adolescent: 45,
+            AgeCategory.YoungAdult: 60,
+            AgeCategory.SeniorAdult: 60,
+            AgeCategory.Elder: 15,
+        },
+        "complication_risks": [
+            {
+                "chance": 5,
+                "name": ConditionName.Infected
+            }
+        ],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.BloodLoss: {
+        "category": ConditionCategory.Injury,
+        "also_got": [
+            ConditionName.Shock
+        ],
+        "cause_permanent": [],
+        "duration_moons": 1,
+        "herbs": {
+            "1": [
+                HerbName.Cobweb,
+                HerbName.Horsetail,
+                HerbName.Marigold,
+                HerbName.RagwortLeaf,
+                HerbName.JuniperBerry,
+                HerbName.Moss,
+                HerbName.PoppySeed
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 1,
+        "mortality_risk": {
+            AgeCategory.Newborn: 5,
+            AgeCategory.Kitten: 5,
+            AgeCategory.Adolescent: 10,
+            AgeCategory.YoungAdult: 25,
+            AgeCategory.SeniorAdult: 20,
+            AgeCategory.Elder: 15,
+        },
+        "complication_risks": [],
+        "severity": ConditionSeverity.Minor
+    },
+    ConditionName.BrokenBack: {
+        "category": ConditionCategory.Injury,
+        "also_got": [],
+        "cause_permanent": [
+            "paralyzed"
+        ],
+        "duration_moons": 8,
+        "herbs": {
+            "1": [
+                HerbName.JuniperBerry,
+                HerbName.RagwortLeaf,
+                HerbName.PoppySeed
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 6,
+        "mortality_risk": {
+            AgeCategory.Newborn: 3,
+            AgeCategory.Kitten: 5,
+            AgeCategory.Adolescent: 25,
+            AgeCategory.YoungAdult: 30,
+            AgeCategory.SeniorAdult: 25,
+            AgeCategory.Elder: 10,
+        },
+        "complication_risks": [
+            {
+                "chance": 10,
+                "name": ConditionName.Infected
+            }
+        ],
+        "severity": ConditionSeverity.Major
+    },
+    ConditionName.BrokenBone: {
+        "category": ConditionCategory.Injury,
+        "also_got": [
+            ConditionName.TornPelt,
+            ConditionName.MangledLeg,
+            ConditionName.BloodLoss,
+            ConditionName.Scrapes,
+            ConditionName.Bruises
+        ],
+        "cause_permanent": [
+            "weak_leg",
+            "twisted_leg"
+        ],
+        "duration_moons": 5,
+        "herbs": {
+            "1": [
+                HerbName.Cobweb,
+                HerbName.Marigold,
+                HerbName.OakLeaf,
+                HerbName.WildGarlic,
+                HerbName.JuniperBerry,
+                HerbName.RagwortLeaf,
+                HerbName.PoppySeed,
+                HerbName.Moss
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 3,
+        "mortality_risk": {
+            AgeCategory.Newborn: 10,
+            AgeCategory.Kitten: 10,
+            AgeCategory.Adolescent: 45,
+            AgeCategory.YoungAdult: 60,
+            AgeCategory.SeniorAdult: 60,
+            AgeCategory.Elder: 15,
+        },
+        "complication_risks": [
+            {
+                "chance": 5,
+                "name": ConditionName.Infected
+            }
+        ],
+        "severity": ConditionSeverity.Major
+    },
+    ConditionName.BrokenJaw: {
+        "category": ConditionCategory.Injury,
+        "also_got": [
+            ConditionName.BloodLoss,
+            ConditionName.Scrapes,
+            ConditionName.Bruises
+        ],
+        "cause_permanent": [
+            ConditionName.CrookedJaw
+        ],
+        "duration_moons": 4,
+        "herbs": {
+            "1": [
+                HerbName.Cobweb,
+                HerbName.Marigold,
+                HerbName.OakLeaf,
+                HerbName.WildGarlic,
+                HerbName.JuniperBerry,
+                HerbName.RagwortLeaf,
+                HerbName.PoppySeed,
+                HerbName.Moss
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 3,
+        "mortality_risk": {
+            AgeCategory.Newborn: 10,
+            AgeCategory.Kitten: 10,
+            AgeCategory.Adolescent: 35,
+            AgeCategory.YoungAdult: 50,
+            AgeCategory.SeniorAdult: 50,
+            AgeCategory.Elder: 10,
+        },
+        "complication_risks": [
+            {
+                "chance": 5,
+                "name": ConditionName.Infected
+            }
+        ],
+        "severity": ConditionSeverity.Major
+    },
+    ConditionName.Bruises: {
+        "category": ConditionCategory.Injury,
+        "also_got": [],
+        "cause_permanent": [],
+        "duration_moons": 1,
+        "herbs": {
+            "1": [],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 1,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [],
+        "severity": ConditionSeverity.Minor
+    },
+    ConditionName.Burn: {
+        "category": ConditionCategory.Injury,
+        "also_got": [],
+        "cause_permanent": [],
+        "duration_moons": 2,
+        "herbs": {
+            "1": [
+                HerbName.Cobweb,
+                HerbName.Marigold,
+                HerbName.WildGarlic,
+                HerbName.OakLeaf,
+                HerbName.Goldenrod,
+                HerbName.JuniperBerry,
+                HerbName.RagwortLeaf,
+                HerbName.PoppySeed,
+                HerbName.Moss
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 2,
+        "mortality_risk": {
+            AgeCategory.Newborn: 10,
+            AgeCategory.Kitten: 10,
+            AgeCategory.Adolescent: 30,
+            AgeCategory.YoungAdult: 50,
+            AgeCategory.SeniorAdult: 50,
+            AgeCategory.Elder: 30,
+        },
+        "complication_risks": [
+            {
+                "chance": 25,
+                "name": ConditionName.Infected
+            }
+        ],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.CatBite: {
+        "category": ConditionCategory.Injury,
+        "also_got": [
+            ConditionName.TornPelt,
+            ConditionName.BloodLoss
+        ],
+        "cause_permanent": [],
+        "duration_moons": 2,
+        "herbs": {
+            "1": [
+                HerbName.Cobweb,
+                HerbName.Goldenrod,
+                HerbName.Marigold,
+                HerbName.OakLeaf,
+                HerbName.WildGarlic,
+                HerbName.TansyStem,
+                HerbName.PoppySeed,
+                HerbName.RagwortLeaf,
+                HerbName.Moss
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 2,
+        "mortality_risk": {
+            AgeCategory.Newborn: 10,
+            AgeCategory.Kitten: 10,
+            AgeCategory.Adolescent: 45,
+            AgeCategory.YoungAdult: 60,
+            AgeCategory.SeniorAdult: 60,
+            AgeCategory.Elder: 15,
+        },
+        "complication_risks": [
+            {
+                "chance": 5,
+                "name": ConditionName.Infected
+            }
+        ],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.ClawWound: {
+        "category": ConditionCategory.Injury,
+        "also_got": [
+            ConditionName.TornPelt,
+            ConditionName.TornEar,
+            ConditionName.BloodLoss
+        ],
+        "cause_permanent": [],
+        "duration_moons": 3,
+        "herbs": {
+            "1": [
+                HerbName.Cobweb,
+                HerbName.Goldenrod,
+                HerbName.Marigold,
+                HerbName.OakLeaf,
+                HerbName.WildGarlic,
+                HerbName.TansyStem,
+                HerbName.PoppySeed,
+                HerbName.RagwortLeaf,
+                HerbName.Moss
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 2,
+        "mortality_risk": {
+            AgeCategory.Newborn: 5,
+            AgeCategory.Kitten: 5,
+            AgeCategory.Adolescent: 40,
+            AgeCategory.YoungAdult: 50,
+            AgeCategory.SeniorAdult: 50,
+            AgeCategory.Elder: 10,
+        },
+        "complication_risks": [
+            {
+                "chance": 5,
+                "name": ConditionName.Infected
+            }
+        ],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.CrackedPads: {
+        "category": ConditionCategory.Injury,
+        "also_got": [],
+        "cause_permanent": [],
+        "duration_moons": 1,
+        "herbs": {
+            "1": [
+                HerbName.OakLeaf,
+                HerbName.Marigold,
+                HerbName.WildGarlic,
+                HerbName.PoppySeed
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 1,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [
+            {
+                "chance": 20,
+                "name": ConditionName.Infected
+            }
+        ],
+        "severity": ConditionSeverity.Minor
+    },
+    ConditionName.DamagedEyes: {
+        "category": ConditionCategory.Injury,
+        "also_got": [],
+        "cause_permanent": [
+            ConditionName.Blind,
+            ConditionName.BadEye,
+            ConditionName.FailingEyesight
+        ],
+        "duration_moons": 6,
+        "herbs": {
+            "1": [
+                # HerbName.Celandine,
+                HerbName.Cobweb,
+                HerbName.Goldenrod,
+                HerbName.Marigold,
+                HerbName.OakLeaf,
+                HerbName.WildGarlic,
+                HerbName.JuniperBerry,
+                HerbName.RagwortLeaf,
+                HerbName.PoppySeed,
+                HerbName.Moss
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 4,
+        "mortality_risk": {
+            AgeCategory.Newborn: 30,
+            AgeCategory.Kitten: 30,
+            AgeCategory.Adolescent: 50,
+            AgeCategory.YoungAdult: 70,
+            AgeCategory.SeniorAdult: 70,
+            AgeCategory.Elder: 50,
+        },
+        "complication_risks": [
+            {
+                "chance": 4,
+                "name": ConditionName.Infected
+            }
+        ],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.Dehydrated: {
+        "also_got": [
+            ConditionName.HeatExhaustion
+        ],
+        "category": ConditionCategory.Injury,
+        "cause_permanent": [],
+        "duration_moons": 1,
+        "herbs": {
+            "1": [
+                HerbName.RagwortLeaf,
+                HerbName.JuniperBerry,
+                HerbName.Moss
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 1,
+        "mortality_risk": {
+            AgeCategory.Newborn: 10,
+            AgeCategory.Kitten: 10,
+            AgeCategory.Adolescent: 30,
+            AgeCategory.YoungAdult: 50,
+            AgeCategory.SeniorAdult: 50,
+            AgeCategory.Elder: 20,
+        },
+        "complication_risks": [
+            {
+                "chance": 10,
+                "name": ConditionName.HeatExhaustion
+            }
+        ],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.Dislocation: {
+        "also_got": [
+            ConditionName.Bruises,
+            ConditionName.Sore,
+            ConditionName.JointPain
+        ],
+        "category": ConditionCategory.Injury,
+        "cause_permanent": [
+            ConditionName.ChronicJointPain
+        ],
+        "duration_moons": 2,
+        "herbs": {
+            "1": [
+                HerbName.Marigold,
+                HerbName.RagwortLeaf,
+                HerbName.DaisyLeaf,
+                HerbName.PoppySeed
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 1,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.Frostbite: {
+        "also_got": [],
+        "cause_permanent": [
+            ConditionName.LostLeg,
+            ConditionName.LostTail
+        ],
+        "category": ConditionCategory.Injury,
+        "duration_moons": 2,
+        "herbs": {
+            "1": [
+                HerbName.JuniperBerry,
+                HerbName.RagwortLeaf,
+                HerbName.PoppySeed,
+                HerbName.Moss,
+                HerbName.DandelionLeaf
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 2,
+        "mortality_risk": {
+            AgeCategory.Newborn: 10,
+            AgeCategory.Kitten: 10,
+            AgeCategory.Adolescent: 20,
+            AgeCategory.YoungAdult: 20,
+            AgeCategory.SeniorAdult: 25,
+            AgeCategory.Elder: 10,
+        },
+        "complication_risks": [
+            {
+                "chance": 4,
+                "name": ConditionName.RunningNose
+            }
+        ],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.HeadDamage: {
+        "also_got": [],
+        "category": ConditionCategory.Injury,
+        "cause_permanent": [
+            ConditionName.FailingEyesight,
+            ConditionName.BadEye,
+            ConditionName.Blind,
+            ConditionName.ConstantlyDizzy,
+            ConditionName.HearingLoss,
+            ConditionName.ChronicHeadaches
+        ],
+        "duration_moons": 5,
+        "herbs": {
+            "1": [
+                HerbName.JuniperBerry,
+                HerbName.RagwortLeaf,
+                HerbName.ThymeLeaf
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 2,
+        "mortality_risk": {
+            AgeCategory.Newborn: 10,
+            AgeCategory.Kitten: 15,
+            AgeCategory.Adolescent: 30,
+            AgeCategory.YoungAdult: 40,
+            AgeCategory.SeniorAdult: 40,
+            AgeCategory.Elder: 20,
+        },
+        "complication_risks": [
+            {
+                "chance": 20,
+                "name": ConditionName.Headache
+            },
+            {
+                "chance": 20,
+                "name": ConditionName.Migraine
+            }
+        ],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.Headache: {
+        "also_got": [],
+        "category": ConditionCategory.Injury,
+        "cause_permanent": [],
+        "duration_moons": 1,
+        "herbs": {
+            "1": [
+                HerbName.PoppySeed,
+                HerbName.JuniperBerry
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 1,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [],
+        "severity": ConditionSeverity.Minor
+    },
+    ConditionName.JointPain: {
+        "also_got": [],
+        "category": ConditionCategory.Injury,
+        "cause_permanent": [],
+        "duration_moons": 2,
+        "herbs": {
+            "1": [
+                HerbName.Marigold,
+                HerbName.RagwortLeaf,
+                HerbName.DaisyLeaf,
+                HerbName.PoppySeed
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 2,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [],
+        "severity": ConditionSeverity.Minor
+    },
+    ConditionName.LingeringShock: {
+        "also_got": [],
+        "category": ConditionCategory.Injury,
+        "cause_permanent": [
+            ConditionName.ChronicShock
+        ],
+        "duration_moons": 12,
+        "herbs": {
+            "1": [
+                HerbName.ThymeLeaf,
+                HerbName.JuniperBerry,
+                HerbName.RagwortLeaf,
+                HerbName.PoppySeed
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 8,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.MangledLeg: {
+        "also_got": [
+            ConditionName.TornPelt,
+            ConditionName.BrokenBone,
+            ConditionName.Dislocation,
+            ConditionName.BloodLoss,
+            ConditionName.Scrapes,
+            ConditionName.Bruises
+        ],
+        "category": ConditionCategory.Injury,
+        "cause_permanent": [
+            ConditionName.LostLeg,
+            "weak_leg",
+            "twisted_leg"
+        ],
+        "duration_moons": 3,
+        "herbs": {
+            "1": [
+                HerbName.Cobweb,
+                HerbName.Goldenrod,
+                HerbName.Marigold,
+                HerbName.WildGarlic,
+                HerbName.OakLeaf,
+                HerbName.TansyStem,
+                HerbName.PoppySeed,
+                HerbName.RagwortLeaf,
+                HerbName.JuniperBerry,
+                HerbName.Moss
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 3,
+        "mortality_risk": {
+            AgeCategory.Newborn: 10,
+            AgeCategory.Kitten: 15,
+            AgeCategory.Adolescent: 50,
+            AgeCategory.YoungAdult: 60,
+            AgeCategory.SeniorAdult: 60,
+            AgeCategory.Elder: 10,
+        },
+        "complication_risks": [
+            {
+                "chance": 5,
+                "name": ConditionName.Infected
+            }
+        ],
+        "severity": ConditionSeverity.Major
+    },
+    ConditionName.MangledTail: {
+        "also_got": [
+            ConditionName.TornPelt,
+            ConditionName.BloodLoss
+        ],
+        "category": ConditionCategory.Injury,
+        "cause_permanent": [
+            ConditionName.LostTail
+        ],
+        "duration_moons": 3,
+        "herbs": {
+            "1": [
+                HerbName.Cobweb,
+                HerbName.Goldenrod,
+                HerbName.Marigold,
+                HerbName.WildGarlic,
+                HerbName.OakLeaf,
+                HerbName.TansyStem,
+                HerbName.PoppySeed,
+                HerbName.RagwortLeaf,
+                HerbName.JuniperBerry,
+                HerbName.Moss
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 3,
+        "mortality_risk": {
+            AgeCategory.Newborn: 10,
+            AgeCategory.Kitten: 15,
+            AgeCategory.Adolescent: 50,
+            AgeCategory.YoungAdult: 60,
+            AgeCategory.SeniorAdult: 60,
+            AgeCategory.Elder: 10,
+        },
+        "complication_risks": [
+            {
+                "chance": 5,
+                "name": ConditionName.Infected
+            }
+        ],
+        "severity": ConditionSeverity.Major
+    },
+    ConditionName.PhantomPain: {
+        "also_got": [],
+        "category": ConditionCategory.Injury,
+        "cause_permanent": [],
+        "duration_moons": 2,
+        "herbs": {
+            "1": [
+                HerbName.DandelionLeaf,
+                HerbName.PoppySeed,
+                HerbName.RaspberryLeaf
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 1,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.Poisoned: {
+        "also_got": [
+            ConditionName.Shock
+        ],
+        "category": ConditionCategory.Injury,
+        "cause_permanent": [],
+        "duration_moons": 2,
+        "herbs": {
+            "1": [
+                HerbName.DandelionLeaf,
+                HerbName.TansyStem,
+                HerbName.JuniperBerry,
+                HerbName.RagwortLeaf,
+                HerbName.PoppySeed
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 1,
+        "mortality_risk": {
+            AgeCategory.Newborn: 5,
+            AgeCategory.Kitten: 10,
+            AgeCategory.Adolescent: 15,
+            AgeCategory.YoungAdult: 20,
+            AgeCategory.SeniorAdult: 20,
+            AgeCategory.Elder: 15,
+        },
+        "complication_risks": [
+            {
+                "chance": 10,
+                "name": ConditionName.Redcough
+            }
+        ],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.Porcupine: {
+        "also_got": [
+            ConditionName.TornPelt
+        ],
+        "category": ConditionCategory.Injury,
+        "cause_permanent": [],
+        "duration_moons": 2,
+        "herbs": {
+            "1": [
+                HerbName.Cobweb,
+                HerbName.Goldenrod,
+                HerbName.Marigold,
+                HerbName.OakLeaf,
+                HerbName.WildGarlic,
+                HerbName.JuniperBerry,
+                HerbName.RagwortLeaf,
+                HerbName.PoppySeed,
+                HerbName.Moss
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 1,
+        "mortality_risk": {
+            AgeCategory.Newborn: 10,
+            AgeCategory.Kitten: 20,
+            AgeCategory.Adolescent: 40,
+            AgeCategory.YoungAdult: 50,
+            AgeCategory.SeniorAdult: 50,
+            AgeCategory.Elder: 30,
+        },
+        "complication_risks": [
+            {
+                "chance": 5,
+                "name": ConditionName.Infected
+            }
+        ],
+        "severity": ConditionSeverity.Minor
+    },
+    ConditionName.RatBite: {
+        "also_got": [
+            ConditionName.TornPelt
+        ],
+        "category": ConditionCategory.Injury,
+        "cause_permanent": [],
+        "duration_moons": 2,
+        "herbs": {
+            "1": [
+                HerbName.WildGarlic,
+                HerbName.BurdockRoot,
+                HerbName.TansyStem,
+                HerbName.Cobweb,
+                HerbName.Marigold,
+                HerbName.OakLeaf,
+                HerbName.Goldenrod,
+                HerbName.JuniperBerry,
+                HerbName.PoppySeed,
+                HerbName.Moss
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 1,
+        "mortality_risk": {
+            AgeCategory.Newborn: 10,
+            AgeCategory.Kitten: 10,
+            AgeCategory.Adolescent: 45,
+            AgeCategory.YoungAdult: 60,
+            AgeCategory.SeniorAdult: 60,
+            AgeCategory.Elder: 15,
+        },
+        "complication_risks": [
+            {
+                "chance": 5,
+                "name": ConditionName.Infected
+            },
+            {
+                "chance": 5,
+                "name": ConditionName.Festering
+            }
+        ],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.Scrapes: {
+        "also_got": [],
+        "category": ConditionCategory.Injury,
+        "cause_permanent": [],
+        "duration_moons": 1,
+        "herbs": {
+            "1": [
+                HerbName.Cobweb,
+                HerbName.Marigold,
+                HerbName.OakLeaf,
+                HerbName.WildGarlic
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 1,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [
+            {
+                "chance": 30,
+                "name": ConditionName.Infected
+            }
+        ],
+        "severity": ConditionSeverity.Minor
+    },
+    ConditionName.SevereBurn: {
+        "also_got": [],
+        "category": ConditionCategory.Injury,
+        "cause_permanent": [
+            ConditionName.LostTail,
+            ConditionName.LostLeg
+        ],
+        "duration_moons": 4,
+        "herbs": {
+            "1": [
+                HerbName.Cobweb,
+                HerbName.Marigold,
+                HerbName.WildGarlic,
+                HerbName.OakLeaf,
+                HerbName.Goldenrod,
+                HerbName.JuniperBerry,
+                HerbName.RagwortLeaf,
+                HerbName.PoppySeed,
+                HerbName.Moss
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 3,
+        "mortality_risk": {
+            AgeCategory.Newborn: 5,
+            AgeCategory.Kitten: 5,
+            AgeCategory.Adolescent: 10,
+            AgeCategory.YoungAdult: 30,
+            AgeCategory.SeniorAdult: 30,
+            AgeCategory.Elder: 10,
+        },
+        "complication_risks": [
+            {
+                "chance": 15,
+                "name": ConditionName.Infected
+            }
+        ],
+        "severity": ConditionSeverity.Major
+    },
+    ConditionName.Migraine: {
+        "also_got": [],
+        "category": ConditionCategory.Injury,
+        "cause_permanent": [],
+        "duration_moons": 1,
+        "herbs": {
+            "1": [
+                HerbName.PoppySeed,
+                HerbName.JuniperBerry
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 1,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.Shivering: {
+        "also_got": [
+            ConditionName.Frostbite
+        ],
+        "category": ConditionCategory.Injury,
+        "cause_permanent": [],
+        "duration_moons": 2,
+        "herbs": {
+            "1": [
+                HerbName.JuniperBerry,
+                HerbName.RagwortLeaf,
+                HerbName.TansyStem
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 1,
+        "mortality_risk": {
+            AgeCategory.Newborn: 10,
+            AgeCategory.Kitten: 10,
+            AgeCategory.Adolescent: 30,
+            AgeCategory.YoungAdult: 50,
+            AgeCategory.SeniorAdult: 50,
+            AgeCategory.Elder: 20,
+        },
+        "complication_risks": [
+            {
+                "chance": 5,
+                "name": ConditionName.Frostbite
+            }
+        ],
+        "severity": ConditionSeverity.Minor
+    },
+    ConditionName.Shock: {
+        "also_got": [],
+        "category": ConditionCategory.Injury,
+        "cause_permanent": [],
+        "duration_moons": 1,
+        "herbs": {
+            "1": [
+                HerbName.ThymeLeaf,
+                HerbName.JuniperBerry,
+                HerbName.RagwortLeaf,
+                HerbName.PoppySeed
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 1,
+        "mortality_risk": {
+            AgeCategory.Newborn: 8,
+            AgeCategory.Kitten: 10,
+            AgeCategory.Adolescent: 15,
+            AgeCategory.YoungAdult: 30,
+            AgeCategory.SeniorAdult: 30,
+            AgeCategory.Elder: 15,
+        },
+        "complication_risks": [
+            {
+                "chance": 15,
+                "name": ConditionName.LingeringShock
+            }
+        ],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.SmallCut: {
+        "also_got": [],
+        "category": ConditionCategory.Injury,
+        "cause_permanent": [],
+        "duration_moons": 1,
+        "herbs": {
+            "1": [
+                HerbName.Marigold,
+                HerbName.OakLeaf,
+                HerbName.WildGarlic
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 1,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [
+            {
+                "chance": 40,
+                "name": ConditionName.Infected
+            }
+        ],
+        "severity": ConditionSeverity.Minor
+    },
+    ConditionName.SnakeBite: {
+        "also_got": [
+            ConditionName.Poisoned
+        ],
+        "category": ConditionCategory.Injury,
+        "cause_permanent": [],
+        "duration_moons": 2,
+        "herbs": {
+            "1": [
+                HerbName.TansyStem,
+                HerbName.Marigold,
+                HerbName.OakLeaf,
+                HerbName.Goldenrod,
+                HerbName.WildGarlic,
+                HerbName.JuniperBerry,
+                HerbName.RagwortLeaf,
+                HerbName.PoppySeed
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 1,
+        "mortality_risk": {
+            AgeCategory.Newborn: 10,
+            AgeCategory.Kitten: 10,
+            AgeCategory.Adolescent: 45,
+            AgeCategory.YoungAdult: 60,
+            AgeCategory.SeniorAdult: 60,
+            AgeCategory.Elder: 15,
+        },
+        "complication_risks": [
+            {
+                "chance": 5,
+                "name": ConditionName.Infected
+            }
+        ],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.Sore: {
+        "also_got": [],
+        "category": ConditionCategory.Injury,
+        "cause_permanent": [],
+        "duration_moons": 1,
+        "herbs": {
+            "1": [
+                HerbName.DaisyLeaf,
+                HerbName.DandelionLeaf,
+                HerbName.Marigold,
+                HerbName.RagwortLeaf,
+                HerbName.PoppySeed
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 1,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [],
+        "severity": ConditionSeverity.Minor
+    },
+    ConditionName.Sprain: {
+        "also_got": [],
+        "category": ConditionCategory.Injury,
+        "cause_permanent": [],
+        "duration_moons": 2,
+        "herbs": {
+            "1": [
+                HerbName.ElderLeaf,
+                HerbName.DandelionLeaf,
+                HerbName.PoppySeed
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 1,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.TickBites: {
+        "also_got": [],
+        "category": ConditionCategory.Injury,
+        "cause_permanent": [],
+        "duration_moons": 2,
+        "herbs": {
+            "1": [
+                HerbName.Moss,
+                HerbName.PlantainFlower
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 1,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [
+            {
+                "chance": 40,
+                "name": ConditionName.Infected
+            }
+        ],
+        "severity": ConditionSeverity.Minor
+    },
+    ConditionName.TornEar: {
+        "also_got": [],
+        "category": ConditionCategory.Injury,
+        "cause_permanent": [
+            ConditionName.HearingLoss
+        ],
+        "duration_moons": 1,
+        "herbs": {
+            "1": [
+                HerbName.Cobweb,
+                HerbName.Goldenrod,
+                HerbName.Marigold,
+                HerbName.OakLeaf,
+                HerbName.WildGarlic
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 1,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [
+            {
+                "chance": 25,
+                "name": ConditionName.Infected
+            }
+        ],
+        "severity": ConditionSeverity.Minor
+    },
+    ConditionName.TornPelt: {
+        "also_got": [],
+        "category": ConditionCategory.Injury,
+        "cause_permanent": [],
+        "duration_moons": 1,
+        "herbs": {
+            "1": [
+                HerbName.Cobweb,
+                HerbName.Goldenrod,
+                HerbName.Marigold,
+                HerbName.OakLeaf,
+                HerbName.WildGarlic,
+                HerbName.RaspberryLeaf
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 1,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [
+            {
+                "chance": 25,
+                "name": ConditionName.Infected
+            }
+        ],
+        "severity": ConditionSeverity.Minor
+    },
+    ConditionName.SpicyLungs: {
+        "also_got": [],
+        "category": ConditionCategory.Injury,
+        "cause_permanent": [
+            ConditionName.RaspyLungs
+        ],
+        "duration_moons": 3,
+        "herbs": {
+            "1": [
+                HerbName.JuniperBerry,
+                HerbName.BetonyLeaf,
+                HerbName.MulleinLeaf,
+                HerbName.TansyStem,
+                HerbName.PlantainFlower,
+                HerbName.RagwortLeaf
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 2,
+        "mortality_risk": {
+            AgeCategory.Newborn: 10,
+            AgeCategory.Kitten: 15,
+            AgeCategory.Adolescent: 50,
+            AgeCategory.YoungAdult: 60,
+            AgeCategory.SeniorAdult: 60,
+            AgeCategory.Elder: 30,
+        },
+        "complication_risks": [
+            {
+                "chance": 10,
+                "name": ConditionName.RunningNose
+            },
+            {
+                "chance": 20,
+                "name": ConditionName.Whitecough
+            }
+        ],
+        "severity": ConditionSeverity.Medium
     },
 }
 
 PERMANENT_CONDITIONS: dict = {
-    "allergies": {
+    ConditionName.Allergies: {
         "category": ConditionCategory.Permanent,
         "inheritance": {
             "per_parent_modifier": 500,
@@ -2223,355 +2088,22 @@ PERMANENT_CONDITIONS: dict = {
         },
         "moons_until": 2,
         "mortality_risk": {
-            "adolescent": 0,
-            "adult": 0,
-            "kitten": 0,
-            "newborn": 0,
-            "senior": 0,
-            "senior adult": 0,
-            "young adult": 0
-        },
-        "complication_risks": [
-            {
-            "chance": 20,
-            "name": "running_nose"
-            }
-        ],
-        "severity": ConditionSeverity.Minor
-    },
-    "blind": {
-        "category": ConditionCategory.Permanent,
-        "inheritance": {
-            "per_parent_modifier": 50,
-            "default_weight": 20
-        },
-        "herbs": {
-            "1": [],
-            "2": [],
-            "3": []
-        },
-        "moons_until": 1,
-        "mortality_risk": {
-            "adolescent": 0,
-            "adult": 0,
-            "kitten": 0,
-            "newborn": 0,
-            "senior": 0,
-            "senior adult": 0,
-            "young adult": 0
-        },
-        "complication_risks": [],
-        "severity": ConditionSeverity.Major
-    },
-    "born_without_a_leg": {
-        "category": ConditionCategory.Permanent,
-        "inheritance": {
-            "per_parent_modifier": 10,
-            "default_weight": 3
-        },
-        "herbs": {
-            "1": [],
-            "2": [],
-            "3": []
-        },
-        "moons_until": 0,
-        "mortality_risk": {
-            "adolescent": 0,
-            "adult": 0,
-            "kitten": 0,
-            "newborn": 0,
-            "senior": 0,
-            "senior adult": 0,
-            "young adult": 0
-        },
-        "complication_risks": [
-            {
-            "chance": 20,
-            "name": "sore"
-            },
-            {
-            "chance": 40,
-            "name": "joint_pain"
-            }
-        ],
-        "severity": ConditionSeverity.Major
-    },
-    "born_without_a_tail": {
-        "category": ConditionCategory.Permanent,
-        "inheritance": {
-            "per_parent_modifier": 30,
-            "default_weight": 9
-        },
-        "herbs": {
-            "1": [],
-            "2": [],
-            "3": []
-        },
-        "moons_until": 0,
-        "mortality_risk": {
-            "adolescent": 0,
-            "adult": 0,
-            "kitten": 0,
-            "newborn": 0,
-            "senior": 0,
-            "senior adult": 0,
-            "young adult": 0
-        },
-        "complication_risks": [],
-        "severity": ConditionSeverity.Minor
-    },
-    "constant_joint_pain": {
-        "category": ConditionCategory.Permanent,
-        "inheritance": {
-            "per_parent_modifier": 10,
-            "default_weight": 25
-        },
-        "herbs": {
-            "1": [
-                Herb.Daisy,
-                Herb.JuniperBerry,
-                Herb.Marigold,
-                Herb.Ragwort
-            ],
-            "2": [],
-            "3": []
-        },
-        "moons_until": 2,
-        "mortality_risk": {
-            "adolescent": 0,
-            "adult": 0,
-            "kitten": 0,
-            "newborn": 0,
-            "senior": 0,
-            "senior adult": 0,
-            "young adult": 0
-        },
-        "complication_risks": [
-            {
-                "chance": 10,
-                "name": "joint_pain"
-            }
-        ],
-        "severity": ConditionSeverity.Minor
-    },
-    "constantly_dizzy": {
-        "category": ConditionCategory.Permanent,
-        "inheritance": {
-            "per_parent_modifier": 0,
-            "default_weight": 0
-        },
-        "herbs": {
-            "1": [],
-            "2": [],
-            "3": []
-        },
-        "moons_until": 0,
-        "mortality_risk": {
-            "adolescent": 0,
-            "adult": 0,
-            "kitten": 0,
-            "newborn": 0,
-            "senior": 0,
-            "senior adult": 0,
-            "young adult": 0
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
         },
         "complication_risks": [
             {
                 "chance": 20,
-                "name": "headache"
-            }
-        ],
-        "severity": ConditionSeverity.Major
-    },
-    "crooked_jaw": {
-        "category": ConditionCategory.Permanent,
-        "inheritance": {
-            "per_parent_modifier": 0,
-            "default_weight": 0
-        },
-        "herbs": {
-            "1": [],
-            "2": [],
-            "3": []
-        },
-        "moons_until": 0,
-        "mortality_risk": {
-            "adolescent": 0,
-            "adult": 0,
-            "kitten": 0,
-            "newborn": 0,
-            "senior": 0,
-            "senior adult": 0,
-            "young adult": 0
-        },
-        "complication_risks": [],
-        "severity": ConditionSeverity.Major
-    },
-    "deaf": {
-        "category": ConditionCategory.Permanent,
-        "inheritance": {
-            "per_parent_modifier": 50,
-            "default_weight": 20
-        },
-        "herbs": {
-            "1": [],
-            "2": [],
-            "3": []
-        },
-        "moons_until": 1,
-        "mortality_risk": {
-            "adolescent": 0,
-            "adult": 0,
-            "kitten": 0,
-            "newborn": 0,
-            "senior": 0,
-            "senior adult": 0,
-            "young adult": 0
-        },
-        "complication_risks": [],
-        "severity": ConditionSeverity.Major
-    },
-    "failing_eyesight": {
-        "category": ConditionCategory.Permanent,
-        "inheritance": {
-            "per_parent_modifier": 50,
-            "default_weight": 20
-        },
-        "herbs": {
-            "1": [],
-            "2": [],
-            "3": []
-        },
-        "moons_until": 3,
-        "mortality_risk": {
-            "adolescent": 0,
-            "adult": 0,
-            "kitten": 0,
-            "newborn": 0,
-            "senior": 0,
-            "senior adult": 0,
-            "young adult": 0
-        },
-        "complication_risks": [
-            {
-                "chance": 50,
-                "name": "blind"
-            }
-        ],
-        "severity": ConditionSeverity.Major
-    },
-    "lasting grief": {
-        "category": ConditionCategory.Permanent,
-        "inheritance": {
-            "per_parent_modifier": 0,
-            "default_weight": 0
-        },
-        "herbs": {
-            "1": [
-                Herb.Thyme,
-                Herb.JuniperBerry,
-                Herb.Poppy
-            ],
-            "2": [],
-            "3": []
-        },
-        "moons_until": 0,
-        "mortality_risk": {
-            "adolescent": 0,
-            "adult": 0,
-            "kitten": 0,
-            "newborn": 0,
-            "senior": 0,
-            "senior adult": 0,
-            "young adult": 0
-        },
-        "complication_risks": [
-            {
-                "chance": 50,
-                "name": "grief_stricken"
+                "name": ConditionName.RunningNose
             }
         ],
         "severity": ConditionSeverity.Minor
     },
-    "lost_a_leg": {
-        "category": ConditionCategory.Permanent,
-        "inheritance": {
-            "per_parent_modifier": 0,
-            "default_weight": 0
-        },
-        "herbs": {
-            "1": [
-                Herb.Daisy,
-                Herb.JuniperBerry,
-                Herb.Marigold,
-                Herb.Ragwort
-            ],
-            "2": [],
-            "3": []
-        },
-        "moons_until": 0,
-        "mortality_risk": {
-            "adolescent": 0,
-            "adult": 0,
-            "kitten": 0,
-            "newborn": 0,
-            "senior": 0,
-            "senior adult": 0,
-            "young adult": 0
-        },
-        "complication_risks": [
-            {
-                "chance": 70,
-                "name": "infected_wound"
-            },
-            {
-                "chance": 20,
-                "name": "phantom_pain"
-            },
-            {
-                "chance": 20,
-                "name": "sore"
-            }
-        ],
-        "severity": ConditionSeverity.Major
-    },
-    "lost_their_tail": {
-        "category": ConditionCategory.Permanent,
-        "inheritance": {
-            "per_parent_modifier": 0,
-            "default_weight": 0
-        },
-        "herbs": {
-            "1": [
-                Herb.JuniperBerry,
-                Herb.Ragwort
-            ],
-            "2": [],
-            "3": []
-        },
-        "moons_until": 0,
-        "mortality_risk": {
-            "adolescent": 0,
-            "adult": 0,
-            "kitten": 0,
-            "newborn": 0,
-            "senior": 0,
-            "senior adult": 0,
-            "young adult": 0
-        },
-        "complication_risks": [
-            {
-                "chance": 70,
-                "name": "infected_wound"
-            },
-            {
-                "chance": 10,
-                "name": "phantom_pain"
-            }
-        ],
-        "severity": ConditionSeverity.Minor
-    },
-    "one_bad_eye": {
+    ConditionName.BadEye: {
         "category": ConditionCategory.Permanent,
         "inheritance": {
             "per_parent_modifier": 10,
@@ -2584,69 +2116,269 @@ PERMANENT_CONDITIONS: dict = {
         },
         "moons_until": 2,
         "mortality_risk": {
-            "adolescent": 0,
-            "adult": 0,
-            "kitten": 0,
-            "newborn": 0,
-            "senior": 0,
-            "senior adult": 0,
-            "young adult": 0
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
         },
         "complication_risks": [
             {
                 "chance": 80,
-                "name": "failing_eyesight"
+                "name": ConditionName.FailingEyesight
             }
         ],
-        "severity": ConditionSeverity.Major
+        "severity": ConditionSeverity.Medium
     },
-    "paralyzed": {
+    ConditionName.Blind: {
         "category": ConditionCategory.Permanent,
         "inheritance": {
-            "per_parent_modifier": 5,
-            "default_weight": 30
+            "per_parent_modifier": 50,
+            "default_weight": 20
+        },
+        "herbs": {
+            "1": [],
+            "2": [],
+            "3": []
+        },
+        "moons_until": 1,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.BornWithoutLeg: {
+        "category": ConditionCategory.Permanent,
+        "inheritance": {
+            "per_parent_modifier": 10,
+            "default_weight": 3
+        },
+        "herbs": {
+            "1": [],
+            "2": [],
+            "3": []
+        },
+        "moons_until": 0,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [
+            {
+                "chance": 20,
+                "name": ConditionName.Sore
+            },
+            {
+                "chance": 40,
+                "name": ConditionName.JointPain
+            }
+        ],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.BornWithoutTail: {
+        "category": ConditionCategory.Permanent,
+        "inheritance": {
+            "per_parent_modifier": 30,
+            "default_weight": 9
+        },
+        "herbs": {
+            "1": [],
+            "2": [],
+            "3": []
+        },
+        "moons_until": 0,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [],
+        "severity": ConditionSeverity.Minor
+    },
+    ConditionName.ChronicHeadaches: {
+        "category": ConditionCategory.Permanent,
+        "inheritance": {
+            "per_parent_modifier": 15,
+            "default_weight": 25
         },
         "herbs": {
             "1": [
-                Herb.Daisy,
-                Herb.JuniperBerry,
-                Herb.Ragwort,
-                Herb.Marigold
+                HerbName.PoppySeed,
+                HerbName.JuniperBerry
+            ],
+            "2": [],
+            "3": []
+        },
+        "moons_until": 4,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [
+            {
+                "chance": 20,
+                "name": ConditionName.Migraine
+            },
+            {
+                "chance": 20,
+                "name": ConditionName.Headache
+            }
+        ],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.ChronicShock: {
+        "category": ConditionCategory.Permanent,
+        "inheritance": {
+            "per_parent_modifier": 0,
+            "default_weight": 0
+        },
+        "herbs": {
+            "1": [
+                HerbName.ThymeLeaf,
+                HerbName.JuniperBerry,
+                HerbName.PoppySeed
             ],
             "2": [],
             "3": []
         },
         "moons_until": 0,
         "mortality_risk": {
-            "adolescent": 0,
-            "adult": 0,
-            "kitten": 0,
-            "newborn": 0,
-            "senior": 0,
-            "senior adult": 0,
-            "young adult": 0
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
         },
         "complication_risks": [
             {
-                "chance": 60,
-                "name": "infected_wound"
-            },
-            {
-                "chance": 30,
-                "name": "torn_pelt"
-            },
-            {
                 "chance": 20,
-                "name": "sore"
-            },
-            {
-                "chance": 20,
-                "name": "joint_pain"
+                "name": ConditionName.Nightmares
             }
         ],
-        "severity": ConditionSeverity.Severe
+        "severity": ConditionSeverity.Medium
     },
-    "partial_hearing_loss": {
+    ConditionName.ConstantlyDizzy: {
+        "category": ConditionCategory.Permanent,
+        "inheritance": {
+            "per_parent_modifier": 0,
+            "default_weight": 0
+        },
+        "herbs": {
+            "1": [],
+            "2": [],
+            "3": []
+        },
+        "moons_until": 0,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [
+            {
+                "chance": 20,
+                "name": ConditionName.Headache
+            }
+        ],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.CrookedJaw: {
+        "category": ConditionCategory.Permanent,
+        "inheritance": {
+            "per_parent_modifier": 0,
+            "default_weight": 0
+        },
+        "herbs": {
+            "1": [],
+            "2": [],
+            "3": []
+        },
+        "moons_until": 0,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.Deaf: {
+        "category": ConditionCategory.Permanent,
+        "inheritance": {
+            "per_parent_modifier": 50,
+            "default_weight": 20
+        },
+        "herbs": {
+            "1": [],
+            "2": [],
+            "3": []
+        },
+        "moons_until": 1,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.FailingEyesight: {
+        "category": ConditionCategory.Permanent,
+        "inheritance": {
+            "per_parent_modifier": 50,
+            "default_weight": 20
+        },
+        "herbs": {
+            "1": [],
+            "2": [],
+            "3": []
+        },
+        "moons_until": 3,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [
+            {
+                "chance": 50,
+                "name": ConditionName.Blind
+            }
+        ],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.HearingLoss: {
         "category": ConditionCategory.Permanent,
         "inheritance": {
             "per_parent_modifier": 5,
@@ -2659,13 +2391,12 @@ PERMANENT_CONDITIONS: dict = {
         },
         "moons_until": 2,
         "mortality_risk": {
-            "adolescent": 0,
-            "adult": 0,
-            "kitten": 0,
-            "newborn": 0,
-            "senior": 0,
-            "senior adult": 0,
-            "young adult": 0
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
         },
         "complication_risks": [
             {
@@ -2675,43 +2406,193 @@ PERMANENT_CONDITIONS: dict = {
         ],
         "severity": ConditionSeverity.Minor
     },
-    "persistent_headaches": {
+    ConditionName.ChronicJointPain: {
         "category": ConditionCategory.Permanent,
         "inheritance": {
-            "per_parent_modifier": 15,
+            "per_parent_modifier": 10,
             "default_weight": 25
         },
         "herbs": {
             "1": [
-                Herb.Poppy,
-                Herb.JuniperBerry
+                HerbName.DaisyLeaf,
+                HerbName.JuniperBerry,
+                HerbName.Marigold,
+                HerbName.RagwortLeaf
             ],
             "2": [],
             "3": []
         },
-        "moons_until": 4,
+        "moons_until": 2,
         "mortality_risk": {
-            "adolescent": 0,
-            "adult": 0,
-            "kitten": 0,
-            "newborn": 0,
-            "senior": 0,
-            "senior adult": 0,
-            "young adult": 0
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
         },
         "complication_risks": [
             {
-                "chance": 20,
-                "name": "severe_headache"
+                "chance": 10,
+                "name": ConditionName.JointPain
+            }
+        ],
+        "severity": ConditionSeverity.Minor
+    },
+    ConditionName.LastingGrief: {
+        "category": ConditionCategory.Permanent,
+        "inheritance": {
+            "per_parent_modifier": 0,
+            "default_weight": 0
+        },
+        "herbs": {
+            "1": [
+                HerbName.ThymeLeaf,
+                HerbName.JuniperBerry,
+                HerbName.PoppySeed
+            ],
+            "2": [],
+            "3": []
+        },
+        "moons_until": 0,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [
+            {
+                "chance": 50,
+                "name": ConditionName.Grieving
+            }
+        ],
+        "severity": ConditionSeverity.Minor
+    },
+    ConditionName.LostLeg: {
+        "category": ConditionCategory.Permanent,
+        "inheritance": {
+            "per_parent_modifier": 0,
+            "default_weight": 0
+        },
+        "herbs": {
+            "1": [
+                HerbName.DaisyLeaf,
+                HerbName.JuniperBerry,
+                HerbName.Marigold,
+                HerbName.RagwortLeaf
+            ],
+            "2": [],
+            "3": []
+        },
+        "moons_until": 0,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [
+            {
+                "chance": 70,
+                "name": ConditionName.Infected
             },
             {
                 "chance": 20,
-                "name": "headache"
+                "name": ConditionName.PhantomPain
+            },
+            {
+                "chance": 20,
+                "name": ConditionName.Sore
+            }
+        ],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.LostTail: {
+        "category": ConditionCategory.Permanent,
+        "inheritance": {
+            "per_parent_modifier": 0,
+            "default_weight": 0
+        },
+        "herbs": {
+            "1": [
+                HerbName.JuniperBerry,
+                HerbName.RagwortLeaf
+            ],
+            "2": [],
+            "3": []
+        },
+        "moons_until": 0,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [
+            {
+                "chance": 70,
+                "name": ConditionName.Infected
+            },
+            {
+                "chance": 10,
+                "name": ConditionName.PhantomPain
+            }
+        ],
+        "severity": ConditionSeverity.Minor
+    },
+    ConditionName.Paralysed: {
+        "category": ConditionCategory.Permanent,
+        "inheritance": {
+            "per_parent_modifier": 5,
+            "default_weight": 30
+        },
+        "herbs": {
+            "1": [
+                HerbName.DaisyLeaf,
+                HerbName.JuniperBerry,
+                HerbName.RagwortLeaf,
+                HerbName.Marigold
+            ],
+            "2": [],
+            "3": []
+        },
+        "moons_until": 0,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [
+            {
+                "chance": 60,
+                "name": ConditionName.Infected
+            },
+            {
+                "chance": 30,
+                "name": ConditionName.TornPelt
+            },
+            {
+                "chance": 20,
+                "name": ConditionName.Sore
+            },
+            {
+                "chance": 20,
+                "name": ConditionName.JointPain
             }
         ],
         "severity": ConditionSeverity.Major
     },
-    "raspy_lungs": {
+    ConditionName.RaspyLungs: {
         "category": ConditionCategory.Permanent,
         "inheritance": {
             "per_parent_modifier": 10,
@@ -2725,64 +2606,30 @@ PERMANENT_CONDITIONS: dict = {
         ],
         "herbs": {
             "1": [
-                Herb.Betony,
-                Herb.Mullein
+                HerbName.BetonyLeaf,
+                HerbName.MulleinLeaf
             ],
             "2": [],
             "3": []
         },
         "moons_until": 3,
         "mortality_risk": {
-            "adolescent": 60,
-            "adult": 90,
-            "kitten": 20,
-            "newborn": 20,
-            "senior": 30,
-            "senior adult": 60,
-            "young adult": 80
+            AgeCategory.Newborn: 20,
+            AgeCategory.Kitten: 20,
+            AgeCategory.Adolescent: 60,
+            AgeCategory.YoungAdult: 80,
+            AgeCategory.SeniorAdult: 60,
+            AgeCategory.Elder: 30,
         },
         "complication_risks": [
             {
                 "chance": 20,
-                "name": "whitecough"
+                "name": ConditionName.Whitecough
             }
         ],
         "severity": ConditionSeverity.Minor
     },
-    "recurring_shock": {
-        "category": ConditionCategory.Permanent,
-        "inheritance": {
-            "per_parent_modifier": 0,
-            "default_weight": 0
-        },
-        "herbs": {
-            "1": [
-                Herb.Thyme,
-                Herb.JuniperBerry,
-                Herb.Poppy
-            ],
-            "2": [],
-            "3": []
-        },
-        "moons_until": 0,
-        "mortality_risk": {
-            "adolescent": 0,
-            "adult": 0,
-            "kitten": 0,
-            "newborn": 0,
-            "senior": 0,
-            "senior adult": 0,
-            "young adult": 0
-        },
-        "complication_risks": [
-            {
-            "chance": 20,
-            "name": "constant_nightmares"
-            }
-        ],
-        "severity": ConditionSeverity.Major
-    },
-    "seizure_prone": {
+    ConditionName.Seizures: {
         "category": ConditionCategory.Permanent,
         "inheritance": {
             "per_parent_modifier": 6,
@@ -2790,31 +2637,30 @@ PERMANENT_CONDITIONS: dict = {
         },
         "herbs": {
             "1": [
-                Herb.Ragwort,
-                Herb.JuniperBerry
+                HerbName.RagwortLeaf,
+                HerbName.JuniperBerry
             ],
             "2": [],
             "3": []
         },
         "moons_until": 3,
         "mortality_risk": {
-            "adolescent": 0,
-            "adult": 0,
-            "kitten": 0,
-            "newborn": 0,
-            "senior": 0,
-            "senior adult": 0,
-            "young adult": 0
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
         },
         "complication_risks": [
             {
                 "chance": 10,
-                "name": "seizure"
+                "name": ConditionName.Seizure
             }
         ],
-        "severity": ConditionSeverity.Major
+        "severity": ConditionSeverity.Medium
     },
-    "twisted_leg": {
+    ConditionName.TwistedLeg: {
         "category": ConditionCategory.Permanent,
         "inheritance": {
             "per_parent_modifier": 0,
@@ -2822,37 +2668,36 @@ PERMANENT_CONDITIONS: dict = {
         },
         "herbs": {
             "1": [
-                Herb.Daisy,
-                Herb.JuniperBerry,
-                Herb.Marigold,
-                Herb.Ragwort
+                HerbName.DaisyLeaf,
+                HerbName.JuniperBerry,
+                HerbName.Marigold,
+                HerbName.RagwortLeaf
             ],
             "2": [],
             "3": []
         },
         "moons_until": 1,
         "mortality_risk": {
-            "adolescent": 0,
-            "adult": 0,
-            "kitten": 0,
-            "newborn": 0,
-            "senior": 0,
-            "senior adult": 0,
-            "young adult": 0
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
         },
         "complication_risks": [
             {
                 "chance": 20,
-                "name": "sore"
+                "name": ConditionName.Sore
             },
             {
                 "chance": 40,
-                "name": "joint_pain"
+                "name": ConditionName.JointPain
             }
         ],
-        "severity": ConditionSeverity.Major
+        "severity": ConditionSeverity.Medium
     },
-    "wasting_disease": {
+    ConditionName.WastingDisease: {
         "category": ConditionCategory.Permanent,
         "inheritance": {
             "per_parent_modifier": 0,
@@ -2860,39 +2705,38 @@ PERMANENT_CONDITIONS: dict = {
         },
         "herbs": {
             "1": [
-                Herb.JuniperBerry,
-                Herb.Ragwort
+                HerbName.JuniperBerry,
+                HerbName.RagwortLeaf
             ],
             "2": [],
             "3": []
         },
         "moons_until": 1,
         "mortality_risk": {
-            "adolescent": 40,
-            "adult": 65,
-            "kitten": 10,
-            "newborn": 10,
-            "senior": 10,
-            "senior adult": 40,
-            "young adult": 75
+            AgeCategory.Newborn: 50,
+            AgeCategory.Kitten: 10,
+            AgeCategory.Adolescent: 40,
+            AgeCategory.YoungAdult: 75,
+            AgeCategory.SeniorAdult: 40,
+            AgeCategory.Elder: 10,
         },
         "complication_risks": [
             {
                 "chance": 10,
-                "name": "running_nose"
+                "name": ConditionName.RunningNose
             },
             {
                 "chance": 50,
-                "name": "yellowcough"
+                "name": ConditionName.Yellowcough
             },
             {
                 "chance": 60,
-                "name": "redcough"
+                "name": ConditionName.Redcough
             }
         ],
-        "severity": ConditionSeverity.Major
+        "severity": ConditionSeverity.Medium
     },
-    "weak_leg": {
+    ConditionName.WeakLeg: {
         "category": ConditionCategory.Permanent,
         "inheritance": {
             "per_parent_modifier": 0,
@@ -2900,34 +2744,115 @@ PERMANENT_CONDITIONS: dict = {
         },
         "herbs": {
             "1": [
-                Herb.Daisy,
-                Herb.JuniperBerry,
-                Herb.Marigold,
-                Herb.Ragwort
+                HerbName.DaisyLeaf,
+                HerbName.JuniperBerry,
+                HerbName.Marigold,
+                HerbName.RagwortLeaf
             ],
             "2": [],
             "3": []
         },
         "moons_until": 3,
         "mortality_risk": {
-            "adolescent": 0,
-            "adult": 0,
-            "kitten": 0,
-            "newborn": 0,
-            "senior": 0,
-            "senior adult": 0,
-            "young adult": 0
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
         },
         "complication_risks": [
             {
                 "chance": 20,
-                "name": "sore"
+                "name": ConditionName.Sore
             },
             {
                 "chance": 40,
-                "name": "joint_pain"
+                "name": ConditionName.JointPain
             }
         ],
         "severity": ConditionSeverity.Minor
-    }
+    },
+}
+
+PREGNANCY_CONDITIONS: dict = {
+    ConditionName.Expecting: {
+        "also_got": [],
+        "category": ConditionCategory.Pregnancy,
+        "cause_permanent": [],
+        "duration_moons": 2,
+        "herbs": {
+            "1": [],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 3,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 40,
+            AgeCategory.SeniorAdult: 30,
+            AgeCategory.Elder: 20,
+        },
+        "complication_risks": [],
+        "severity": ConditionSeverity.Medium
+    },
+    ConditionName.Nursing: {
+        "also_got": [],
+        "category": ConditionCategory.Pregnancy,
+        "cause_permanent": [],
+        "duration_moons": 6, # in the books queens stay in the nursery until their kittens become apprentices
+        "herbs": {
+            "1": [], # TODO [HerbName.Borage, ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 2, # kittens stop nursing after 8-10 weeks
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [],
+        "severity": ConditionSeverity.Medium
+
+    },
+    ConditionName.BirthRecovery: {
+        "also_got": [
+            ConditionName.BloodLoss
+        ],
+        "category": ConditionCategory.Pregnancy,
+        "cause_permanent": [],
+        "duration_moons": 3,
+        "herbs": {
+            "1": [
+                HerbName.OakLeaf,
+                HerbName.JuniperBerry,
+                HerbName.RagwortLeaf,
+                HerbName.Moss
+            ],
+            "2": [],
+            "3": []
+        },
+        "medicine_duration_moons": 5,
+        "mortality_risk": {
+            AgeCategory.Newborn: 0,
+            AgeCategory.Kitten: 0,
+            AgeCategory.Adolescent: 0,
+            AgeCategory.YoungAdult: 0,
+            AgeCategory.SeniorAdult: 0,
+            AgeCategory.Elder: 0,
+        },
+        "complication_risks": [
+            {
+                "chance": 15,
+                "name": ConditionName.Infected
+            }
+        ],
+        "severity": ConditionSeverity.Medium
+    },
 }

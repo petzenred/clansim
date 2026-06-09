@@ -1,0 +1,9 @@
+# nutrition.yaml -
+
+nutrition:
+  0: starving
+  21: very hungry
+  41: hungry
+  61: satiated
+  81: full
+  91: stuffed
