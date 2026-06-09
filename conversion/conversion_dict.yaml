@@ -9,272 +9,144 @@
 
 # moved "mates" from "<cat_id>_relations.json" to a cat's history
 
-backstory:
-  text:
-    m_c: {CAT/main}
-    r_c: {CAT/second}
+# conversions that will apply everywhere
+general:
+    m_c: {CAT/main} # main_cat
+    r_c: {CAT/second} # random_cat
+    p_l: {CAT/} # patrol_leader
+    s_c:  null # stat_cat # FIXME
+    mur_c:  null # victim_cat # FIXME
     c_n: {CLAN/main}Clan
     o_c_n: {CLAN/other}Clan
-  keys:
-    step_1:
-
-      refugee: refugee2
-      # refugee2: x : "{CAT/main} used to live as a loner, but after another cat chased {PRONOUN/main/object}
-      #    from {PRONOUN/main/poss} home, {PRONOUN/main/subject} took refuge in {CLAN/main}Clan."
-
-      otherclan: otherclan1
-      # otherclan1: Clans_Other : "{CAT/main} was born into another Clan, but came to {CLAN/main}Clan by choice."
-
-      tragedy_survivor: tragedy_survivor1
-      # tragedy_survivor1: ClansOtherTragedy: "Something horrible happened to m_c's previous Clan.
-      # {PRONOUN/m_c/subject/CAP} {VERB/m_c/refuse/refuses} to speak about it."
-
-      disgraced: disgraced1
-      # disgraced1: ClansOtherExileCrime: "m_c was cast out of {PRONOUN/m_c/poss} old Clan for some transgression
-      # that {PRONOUN/m_c/subject}{VERB/m_c/'re/'s} not keen on talking about."
-
-      orphaned: orphaned1
-      # orphaned1: Kit_Aware: "m_c was found with a deceased parent. The Clan took {PRONOUN/m_c/object} in, but
-      # doesn't hide where {PRONOUN/m_c/subject} came from."
+    dep_name: null # FIXME
+    lead_name: null # FIXME
+    med_name: null # FIXME
+    patrol_cats: null # FIXME
+    patrol_apprentices: null # FIXME
+    new_cats: null # FIXME
+    multi_cats: null # FIXME
+    clan: null # FIXME
+    other_clan: null # FIXME
+    chosen_herb: null # FIXME
 
 
-      other_clan1: otherclan4
-      # otherclan4: Clans_Choice: # "m_c grew up in another Clan, but chose to leave that life and join the
-      # Clan {PRONOUN/m_c/subject} now {VERB/m_c/live/lives} in."
+# Convert old backstories
+backstory:
+  step_1:
+    refugee: refugee2
+    # refugee2: x : "{CAT/main} used to live as a loner, but after another cat chased {PRONOUN/main/object}
+    #    from {PRONOUN/main/poss} home, {PRONOUN/main/subject} took refuge in {CLAN/main}Clan."
 
-      outsider: outsider1
-      # outsider1: Kit_Outsider : # "{CAT/main} was born outside of the Clans."
-    step_2:
-      # otherclan1: Clans_Other: "m_c was born into another Clan, but came to this Clan by choice."
-      otherclan1:
-        - abandoned3
-        - guided4
-        - halfclan2
-        - medicine_cat
-        - otherclan3
-        - refugee1
-        - refugee5
-        - tragedy_survivor1
+    otherclan: otherclan1
+    # otherclan1: Clans_Other : "{CAT/main} was born into another Clan, but came to {CLAN/main}Clan by choice."
 
-      # otherclan4: Clans_Choice: "m_c grew up in another Clan, but chose to leave that life and join the Clan
-      #   {PRONOUN/m_c/subject} now {VERB/m_c/live/lives} in."
-      otherclan4:
-        - abandoned3
-        - guided4
-        - halfclan2
-        - medicine_cat
-        - orphaned4
-        - otherclan3
-        - refugee1
-        - tragedy_survivor1
+    tragedy_survivor: tragedy_survivor1
+    # tragedy_survivor1: ClansOtherTragedy: "Something horrible happened to m_c's previous Clan.
+    # {PRONOUN/m_c/subject/CAP} {VERB/m_c/refuse/refuses} to speak about it."
 
-      # ostracized_warrior: Clans_Exile_Ostracized: "m_c was ostracized from {PRONOUN/m_c/poss} old Clan,
-      # but no one really knows why."
-      ostracized_warrior:
-        - disgraced1
-        - disgraced2
-        - disgraced3
+    disgraced: disgraced1
+    # disgraced1: ClansOtherExileCrime: "m_c was cast out of {PRONOUN/m_c/poss} old Clan for some transgression
+    # that {PRONOUN/m_c/subject}{VERB/m_c/'re/'s} not keen on talking about."
 
-      # outsider1: Kit_Outsider: "m_c was born outside of a Clan."
-      outsider1:
-        - abandoned1
-        - abandoned4
-        - orphaned1
-        - orphaned2
-        - orphaned3
-        - orphaned5
-        - outsider2
-        - abandoned2 # "m_c was born outside of the Clan, but was brought to the Clan as a kit and has lived here ever since."
-        - outsider_roots2 # "m_c was born outside the Clan but came to live there with {PRONOUN/m_c/poss} parent at a young age."
+    orphaned: orphaned1
+    # orphaned1: Kit_Aware: "m_c was found with a deceased parent. The Clan took {PRONOUN/m_c/object} in, but
+    # doesn't hide where {PRONOUN/m_c/subject} came from."
 
-      # loner1: Loner_Choice: "m_c joined the Clan by choice after living life as a loner."
-      loner1:
-        - guided3
-        - loner2
-        - loner3
-        # - loner4 # only if they have a mate
-        - refugee2
-        - tragedy_survivor4
-      
-      # rogue1: Rogue_Choice: "m_c joined the Clan by choice after living life as a rogue."
-      rogue1:
-        - guided2
-        - refugee4
-        - rogue3
-        - tragedy_survivor2
+    other_clan1: otherclan4
+    # otherclan4: Clans_Choice: # "m_c grew up in another Clan, but chose to leave that life and join the
+    # Clan {PRONOUN/m_c/subject} now {VERB/m_c/live/lives} in."
 
-      # kittypet1: Kittypet_Choice: "m_c joined the Clan by choice after living life with Twolegs as a kittypet."
-      kittypet1:
-        - abandoned4
-        - guided1
-        - kittypet2
-        - kittypet3
-        - kittypet4
-        - orphaned3
-        - refugee3
-        - refugee6
-        - tragedy_survivor3
+    outsider: outsider1
+    # outsider1: Kit_Outsider : # "{CAT/main} was born outside the Clans."
+  step_2:
+    # otherclan1: Clans_Other: "{CAT/main} was born into another Clan, but came to {CLAN/main}Clan by choice."
+    otherclan1:
+      - abandoned3
+      - guided4
+      - halfclan2
+      - medicine_cat
+      - otherclan3
+      - refugee1
+      - refugee5
+      - tragedy_survivor1
+
+    # otherclan4: Clans_Choice: # "m_c grew up in another Clan, but chose to leave that life and join the
+    # Clan {PRONOUN/m_c/subject} now {VERB/m_c/live/lives} in."
+    otherclan4:
+      - abandoned3
+      - guided4
+      - halfclan2
+      - medicine_cat
+      - orphaned4
+      - otherclan3
+      - refugee1
+      - tragedy_survivor1
+
+    # ostracized_warrior: Clans_Exile_Ostracized: "m_c was ostracized from {PRONOUN/m_c/poss} old Clan,
+    # but no one really knows why."
+    ostracized_warrior:
+      - disgraced1
+      - disgraced2
+      - disgraced3
+
+    # outsider1: Kit_Outsider : # "{CAT/main} was born outside the Clans."
+    outsider1:
+      - abandoned1
+      - abandoned4
+      - orphaned1
+      - orphaned2
+      - orphaned3
+      - orphaned5
+      - outsider2
+      - abandoned2 # "m_c was born outside of the Clan, but was brought to the Clan as a kit and has lived here ever since."
+      - outsider_roots2 # "m_c was born outside the Clan but came to live there with {PRONOUN/m_c/poss} parent at a young age."
+
+    # loner1: Loner_Choice: "m_c joined the Clan by choice after living life as a loner."
+    loner1:
+      - guided3
+      - loner2
+      - loner3
+      # - loner4 # only if they have a mate
+      - refugee2
+      - tragedy_survivor4
+
+    # rogue1: Rogue_Choice: "m_c joined the Clan by choice after living life as a rogue."
+    rogue1:
+      - guided2
+      - refugee4
+      - rogue3
+      - tragedy_survivor2
+
+    # kittypet1: Kittypet_Choice: "m_c joined the Clan by choice after living life with Twolegs as a kittypet."
+    kittypet1:
+      - abandoned4
+      - guided1
+      - kittypet2
+      - kittypet3
+      - kittypet4
+      - orphaned3
+      - refugee3
+      - refugee6
+      - tragedy_survivor3
+
+# Convert old pelt names
+
 pelt:
-  calico_map:
-    BLUEFOUR:
-      pattern: PALEFOUR
-      tortie_base: tabby
-      tortie_color: SILVER
-      tortie_pattern: tortietabby
-    BLUEONE:
-      pattern: PALETHREE
-      tortie_base: single
-      tortie_color: SILVER
-      tortie_pattern: tortiesolid
-    BLUETHREE:
-      pattern: PALETHREE
-      tortie_base: tabby
-      tortie_color: SILVER
-      tortie_pattern: tortietabby
-    BLUETWO:
-      pattern: PALEFOUR
-      tortie_base: single
-      tortie_color: SILVER
-      tortie_pattern: tortiesolid
-    FADEDFOUR:
-      pattern: GOLDFOUR
-      tortie_base: tabby
-      tortie_color: BROWN
-      tortie_pattern: tortietabby
-    FADEDONE:
-      pattern: GOLDTHREE
-      tortie_base: single
-      tortie_color: BROWN
-      tortie_pattern: tortiesolid
-    FADEDTHREE:
-      pattern: GOLDTHREE
-      tortie_base: tabby
-      tortie_color: BROWN
-      tortie_pattern: tortietabby
-    FADEDTWO:
-      pattern: GOLDFOUR
-      tortie_base: single
-      tortie_color: BROWN
-      tortie_pattern: tortiesolid
-    FOUR:
-      pattern: GOLDFOUR
-      tortie_base: single
-      tortie_color: BLACK
-      tortie_pattern: tortietabby
-    ONE:
-      pattern: GOLDTHREE
-      tortie_base: single
-      tortie_color: BLACK
-      tortie_pattern: tortiesolid
-    THREE:
-      pattern: GOLDTHREE
-      tortie_base: single
-      tortie_color: BLACK
-      tortie_pattern: tortietabby
-    TWO:
-      pattern: GOLDFOUR
-      tortie_base: single
-      tortie_color: BLACK
-      tortie_pattern: tortiesolid
-  old_creamy_patches:
-    ANY2CREAMY: ANYTWO
-    ANYCREAMY: ANY
-    COLOURPOINTCREAMY: COLOURPOINT
-    LITTLECREAMY: LITTLE
-    TUXEDOCREAMY: TUXEDO
-    VANCREAMY: VAN
-  old_tortie_patches:
-    CREAMFOUR:
-    - CREAM
-    - FOUR
-    CREAMONE:
-    - CREAM
-    - ONE
-    CREAMTHREE:
-    - CREAM
-    - THREE
-    CREAMTWO:
-    - CREAM
-    - TWO
-    DARKFOUR:
-    - DARKGINGER
-    - FOUR
-    DARKONE:
-    - DARKGINGER
-    - ONE
-    DARKTHREE:
-    - DARKGINGER
-    - THREE
-    DARKTWO:
-    - DARKGINGER
-    - TWO
-    GINGERFOUR:
-    - GINGER
-    - FOUR
-    GINGERONE:
-    - GINGER
-    - ONE
-    GINGERTHREE:
-    - GINGER
-    - THREE
-    GINGERTWO:
-    - GINGER
-    - TWO
-    GOLDFOUR:
-    - GOLDEN
-    - FOUR
-    GOLDONE:
-    - GOLDEN
-    - ONE
-    GOLDTHREE:
-    - GOLDEN
-    - THREE
-    GOLDTWO:
-    - GOLDEN
-    - TWO
-    PALEFOUR:
-    - PALEGINGER
-    - FOUR
-    PALEONE:
-    - PALEGINGER
-    - ONE
-    PALETHREE:
-    - PALEGINGER
-    - THREE
-    PALETWO:
-    - PALEGINGER
-    - TWO
-  tortie_map:
-    BLUEONE:
-      pattern: PALEONE
-      tortie_base: single
-      tortie_color: SILVER
-      tortie_pattern: tortiesolid
-    BLUETWO:
-      pattern: PALETWO
-      tortie_base: single
-      tortie_color: SILVER
-      tortie_pattern: tortiesolid
-    FADEDONE:
-      pattern: GOLDONE
-      tortie_base: single
-      tortie_color: BROWN
-      tortie_pattern: tortiesolid
-    FADEDTWO:
-      pattern: GOLDTWO
-      tortie_base: single
-      tortie_color: BROWN
-      tortie_pattern: tortiesolid
-    ONE:
-      pattern: GOLDONE
-      tortie_base: single
-      tortie_color: BLACK
-      tortie_pattern: tortiesolid
-    TWO:
-      pattern: GOLDTWO
-      tortie_base: single
-      tortie_color: BLACK
-      tortie_pattern: tortiesolid
+  eye_colour:
+    PALEGREEN: pale_green
+    DARKBLUE: dark_blue
+    HEATHERBLUE: heather_blue
+    SUNLITICE: sunlit_ice
+    PALEBLUE: pale_blue
+    PALEYELLOW: pale_yellow
+    GREENYELLOW: green_yellow
+  white_patches:
+    POINTMARK: SEALPOINT # WhitePatches.SealPoint
+    PANTS2: PANTSTWO # WhitePatches.PantsTwo
+    ANY2: ANYTWO # WhitePatches.Coat
+    VITILIGO2: VITILIGOTWO # WhitePatches.VitiligoTwo
+  fur_colour:
+    GOLDEN-BROWN: GOLDENBROWN
   skin_colour:
     DARK: chocolate
     DARKGREY: dark_grey
@@ -285,14 +157,29 @@ pelt:
     LIGHTBROWN: light_brown
     DARKMARBLED: dark_marbled
     LIGHTMARBLED: light_marbled
-  eye_colour:
-    PALEGREEN: pale_green
-    DARKBLUE: dark_blue
-    HEATHERBLUE: heather_blue
-    SUNLITICE: sunlit_ice
-    PALEBLUE: pale_blue
-    PALEYELLOW: pale_yellow
-    GREENYELLOW: green_yellow
+  pattern:
+    none: ~
+  tortie_patches:
+    none: ~
+
+
+
+
+
+  step_1_categories:
+    # for categories that exist in ClanGen (or old versions of ClanGen), move the items into the relevant ClanSim category
+    categories_that_no_longer_exist:
+      # clangen_key: clansim_key
+      pelt_name: pattern # this won't work for torties
+      pelt_color: colour
+      pelt_length: length
+      white_patches: white_patches
+      vitiligo: white_patches
+      vitiligo_markings: white_patches
+      point_markings: white_patches
+      white_patches_tint: white_patch_tint
+
+# TODO Convert old skill names
 skill:
   TEACHER: teach
   HUNTER:
@@ -381,17 +268,17 @@ images:
   "mac_installer_bg_blank.png": "backgrounds/mac_installer_bg_blank.png"
   "menu.png": "backgrounds/menu.png"
   "menu_logoless.png": "backgrounds/menu_logoless.png"
-  "outside_clan_bg.png": "backgrounds/outside_clan_bg.png"
+  # "outside_clan_bg.png": "ball_clan_menu_screens/outside_clan_heading.png" # FIXME this is a heading, not a background
   "starclanbg.png": "backgrounds/starclanbg.png"
   "urbg.png": "backgrounds/urbg.png"
   # Profile Screen
-  "family_mate.png": "screens/profile_screen/family_mate.png"
-  "family_parents.png": "screens/profile_screen/family_parents.png"
-  "familytree_bigcatbox.png": "screens/profile_screen/familytree_bigcatbox.png"
-  "choosing_cat1_frame_mate.png.png": "screens/profile_screen/choosing_cat1_frame_mate.png.png"
-  "choosing_cat1_frame_ment.png.png": "screens/profile_screen/choosing_cat1_frame_ment.png.png"
-  "choosing_cat2_frame_mate.png.png": "screens/profile_screen/choosing_cat2_frame_mate.png.png"
-  "choosing_cat2_frame_ment.png.png": "screens/profile_screen/choosing_cat2_frame_ment.png.png"
-  "pers_compatible.png": "screens/profile_screen/pers_compatible.png"
-  "pers_incompatible.png": "screens/profile_screen/pers_incompatible.png"
-  "pers_neutral.png": "screens/profile_screen/pers_neutral.png"
+  "family_mate.png": "screens/all_profile_screens/family_mate.png"
+  "family_parents.png": "screens/all_profile_screens/family_parents.png"
+  "familytree_bigcatbox.png": "screens/all_profile_screens/familytree_bigcatbox.png"
+  "choosing_cat1_frame_mate.png.png": "screens/all_profile_screens/choosing_cat1_frame_mate.png.png"
+  "choosing_cat1_frame_ment.png.png": "screens/all_profile_screens/choosing_cat1_frame_ment.png.png"
+  "choosing_cat2_frame_mate.png.png": "screens/all_profile_screens/choosing_cat2_frame_mate.png.png"
+  "choosing_cat2_frame_ment.png.png": "screens/all_profile_screens/choosing_cat2_frame_ment.png.png"
+  "pers_compatible.png": "screens/all_profile_screens/pers_compatible.png"
+  "pers_incompatible.png": "screens/all_profile_screens/pers_incompatible.png"
+  "pers_neutral.png": "screens/all_profile_screens/pers_neutral.png"

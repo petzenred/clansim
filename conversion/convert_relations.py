@@ -29,7 +29,7 @@ def convert_relations_files(clan_prefix: str):
     relations_files: list = [filename for filename in os.listdir(relations_dir_path) if '.json' in filename]
 
     for relation_filename in relations_files:
-        old_relations: list = io_manager._read_file(filepath=relations_dir_path + relation_filename)
+        old_relations: list = io_manager.read_file(filepath=relations_dir_path + relation_filename)
         from_cat_id: int = int(relation_filename.split("_")[0])
         from_cat_relations: dict = {}
         for relation in old_relations:
@@ -50,5 +50,5 @@ def convert_relations_files(clan_prefix: str):
                                              clan_relationships=new_relations_clans)
 
 
-io_manager.update_active_clan_prefix(new_active_clan_prefix="Test")
+io_manager.update_active_clan_token()
 convert_relations_files("Test")

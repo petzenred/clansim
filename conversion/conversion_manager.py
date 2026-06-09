@@ -38,12 +38,15 @@ def convert_clangen_save():
 
 
 class ConversionManager:
-    """ """
+    """
+
+    TODO
+     - implement a convert_cat_from_save class to update history, pelt, etc.
+    """
 
     def __init__(self):
-        logger.debug(f"")
-
-    # TODO implement a convert_cat_from_save class to update history, pelt, etc.
+        logger.debug(f"Created a new ConversionManager object")
+        return
 
     # TODO
     def update_clansim_save(self):
@@ -56,6 +59,7 @@ class ConversionManager:
 
         Works on ClanGen save files up to ClanGen version TODO.
         """
+
         pass
 
     def convert_old_stuff(self, type: ConvertType):
@@ -64,7 +68,7 @@ class ConversionManager:
         if type is ConvertType.Pelt:
             pass
         if type is ConvertType.SaveFile:
-            currentclan = "Test" # TODO
+            currentclan = "test" # TODO
             self.convert_clan_save(clan_name=currentclan)
 
     def convert_clan_save(self, clan_name: str):
@@ -77,7 +81,7 @@ class ConversionManager:
 
         other_clans: list = []
         clan_yaml = {
-            "last_focus_change": None,
+            "last_warrior_focus_change": None,
             "clans_in_focus": [],
             "gamemode":  clan_json["gamemode"],
             "save_version": 0, # TODO
@@ -128,10 +132,10 @@ class ConversionManager:
             cat_yaml.update({"name": {
                 "prefix": cat_json["name_prefix"],
                 "suffix": cat_json["name_suffix"],
-                "special_suffix_hidden": bool(cat_json["specsuffix_hidden"])
+                "special_suffix_hidden_f": bool(cat_json["specsuffix_hidden"])
             }})
             cat_yaml.update({"status": {
-                "clan_prefix": clan_name,
+                "clan_token": clan_name,
                 "location": None,
                 "health": {
                     "paralyzed": None,
@@ -176,7 +180,7 @@ class ConversionManager:
                 "tortie_colour": "lilac",
                 "pattern": "rosette",
                 "tortie_pattern": "rosette",
-                "white_patch_pattern": "fctwo",
+                "white_patches": "fctwo",
                 "white_patch_tint": "offwhite",
                 "skin_colour": "darkbrown",
                 "eye_colour": ["sage", "sage"],
@@ -473,7 +477,7 @@ class ConversionManager:
     #         self.vitiligo = "VITILIGOTWO"
     #
     #     # Move white_patches that should be in vit or points.
-    #     # CatPelt.white_patches -> CatPelt.white_patch_pattern
+    #     # CatPelt.white_patches -> CatPelt.white_patches
     #     if self.white_patches in CatPelt.vit:
     #         self.vitiligo = self.white_patches
     #         self.white_patches = None
