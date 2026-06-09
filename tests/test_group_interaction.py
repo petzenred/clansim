@@ -25,7 +25,7 @@ class MainCatFiltering(unittest.TestCase):
         # when
         all_interactions = [interaction1, interaction2]
         filtered_interactions = group_events.get_main_cat_interactions(
-            all_interactions, "Any", "Any", {"m_c": main_cat.ID})
+            all_interactions, "NoBiome", "NoSeason", {"m_c": main_cat.ID})
 
         # then
         self.assertNotEqual(len(filtered_interactions), len(all_interactions))
@@ -47,7 +47,7 @@ class MainCatFiltering(unittest.TestCase):
         # when
         all_interactions = [interaction1, interaction2]
         filtered_interactions = group_events.get_main_cat_interactions(
-            all_interactions, "Any", "Any", {"m_c": main_cat.ID})
+            all_interactions, "NoBiome", "NoSeason", {"m_c": main_cat.ID})
 
         # then
         self.assertEqual(len(filtered_interactions), len(all_interactions))
@@ -70,7 +70,7 @@ class MainCatFiltering(unittest.TestCase):
         # when
         all_interactions = [interaction1, interaction2]
         filtered_interactions = group_events.get_main_cat_interactions(
-            all_interactions, "Any", "Any", {"m_c": main_cat.ID})
+            all_interactions, "NoBiome", "NoSeason", {"m_c": main_cat.ID})
 
         # then
         self.assertNotEqual(len(filtered_interactions), len(all_interactions))
@@ -92,7 +92,7 @@ class MainCatFiltering(unittest.TestCase):
         # when
         all_interactions = [interaction1, interaction2]
         filtered_interactions = group_events.get_main_cat_interactions(
-            all_interactions, "Any", "Any", {"m_c": main_cat.ID})
+            all_interactions, "NoBiome", "NoSeason", {"m_c": main_cat.ID})
 
         # then
         self.assertEqual(len(filtered_interactions), len(all_interactions))
@@ -115,7 +115,7 @@ class MainCatFiltering(unittest.TestCase):
         # when
         all_interactions = [interaction1, interaction2]
         filtered_interactions = group_events.get_main_cat_interactions(
-            all_interactions, "Any", "Any", {"m_c": main_cat.ID})
+            all_interactions, "NoBiome", "NoSeason", {"m_c": main_cat.ID})
 
         # then
         self.assertNotEqual(len(filtered_interactions), len(all_interactions))
@@ -137,7 +137,7 @@ class MainCatFiltering(unittest.TestCase):
         # when
         all_interactions = [interaction1, interaction2]
         filtered_interactions = group_events.get_main_cat_interactions(
-            all_interactions, "Any", "Any", {"m_c": main_cat.ID})
+            all_interactions, "NoBiome", "NoSeason", {"m_c": main_cat.ID})
 
         # then
         self.assertEqual(len(filtered_interactions), len(all_interactions))
@@ -160,7 +160,7 @@ class MainCatFiltering(unittest.TestCase):
         # when
         all_interactions = [interaction1, interaction2]
         filtered_interactions = group_events.get_main_cat_interactions(
-            all_interactions, "Any", "Any", {"m_c": main_cat.ID})
+            all_interactions, "NoBiome", "NoSeason", {"m_c": main_cat.ID})
 
         # then
         self.assertNotEqual(len(filtered_interactions), len(all_interactions))
@@ -182,7 +182,7 @@ class MainCatFiltering(unittest.TestCase):
         # when
         all_interactions = [interaction1, interaction2]
         filtered_interactions = group_events.get_main_cat_interactions(
-            all_interactions, "Any", "Any", {"m_c": main_cat.ID})
+            all_interactions, "NoBiome", "NoSeason", {"m_c": main_cat.ID})
 
         # then
         self.assertEqual(len(filtered_interactions), len(all_interactions))
@@ -205,7 +205,7 @@ class OtherFiltering(unittest.TestCase):
         # when
         all_interactions = [interaction1, interaction2]
         filtered_interactions = GroupEvents().get_main_cat_interactions(
-            all_interactions, "Any", "newleaf", abbreviations_cat_id)
+            all_interactions, "NoBiome", "newleaf", abbreviations_cat_id)
 
         # then
         self.assertNotEqual(len(filtered_interactions), len(all_interactions))
@@ -225,7 +225,7 @@ class OtherFiltering(unittest.TestCase):
         # when
         all_interactions = [interaction1, interaction2]
         filtered_interactions = GroupEvents().get_main_cat_interactions(
-            all_interactions, "Any", "newleaf", abbreviations_cat_id)
+            all_interactions, "NoBiome", "newleaf", abbreviations_cat_id)
 
         # then
         self.assertEqual(len(filtered_interactions), len(all_interactions))
@@ -241,12 +241,12 @@ class OtherFiltering(unittest.TestCase):
         interaction1.season = ["newleaf"]
 
         interaction2 = GroupInteraction("2")
-        interaction2.season = ["Any"]
+        interaction2.season = ["NoBiome"]
         
         # when
         all_interactions = [interaction1, interaction2]
         filtered_interactions = GroupEvents().get_main_cat_interactions(
-            all_interactions, "Any", "newleaf", abbreviations_cat_id)
+            all_interactions, "NoBiome", "newleaf", abbreviations_cat_id)
 
         # then
         self.assertEqual(len(filtered_interactions), len(all_interactions))
@@ -267,7 +267,7 @@ class OtherFiltering(unittest.TestCase):
         # when
         all_interactions = [interaction1, interaction2]
         filtered_interactions = GroupEvents().get_main_cat_interactions(
-            all_interactions, "forest", "Any", abbreviations_cat_id)
+            all_interactions, "forest", "NoSeason", abbreviations_cat_id)
 
         # then
         self.assertNotEqual(len(filtered_interactions), len(all_interactions))
@@ -287,7 +287,7 @@ class OtherFiltering(unittest.TestCase):
         # when
         all_interactions = [interaction1, interaction2]
         filtered_interactions = GroupEvents().get_main_cat_interactions(
-            all_interactions, "forest", "Any", abbreviations_cat_id)
+            all_interactions, "forest", "NoSeason", abbreviations_cat_id)
 
         # then
         self.assertEqual(len(filtered_interactions), len(all_interactions))
@@ -303,12 +303,12 @@ class OtherFiltering(unittest.TestCase):
         interaction1.biome = ["forest"]
 
         interaction2 = GroupInteraction("2")
-        interaction1.biome = ["Any"]
+        interaction1.biome = ["NoBiome"]
         
         # when
         all_interactions = [interaction1, interaction2]
         filtered_interactions = GroupEvents().get_main_cat_interactions(
-            all_interactions, "forest", "Any", abbreviations_cat_id)
+            all_interactions, "forest", "NoSeason", abbreviations_cat_id)
 
         # then
         self.assertEqual(len(filtered_interactions), len(all_interactions))

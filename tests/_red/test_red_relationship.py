@@ -2,8 +2,8 @@ import unittest
 
 from scripts._red.io_manager import io_manager
 
-io_manager.update_active_clan_prefix(new_active_clan_prefix="Test")
-from scripts._red.cats.red_relationship import global_rels
+io_manager.update_active_clan_token()
+from scripts._red.red_relationship import global_rels
 from definitions import RelationshipAspect
 
 # from_cat_id=8, to_cat_id=1

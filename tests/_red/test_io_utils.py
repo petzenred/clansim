@@ -32,28 +32,28 @@ class TestIOUtils(unittest.TestCase):
         print(f"Testing reading YAML files")
         for file_type in YAML_FILE_TYPES:
             filepath = READ_TEST_FILE + file_type
-            self.assertEqual(EXPECTED_YAML_RESULT, IOM._read_file(filepath=filepath))
+            self.assertEqual(EXPECTED_YAML_RESULT, IOM.read_file(filepath=filepath))
             self.assertEqual(EXPECTED_YAML_RESULT, IOM._read_yaml(filepath=filepath))
         print(f"Test case passed!\n")
 
         print(f"Testing reading TOML files")
         for file_type in TOML_FILE_TYPES:
             filepath = READ_TEST_FILE + file_type
-            self.assertEqual(EXPECTED_TOML_RESULT, IOM._read_file(filepath=filepath))
+            self.assertEqual(EXPECTED_TOML_RESULT, IOM.read_file(filepath=filepath))
             self.assertEqual(EXPECTED_TOML_RESULT, IOM._read_toml(filepath=filepath))
         print(f"Test case passed!\n")
 
         print(f"Testing reading JSON files")
         for file_type in JSON_FILE_TYPES:
             filepath = READ_TEST_FILE + file_type
-            self.assertEqual(EXPECTED_JSON_RESULT, IOM._read_file(filepath=filepath))
+            self.assertEqual(EXPECTED_JSON_RESULT, IOM.read_file(filepath=filepath))
             self.assertEqual(EXPECTED_JSON_RESULT, IOM._read_json(filepath=filepath))
         print(f"Test case passed!\n")
 
         print(f"Testing reading TEXT files")
         for file_type in TEXT_FILE_TYPES:
             filepath = READ_TEST_FILE + file_type
-            self.assertEqual(EXPECTED_TEXT_RESULT, IOM._read_file(filepath=filepath))
+            self.assertEqual(EXPECTED_TEXT_RESULT, IOM.read_file(filepath=filepath))
             self.assertEqual(EXPECTED_TEXT_RESULT, IOM._read_text(filepath=filepath))
         print(f"Test case passed!\n")
 
@@ -65,7 +65,7 @@ class TestIOUtils(unittest.TestCase):
 
         print(f"Testing writing a file")
         assert IOM._write_file(filepath=WRITE_TO_YAML_PATH, data=WRITE_TEST_CONTENTS)
-        self.assertEqual(WRITE_TEST_CONTENTS, IOM._read_file(filepath=WRITE_TO_YAML_PATH))
+        self.assertEqual(WRITE_TEST_CONTENTS, IOM.read_file(filepath=WRITE_TO_YAML_PATH))
         print(f"Test case passed!\n")
         
         print(f"Tests for reading files all passed!\n")
@@ -75,7 +75,7 @@ class TestIOUtils(unittest.TestCase):
         print(f"Set up complete\n")
 
         print(f"Testing differentiating between valid and invalid saves")
-        expected_valid_saves = ["Test"]
+        expected_valid_saves = ["test"]
         expected_invalid_saves = ["Day"]
         self.assertEqual((expected_valid_saves, expected_invalid_saves),
                          IOM.get_valid_save_names())
