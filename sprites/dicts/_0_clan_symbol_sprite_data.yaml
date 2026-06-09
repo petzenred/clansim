@@ -1,0 +1,127 @@
+0:
+  default:
+    clan_symbol_tags: ~
+    biome_tags: ~
+    clan_camp_tags: ~
+    original_name: ~
+1:
+  snake:
+    clan_symbol_tags:
+      - animal
+      - other_animal
+    biome_tags: ~
+    clan_camp_tags: ~
+    original_name: symbolADDER0
+  gust:
+    clan_symbol_tags:
+      - element
+      - air
+    biome_tags: ~
+    clan_camp_tags: ~
+    original_name: symbolAIR0
+  alder_leaf:
+    clan_symbol_tags:
+      - plant
+      - leaf
+    # Alders are commonly found near streams, rivers, and wetlands.
+    biome_tags:
+      - forest
+      - wetland
+    clan_camp_tags: ~
+    original_name: symbolALDER0
+  ant:
+    clan_symbol_tags:
+      - animal
+      - bug
+    biome_tags: ~
+    clan_camp_tags: ~
+    original_name: symbolANT0
+  antler:
+    clan_symbol_tags:
+      - animal
+      - mammal
+    biome_tags:
+      - forest
+      - mountain
+    clan_camp_tags: ~
+    original_name: symbolANTLER0
+  aphid:
+    clan_symbol_tags:
+      - animal
+      - bug
+    biome_tags:
+      - wetland
+    clan_camp_tags: ~
+    original_name: symbolAPHID0
+  apple_fruit:
+    clan_symbol_tags:
+      - plant
+      - fruit
+    biome_tags: ~
+    clan_camp_tags: ~
+    original_name: symbolAPPLE0
+  apricot_fruit:
+    clan_symbol_tags:
+      - plant
+      - fruit
+    biome_tags: ~
+    clan_camp_tags: ~
+    original_name: symbolAPRICOT0
+  arch:
+    clan_symbol_tags:
+      - location
+      - symbol
+    biome_tags:
+      - mountain
+      - twolegplace
+    clan_camp_tags: ~
+    original_name: symbolARCH0
+  ash:
+    clan_symbol_tags:
+      - element
+      - fire
+    biome_tags: ~
+    clan_camp_tags: ~
+    original_name: symbolASHEN0
+  aspen_tree:
+    clan_symbol_tags:
+      - plant
+      - tree
+    biome_tags: ~
+    clan_camp_tags: ~
+    original_name: symbolASPEN0
+  aster_flower:
+    clan_symbol_tags:
+      - plant
+      - flower
+    biome_tags: ~
+    clan_camp_tags: ~
+    original_name: symbolASTER0
+
+
+
+
+BeachTidalCave = "camp_beach_tidal_cave"
+BeachShipwreck = "camp_beach_shipwreck"
+BeachFjord = "camp_beach_fjord"
+
+ForestClearing = "camp_forest_clearing"
+ForestGully = "camp_forest_gully"
+ForestLakeside = "camp_forest_lakeside"
+
+MountainCliff = "camp_mountain_cliff"
+MountainCrystalRiver = "camp_mountain_crystal_river"
+MountainRuins = "camp_mountain_ruins"
+
+PlainsGrassland = "camp_plains_grassland"
+PlainsTunnel = "camp_plains_tunnel"
+PlainsWaste = "camp_plains_waste"
+
+Fishing = "fish"  # aquatic prey
+Stalking = "stalk"  # rodent prey - mice, voles, etc.
+Ambushing = "ambush"  # small bird prey and rabbits
+Scavenging = "scavenge"  # Twoleg food
+Swimming = "swim"  # hunt: fishing     border: beach, wetlands
+Running = "run"  # hunt: stalking    border: plains, desert
+Climbing = "climb"  # hunt: ambushing   border: mountain, forest (you climb trees, not just mountains)
+Navigating = "navigate"  # hunt: scavenging  border: forest, Twolegplace

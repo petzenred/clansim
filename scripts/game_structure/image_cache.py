@@ -1,9 +1,10 @@
 import pygame
+from pygame.surface import Surface
 
 _images = {}
 
 
-def load_image(path):
+def load_image(path) -> Surface:
     """
     If not in the cache already, loads the image from path as a surface.
     Otherwise, the image is retrieved from the cache.

@@ -15,13 +15,16 @@ import pygame
 import resources._red.red_filepaths as fp
 from definitions import (
     ThemeName, Biome, Season,
+    ClanSymbolTag,
     AccessoryName, SpritePose, EyeColour, ScarName, SkinColour, WhitePatches, TortiePatches, PeltPattern,
     STAR_CLAN_TOKEN, DF_CLAN_TOKEN, UR_CLAN_TOKEN,
     AVAILABLE_BIOMES, AVAILABLE_SEASONS, PeltColour,
     DEFAULT_SPRITES_PER_SPRITESHEET_X,
     DEFAULT_SPRITES_PER_SPRITESHEET_Y, DEFAULT_SPRITE_SIZE,
     PLATFORM_HEIGHT, PLATFORM_WIDTH, DEFAULT_CLAN_SYMBOL_NAME,
-    EFFECT_MASK, EFFECT_LIGHTING  # TODO use AVAILABLE_BIOMES when loading platforms?
+    EFFECT_MASK, EFFECT_LIGHTING, RedSkill, cast_to_biome, CampKey,
+    cast_to_camp_key, cast_to_season, cast_to_skill, cast_to_rank,
+    Rank  # TODO use AVAILABLE_BIOMES when loading platforms?
 )
 from scripts._red.config_manager import config
 from scripts._red.io_manager import io_manager
@@ -104,19 +107,21 @@ class SpriteGroup(StrEnum):
 # TODO April Fool's lineart
 
 class SpriteManager:
+    """ Handles everything to do with cat sprites and Clan symbols. """
 
     cat_tints = {}
     white_patches_tints = {}
-    clan_symbols = []
 
-    symbol_dict: dict = None
+    clan_symbols = [] # TODO get rid of this
+    symbol_dict: dict[str, dict[str, pygame.Surface | list[str] ]]
+    clan_symbol_dict: dict
+
     spritesheets: dict = {}
-    images: dict = {}
-    sprites: dict = {}
+    sprites: dict
 
     blank_sprite: pygame.Surface = None # Shared empty sprite for placeholders
 
-    size: int
+    sprite_size: int # The sprites are all square, so this is just one side. This applies to both cats and Clan symbols
     # FIXME these should be sprites per block, not sprites per sheet
     sprites_per_sheet_x: int = DEFAULT_SPRITES_PER_SPRITESHEET_X
     sprites_per_sheet_y: int = DEFAULT_SPRITES_PER_SPRITESHEET_Y
@@ -132,6 +137,7 @@ class SpriteManager:
         """
         self._load_data_dictionaries()
         self._set_sprite_size()
+        self._setup_clan_symbol_dict()
 
         self.sprites: dict = {
             SpriteGroup.Accessory: {},
@@ -156,7 +162,6 @@ class SpriteManager:
     def _load_data_dictionaries(self):
         for attr, filepath in fp.SPRITE_DATA_DICTS.items():
             self.__setattr__(attr, io_manager.read_file(filepath=filepath))
-        self.symbol_dict = io_manager.read_file(filepath=fp.CLAN_SYMBOL_NAMES)
         return
 
     def _set_sprite_size(self):
@@ -166,23 +171,43 @@ class SpriteManager:
         del lineart  # unneeded
 
         # if anyone changes lineart for whatever reason update this
-        # if isinstance(self.size, int):
+        # if isinstance(self.sprite_size, int):
         #     pass
         if width // self.sprites_per_sheet_x == height // self.sprites_per_sheet_y \
                 and isinstance(width // self.sprites_per_sheet_x, int):
-            self.size = width // self.sprites_per_sheet_x
+            self.sprite_size = width // self.sprites_per_sheet_x
         else:
-            self.size = DEFAULT_SPRITE_SIZE  # default, what base ClanGen uses
+            self.sprite_size = DEFAULT_SPRITE_SIZE  # default, what base ClanGen uses
             logger.warning(f"The sprites in lineart.png are not square. Falling back to "
-                           f"DEFAULT_SPRITE_SIZE={self.size}x{self.size}.\nIf you are a "
+                           f"DEFAULT_SPRITE_SIZE={self.sprite_size}x{self.sprite_size}.\nIf you are a "
                            f"modder, please update `definitions.DEFAULT_SPRITES_PER_SHEET_X`"
                            f" and `definitions.DEFAULT_SPRITES_PER_SHEET_Y`.")
 
         # set the blank sprite used when a sprite doesn't load properly
         if not self.blank_sprite:
-            self.blank_sprite = pygame.Surface(size=(self.size, self.size), flags=pygame.HWSURFACE | pygame.SRCALPHA)
+            self.blank_sprite = pygame.Surface(size=(self.sprite_size, self.sprite_size), flags=pygame.HWSURFACE | pygame.SRCALPHA)
 
         del width, height  # unneeded
+        return
+
+    def _setup_clan_symbol_dict(self):
+        """ Add all the tags that might be used here, to avoid KeyErrors or lots of if/then checks later. """
+        self.clan_symbol_dict = {
+            "original_name": {},
+        }
+        for biome in Biome:
+            self.clan_symbol_dict[biome] = {}
+        for tag in ClanSymbolTag:
+            self.clan_symbol_dict[tag] = {}
+        for camp in CampKey:
+            self.clan_symbol_dict[camp] = {}
+        for season in Season:
+            self.clan_symbol_dict[season] = {}
+        for skill in RedSkill:
+            self.clan_symbol_dict[skill] = {}
+        for rank in Rank:
+            self.clan_symbol_dict[rank] = {}
+
         return
 
     # ------------------------------ LOAD DATA FROM MAIN ----------------------------- #
@@ -194,6 +219,7 @@ class SpriteManager:
         self._load_platform_sprites()
         return
 
+    # FIXME use an age enum
     def _load_cat_sprites(self):
         """ Load sprite layers for cat sprites. """
         # pelt error sprite
@@ -217,15 +243,15 @@ class SpriteManager:
 
         # collars
         self._save_spritesheet(spritesheet=self.COLLAR_DATA["spritesheet"])
-        for col, collar_style_group in enumerate(self.COLLAR_DATA["sprite_dict"].keys()):
+        for row, collar_style_group in enumerate(self.COLLAR_DATA["sprite_dict"].keys()):
             # collar_style_group = ["bows", "leather", "nylon"]
             collar_styles: dict = self.COLLAR_DATA["sprite_dict"][collar_style_group]
             # collar_styles = {bow: [], bow_foil: [], bow_gradient: []}
-            for row, collar_style in enumerate(collar_styles.keys()):
+            for col, collar_style in enumerate(collar_styles.keys()):
                 # collar_style = [bow, bow_foil, bow_gradient]
                 colours: list = collar_styles[collar_style]
                 self.make_group(spritesheet=self.COLLAR_DATA["spritesheet"], sprite_group=SpriteGroup.Accessory,
-                                name_to_cast=collar_style, palette_colours=colours, pos=(row, col))
+                                name_to_cast=collar_style, palette_colours=colours, group_col=col, group_row=row)
 
         # all other sprites
         for data_set in (self.EYE_BOTH_DATA, self.EYE_RIGHT_DATA,
@@ -254,7 +280,7 @@ class SpriteManager:
                 self.sprites[SpriteGroup.Effect][EffectType.Gradient] = {}
             for loc in effects[effect_type]:
                 spritesheet = effect_type.value + loc
-                self._save_spritesheet(spritesheet=spritesheet, folder=fp.SPRITE_EFFECTS_DIRNAME)
+                self._save_spritesheet(spritesheet=spritesheet, folder=fp.SPRITE_EFFECTS_DIRPATH)
                 if effect_type is not EffectType.Gradient:
                     self.make_group(spritesheet=spritesheet, sprite_group=SpriteGroup.Effect, name_to_cast=effect_type,
                                     loc=loc)
@@ -265,10 +291,10 @@ class SpriteManager:
         fogs: list[str] = [DF_CLAN_TOKEN, STAR_CLAN_TOKEN, UR_CLAN_TOKEN, EFFECT_MASK]
         for loc in fogs:
             spritesheet: str = EffectType.FadeFog + loc
-            self._save_spritesheet(spritesheet=spritesheet, folder=fp.SPRITE_FADE_FOG_DIRNAME)
+            self._save_spritesheet(spritesheet=spritesheet, folder=fp.SPRITE_FADE_FOG_DIRPATH)
             for fade_level in range(3): # FIXME hardcoded, replace with MAX_FADE_LEVEL
                 self.make_group(spritesheet=spritesheet, sprite_group=SpriteGroup.Effect,
-                                name_to_cast=EffectType.FadeFog, pos=(fade_level, 0), loc=loc)
+                                name_to_cast=EffectType.FadeFog, group_col=fade_level, group_row=0, loc=loc)
 
         return
 
@@ -277,65 +303,105 @@ class SpriteManager:
         """ Loads Clan symbols. """
         self._save_spritesheet(spritesheet=fp.CLAN_SYMBOL_SPRITES)
 
-        # save the default Clan symbol, which is just the cat head outline without any symbol on it
-        self.make_group(spritesheet=fp.CLAN_SYMBOL_SPRITES,
-                        sprite_group=SpriteGroup.ClanSymbol,
-                        name_to_cast=DEFAULT_CLAN_SYMBOL_NAME)
+        # the first row of the Clan symbol sprite sheet only has one sprite on it - the default Clan symbol, which is
+        #   just the cat head outline without any symbol on it
+        # every row after that is a letter of the alphabet - e.g. the second row is "Adder" through "Aster", the
+        #   third row is "Badger" through "Buzzard", etc.
 
-        # U and X omitted from letter list due to having no prefixes
-        letters = [
-            "_skip_",
-            "A",
-            "B",
-            "C",
-            "D",
-            "E",
-            "F",
-            "G",
-            "H",
-            "I",
-            "J",
-            "K",
-            "L",
-            "M",
-            "N",
-            "O",
-            "P",
-            "Q",
-            "R",
-            "S",
-            "T",
-            "V",
-            "W",
-            "Y",
-            "Z",
-        ]
-
-        # sprite names will format as "symbol{PREFIX}{INDEX}", ex. "symbolSPRING0"
-        for y_pos, letter in enumerate(letters):
-            if letter == "_skip_":
-                continue
-            x_mod = 0
-            for i, symbol_name in enumerate(
-                [
-                    symbol
-                    for symbol in self.symbol_dict
-                    if letter in symbol and self.symbol_dict[symbol]["variants"]
-                ]
-            ):
-                if self.symbol_dict[symbol_name]["variants"] > 1 and x_mod > 0:
-                    x_mod += -1
-                for variant_index in range(self.symbol_dict[symbol_name]["variants"]):
-                    x_pos = i + x_mod
-
-                    if self.symbol_dict[symbol_name]["variants"] > 1:
-                        x_mod += 1
-                    elif x_mod > 0:
-                        x_pos += -1
-
-                    self.clan_symbols.append(f"symbol{symbol_name.upper()}{variant_index}")
+        # sprite names are formatted as "symbol{PREFIX}{INDEX}", ex. "symbolSPRING0"
+        try:
+            for row in self.CLAN_SYMBOL_DATA:
+                for col in self.CLAN_SYMBOL_DATA[row]:
+                    entry = self.CLAN_SYMBOL_DATA[row][col]
+                    sprite_name = f"clan_symbol_{col}_{row}"
+                    sprite_location: tuple[int, int] = (col, row)
+                    # save the actual sprite in self.sprites
                     self.make_group(spritesheet=fp.CLAN_SYMBOL_SPRITES, sprite_group=SpriteGroup.ClanSymbol,
-                                    name_to_cast=f"symbol{symbol_name.upper()}{variant_index}", pos=(x_pos, y_pos))
+                                    name_to_cast=sprite_location, group_col=col, group_row=row)
+                    # save the connected Clan names and tags
+                    self.clan_symbol_dict["original_name"][sprite_location] = entry.pop("original_name")
+                    for clan_prefix in entry:
+                        tags = entry[clan_prefix]
+                        for tag_str in tags:
+                            if "biome_" in tag_str:
+                                tag = cast_to_biome(tag_str[6:])
+                            elif "camp_" in tag_str:
+                                tag = cast_to_camp_key(tag_str)
+                            elif "season_" in tag_str:
+                                tag = cast_to_season(tag_str[7:])
+                            elif "skill_" in tag_str:
+                                tag = cast_to_skill(tag_str[6:])
+                            elif "rank_" in tag_str:
+                                tag = cast_to_rank(tag_str[5:])
+                            else:
+                                tag = ClanSymbolTag(tag_str)
+                            self.clan_symbol_dict[tag][clan_prefix] = sprite_location
+        except Exception as err:
+            logger.exception(err)
+            raise err
+
+        # # save the default blank Clan symbol sprite
+        # self.make_group(spritesheet=fp.CLAN_SYMBOL_SPRITES, sprite_group=SpriteGroup.ClanSymbol,
+        #                 name_to_cast=DEFAULT_CLAN_SYMBOL_NAME)
+        #
+        # # U and X omitted from letter list due to having no prefixes
+        # letters = [
+        #     "_skip_",
+        #     "A",
+        #     "B",
+        #     "C",
+        #     "D",
+        #     "E",
+        #     "F",
+        #     "G",
+        #     "H",
+        #     "I",
+        #     "J",
+        #     "K",
+        #     "L",
+        #     "M",
+        #     "N",
+        #     "O",
+        #     "P",
+        #     "Q",
+        #     "R",
+        #     "S",
+        #     "T",
+        #     "V",
+        #     "W",
+        #     "Y",
+        #     "Z",
+        # ]
+        #
+        # # sprite names are formatted as "symbol{PREFIX}{INDEX}", ex. "symbolSPRING0"
+        # for y_pos, letter in enumerate(letters):
+        #     if letter == "_skip_":
+        #         continue
+        #     x_mod = 0
+        #     for i, symbol_name in enumerate(
+        #         [
+        #             symbol
+        #             for symbol in self.CLAN_SYMBOL_DATA
+        #             if letter in symbol and self.CLAN_SYMBOL_DATA[symbol]["variants"]
+        #         ]
+        #     ):
+        #         if self.CLAN_SYMBOL_DATA[symbol_name]["variants"] > 1 and x_mod > 0:
+        #             x_mod += -1
+        #         for variant_index in range(self.CLAN_SYMBOL_DATA[symbol_name]["variants"]):
+        #             x_pos = i + x_mod
+        #
+        #             if self.CLAN_SYMBOL_DATA[symbol_name]["variants"] > 1:
+        #                 x_mod += 1
+        #             elif x_mod > 0:
+        #                 x_pos += -1
+        #
+        #             self.clan_symbols.append(f"symbol{symbol_name.upper()}{variant_index}")
+        #             logger.debug(
+        #                 f"Saving Clan symbol: \"symbol{symbol_name.upper()}{variant_index}\" at ({x_pos}, {y_pos})"
+        #             )
+        #             self.make_group(spritesheet=fp.CLAN_SYMBOL_SPRITES, sprite_group=SpriteGroup.ClanSymbol,
+        #                             name_to_cast=f"symbol{symbol_name.upper()}{variant_index}", group_col=x_pos,
+        #                             group_row=y_pos)
 
         return
 
@@ -381,8 +447,8 @@ class SpriteManager:
         return
 
     def _separate_spritesheet(self, sprite_group: SpriteGroup, spritesheet: str, sprite_list: list[list[str]]):
-        for col, sprite_sets in enumerate(sprite_list):
-            for row, sprite_set in enumerate(sprite_sets):
+        for row, sprite_sets in enumerate(sprite_list):
+            for col, sprite_set in enumerate(sprite_sets):
                 # make sure that sprite_group and sprite_set are compatible, and that a dictionary has been created
                 #   for the new sprites in self.sprites
                 try:
@@ -396,9 +462,9 @@ class SpriteManager:
                     raise ValueError(f"Tried to cast \"{sprite_set}\" as a {sprite_group.to_cast_class} while "
                                      f"separating spritesheet \"{spritesheet}\" in the SpriteManager")
                 self.make_group(spritesheet=spritesheet, sprite_group=sprite_group, name_to_cast=sprite_set,
-                                palette_colours=[], pos=(row, col))
+                                palette_colours=[], group_col=col, group_row=row)
 
-    def _save_spritesheet(self, spritesheet: str, folder: Path = fp.SPRITE_DATA_DICTS_DIRPATH):
+    def _save_spritesheet(self, spritesheet: str, folder: Path = fp.SPRITE_DIRPATH):
         """ Save a spritesheet to SpriteManager.spritesheets.
 
         :param str spritesheet: name of the file in the "sprites/" directory
@@ -419,7 +485,8 @@ class SpriteManager:
                    sprite_group: SpriteGroup,
                    name_to_cast: str,
                    palette_colours: list[str] = [],
-                   pos: tuple[int, int] = (0, 0),
+                   group_col: int = 0,
+                   group_row: int = 0,
                    loc: str = "",
     ):
         """ Divide sprites on a spritesheet into groups of sprites that are easily accessible
@@ -427,7 +494,8 @@ class SpriteManager:
         :param spritesheet: name of spritesheet file
         :param SpriteGroup sprite_group: which sprite group the sprite should be saved under
         :param name_to_cast: the sprites will be saved under sprite_group.to_cast_class(name_to_cast)
-        :param pos: (col,row) tuple of offsets. NOT pixel offset, but offset of other sprites
+        :param int group_col: NOT pixel offset, but offset of other sprites
+        :param int group_row: NOT pixel offset, but offset of other sprites
         """
         # error_sprite_name is here to save time when catching errors in this function, it happens a lot
         # TODO get rid of error_sprite_name during testing if it's not needed
@@ -444,8 +512,8 @@ class SpriteManager:
         else:
             sprites_x, sprites_y = self.sprites_per_sheet_x, self.sprites_per_sheet_y
 
-        group_x_ofs = pos[0] * sprites_x * self.size
-        group_y_ofs = pos[1] * sprites_y * self.size
+        group_x_ofs = group_col * sprites_x * self.sprite_size
+        group_y_ofs = group_row * sprites_y * self.sprite_size
         sprite_pose_i = 0
 
         # splitting group into singular sprites and storing into self.sprites section
@@ -456,20 +524,24 @@ class SpriteManager:
                 error_sprite_name: str = error_sprite_base + f"[SpritePose.{SpritePose(sprite_pose_i).name}]"
 
                 try:
-                    top_corner_x: int = group_x_ofs + col * self.size
-                    top_corner_y: int = group_y_ofs + row * self.size
-                    width: int = self.size
-                    height: int = self.size
+                    top_corner_x: int = group_x_ofs + (col * self.sprite_size)
+                    top_corner_y: int = group_y_ofs + (row * self.sprite_size)
+                    width: int = self.sprite_size
+                    height: int = self.sprite_size
 
-                    new_sprite: pygame.Surface = pygame.Surface.subsurface(
-                        self.spritesheets[spritesheet],
+                    # new_sprite: pygame.Surface = pygame.Surface.subsurface(
+                    #     self.spritesheets[spritesheet],
+                    #     top_corner_x, top_corner_y,
+                    #     width, height
+                    # )
+                    new_sprite: pygame.Surface = self.spritesheets[spritesheet].subsurface(
                         top_corner_x, top_corner_y,
                         width, height
                     )
 
                     # rect = pygame.Rect(
-                    #     (group_x_ofs + col * self.size, group_y_ofs + row * self.size,),
-                    #     (self.size, self.size),
+                    #     (group_x_ofs + col * self.sprite_size, group_y_ofs + row * self.sprite_size,),
+                    #     (self.sprite_size, self.sprite_size),
                     # )
                     # new_sprite: pygame.Surface = pygame.Surface.subsurface(
                     #     self.spritesheets[spritesheet],
@@ -478,15 +550,15 @@ class SpriteManager:
 
                     # new_sprite: pygame.Surface = pygame.Surface.subsurface(
                     #     self.spritesheets[spritesheet],
-                    #     group_x_ofs + col * self.size,
-                    #     group_y_ofs + row * self.size,
-                    #     self.size, self.size,
+                    #     group_x_ofs + col * self.sprite_size,
+                    #     group_y_ofs + row * self.sprite_size,
+                    #     self.sprite_size, self.sprite_size,
                     # )
 
                     # sprite_loc = pygame.Rect(
-                    #     left=group_x_ofs + col * self.size,
-                    #     top=group_y_ofs + row * self.size,
-                    #     width=self.size, height=self.size,
+                    #     left=group_x_ofs + col * self.sprite_size,
+                    #     top=group_y_ofs + row * self.sprite_size,
+                    #     width=self.sprite_size, height=self.sprite_size,
                     # )
                     # new_sprite: pygame.Surface = pygame.Surface.subsurface(
                     #     self.spritesheets[spritesheet],
@@ -499,6 +571,8 @@ class SpriteManager:
                                    f"error_sprite_name: {error_sprite_name}")
                     logger.warning(f"Saving as blank sprite")
                     new_sprite = self.blank_sprite
+                except Exception as err:
+                    logger.exception(err)
 
                 # save the sprite
                 if spritesheet == "acc_collar":
@@ -583,6 +657,7 @@ class SpriteManager:
     # ---------------------------------- CAT SPRITE ---------------------------------- #
 
     # TODO where is this used?
+    # FIXME
     def update_mask(self, cat):
         if cat.faded or cat.dead:
             # should never need a mask since they can't appear on the Clan screen
@@ -592,7 +667,7 @@ class SpriteManager:
         val = pygame.mask.from_surface(
             surface=pygame.transform.scale(
                 surface=cat.sprite,
-                size=ui_scale_dimensions(dim=(self.size, self.size), # dim=(DEFAULT_SPRITE_SIZE, DEFAULT_SPRITE_SIZE)
+                size=ui_scale_dimensions(dim=(self.sprite_size, self.sprite_size),  # dim=(DEFAULT_SPRITE_SIZE, DEFAULT_SPRITE_SIZE)
                                          scale=screen_manager.window_scale)
             ),
             threshold=250
@@ -612,7 +687,7 @@ class SpriteManager:
         cat.sprite_mask = inflated_mask
         return
 
-    # TODO
+    # FIXME
     def generate_sprite(
         self,
         cat,
@@ -676,7 +751,7 @@ class SpriteManager:
                 cat_sprite = sprite_poses[cat.pelt.cat_sprites[age]]
 
         new_sprite = pygame.Surface(
-            (sprites.size, sprites.size), pygame.HWSURFACE | pygame.SRCALPHA
+            (sprites.sprite_size, sprites.sprite_size), pygame.HWSURFACE | pygame.SRCALPHA
         )
 
         # generating the sprite
@@ -724,14 +799,14 @@ class SpriteManager:
                 # Multiply with alpha does not work as you would expect - it just lowers the alpha of the
                 # entire surface. To get around this, we first blit the tint onto a white background to dull it,
                 # then blit the surface onto the sprite with pygame.BLEND_RGB_MULT
-                tint = pygame.Surface((sprites.size, sprites.size)).convert_alpha()
+                tint = pygame.Surface((sprites.sprite_size, sprites.sprite_size)).convert_alpha()
                 tint.fill(tuple(sprites.cat_tints["tint_colours"][cat.pelt.tint]))
                 new_sprite.blit(tint, (0, 0), special_flags=pygame.BLEND_RGB_MULT)
             if (
                 cat.pelt.tint is not None
                 and cat.pelt.tint in sprites.cat_tints["dilute_tint_colours"]
             ):
-                tint = pygame.Surface((sprites.size, sprites.size)).convert_alpha()
+                tint = pygame.Surface((sprites.sprite_size, sprites.sprite_size)).convert_alpha()
                 tint.fill(tuple(sprites.cat_tints["dilute_tint_colours"][cat.pelt.tint]))
                 new_sprite.blit(tint, (0, 0), special_flags=pygame.BLEND_RGB_ADD)
 
@@ -746,7 +821,7 @@ class SpriteManager:
                     and cat.pelt.white_patches_tint
                     in sprites.white_patches_tints["tint_colours"]
                 ):
-                    tint = pygame.Surface((sprites.size, sprites.size)).convert_alpha()
+                    tint = pygame.Surface((sprites.sprite_size, sprites.sprite_size)).convert_alpha()
                     tint.fill(
                         tuple(
                             sprites.white_patches_tints["tint_colours"][
@@ -771,7 +846,7 @@ class SpriteManager:
                     and cat.pelt.white_patches_tint
                     in sprites.white_patches_tints["tint_colours"]
                 ):
-                    tint = pygame.Surface((sprites.size, sprites.size)).convert_alpha()
+                    tint = pygame.Surface((sprites.sprite_size, sprites.sprite_size)).convert_alpha()
                     tint.fill(
                         tuple(
                             sprites.white_patches_tints["tint_colours"][
@@ -986,7 +1061,7 @@ class SpriteManager:
             # ok! we have the sprite! now, do some layer things if the cat's already dead
             if dead:
                 temp_sprite = pygame.Surface(
-                    (sprites.size, sprites.size), pygame.HWSURFACE | pygame.SRCALPHA
+                    (sprites.sprite_size, sprites.sprite_size), pygame.HWSURFACE | pygame.SRCALPHA
                 )
 
                 if cat.status.group == CatGroup.STARCLAN:

@@ -19,29 +19,36 @@ logger = logging.getLogger(__name__)
 def get_version_info():
     if get_version_info.instance is None:
         is_source_build = False
-        version_number = VERSION_CLANSIM_NUMBER
+        commit_id = VERSION_CLANSIM_NUMBER
         release_channel = False
         upstream = ""
         is_itch = False
         is_sandboxed = False
         is_thonny = False
         git_installed = False
+        game_version = VERSION_CLANSIM_NUMBER
+        save_version = SAVE_CLANSIM_VERSION_NUMBER
 
+        # is this a source build
         if not getattr(sys, "frozen", False):
             is_source_build = True
 
+        # TODO what is this indicating
         if find_spec("thonny") is not None:
             is_thonny = True
 
+        # get the git commit ID, release channel, and TODO upstream?
         if os.path.exists("version.ini"):
+            # check for version.ini and parse if present
             version_ini = ConfigParser()
             version_ini.read("version.ini", encoding="utf-8")
-            version_number = version_ini.get("DEFAULT", "version_number")
+            commit_id = version_ini.get("DEFAULT", "version_number") # TODO change version_number to commit_id
             release_channel = version_ini.get("DEFAULT", "release_channel")
             upstream = version_ini.get("DEFAULT", "upstream")
         else:
+            # if there's no version.ini, manually get the git commit ID instead
             try:
-                version_number = (
+                commit_id = (
                     subprocess.check_output(["git", "rev-parse", "HEAD"])
                     .decode("ascii")
                     .strip()
@@ -62,12 +69,14 @@ def get_version_info():
         get_version_info.instance = VersionInfo(
             is_source_build,
             release_channel,
-            version_number,
+            commit_id,
             upstream,
             is_itch,
             is_sandboxed,
             git_installed,
             is_thonny,
+            game_version,
+            save_version
         )
     return get_version_info.instance
 
@@ -80,12 +89,14 @@ class VersionInfo:
 
     is_source_build: bool
     release_channel: str
-    version_number: str
+    commit_id: str
     upstream: str
     is_itch: bool
     is_sandboxed: bool
     git_installed: bool
     is_thonny: bool
+    game_version: tuple[int]
+    save_version: int
 
     @property
     def is_dev(self) -> bool:

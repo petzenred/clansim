@@ -27,7 +27,7 @@ from scripts._red.events.base_event import BaseEvent
 #
 # TODO implement Outbreak
 #   which condition,
-# TODO implement WarriorsDen
+# TODO implement WarriorDen
 #   WarriorFocus.NoFocus, WarriorFocus.Herb, WarriorFocus.Prey, WarriorFocus.Befriend,
 #   WarriorFocus.Antagonize, WarriorFocus.Sabotage, WarriorFocus.Aid, WarriorFocus.Raid,
 #   WarriorFocus.RR, WarriorFocus.Hoard

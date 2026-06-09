@@ -6,11 +6,11 @@ import pygame_gui
 import html
 
 from pygame_gui.elements import UIWindow, UITextBox, UITextEntryLine
-from scripts.utility import ui_scale
+from scripts._red.utils.ui_utils import ui_scale
 from scripts.debug_commands import commandList
 from scripts.debug_commands.utils import set_debug_class
 from scripts.game_structure.game_essentials import game
-from scripts.game_structure.screen_settings import MANAGER, offset, screen_scale
+from scripts.game_structure.screen_settings import ui_manager, offset, screen_scale
 from scripts.utility import get_text_box_theme
 
 
@@ -44,7 +44,7 @@ class DebugMenu(UIWindow):
             ),
             container=self,
             object_id="#log",
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.command_line = UITextEntryLine(
@@ -199,7 +199,7 @@ class DebugMode:
                     pygame.display.get_surface().get_height() / 1.35,
                 ),
             ),
-            MANAGER,
+            ui_manager,
         )
 
     def pre_update(self, clock):
@@ -242,18 +242,18 @@ class DebugMode:
 
         # visual_debug_mode
         if game.debug_settings["visualdebugmode"]:
-            if not MANAGER.visual_debug_active:
-                MANAGER.set_visual_debug_mode(True)
+            if not ui_manager.visual_debug_active:
+                ui_manager.set_visual_debug_mode(True)
         else:
-            if MANAGER.visual_debug_active:
-                MANAGER.set_visual_debug_mode(False)
+            if ui_manager.visual_debug_active:
+                ui_manager.set_visual_debug_mode(False)
 
     def post_update(self, screen):
         """
         Updates *after* the UI has been drawn.
         """
         if game.debug_settings["showbounds"]:
-            elements = MANAGER.ui_group.visible
+            elements = ui_manager.ui_group.visible
             for surface in elements:
                 rect = surface[1]
                 if rect in [self.coords_display.rect, self.debug_menu.rect]:

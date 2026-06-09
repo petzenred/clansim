@@ -26,12 +26,12 @@ from scripts.game_structure.localization import (
 )
 
 from definitions import (
-    Age, Rank, Season, YEAR_SEASONS,
+    Rank, Season, YEAR_SEASONS,
 )
 from scripts.game_structure import image_cache, localization
-from scripts.cat.sprites import sprites
+from scripts._red.sprite_manager import sprite_manager
 from scripts.game_structure.game_essentials import game
-import scripts.game_structure.screen_settings  # must be done like this to get updates when we change screen size etc
+from scripts._red.screens.screen_manager import screen_manager # must be done like this to get updates when we change screen size etc
 
 
 """ 
@@ -49,7 +49,7 @@ logger = logging.getLogger(__name__)
 #                               Getting Cats                                   #
 # ---------------------------------------------------------------------------- #
 
-
+# TODO replaced by CatTracker.living_nursing_queens_and_kits_by_clan_token
 def get_alive_clan_queens(living_cats):
     living_kits = [
         cat
@@ -91,7 +91,7 @@ def get_alive_clan_queens(living_cats):
                 living_kits.remove(cat)
     return queen_dict, living_kits
 
-
+# TODO replaced by CatTracker.living_cats (which is a dictionary)
 def get_alive_status_cats(
         Cat: Union["Cat", Type["Cat"]],
         get_status: list,
@@ -120,7 +120,7 @@ def get_alive_status_cats(
 
     return alive_cats
 
-
+# TODO replaced by len(CatTracker.living_cats)
 def get_living_cat_count(Cat):
     """
     Returns the int of all living cats, both in and out of the Clan
@@ -133,7 +133,7 @@ def get_living_cat_count(Cat):
         count += 1
     return count
 
-
+# TODO replaced by len(RedClan.clan_cats)
 def get_living_clan_cat_count(Cat):
     """
     Returns the int of all living cats within the Clan
@@ -146,7 +146,7 @@ def get_living_clan_cat_count(Cat):
         count += 1
     return count
 
-
+# TODO replaced by RedClan.get_cats_within_age()
 def get_cats_same_age(Cat, cat, age_range=10):
     """
     Look for all cats in the Clan and returns a list of cats which are in the same age range as the given cat.
@@ -175,7 +175,7 @@ def get_cats_same_age(Cat, cat, age_range=10):
 
     return cats
 
-
+# TODO
 def get_free_possible_mates(cat):
     """Returns a list of available cats, which are possible mates for the given cat."""
     cats = []
@@ -195,7 +195,7 @@ def get_free_possible_mates(cat):
             cats.append(inter_cat)
     return cats
 
-
+# TODO
 def get_random_moon_cat(
         Cat, main_cat, parent_child_modifier: bool = True, mentor_app_modifier: bool = True
 ):
@@ -254,7 +254,7 @@ def get_random_moon_cat(
         random_cat = Cat.fetch_cat(random_cat)
     return random_cat
 
-
+# TODO
 def get_warring_clan():
     """
     returns enemy clan if a war is currently ongoing
@@ -272,7 +272,7 @@ def get_warring_clan():
 #                          Handling Outside Factors                            #
 # ---------------------------------------------------------------------------- #
 
-
+# TODO replaced by game.current_season
 def get_current_season():
     """
     function to handle the math for finding the Clan's current season
@@ -293,14 +293,14 @@ def get_current_season():
 
     return game.clan_obj.current_season
 
-
+# TODO what's the difference between a Clan's reputation and their temperament?
 def change_clan_reputation(difference):
     """
     will change the Clan's reputation with outsider cats according to the difference parameter.
     """
     game.clan_obj.reputation += difference
 
-
+# TODO replaced by RedRelationshipTracker.clan_update_relationship
 def change_clan_relations(other_clan, difference):
     """
     will change the Clan's relation with other clans according to the difference parameter.
@@ -320,7 +320,7 @@ def change_clan_relations(other_clan, difference):
     # setting it in the Clan save
     game.clan_obj.all_clans[y].relations = clan_relations
 
-
+# TODO replaced by CatTracker.all_clans
 def get_other_clan(clan_name):
     """
     returns the clan object of given clan name
@@ -334,7 +334,7 @@ def get_other_clan(clan_name):
 #                             Cat Relationships                                #
 # ---------------------------------------------------------------------------- #
 
-# TODO use global_rels.cat_get_highest_romance instead
+# TODO replaced by RedRelationshipTracker.cat_get_highest_romance
 def get_highest_romantic_relation(
         relationships, exclude_mate=False, potential_mate=False
 ):
@@ -356,7 +356,7 @@ def get_highest_romantic_relation(
 
     return current_max_relationship
 
-# TODO replace with global_rels.
+# TODO replaced by RedRelationshipTracker.cat_get_relationship
 def check_relationship_value(cat_from, cat_to, rel_value=None):
     """
     returns the value of the rel_value param given
@@ -387,7 +387,7 @@ def check_relationship_value(cat_from, cat_to, rel_value=None):
     else:
         raise KeyError(f"Could not account for relationship value: {rel_value}")
 
-# TODO replace with global_rels.
+# TODO 
 def get_personality_compatibility(cat1, cat2):
     """Returns:
     True - if personalities have a positive compatibility
@@ -418,7 +418,7 @@ def get_personality_compatibility(cat1, cat2):
     else:
         return None
 
-# TODO replace with global_rels.
+# TODO 
 def get_cats_of_romantic_interest(cat):
     """Returns a list of cats, those cats are love interest of the given cat"""
     cats = []
@@ -442,7 +442,7 @@ def get_cats_of_romantic_interest(cat):
             cats.append(inter_cat)
     return cats
 
-# TODO replace with global_rels.
+# TODO 
 def get_amount_of_cats_with_relation_value_towards(cat, value, all_cats):
     """
     Looks how many cats have the certain value
@@ -490,7 +490,7 @@ def get_amount_of_cats_with_relation_value_towards(cat, value, all_cats):
 
     return return_dict
 
-# TODO replace with global_rels.
+# TODO 
 def filter_relationship_type(
         group: list, filter_types: List[str], event_id: str = None, patrol_leader=None
 ):
@@ -724,7 +724,7 @@ def filter_relationship_type(
 
     return True
 
-# TODO replace with global_rels.
+# TODO 
 def gather_cat_objects(
         Cat, abbr_list: List[str], event, stat_cat=None, extra_cat=None
 ) -> list:
@@ -792,7 +792,7 @@ def gather_cat_objects(
 
     return list(out_set)
 
-# TODO replace with global_rels.
+# TODO 
 def unpack_rel_block(
         Cat, relationship_effects: List[dict], event=None, stat_cat=None, extra_cat=None
 ):
@@ -945,7 +945,7 @@ def unpack_rel_block(
                 log=log2,
             )
 
-# TODO replace with global_rels.
+# TODO replaced by RedRelationshipTracker.cat_change_relationship
 def change_relationship_values(
         cats_to: list,
         cats_from: list,
@@ -1793,14 +1793,14 @@ def get_pronouns(Cat: "Cat"):
     else:
         return choice(Cat.pronouns)
 
-
+# TODO replace all references to this with references to scripts._red.utils.ui_utils.shorten_text_to_fit
 def shorten_text_to_fit(
         name, length_limit, font_size=None, font_type="resources/fonts/NotoSans-Medium.ttf"
 ):
-    length_limit = length_limit * scripts.game_structure.screen_settings.screen_scale
+    length_limit = length_limit * screen_manager.window_scale
     if font_size is None:
         font_size = 15
-    font_size = floor(font_size * scripts.game_structure.screen_settings.screen_scale)
+    font_size = floor(font_size * screen_manager.window_scale)
 
     if font_type == "clangen":
         font_type = "resources/fonts/clangen.ttf"
@@ -1834,7 +1834,7 @@ def shorten_text_to_fit(
 #                                    Sprites                                   #
 # ---------------------------------------------------------------------------- #
 
-
+# TODO replace all references to this with references to scripts._red.utils.ui_utils.ui_scale
 def ui_scale(rect: pygame.Rect):
     """
     Scales a pygame.Rect appropriately for the UI scaling currently in use.
@@ -1842,23 +1842,23 @@ def ui_scale(rect: pygame.Rect):
     :return: the same pygame.Rect, scaled for the current UI.
     """
     # offset can be negative to allow for correct anchoring
-    rect[0] = floor(rect[0] * scripts.game_structure.screen_settings.screen_scale)
-    rect[1] = floor(rect[1] * scripts.game_structure.screen_settings.screen_scale)
+    rect[0] = floor(rect[0] * screen_manager.window_scale)
+    rect[1] = floor(rect[1] * screen_manager.window_scale)
     # if the dimensions are negative, it's dynamically scaled, ignore
     rect[2] = (
-        floor(rect[2] * scripts.game_structure.screen_settings.screen_scale)
+        floor(rect[2] * screen_manager.window_scale)
         if rect[2] > 0
         else rect[2]
     )
     rect[3] = (
-        floor(rect[3] * scripts.game_structure.screen_settings.screen_scale)
+        floor(rect[3] * screen_manager.window_scale)
         if rect[3] > 0
         else rect[3]
     )
 
     return rect
 
-
+# TODO replace all references to this with references to scripts._red.utils.ui_utils.ui_scale_dimensions
 def ui_scale_dimensions(dim: Tuple[int, int]):
     """
     Use to scale the dimensions of an item - WILL IGNORE NEGATIVE VALUES
@@ -1866,15 +1866,15 @@ def ui_scale_dimensions(dim: Tuple[int, int]):
     :return: The scaled dimensions
     """
     return (
-        floor(dim[0] * scripts.game_structure.screen_settings.screen_scale)
+        floor(dim[0] * screen_manager.window_scale)
         if dim[0] > 0
         else dim[0],
-        floor(dim[1] * scripts.game_structure.screen_settings.screen_scale)
+        floor(dim[1] * screen_manager.window_scale)
         if dim[1] > 0
         else dim[1],
     )
 
-
+# TODO replace all references to this with references to scripts._red.utils.ui_utils.ui_scale_offset
 def ui_scale_offset(coords: Tuple[int, int]):
     """
     Use to scale the offset of an item (i.e. the first 2 values of a pygame.Rect).
@@ -1883,11 +1883,11 @@ def ui_scale_offset(coords: Tuple[int, int]):
     :return: The scaled coordinates
     """
     return (
-        floor(coords[0] * scripts.game_structure.screen_settings.screen_scale),
-        floor(coords[1] * scripts.game_structure.screen_settings.screen_scale),
+        floor(coords[0] * screen_manager.window_scale),
+        floor(coords[1] * screen_manager.window_scale),
     )
 
-
+# TODO replace all references to this with references to scripts._red.utils.ui_utils.ui_scale_value
 def ui_scale_value(val: int):
     """
     Use to scale a single value according to the UI scale. If you need this one,
@@ -1895,9 +1895,9 @@ def ui_scale_value(val: int):
     :param val: The value to scale
     :return: The scaled value
     """
-    return floor(val * scripts.game_structure.screen_settings.screen_scale)
+    return floor(val * screen_manager.window_scale)
 
-
+# TODO replace all references to this with references to scripts._red.utils.ui_utils.ui_scale_blit
 def ui_scale_blit(coords: Tuple[int, int]):
     """
     Use to scale WHERE to blit an item, not the SIZE of it. (0, 0) is the top left corner of the pygame_gui managed window,
@@ -1906,15 +1906,15 @@ def ui_scale_blit(coords: Tuple[int, int]):
     :return: The scaled, correctly offset coordinates to blit to.
     """
     return floor(
-        coords[0] * scripts.game_structure.screen_settings.screen_scale
-        + scripts.game_structure.screen_settings.offset[0]
+        coords[0] * screen_manager.window_scale
+        + screen_manager.window_pos[0]
     ), floor(
-        coords[1] * scripts.game_structure.screen_settings.screen_scale
-        + scripts.game_structure.screen_settings.offset[1]
+        coords[1] * screen_manager.window_scale
+        + screen_manager.window_pos[1]
     )
 
 
-# TODO move to either red_clan.py or sprites.py
+# TODO replace all references to this with references to scripts._red.sprite_manager.get_clan_symbol_sprite
 def clan_symbol_sprite(clan, return_string=False, force_light=False):
     """
     returns the clan symbol for the given clan_name, if no symbol exists then random symbol is chosen
@@ -1928,12 +1928,12 @@ def clan_symbol_sprite(clan, return_string=False, force_light=False):
             return clan.chosen_symbol
         else:
             if game.settings["dark mode"] and not force_light:
-                return sprites.dark_mode_symbol(sprites.sprites[clan.chosen_symbol])
+                return sprite_manager.convert_clan_symbol_theme(sprite_manager.sprite_manager[clan.chosen_symbol])
             else:
-                return sprites.sprites[clan.chosen_symbol]
+                return sprite_manager.sprite_manager[clan.chosen_symbol]
     else:
         possible_sprites = []
-        for sprite in sprites.clan_symbols:
+        for sprite in sprite_manager.clan_symbols:
             name = sprite.strip("1234567890")
             if f"symbol{clan_name.upper()}" == name:
                 possible_sprites.append(sprite)
@@ -1945,26 +1945,23 @@ def clan_symbol_sprite(clan, return_string=False, force_light=False):
                 print(
                     f"WARNING: attempted to return symbol string, but there's no clan symbol for {clan_name.upper()}.  Random symbol string returned."
                 )
-                return f"{choice(sprites.clan_symbols)}"
+                return f"{choice(sprite_manager.clan_symbols)}"
 
         # returns the actual sprite of the symbol
         if possible_sprites:
             if game.settings["dark mode"] and not force_light:
-                return sprites.dark_mode_symbol(
-                    sprites.sprites[choice(possible_sprites)]
-                )
+                return sprite_manager.convert_clan_symbol_theme(sprite_manager.sprite_manager[choice(possible_sprites)])
             else:
-                return sprites.sprites[choice(possible_sprites)]
+                return sprite_manager.sprite_manager[choice(possible_sprites)]
         else:
             # give random symbol if no matching symbol exists
             print(
                 f"WARNING: attempted to return symbol sprite, but there's no clan symbol for {clan_name.upper()}.  Random symbol sprite returned."
             )
-            return sprites.dark_mode_symbol(
-                sprites.sprites[f"{choice(sprites.clan_symbols)}"]
-            )
+            return sprite_manager.convert_clan_symbol_theme(sprite_manager.sprite_manager[f"{choice(sprite_manager.clan_symbols)}"])
 
 
+# TODO move to sprite manager
 def generate_sprite(
         cat,
         life_state=None,
@@ -2023,14 +2020,14 @@ def generate_sprite(
             cat_sprite = str(cat.pelt.cat_sprites[age])
 
     new_sprite = pygame.Surface(
-        (sprites.size, sprites.size), pygame.HWSURFACE | pygame.SRCALPHA
+        (sprite_manager.sprite_size, sprite_manager.sprite_size), pygame.HWSURFACE | pygame.SRCALPHA
     )
 
     # generating the sprite
     try:
         if cat.pelt.name not in ["Tortie", "Calico"]:
             new_sprite.blit(
-                sprites.sprites[
+                sprite_manager.sprite_manager[
                     cat.pelt.get_sprites_name() + cat.pelt.colour + cat_sprite
                     ],
                 (0, 0),
@@ -2038,7 +2035,7 @@ def generate_sprite(
         else:
             # Base Coat
             new_sprite.blit(
-                sprites.sprites[cat.pelt.tortiebase + cat.pelt.colour + cat_sprite],
+                sprite_manager.sprite_manager[cat.pelt.tortiebase + cat.pelt.colour + cat_sprite],
                 (0, 0),
             )
 
@@ -2048,11 +2045,11 @@ def generate_sprite(
             else:
                 tortie_pattern = cat.pelt.tortiepattern
 
-            patches = sprites.sprites[
+            patches = sprite_manager.sprite_manager[
                 tortie_pattern + cat.pelt.tortiecolour + cat_sprite
                 ].copy()
             patches.blit(
-                sprites.sprites["tortiemask" + cat.pelt.pattern + cat_sprite],
+                sprite_manager.sprite_manager["tortiemask" + cat.pelt.pattern + cat_sprite],
                 (0, 0),
                 special_flags=pygame.BLEND_RGBA_MULT,
             )
@@ -2063,25 +2060,25 @@ def generate_sprite(
         # TINTS
         if (
                 cat.pelt.tint != "none"
-                and cat.pelt.tint in sprites.cat_tints["tint_colours"]
+                and cat.pelt.tint in sprite_manager.cat_tints["tint_colours"]
         ):
             # Multiply with alpha does not work as you would expect - it just lowers the alpha of the
             # entire surface. To get around this, we first blit the tint onto a white background to dull it,
             # then blit the surface onto the sprite with pygame.BLEND_RGB_MULT
-            tint = pygame.Surface((sprites.size, sprites.size)).convert_alpha()
-            tint.fill(tuple(sprites.cat_tints["tint_colours"][cat.pelt.tint]))
+            tint = pygame.Surface((sprite_manager.sprite_size, sprite_manager.sprite_size)).convert_alpha()
+            tint.fill(tuple(sprite_manager.cat_tints["tint_colours"][cat.pelt.tint]))
             new_sprite.blit(tint, (0, 0), special_flags=pygame.BLEND_RGB_MULT)
         if (
                 cat.pelt.tint != "none"
-                and cat.pelt.tint in sprites.cat_tints["dilute_tint_colours"]
+                and cat.pelt.tint in sprite_manager.cat_tints["dilute_tint_colours"]
         ):
-            tint = pygame.Surface((sprites.size, sprites.size)).convert_alpha()
-            tint.fill(tuple(sprites.cat_tints["dilute_tint_colours"][cat.pelt.tint]))
+            tint = pygame.Surface((sprite_manager.sprite_size, sprite_manager.sprite_size)).convert_alpha()
+            tint.fill(tuple(sprite_manager.cat_tints["dilute_tint_colours"][cat.pelt.tint]))
             new_sprite.blit(tint, (0, 0), special_flags=pygame.BLEND_RGB_ADD)
 
         # draw white patches
         if cat.pelt.white_patches is not None:
-            white_patches = sprites.sprites[
+            white_patches = sprite_manager.sprite_manager[
                 "white" + cat.pelt.white_patches + cat_sprite
                 ].copy()
 
@@ -2089,12 +2086,12 @@ def generate_sprite(
             if (
                     cat.pelt.white_patches_tint != "none"
                     and cat.pelt.white_patches_tint
-                    in sprites.white_patches_tints["tint_colours"]
+                    in sprite_manager.white_patches_tints["tint_colours"]
             ):
-                tint = pygame.Surface((sprites.size, sprites.size)).convert_alpha()
+                tint = pygame.Surface((sprite_manager.sprite_size, sprite_manager.sprite_size)).convert_alpha()
                 tint.fill(
                     tuple(
-                        sprites.white_patches_tints["tint_colours"][
+                        sprite_manager.white_patches_tints["tint_colours"][
                             cat.pelt.white_patches_tint
                         ]
                     )
@@ -2106,16 +2103,16 @@ def generate_sprite(
         # draw vit & points
 
         if cat.pelt.points:
-            points = sprites.sprites["white" + cat.pelt.points + cat_sprite].copy()
+            points = sprite_manager.sprite_manager["white" + cat.pelt.points + cat_sprite].copy()
             if (
                     cat.pelt.white_patches_tint != "none"
                     and cat.pelt.white_patches_tint
-                    in sprites.white_patches_tints["tint_colours"]
+                    in sprite_manager.white_patches_tints["tint_colours"]
             ):
-                tint = pygame.Surface((sprites.size, sprites.size)).convert_alpha()
+                tint = pygame.Surface((sprite_manager.sprite_size, sprite_manager.sprite_size)).convert_alpha()
                 tint.fill(
                     tuple(
-                        sprites.white_patches_tints["tint_colours"][
+                        sprite_manager.white_patches_tints["tint_colours"][
                             cat.pelt.white_patches_tint
                         ]
                     )
@@ -2125,14 +2122,14 @@ def generate_sprite(
 
         if cat.pelt.vitiligo:
             new_sprite.blit(
-                sprites.sprites["white" + cat.pelt.vitiligo + cat_sprite], (0, 0)
+                sprite_manager.sprite_manager["white" + cat.pelt.vitiligo + cat_sprite], (0, 0)
             )
 
         # draw eyes & scars1
-        eyes = sprites.sprites["eyes" + cat.pelt.eye_colour + cat_sprite].copy()
+        eyes = sprite_manager.sprite_manager["eyes" + cat.pelt.eye_colour + cat_sprite].copy()
         if cat.pelt.eye_colour2 != None:
             eyes.blit(
-                sprites.sprites["eyes2" + cat.pelt.eye_colour2 + cat_sprite], (0, 0)
+                sprite_manager.sprite_manager["eyes2" + cat.pelt.eye_colour2 + cat_sprite], (0, 0)
             )
         new_sprite.blit(eyes, (0, 0))
 
@@ -2140,37 +2137,37 @@ def generate_sprite(
             for scar in cat.pelt.scars:
                 if scar in cat.pelt.scars1:
                     new_sprite.blit(
-                        sprites.sprites["scars" + scar + cat_sprite], (0, 0)
+                        sprite_manager.sprite_manager["scars" + scar + cat_sprite], (0, 0)
                     )
                 if scar in cat.pelt.scars3:
                     new_sprite.blit(
-                        sprites.sprites["scars" + scar + cat_sprite], (0, 0)
+                        sprite_manager.sprite_manager["scars" + scar + cat_sprite], (0, 0)
                     )
 
         # draw line art
         if game.settings["shaders"] and not dead:
             new_sprite.blit(
-                sprites.sprites["shaders" + cat_sprite],
+                sprite_manager.sprite_manager["shaders" + cat_sprite],
                 (0, 0),
                 special_flags=pygame.BLEND_RGB_MULT,
             )
-            new_sprite.blit(sprites.sprites["lighting" + cat_sprite], (0, 0))
+            new_sprite.blit(sprite_manager.sprite_manager["lighting" + cat_sprite], (0, 0))
 
         if not dead:
-            new_sprite.blit(sprites.sprites["lines" + cat_sprite], (0, 0))
+            new_sprite.blit(sprite_manager.sprite_manager["lines" + cat_sprite], (0, 0))
         elif cat.df:
-            new_sprite.blit(sprites.sprites["lineartdf" + cat_sprite], (0, 0))
+            new_sprite.blit(sprite_manager.sprite_manager["lineartdf" + cat_sprite], (0, 0))
         elif dead:
-            new_sprite.blit(sprites.sprites["lineartdead" + cat_sprite], (0, 0))
+            new_sprite.blit(sprite_manager.sprite_manager["lineartdead" + cat_sprite], (0, 0))
         # draw skin and scars2
         blendmode = pygame.BLEND_RGBA_MIN
-        new_sprite.blit(sprites.sprites["skin" + cat.pelt.skin + cat_sprite], (0, 0))
+        new_sprite.blit(sprite_manager.sprite_manager["skin" + cat.pelt.skin + cat_sprite], (0, 0))
 
         if not scars_hidden:
             for scar in cat.pelt.scars:
                 if scar in cat.pelt.scars2:
                     new_sprite.blit(
-                        sprites.sprites["scars" + scar + cat_sprite],
+                        sprite_manager.sprite_manager["scars" + scar + cat_sprite],
                         (0, 0),
                         special_flags=blendmode,
                     )
@@ -2185,17 +2182,17 @@ def generate_sprite(
                     if accessory in getattr(Pelt, category):
                         if accessory in cat.pelt.plant_accessories:
                             new_sprite.blit(
-                                sprites.sprites["acc_herbs" + accessory + cat_sprite],
+                                sprite_manager.sprite_manager["acc_herbs" + accessory + cat_sprite],
                                 (0, 0),
                             )
                         elif accessory in cat.pelt.wild_accessories:
                             new_sprite.blit(
-                                sprites.sprites["acc_wild" + accessory + cat_sprite],
+                                sprite_manager.sprite_manager["acc_wild" + accessory + cat_sprite],
                                 (0, 0),
                             )
                         elif accessory in cat.pelt.collars:
                             new_sprite.blit(
-                                sprites.sprites["collars" + accessory + cat_sprite], (0, 0)
+                                sprite_manager.sprite_manager["collars" + accessory + cat_sprite], (0, 0)
                             )
 
         # Apply fading fog
@@ -2214,17 +2211,17 @@ def generate_sprite(
                 stage = "2"
 
             new_sprite.blit(
-                sprites.sprites["fademask" + stage + cat_sprite],
+                sprite_manager.sprite_manager["fademask" + stage + cat_sprite],
                 (0, 0),
                 special_flags=pygame.BLEND_RGBA_MULT,
             )
 
             if cat.df:
-                temp = sprites.sprites["fadedf" + stage + cat_sprite].copy()
+                temp = sprite_manager.sprite_manager["fadedf" + stage + cat_sprite].copy()
                 temp.blit(new_sprite, (0, 0))
                 new_sprite = temp
             else:
-                temp = sprites.sprites["fadestarclan" + stage + cat_sprite].copy()
+                temp = sprite_manager.sprite_manager["fadestarclan" + stage + cat_sprite].copy()
                 temp.blit(new_sprite, (0, 0))
                 new_sprite = temp
 
@@ -2243,6 +2240,7 @@ def generate_sprite(
     return new_sprite
 
 
+# TODO move to sprite manager
 def update_sprite(cat):
     # First, check if the cat is faded.
     if cat.faded:
@@ -2255,6 +2253,7 @@ def update_sprite(cat):
     cat.all_cats[cat.ID] = cat
 
 
+# TODO move to sprite manager
 def apply_opacity(surface, opacity):
     for x in range(surface.get_width()):
         for y in range(surface.get_height()):
@@ -2274,8 +2273,8 @@ def chunks(L, n):
 
 
 def clamp(value: float, minimum_value: float, maximum_value: float) -> float:
-    """
-    Takes a value and returns it constrained to a certain range
+    """ Takes a value and returns it constrained to a certain range.
+
     :param value: The input value
     :param minimum_value: Lower bound
     :param maximum_value: Upper bound
@@ -2302,7 +2301,7 @@ def get_text_box_theme(theme_name=None):
     else:
         return theme_name
 
-
+# TODO replace all references with game.quit()
 def quit(savesettings=False, clearevents=False):
     """
     Quits the game, avoids a bunch of repeated lines

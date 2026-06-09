@@ -1,6 +1,6 @@
 import os
 import platform
-import sys
+from pathlib import Path
 
 import definitions
 from scripts.housekeeping.version import get_version_info
@@ -12,7 +12,7 @@ def setup_data_dir():
         os.makedirs(get_save_dir(), exist_ok=True)
         os.makedirs(get_temp_dir(), exist_ok=True)
     except FileExistsError:
-        print("MacOS ignored exist_ok=true for save or temp dict, continuing.")
+        print("scripts/housekeeping/datadir.py: MacOS ignored exist_ok=true for save or temp dict, continuing.")
         pass
     os.makedirs(get_log_dir(), exist_ok=True)
     os.makedirs(get_cache_dir(), exist_ok=True)
@@ -27,37 +27,38 @@ def setup_data_dir():
             os.symlink(get_data_dir(), "game_data", target_is_directory=True)
 
 
-def get_data_dir():
+def get_data_dir() -> Path:
     if get_version_info().is_source_build:
-        # changed because sometimes this called from a file other than main
-        return str( os.path.abspath(definitions.__file__)[:-15] )
+        # # changed because sometimes this is called from a file other than main
+        # return str( os.path.abspath(definitions.__file__)[:-15] )
+        return Path(os.getcwd())
 
     from platformdirs import user_data_dir
 
     if get_version_info().is_dev:
-        return user_data_dir(definitions.APP_NAME_BETA, definitions.APP_AUTHOR)
-    return user_data_dir(definitions.APP_NAME_DEFAULT, definitions.APP_AUTHOR)
+        return Path(user_data_dir(definitions.APP_NAME_BETA, definitions.APP_AUTHOR))
+    return Path(user_data_dir(definitions.APP_NAME_DEFAULT, definitions.APP_AUTHOR))
 
 
-def get_log_dir():
-    return get_data_dir() + "/logs/"
+def get_log_dir() -> Path:
+    return Path(get_data_dir(), "logs/")
 
 
-def get_save_dir():
-    return get_data_dir() + "/saves/"
+def get_save_dir() -> Path:
+    return Path(get_data_dir(), "saves/")
 
 
-def get_resources_dir():
-    return get_data_dir() + "/resources/"
+def get_resources_dir() -> Path:
+    return Path(get_data_dir(), "resources/")
 
 
-def get_cache_dir():
-    return get_data_dir() + "/cache/"
+def get_cache_dir() -> Path:
+    return Path(get_data_dir(), "cache/")
 
 
-def get_temp_dir():
-    return get_data_dir() + "/.temp/"
+def get_temp_dir() -> Path:
+    return Path(get_data_dir(), ".temp/")
 
 
-def get_saved_images_dir():
-    return get_data_dir() + "/saved_images/"
+def get_saved_images_dir() -> Path:
+    return Path(get_data_dir(), "saved_images/")

@@ -1,0 +1,5483 @@
+0:
+  default: ~
+1:
+  snake:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - lizard
+    location:
+      col: 0
+      row: 1
+    original_name: symbolADDER0
+    style_tags: ~
+  air:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - air
+    location:
+      col: 1
+      row: 1
+    original_name: symbolAIR0
+    style_tags: ~
+  alder_leaf:
+    # Alders are commonly found near streams, rivers, and wetlands.
+    biome_tags:
+      - wetland
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - leaf
+    - tree
+    location:
+      col: 2
+      row: 1
+    original_name: symbolALDER0
+    style_tags: ~
+  ant:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bug
+    location:
+      col: 3
+      row: 1
+    original_name: symbolANT0
+    style_tags: ~
+  antler:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 4
+      row: 1
+    original_name: symbolANTLER0
+    style_tags: ~
+  aphid:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bug
+    location:
+      col: 5
+      row: 1
+    original_name: symbolAPHID0
+    style_tags: ~
+  apple:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - fruit
+    location:
+      col: 6
+      row: 1
+    original_name: symbolAPPLE0
+    style_tags: ~
+  apricot:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - fruit
+    location:
+      col: 7
+      row: 1
+    original_name: symbolAPRICOT0
+    style_tags: ~
+  arch:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - location
+    location:
+      col: 8
+      row: 1
+    original_name: symbolARCH0
+    style_tags: ~
+  ashen:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - fire
+    location:
+      col: 9
+      row: 1
+    original_name: symbolASHEN0
+    style_tags: ~
+  aspen:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - tree
+    location:
+      col: 10
+      row: 1
+    original_name: symbolASPEN0
+    style_tags: ~
+  aster:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 11
+      row: 1
+    original_name: symbolASTER0
+    style_tags: ~
+2:
+  badger_face:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 0
+      row: 2
+    original_name: symbolBADGER0
+    style_tags: ~
+  barley:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 1
+      row: 2
+    original_name: symbolBARLEY0
+    style_tags: ~
+  basil:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - leaf
+    location:
+      col: 2
+      row: 2
+    original_name: symbolBASIL0
+    style_tags: ~
+  bass:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - fish
+    location:
+      col: 3
+      row: 2
+    original_name: symbolBASS0
+    style_tags: ~
+  bat:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 4
+      row: 2
+    original_name: symbolBAT0
+    style_tags: ~
+  bay:
+    biome_tags: ~
+    clan_camp_tags:
+      - camp_beach_tidepool
+    clan_symbol_tags:
+    - location
+    location:
+      col: 5
+      row: 2
+    original_name: symbolBAY0
+    style_tags: ~
+  beam:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - light
+    location:
+      col: 6
+      row: 2
+    original_name: symbolBEAM0
+    style_tags: ~
+  bear:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 7
+      row: 2
+    original_name: symbolBEAR0
+    style_tags: ~
+  beaver:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 8
+      row: 2
+    original_name: symbolBEAVER0
+    style_tags: ~
+  bee:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bug
+    location:
+      col: 9
+      row: 2
+    original_name: symbolBEE0
+    style_tags: ~
+  beetle:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bug
+    location:
+      col: 10
+      row: 2
+    original_name: symbolBEETLE0
+    style_tags: ~
+  berry:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - fruit
+    location:
+      col: 11
+      row: 2
+    original_name: symbolBERRY0
+    style_tags: ~
+  big:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    - descriptor
+    location:
+      col: 12
+      row: 2
+    original_name: symbolBIG0
+    style_tags: ~
+  billow:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - air
+    location:
+      col: 13
+      row: 2
+    original_name: symbolBILLOW0
+    style_tags: ~
+  birch:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - tree
+    location:
+      col: 14
+      row: 2
+    original_name: symbolBIRCH0
+    style_tags: ~
+  bird:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 15
+      row: 2
+    original_name: symbolBIRD0
+    style_tags: ~
+  bitter:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - descriptor
+    location:
+      col: 16
+      row: 2
+    original_name: symbolBITTER0
+    style_tags: ~
+  bittern:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 17
+      row: 2
+    original_name: symbolBITTERN0
+    style_tags: ~
+  blaze:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - fire
+    location:
+      col: 18
+      row: 2
+    original_name: symbolBLAZE0
+    style_tags: ~
+  bliss:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    location:
+      col: 19
+      row: 2
+    original_name: symbolBLISS0
+    style_tags: ~
+  blood:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    - element
+    - water
+    location:
+      col: 20
+      row: 2
+    original_name: symbolBLOOD0
+    style_tags: ~
+  bloom:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 21
+      row: 2
+    original_name: symbolBLOOM0
+    style_tags: ~
+  blossom:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 22
+      row: 2
+    original_name: symbolBLOSSOM0
+    style_tags: ~
+  blotch:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - descriptor
+    - miscellaneous
+    location:
+      col: 23
+      row: 2
+    original_name: symbolBLOTCH0
+    style_tags: ~
+  bluebell:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 24
+      row: 2
+    original_name: symbolBLUEBELL0
+    style_tags: ~
+  bluff:
+    biome_tags:
+    - desert
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - location
+    location:
+      col: 25
+      row: 2
+    original_name: symbolBLUFF0
+    style_tags: ~
+  bog:
+    biome_tags:
+      - wetland
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - location
+    location:
+      col: 26
+      row: 2
+    original_name: symbolBOG0
+    style_tags: ~
+  bone:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    - miscellaneous
+    location:
+      col: 27
+      row: 2
+    original_name: symbolBONE0
+    style_tags: ~
+  borage:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 28
+      row: 2
+    original_name: symbolBORAGE0
+    style_tags: ~
+  bough:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - tree
+    location:
+      col: 29
+      row: 2
+    original_name: symbolBOUGH0
+    style_tags: ~
+  boulder:
+    biome_tags: ~
+    clan_camp_tags:
+      - camp_forest_cliff
+    clan_symbol_tags:
+    - element
+    - earth
+    location:
+      col: 30
+      row: 2
+    original_name: symbolBOULDER0
+    style_tags: ~
+  bounce:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    location:
+      col: 31
+      row: 2
+    original_name: symbolBOUNCE0
+    style_tags: ~
+  bracken:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 32
+      row: 2
+    original_name: symbolBRACKEN0
+    style_tags: ~
+  bramble:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 33
+      row: 2
+    original_name: symbolBRAMBLE0
+    style_tags: ~
+  branch:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - tree
+    location:
+      col: 34
+      row: 2
+    original_name: symbolBRANCH0
+    style_tags: ~
+  brave:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    location:
+      col: 35
+      row: 2
+    original_name: symbolBRAVE0
+    style_tags: ~
+  breeze:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - air
+    - weather
+    location:
+      col: 36
+      row: 2
+    original_name: symbolBREEZE0
+    style_tags: ~
+  briar:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 37
+      row: 2
+    original_name: symbolBRIAR0
+    style_tags: ~
+  bright:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - light
+    location:
+      col: 38
+      row: 2
+    original_name: symbolBRIGHT0
+    style_tags: ~
+  bristle:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    - verb
+    location:
+      col: 39
+      row: 2
+    original_name: symbolBRISTLE0
+    style_tags: ~
+  broken:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - descriptor
+    - miscellaneous
+    location:
+      col: 40
+      row: 2
+    original_name: symbolBROKEN0
+    style_tags: ~
+  brook:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - location
+    - element
+    - water
+    location:
+      col: 41
+      row: 2
+    original_name: symbolBROOK0
+    style_tags: ~
+  brush:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - location
+    - other plant
+    location:
+      col: 42
+      row: 2
+    original_name: symbolBRUSH0
+    style_tags: ~
+  bubbling:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - descriptor
+    - miscellaneous
+    - element
+    - water
+    - verb
+    location:
+      col: 43
+      row: 2
+    original_name: symbolBUBBLING0
+    style_tags: ~
+  bud:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 44
+      row: 2
+    original_name: symbolBUD0
+    style_tags: ~
+  bug:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bug
+    location:
+      col: 45
+      row: 2
+    original_name: symbolBUG0
+    style_tags: ~
+  bumble:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bug
+    location:
+      col: 46
+      row: 2
+    original_name: symbolBUMBLE0
+    style_tags: ~
+  burdock:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 47
+      row: 2
+    original_name: symbolBURDOCK0
+    style_tags: ~
+  burn:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - fire
+    location:
+      col: 48
+      row: 2
+    original_name: symbolBURN0
+    style_tags: ~
+  burnet:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 49
+      row: 2
+    original_name: symbolBURNET0
+    style_tags: ~
+  burr:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 50
+      row: 2
+    original_name: symbolBURR0
+    style_tags: ~
+  burrow:
+    biome_tags:
+      - plains
+    clan_camp_tags:
+      - camp_plains_tunnel
+    clan_symbol_tags:
+    - location
+    - verb
+    location:
+      col: 51
+      row: 2
+    original_name: symbolBURROW0
+    style_tags: ~
+  bush:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 52
+      row: 2
+    original_name: symbolBUSH0
+    style_tags: ~
+  buttercup:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 53
+      row: 2
+    original_name: symbolBUTTERCUP0
+    style_tags: ~
+  butterfly:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bug
+    location:
+      col: 54
+      row: 2
+    original_name: symbolBUTTERFLY0
+    style_tags: ~
+  buzzard:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 55
+      row: 2
+    original_name: symbolBUZZARD0
+    style_tags: ~
+3:
+  canary:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 0
+      row: 3
+    original_name: symbolCANARY0
+    style_tags: ~
+  carnation:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 1
+      row: 3
+    original_name: symbolCARNATION0
+    style_tags: ~
+  carp:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - fish
+    location:
+      col: 2
+      row: 3
+    original_name: symbolCARP0
+    style_tags: ~
+  caterpillar:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bug
+    location:
+      col: 3
+      row: 3
+    original_name: symbolCATERPILLAR0
+    style_tags: ~
+  cave:
+    biome_tags:
+      - mountain
+    clan_camp_tags:
+      - camp_forest_cavern
+    clan_symbol_tags:
+    - location
+    - animal
+    - cat
+    location:
+      col: 4
+      row: 3
+    original_name: symbolCAVE0
+    style_tags: ~
+  cedar:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - leaf
+    location:
+      col: 5
+      row: 3
+    original_name: symbolCEDAR0
+    style_tags: ~
+  chaffinch:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 6
+      row: 3
+    original_name: symbolCHAFFINCH0
+    style_tags: ~
+  pawprint:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    - animal
+    - cat
+    - verb
+    - descriptor
+    location:
+      col: 7
+      row: 3
+    original_name: symbolCHASING0
+    style_tags: ~
+  cherry:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - fruit
+    location:
+      col: 8
+      row: 3
+    original_name: symbolCHERRY0
+    style_tags: ~
+  chervil:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - leaf
+    location:
+      col: 9
+      row: 3
+    original_name: symbolCHERVIL0
+    style_tags: ~
+  chestnut:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 10
+      row: 3
+    original_name: symbolCHESTNUT0
+    style_tags: ~
+  chirp:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    - verb
+    location:
+      col: 11
+      row: 3
+    original_name: symbolCHIRP0
+    style_tags: ~
+  chive:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 12
+      row: 3
+    original_name: symbolCHIVE0
+    style_tags: ~
+  cicada:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bug
+    location:
+      col: 13
+      row: 3
+    original_name: symbolCICADA0
+    style_tags: ~
+  spark:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - fire
+    location:
+      col: 14
+      row: 3
+    original_name: symbolCINDER0
+    style_tags: ~
+  clay:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    location:
+      col: 15
+      row: 3
+    original_name: symbolCLAY0
+    style_tags: ~
+  clear:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - descriptor
+    location:
+      col: 16
+      row: 3
+    original_name: symbolCLEAR0
+    style_tags: ~
+  cloud:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - air
+    - water
+    - weather
+    location:
+      col: 17
+      row: 3
+    original_name: symbolCLOUD0
+    style_tags: ~
+  clouds:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - air
+    - water
+    - descriptor
+    - weather
+    location:
+      col: 18
+      row: 3
+    original_name: symbolCLOUDY0
+    style_tags: ~
+  clover:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 19
+      row: 3
+    original_name: symbolCLOVER0
+    style_tags: ~
+  comfrey:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 20
+      row: 3
+    original_name: symbolCOMFREY0
+    style_tags: ~
+  condor:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 21
+      row: 3
+    original_name: symbolCONDOR0
+    style_tags: ~
+  cone:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 22
+      row: 3
+    original_name: symbolCONE0
+    style_tags: ~
+  conifer:
+    biome_tags: ~
+    clan_camp_tags:
+      - camp_forest_clearing
+      - camp_forest_lakeside
+    clan_symbol_tags:
+    - plant
+    - tree
+    location:
+      col: 23
+      row: 3
+    original_name: symbolCONIFER0
+    style_tags: ~
+  conker:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 24
+      row: 3
+    original_name: symbolCONKER0
+    style_tags: ~
+  copse:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - location
+    - tree
+    location:
+      col: 25
+      row: 3
+    original_name: symbolCOPSE0
+    style_tags: ~
+  cotton:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 26
+      row: 3
+    original_name: symbolCOTTON0
+    style_tags: ~
+  cougar_face:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 27
+      row: 3
+    original_name: symbolCOUGAR0
+    style_tags: ~
+  coyote:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 28
+      row: 3
+    original_name: symbolCOYOTE0
+    style_tags: ~
+  crag:
+    biome_tags: ~
+    clan_camp_tags:
+      - camp_mountain_cliff
+    clan_symbol_tags:
+    - location
+    location:
+      col: 29
+      row: 3
+    original_name: symbolCRAG0
+    style_tags: ~
+  crane_0:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 30
+      row: 3
+    original_name: symbolCRANE0
+    style_tags: ~
+  crane_1:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 31
+      row: 3
+    original_name: symbolCRANE1
+    style_tags: ~
+  creek:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - location
+    - element
+    - water
+    location:
+      col: 32
+      row: 3
+    original_name: symbolCREEK0
+    style_tags: ~
+  cress:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 33
+      row: 3
+    original_name: symbolCRESS0
+    style_tags: ~
+  crest:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 34
+      row: 3
+    original_name: symbolCREST0
+    style_tags: ~
+  crested:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    - descriptor
+    location:
+      col: 35
+      row: 3
+    original_name: symbolCRESTED0
+    style_tags: ~
+  cricket:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bug
+    location:
+      col: 36
+      row: 3
+    original_name: symbolCRICKET0
+    style_tags: ~
+  crocus:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - flower
+    - plant
+    location:
+      col: 37
+      row: 3
+    original_name: symbolCROCUS0
+    style_tags: ~
+  crouch:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    - verb
+    location:
+      col: 38
+      row: 3
+    original_name: symbolCROUCH0
+    style_tags: ~
+  curl:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    - animal
+    - cat
+    location:
+      col: 39
+      row: 3
+    original_name: symbolCURL0
+    style_tags: ~
+  curlew:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 40
+      row: 3
+    original_name: symbolCURLEW0
+    style_tags: ~
+  curly:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - cat
+    - descriptor
+    location:
+      col: 41
+      row: 3
+    original_name: symbolCURLY0
+    style_tags: ~
+  current:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - water
+    location:
+      col: 42
+      row: 3
+    original_name: symbolCURRENT0
+    style_tags: ~
+  cypress:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - tree
+    location:
+      col: 43
+      row: 3
+    original_name: symbolCYPRESS0
+    style_tags: ~
+4:
+  dahlia:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 0
+      row: 4
+    original_name: symbolDAHLIA0
+    style_tags: ~
+  daisy:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 1
+      row: 4
+    original_name: symbolDAISY0
+    style_tags: ~
+  dancing:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    - descriptor
+    - verb
+    location:
+      col: 2
+      row: 4
+    original_name: symbolDANCING0
+    style_tags: ~
+  dandelion:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - flower
+    - plant
+    location:
+      col: 3
+      row: 4
+    original_name: symbolDANDELION0
+    style_tags: ~
+  dapple:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - descriptor
+    - cat
+    location:
+      col: 4
+      row: 4
+    original_name: symbolDAPPLE0
+    style_tags: ~
+  dappled:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - descriptor
+    - cat
+    location:
+      col: 5
+      row: 4
+    original_name: symbolDAPPLED0
+    style_tags: ~
+  dart:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - fish
+    location:
+      col: 6
+      row: 4
+    original_name: symbolDART0
+    style_tags: ~
+  dash:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    - verb
+    location:
+      col: 7
+      row: 4
+    original_name: symbolDASH0
+    style_tags: ~
+  dawn:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    - element
+    - light
+    - time
+    location:
+      col: 8
+      row: 4
+    original_name: symbolDAWN0
+    style_tags: ~
+  day:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    - element
+    - light
+    - time
+    location:
+      col: 9
+      row: 4
+    original_name: symbolDAY0
+    style_tags: ~
+  dazzle:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    - verb
+    location:
+      col: 10
+      row: 4
+    original_name: symbolDAZZLE0
+    style_tags: ~
+  doe:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 13
+      row: 4
+    original_name: symbolDOE0
+    style_tags: ~
+  dog:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 11
+      row: 4
+    original_name: symbolDOG0
+    style_tags: ~
+  dove:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 12
+      row: 4
+    original_name: symbolDOVE0
+    style_tags: ~
+  down:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    - descriptor
+    location:
+      col: 14
+      row: 4
+    original_name: symbolDOWN0
+    style_tags: ~
+  downy:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 15
+      row: 4
+    original_name: symbolDOWNY0
+    style_tags: ~
+  dream:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    - verb
+    location:
+      col: 16
+      row: 4
+    original_name: symbolDREAM0
+    style_tags: ~
+  drift:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - air
+    location:
+      col: 17
+      row: 4
+    original_name: symbolDRIFT0
+    style_tags: ~
+  drizzle:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - water
+    - weather
+    location:
+      col: 18
+      row: 4
+    original_name: symbolDRIZZLE0
+    style_tags: ~
+  droplet:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - water
+    - weather
+    location:
+      col: 19
+      row: 4
+    original_name: symbolDROPLET0
+    style_tags: ~
+  dry:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - fire
+    - earth
+    - light
+    - weather
+    location:
+      col: 20
+      row: 4
+    original_name: symbolDRY0
+    style_tags: ~
+  duck:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 21
+      row: 4
+    original_name: symbolDUCK0
+    style_tags: ~
+  dusk:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    - element
+    - light
+    - time
+    location:
+      col: 22
+      row: 4
+    original_name: symbolDUSK0
+    style_tags: ~
+5:
+  eagle:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 0
+      row: 5
+    original_name: symbolEAGLE0
+    style_tags: ~
+  echo:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    location:
+      col: 1
+      row: 5
+    original_name: symbolECHO0
+    style_tags: ~
+  edelweiss:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 2
+      row: 5
+    original_name: symbolEDELWEISS0
+    style_tags: ~
+  egg:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    - other_animal
+    location:
+      col: 3
+      row: 5
+    original_name: symbolEGG0
+    style_tags: ~
+  egret:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 4
+      row: 5
+    original_name: symbolEGRET0
+    style_tags: ~
+  elder:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    location:
+      col: 5
+      row: 5
+    original_name: symbolELDER0
+    style_tags: ~
+  elm:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - tree
+    location:
+      col: 6
+      row: 5
+    original_name: symbolELM0
+    style_tags: ~
+  ember:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - fire
+    location:
+      col: 7
+      row: 5
+    original_name: symbolEMBER0
+    style_tags: ~
+  ermine_0:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 8
+      row: 5
+    original_name: symbolERMINE0
+    style_tags: ~
+  ermine_1:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 9
+      row: 5
+    original_name: symbolERMINE1
+    style_tags: ~
+  ermine_2:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 10
+      row: 5
+    original_name: symbolERMINE2
+    style_tags: ~
+6:
+  faith:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    location:
+      col: 0
+      row: 6
+    original_name: symbolFAITH0
+    style_tags: ~
+  falcon:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 1
+      row: 6
+    original_name: symbolFALCON0
+    style_tags: ~
+  fallen_0:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - cat
+    - animal
+    - verb
+    location:
+      col: 2
+      row: 6
+    original_name: symbolFALLEN0
+    style_tags: ~
+  fallen_1:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - cat
+    - animal
+    - descriptor
+    location:
+      col: 3
+      row: 6
+    original_name: symbolFALLEN1
+    style_tags: ~
+  falling_0:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - cat
+    - animal
+    - verb
+    location:
+      col: 4
+      row: 6
+    original_name: symbolFALLING0
+    style_tags: ~
+  falling_1:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - light
+    location:
+      col: 5
+      row: 6
+    original_name: symbolFALLING1
+    style_tags: ~
+  fawn_0:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 6
+      row: 6
+    original_name: symbolFAWN0
+    style_tags: ~
+  fawn_1:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 7
+      row: 6
+    original_name: symbolFAWN1
+    style_tags: ~
+  feather:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 8
+      row: 6
+    original_name: symbolFEATHER0
+    style_tags: ~
+  fennel:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 9
+      row: 6
+    original_name: symbolFENNEL0
+    style_tags: ~
+  fern:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - leaf
+    location:
+      col: 10
+      row: 6
+    original_name: symbolFERN0
+    style_tags: ~
+  ferret:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 11
+      row: 6
+    original_name: symbolFERRET0
+    style_tags: ~
+  fickle:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - leaf
+    location:
+      col: 12
+      row: 6
+    original_name: symbolFICKLE0
+    style_tags: ~
+  fidget:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    - verb
+    location:
+      col: 13
+      row: 6
+    original_name: symbolFIDGET0
+    style_tags: ~
+  fierce:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    - cat
+    - descriptor
+    location:
+      col: 14
+      row: 6
+    original_name: symbolFIERCE0
+    style_tags: ~
+  fig:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - fruit
+    location:
+      col: 15
+      row: 6
+    original_name: symbolFIG0
+    style_tags: ~
+  fin:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - fish
+    location:
+      col: 16
+      row: 6
+    original_name: symbolFIN0
+    style_tags: ~
+  finch:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 17
+      row: 6
+    original_name: symbolFINCH0
+    style_tags: ~
+  fir:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - tree
+    location:
+      col: 18
+      row: 6
+    original_name: symbolFIR0
+    style_tags: ~
+  fire:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - fire
+    location:
+      col: 19
+      row: 6
+    original_name: symbolFIRE0
+    style_tags: ~
+  fish:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - fish
+    location:
+      col: 20
+      row: 6
+    original_name: symbolFISH0
+    style_tags: ~
+  flame:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - fire
+    location:
+      col: 21
+      row: 6
+    original_name: symbolFLAME0
+    style_tags: ~
+  flare_0:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - light
+    location:
+      col: 22
+      row: 6
+    original_name: symbolFLARE0
+    style_tags: ~
+  flare_1:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - light
+    location:
+      col: 23
+      row: 6
+    original_name: symbolFLARE1
+    style_tags: ~
+  flash:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - light
+    location:
+      col: 24
+      row: 6
+    original_name: symbolFLASH0
+    style_tags: ~
+  flax:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 25
+      row: 6
+    original_name: symbolFLAX0
+    style_tags: ~
+  fleck:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    - descriptor
+    location:
+      col: 26
+      row: 6
+    original_name: symbolFLECK0
+    style_tags: ~
+  fleet:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - descriptor
+    - miscellaneous
+    location:
+      col: 27
+      row: 6
+    original_name: symbolFLEET0
+    style_tags: ~
+  flicker:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - fire
+    - element
+    location:
+      col: 28
+      row: 6
+    original_name: symbolFLICKER0
+    style_tags: ~
+  flight:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 29
+      row: 6
+    original_name: symbolFLIGHT0
+    style_tags: ~
+  flint:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - earth
+    location:
+      col: 30
+      row: 6
+    original_name: symbolFLINT0
+    style_tags: ~
+  flit:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - fish
+    location:
+      col: 31
+      row: 6
+    original_name: symbolFLIT0
+    style_tags: ~
+  flood:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - water
+    - weather
+    location:
+      col: 32
+      row: 6
+    original_name: symbolFLOOD0
+    style_tags: ~
+  flower:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 33
+      row: 6
+    original_name: symbolFLOWER0
+    style_tags: ~
+  fluff:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - cat
+    - animal
+    - descriptor
+    location:
+      col: 34
+      row: 6
+    original_name: symbolFLUFF0
+    style_tags: ~
+  fluffy:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - cat
+    - animal
+    - descriptor
+    location:
+      col: 35
+      row: 6
+    original_name: symbolFLUFFY0
+    style_tags: ~
+  flurry:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - water
+    - weather
+    location:
+      col: 36
+      row: 6
+    original_name: symbolFLURRY0
+    style_tags: ~
+  flutter:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bug
+    - verb
+    location:
+      col: 37
+      row: 6
+    original_name: symbolFLUTTER0
+    style_tags: ~
+  fly:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bug
+    location:
+      col: 38
+      row: 6
+    original_name: symbolFLY0
+    style_tags: ~
+  fog:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - air
+    - water
+    - weather
+    location:
+      col: 39
+      row: 6
+    original_name: symbolFOG0
+    style_tags: ~
+  freckle:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - appearance
+    - cat
+    - descriptor
+    location:
+      col: 40
+      row: 6
+    original_name: symbolFRECKLE0
+    style_tags: ~
+  fringe_0:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - cat
+    - appearance
+    - descriptor
+    - miscellaneous
+    location:
+      col: 41
+      row: 6
+    original_name: symbolFRINGE0
+    style_tags: ~
+  fringe_1:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 42
+      row: 6
+    original_name: symbolFRINGE1
+    style_tags: ~
+  frog:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - other_animal
+    location:
+      col: 43
+      row: 6
+    original_name: symbolFROG0
+    style_tags: ~
+  frond:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - leaf
+    location:
+      col: 44
+      row: 6
+    original_name: symbolFROND0
+    style_tags: ~
+  frost:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - water
+    - ice
+    - weather
+    location:
+      col: 45
+      row: 6
+    original_name: symbolFROST0
+    style_tags: ~
+  fruit:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - fruit
+    location:
+      col: 46
+      row: 6
+    original_name: symbolFRUIT0
+    style_tags: ~
+  furled:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - descriptor
+    - miscellaneous
+    location:
+      col: 47
+      row: 6
+    original_name: symbolFURLED0
+    style_tags: ~
+  furze:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 48
+      row: 6
+    original_name: symbolFURZE0
+    style_tags: ~
+  fuzz:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - appearance
+    - cat
+    - descriptor
+    location:
+      col: 49
+      row: 6
+    original_name: symbolFUZZ0
+    style_tags: ~
+7:
+  gander:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 0
+      row: 7
+    original_name: symbolGANDER0
+    style_tags: ~
+  garlic:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 1
+      row: 7
+    original_name: symbolGARLIC0
+    style_tags: ~
+  gentle:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    - descriptor
+    location:
+      col: 2
+      row: 7
+    original_name: symbolGENTLE0
+    style_tags: ~
+  ghost:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    - miscellaneous
+    location:
+      col: 3
+      row: 7
+    original_name: symbolGHOST0
+    style_tags: ~
+  fox_face:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 4
+      row: 7
+    original_name: symbolGLADE0
+    style_tags: ~
+  glint:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - descriptor
+    location:
+      col: 5
+      row: 7
+    original_name: symbolGLINT0
+    style_tags: ~
+  goose:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - bird
+    - animal
+    location:
+      col: 6
+      row: 7
+    original_name: symbolGOOSE0
+    style_tags: ~
+  gorge_0:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - location
+    location:
+      col: 7
+      row: 7
+    original_name: symbolGORGE0
+    style_tags: ~
+  gorge_1:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - location
+    location:
+      col: 8
+      row: 7
+    original_name: symbolGORGE1
+    style_tags: ~
+  gorse:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 9
+      row: 7
+    original_name: symbolGORSE0
+    style_tags: ~
+  gossamer:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - leaf
+    location:
+      col: 10
+      row: 7
+    original_name: symbolGOSSAMER0
+    style_tags: ~
+  grackle:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - bird
+    - animal
+    location:
+      col: 12
+      row: 7
+    original_name: symbolGRACKLE0
+    style_tags: ~
+  grass:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 11
+      row: 7
+    original_name: symbolGRASS0
+    style_tags: ~
+  grouse:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 13
+      row: 7
+    original_name: symbolGROUSE0
+    style_tags: ~
+  gull:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 14
+      row: 7
+    original_name: symbolGULL0
+    style_tags: ~
+  guppy:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - fish
+    location:
+      col: 15
+      row: 7
+    original_name: symbolGUPPY0
+    style_tags: ~
+  gust:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - air
+    location:
+      col: 16
+      row: 7
+    original_name: symbolGUST0
+    style_tags: ~
+8:
+  hail:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - water
+    - weather
+    location:
+      col: 0
+      row: 8
+    original_name: symbolHAIL0
+    style_tags: ~
+  half:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    location:
+      col: 1
+      row: 8
+    original_name: symbolHALF0
+    style_tags: ~
+  hare:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 2
+      row: 8
+    original_name: symbolHARE0
+    style_tags: ~
+  hatch:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - other_animal
+    location:
+      col: 3
+      row: 8
+    original_name: symbolHATCH0
+    style_tags: ~
+  haven:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    - animal
+    - cat
+    location:
+      col: 4
+      row: 8
+    original_name: symbolHAVEN0
+    style_tags: ~
+  hawthorn:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 5
+      row: 8
+    original_name: symbolHAWTHORN0
+    style_tags: ~
+  hazel:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 6
+      row: 8
+    original_name: symbolHAZEL0
+    style_tags: ~
+  hazy:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - air
+    location:
+      col: 7
+      row: 8
+    original_name: symbolHAZY0
+    style_tags: ~
+  heart:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    location:
+      col: 8
+      row: 8
+    original_name: symbolHEART0
+    style_tags: ~
+  heath:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 9
+      row: 8
+    original_name: symbolHEATH0
+    style_tags: ~
+  heather:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 10
+      row: 8
+    original_name: symbolHEATHER0
+    style_tags: ~
+  heavy:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - descriptor
+    - animal
+    - cat
+    location:
+      col: 11
+      row: 8
+    original_name: symbolHEAVY0
+    style_tags: ~
+  heron:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 12
+      row: 8
+    original_name: symbolHERON0
+    style_tags: ~
+  hickory_leaf:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 13
+      row: 8
+    original_name: symbolHICKORY0
+    style_tags: ~
+  hill:
+    biome_tags:
+      - plains
+    clan_camp_tags:
+      - camp_plains_grassland
+    clan_symbol_tags:
+    - location
+    - animal
+    - cat
+    location:
+      col: 14
+      row: 8
+    original_name: symbolHILL0
+    style_tags: ~
+  hollow:
+    biome_tags:
+      - forest
+    clan_camp_tags:
+      - camp_forest_gully
+    clan_symbol_tags:
+    - plant
+    - tree
+    - location
+    location:
+      col: 15
+      row: 8
+    original_name: symbolHOLLOW0
+    style_tags: ~
+  holly:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - leaf
+    location:
+      col: 16
+      row: 8
+    original_name: symbolHOLLY0
+    style_tags: ~
+  hope:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    - animal
+    - cat
+    location:
+      col: 17
+      row: 8
+    original_name: symbolHOPE0
+    style_tags: ~
+  hound:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 18
+      row: 8
+    original_name: symbolHOUND0
+    style_tags: ~
+  howl:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    - verb
+    location:
+      col: 19
+      row: 8
+    original_name: symbolHOWL0
+    style_tags: ~
+  hyacinth:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 20
+      row: 8
+    original_name: symbolHYACINTH0
+    style_tags: ~
+9:
+  ibis:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - bird
+    - animal
+    location:
+      col: 0
+      row: 9
+    original_name: symbolIBIS0
+    style_tags: ~
+  ice:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - water
+    - ice
+    location:
+      col: 1
+      row: 9
+    original_name: symbolICE0
+    style_tags: ~
+  icicle:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - water
+    - ice
+    location:
+      col: 2
+      row: 9
+    original_name: symbolICICLE0
+    style_tags: ~
+  icy:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - water
+    - ice
+    location:
+      col: 3
+      row: 9
+    original_name: symbolICY0
+    style_tags: ~
+  iris:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 4
+      row: 9
+    original_name: symbolIRIS0
+    style_tags: ~
+  ivy:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - leaf
+    location:
+      col: 5
+      row: 9
+    original_name: symbolIVY0
+    style_tags: ~
+10:
+  jackdaw_0:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 0
+      row: 10
+    original_name: symbolJACKDAW0
+    style_tags: ~
+  jackdaw_1:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 1
+      row: 10
+    original_name: symbolJACKDAW1
+    style_tags: ~
+  jasmine:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 2
+      row: 10
+    original_name: symbolJASMINE0
+    style_tags: ~
+  jay:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 3
+      row: 10
+    original_name: symbolJAY0
+    style_tags: ~
+  junco:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 4
+      row: 10
+    original_name: symbolJUNCO0
+    style_tags: ~
+  juniper:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - fruit
+    location:
+      col: 5
+      row: 10
+    original_name: symbolJUNIPER0
+    style_tags: ~
+11:
+  kestrel:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - bird
+    - animal
+    location:
+      col: 0
+      row: 11
+    original_name: symbolKESTREL0
+    style_tags: ~
+  kink:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - descriptor
+    - animal
+    - cat
+    location:
+      col: 1
+      row: 11
+    original_name: symbolKINK0
+    style_tags: ~
+  kite:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - bird
+    - animal
+    location:
+      col: 2
+      row: 11
+    original_name: symbolKITE0
+    style_tags: ~
+  kitty:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    - cat
+    - animal
+    location:
+      col: 3
+      row: 11
+    original_name: symbolKITTY0
+    style_tags: ~
+12:
+  lake:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - location
+    - element
+    - water
+    location:
+      col: 0
+      row: 12
+    original_name: symbolLAKE0
+    style_tags: ~
+  larch:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - tree
+    location:
+      col: 1
+      row: 12
+    original_name: symbolLARCH0
+    style_tags: ~
+  lark:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 3
+      row: 12
+    original_name: symbolLARK0
+    style_tags: ~
+  larkspur:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - tree
+    location:
+      col: 2
+      row: 12
+    original_name: symbolLARKSPUR0
+    style_tags: ~
+  laurel:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - leaf
+    location:
+      col: 4
+      row: 12
+    original_name: symbolLAUREL0
+    style_tags: ~
+  lavender:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 5
+      row: 12
+    original_name: symbolLAVENDER0
+    style_tags: ~
+  leaf:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - leaf
+    location:
+      col: 6
+      row: 12
+    original_name: symbolLEAF0
+    style_tags: ~
+  leap:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    - vern
+    location:
+      col: 7
+      row: 12
+    original_name: symbolLEAP0
+    style_tags: ~
+  leopard:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    - myth
+    location:
+      col: 8
+      row: 12
+    original_name: symbolLEOPARD0
+    style_tags: ~
+  light:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - light
+    location:
+      col: 9
+      row: 12
+    original_name: symbolLIGHT0
+    style_tags: ~
+  lightning:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - light
+    - weather
+    location:
+      col: 10
+      row: 12
+    original_name: symbolLIGHTNING0
+    style_tags: ~
+  lilac:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 11
+      row: 12
+    original_name: symbolLILAC0
+    style_tags: ~
+  lily:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 12
+      row: 12
+    original_name: symbolLILY0
+    style_tags: ~
+  little:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - descriptor
+    - animal
+    - cat
+    location:
+      col: 13
+      row: 12
+    original_name: symbolLITTLE0
+    style_tags: ~
+  lizard:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - other_animal
+    location:
+      col: 14
+      row: 12
+    original_name: symbolLIZARD0
+    style_tags: ~
+  locust:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bug
+    location:
+      col: 15
+      row: 12
+    original_name: symbolLOCUST0
+    style_tags: ~
+  log:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - tree
+    location:
+      col: 16
+      row: 12
+    original_name: symbolLOG0
+    style_tags: ~
+  long:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    location:
+      col: 17
+      row: 12
+    original_name: symbolLONG0
+    style_tags: ~
+  lupine:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 18
+      row: 12
+    original_name: symbolLUPINE0
+    style_tags: ~
+  lynx:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 19
+      row: 12
+    original_name: symbolLYNX0
+    style_tags: ~
+13:
+  magpie:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 0
+      row: 13
+    original_name: symbolMAGPIE0
+    style_tags: ~
+  mallow:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 1
+      row: 13
+    original_name: symbolMALLOW0
+    style_tags: ~
+  mantis:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bug
+    location:
+      col: 2
+      row: 13
+    original_name: symbolMANTIS0
+    style_tags: ~
+  maple_leaf:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - leaf
+    - tree
+    location:
+      col: 3
+      row: 13
+    original_name: symbolMAPLE0
+    style_tags: ~
+  marigold:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 4
+      row: 13
+    original_name: symbolMARIGOLD0
+    style_tags: ~
+  marsh:
+    biome_tags:
+      - wetland
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - location
+    location:
+      col: 5
+      row: 13
+    original_name: symbolMARSH0
+    style_tags: ~
+  meadow:
+    biome_tags:
+      - plains
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - location
+    location:
+      col: 6
+      row: 13
+    original_name: symbolMEADOW0
+    style_tags: ~
+  midge:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bug
+    location:
+      col: 7
+      row: 13
+    original_name: symbolMIDGE0
+    style_tags: ~
+  midnight:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    - time
+    location:
+      col: 8
+      row: 13
+    original_name: symbolMIDNIGHT0
+    style_tags: ~
+  milk:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - water
+    - element
+    location:
+      col: 9
+      row: 13
+    original_name: symbolMILK0
+    style_tags: ~
+  milkweed:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bug
+    location:
+      col: 10
+      row: 13
+    original_name: symbolMILKWEED0
+    style_tags: ~
+  minnow:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - fish
+    location:
+      col: 11
+      row: 13
+    original_name: symbolMINNOW0
+    style_tags: ~
+  mist:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - air
+    - weather
+    location:
+      col: 12
+      row: 13
+    original_name: symbolMIST0
+    style_tags: ~
+  mole_0:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 13
+      row: 13
+    original_name: symbolMOLE0
+    style_tags: ~
+  mole_1:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 14
+      row: 13
+    original_name: symbolMOLE1
+    style_tags: ~
+  moon:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    - element
+    - light
+    location:
+      col: 15
+      row: 13
+    original_name: symbolMOON0
+    style_tags: ~
+  moss_0:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 16
+      row: 13
+    original_name: symbolMOSS0
+    style_tags: ~
+  moss_1:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 17
+      row: 13
+    original_name: symbolMOSS1
+    style_tags: ~
+  mossy:
+    biome_tags: ~
+    clan_camp_tags:
+      - camp_forest_grotto
+      - camp_mountain_cavern
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 18
+      row: 13
+    original_name: symbolMOSSY0
+    style_tags: ~
+  moth:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - bug
+    - animal
+    location:
+      col: 19
+      row: 13
+    original_name: symbolMOTH0
+    style_tags: ~
+  mottle:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - descriptor
+    location:
+      col: 20
+      row: 13
+    original_name: symbolMOTTLE0
+    style_tags: ~
+  mottled:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - descriptor
+    location:
+      col: 21
+      row: 13
+    original_name: symbolMOTTLED0
+    style_tags: ~
+  mouse:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 22
+      row: 13
+    original_name: symbolMOUSE0
+    style_tags: ~
+  mulberry:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - fruit
+    location:
+      col: 23
+      row: 13
+    original_name: symbolMULBERRY0
+    style_tags: ~
+  myrtle:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 24
+      row: 13
+    original_name: symbolMYRTLE0
+    style_tags: ~
+14:
+  nectar_0:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 0
+      row: 14
+    original_name: symbolNECTAR0
+    style_tags: ~
+  nectar_1:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    - bug
+    - animal
+    location:
+      col: 1
+      row: 14
+    original_name: symbolNECTAR1
+    style_tags: ~
+  nectar_2:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - bug
+    - animal
+    location:
+      col: 2
+      row: 14
+    original_name: symbolNECTAR2
+    style_tags: ~
+  nettle:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - leaf
+    location:
+      col: 3
+      row: 14
+    original_name: symbolNETTLE0
+    style_tags: ~
+  night:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - light
+    - miscellaneous
+    - time
+    location:
+      col: 4
+      row: 14
+    original_name: symbolNIGHT0
+    style_tags: ~
+  nightingale:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 5
+      row: 14
+    original_name: symbolNIGHTINGALE0
+    style_tags: ~
+15:
+  oak:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - leaf
+    - tree
+    location:
+      col: 0
+      row: 15
+    original_name: symbolOAK0
+    style_tags: ~
+  oat:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 1
+      row: 15
+    original_name: symbolOAT0
+    style_tags: ~
+  oleander:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 2
+      row: 15
+    original_name: symbolOLEANDER0
+    style_tags: ~
+  one_0:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    location:
+      col: 3
+      row: 15
+    original_name: symbolONE0
+    style_tags: ~
+  one_1:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    location:
+      col: 4
+      row: 15
+    original_name: symbolONE1
+    style_tags: ~
+  orchid:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 5
+      row: 15
+    original_name: symbolORCHID0
+    style_tags: ~
+  oriole:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 6
+      row: 15
+    original_name: symbolORIOLE0
+    style_tags: ~
+  osprey:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 7
+      row: 15
+    original_name: symbolOSPREY0
+    style_tags: ~
+  owl:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 8
+      row: 15
+    original_name: symbolOWL0
+    style_tags: ~
+16:
+  pansy:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 0
+      row: 16
+    original_name: symbolPANSY0
+    style_tags: ~
+  panther:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 1
+      row: 16
+    original_name: symbolPANTHER0
+    style_tags: ~
+  parsley:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - leaf
+    location:
+      col: 2
+      row: 16
+    original_name: symbolPARSLEY0
+    style_tags: ~
+  partridge:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 3
+      row: 16
+    original_name: symbolPARTRIDGE0
+    style_tags: ~
+  patch:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - appearance
+    - cat
+    - descriptor
+    location:
+      col: 4
+      row: 16
+    original_name: symbolPATCH0
+    style_tags: ~
+  patchouli:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - flower
+    - plant
+    location:
+      col: 5
+      row: 16
+    original_name: symbolPATCHOULI0
+    style_tags: ~
+  peach:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - fruit
+    location:
+      col: 6
+      row: 16
+    original_name: symbolPEACH0
+    style_tags: ~
+  peak:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - location
+    location:
+      col: 7
+      row: 16
+    original_name: symbolPEAK0
+    style_tags: ~
+  pear:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - fruit
+    location:
+      col: 8
+      row: 16
+    original_name: symbolPEAR0
+    style_tags: ~
+  pebble:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - earth
+    location:
+      col: 9
+      row: 16
+    original_name: symbolPEBBLE0
+    style_tags: ~
+  perch:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 10
+      row: 16
+    original_name: symbolPERCH0
+    style_tags: ~
+  petal:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 11
+      row: 16
+    original_name: symbolPETAL0
+    style_tags: ~
+  pheasant:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 12
+      row: 16
+    original_name: symbolPHEASANT0
+    style_tags: ~
+  pigeon:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 13
+      row: 16
+    original_name: symbolPIGEON0
+    style_tags: ~
+  pike:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - fish
+    location:
+      col: 14
+      row: 16
+    original_name: symbolPIKE0
+    style_tags: ~
+  pine:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - tree
+    location:
+      col: 15
+      row: 16
+    original_name: symbolPINE0
+    style_tags: ~
+  pipit:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 16
+      row: 16
+    original_name: symbolPIPIT0
+    style_tags: ~
+  plover:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 17
+      row: 16
+    original_name: symbolPLOVER0
+    style_tags: ~
+  pond:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - location
+    - water
+    location:
+      col: 18
+      row: 16
+    original_name: symbolPOND0
+    style_tags: ~
+  pool:
+    biome_tags: ~
+    clan_camp_tags:
+      - camp_beach_tidepool
+    clan_symbol_tags:
+    - element
+    - water
+    - animal
+    - cat
+    location:
+      col: 19
+      row: 16
+    original_name: symbolPOOL0
+    style_tags: ~
+  prance:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    - animal
+    - cat
+    - verb
+    location:
+      col: 20
+      row: 16
+    original_name: symbolPRANCE0
+    style_tags: ~
+  primrose:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 21
+      row: 16
+    original_name: symbolPRIMROSE0
+    style_tags: ~
+  pumpkin:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - fruit
+    location:
+      col: 22
+      row: 16
+    original_name: symbolPUMPKIN0
+    style_tags: ~
+17:
+  quail:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 0
+      row: 17
+    original_name: symbolQUAIL0
+    style_tags: ~
+  quick:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    - descriptor
+    location:
+      col: 1
+      row: 17
+    original_name: symbolQUICK0
+    style_tags: ~
+  quill:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    location:
+      col: 2
+      row: 17
+    original_name: symbolQUILL0
+    style_tags: ~
+18:
+  rabbit:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 0
+      row: 18
+    original_name: symbolRABBIT0
+    style_tags: ~
+  raccoon_face:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 1
+      row: 18
+    original_name: symbolRACCOON0
+    style_tags: ~
+  ragged:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - descriptor
+    location:
+      col: 2
+      row: 18
+    original_name: symbolRAGGED0
+    style_tags: ~
+  rain:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - water
+    - weather
+    location:
+      col: 3
+      row: 18
+    original_name: symbolRAIN0
+    style_tags: ~
+  rat:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 4
+      row: 18
+    original_name: symbolRAT0
+    style_tags: ~
+  raven:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - bird
+    - animal
+    location:
+      col: 5
+      row: 18
+    original_name: symbolRAVEN0
+    style_tags: ~
+  reed:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 6
+      row: 18
+    original_name: symbolREED0
+    style_tags: ~
+  rift:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    - descriptor
+    location:
+      col: 7
+      row: 18
+    original_name: symbolRIFT0
+    style_tags: ~
+  rindle:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - water
+    - element
+    location:
+      col: 8
+      row: 18
+    original_name: symbolRINDLE0
+    style_tags: ~
+  ripple:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - water
+    location:
+      col: 9
+      row: 18
+    original_name: symbolRIPPLE0
+    style_tags: ~
+  river_myth:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - location
+    - water
+    - myth
+    location:
+      col: 10
+      row: 18
+    original_name: symbolRIVER0
+    style_tags: ~
+  roach:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bug
+    location:
+      col: 11
+      row: 18
+    original_name: symbolROACH0
+    style_tags: ~
+  roar:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    - verb
+    location:
+      col: 12
+      row: 18
+    original_name: symbolROAR0
+    style_tags: ~
+  rock:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - earth
+    location:
+      col: 13
+      row: 18
+    original_name: symbolROCK0
+    style_tags: ~
+  rook:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 14
+      row: 18
+    original_name: symbolROOK0
+    style_tags: ~
+  root:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 15
+      row: 18
+    original_name: symbolROOT0
+    style_tags: ~
+  rose:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 16
+      row: 18
+    original_name: symbolROSE0
+    style_tags: ~
+  rosy:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 17
+      row: 18
+    original_name: symbolROSY0
+    style_tags: ~
+  rowan:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - fruit
+    location:
+      col: 18
+      row: 18
+    original_name: symbolROWAN0
+    style_tags: ~
+  rubble:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - earth
+    location:
+      col: 19
+      row: 18
+    original_name: symbolRUBBLE0
+    style_tags: ~
+  rue:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 20
+      row: 18
+    original_name: symbolRUE0
+    style_tags: ~
+  running:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    - verb
+    location:
+      col: 21
+      row: 18
+    original_name: symbolRUNNING0
+    style_tags: ~
+  rush:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - location
+    - other plant
+    location:
+      col: 22
+      row: 18
+    original_name: symbolRUSH0
+    style_tags: ~
+  rye:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 23
+      row: 18
+    original_name: symbolRYE0
+    style_tags: ~
+19:
+  sable_face:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 0
+      row: 19
+    original_name: symbolSABLE0
+    style_tags: ~
+  saffron:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 1
+      row: 19
+    original_name: symbolSAFFRON0
+    style_tags: ~
+  sapling:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - tree
+    location:
+      col: 2
+      row: 19
+    original_name: symbolSAPLING0
+    style_tags: ~
+  scale:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - fish
+    - other_animal
+    location:
+      col: 3
+      row: 19
+    original_name: symbolSCALE0
+    style_tags: ~
+  scorch:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - appearance
+    - descriptor
+    location:
+      col: 4
+      row: 19
+    original_name: symbolSCORCH0
+    style_tags: ~
+  seed:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 5
+      row: 19
+    original_name: symbolSEED0
+    style_tags: ~
+  serpent:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - other_animal
+    location:
+      col: 6
+      row: 19
+    original_name: symbolSERPENT0
+    style_tags: ~
+  shade:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    location:
+      col: 7
+      row: 19
+    original_name: symbolSHADE0
+    style_tags: ~
+  shadow_myth:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    - myth
+    location:
+      col: 8
+      row: 19
+    original_name: symbolSHADOW0
+    style_tags: ~
+  shard:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - earth
+    location:
+      col: 9
+      row: 19
+    original_name: symbolSHARD0
+    style_tags: ~
+  sharp:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    - descriptor
+    - miscellaneous
+    location:
+      col: 10
+      row: 19
+    original_name: symbolSHARP0
+    style_tags: ~
+  shatter:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - descriptor
+    location:
+      col: 11
+      row: 19
+    original_name: symbolSHATTER0
+    style_tags: ~
+  shell:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    location:
+      col: 12
+      row: 19
+    original_name: symbolSHELL0
+    style_tags: ~
+  shrew:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 13
+      row: 19
+    original_name: symbolSHREW0
+    style_tags: ~
+  shrike_0:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - bird
+    - animal
+    location:
+      col: 14
+      row: 19
+    original_name: symbolSHRIKE0
+    style_tags: ~
+  shrike_1:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - bird
+    - animal
+    - mammal
+    location:
+      col: 15
+      row: 19
+    original_name: symbolSHRIKE1
+    style_tags: ~
+  shrub:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 16
+      row: 19
+    original_name: symbolSHRUB0
+    style_tags: ~
+  shy:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    - descriptor
+    location:
+      col: 17
+      row: 19
+    original_name: symbolSHY0
+    style_tags: ~
+  silent:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    - descriptor
+    location:
+      col: 18
+      row: 19
+    original_name: symbolSILENT0
+    style_tags: ~
+  sky_myth:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - tree
+    - myth
+    location:
+      col: 19
+      row: 19
+    original_name: symbolSKY0
+    style_tags: ~
+  sky_symbolic:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    location:
+      col: 20
+      row: 19
+    original_name: symbolSKY1
+    style_tags: ~
+  sleepy:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - cat
+    - animal
+    - descriptor
+    location:
+      col: 21
+      row: 19
+    original_name: symbolSLEEPY0
+    style_tags: ~
+  sloe:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - fruit
+    location:
+      col: 22
+      row: 19
+    original_name: symbolSLOE0
+    style_tags: ~
+  slope:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    location:
+      col: 23
+      row: 19
+    original_name: symbolSLOPE0
+    style_tags: ~
+  slumber:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    - animal
+    - cat
+    - verb
+    location:
+      col: 24
+      row: 19
+    original_name: symbolSLUMBER0
+    style_tags: ~
+  small:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - descriptor
+    - animal
+    - cat
+    location:
+      col: 25
+      row: 19
+    original_name: symbolSMALL0
+    style_tags: ~
+  smoke:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - fire
+    - miscellaneous
+    location:
+      col: 26
+      row: 19
+    original_name: symbolSMOKE0
+    style_tags: ~
+  snail:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - other_animal
+    location:
+      col: 27
+      row: 19
+    original_name: symbolSNAIL0
+    style_tags: ~
+  snake:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - other_animal
+    location:
+      col: 28
+      row: 19
+    original_name: symbolSNAKE0
+    style_tags: ~
+  snap:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - tree
+    location:
+      col: 29
+      row: 19
+    original_name: symbolSNAP0
+    style_tags: ~
+  snow:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - water
+    - ice
+    - weather
+    location:
+      col: 30
+      row: 19
+    original_name: symbolSNOW0
+    style_tags: ~
+  soft:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - descriptor
+    location:
+      col: 31
+      row: 19
+    original_name: symbolSOFT0
+    style_tags: ~
+  sorrel:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 32
+      row: 19
+    original_name: symbolSORREL0
+    style_tags: ~
+  sparrow:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 33
+      row: 19
+    original_name: symbolSPARROW0
+    style_tags: ~
+  spider:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bug
+    location:
+      col: 34
+      row: 19
+    original_name: symbolSPIDER0
+    style_tags: ~
+  spike:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    location:
+      col: 35
+      row: 19
+    original_name: symbolSPIKE0
+    style_tags: ~
+  splash:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - water
+    location:
+      col: 36
+      row: 19
+    original_name: symbolSPLASH0
+    style_tags: ~
+  splinter:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - descriptor
+    location:
+      col: 37
+      row: 19
+    original_name: symbolSPLINTER0
+    style_tags: ~
+  spore:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 38
+      row: 19
+    original_name: symbolSPORE0
+    style_tags: ~
+  spot:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - appearance
+    - cat
+    - descriptor
+    location:
+      col: 39
+      row: 19
+    original_name: symbolSPOT0
+    style_tags: ~
+  spotted:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - appearance
+    - cat
+    - descriptor
+    location:
+      col: 40
+      row: 19
+    original_name: symbolSPOTTED0
+    style_tags: ~
+  spring:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 41
+      row: 19
+    original_name: symbolSPRING0
+    style_tags: ~
+  sprout:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 42
+      row: 19
+    original_name: symbolSPROUT0
+    style_tags: ~
+  spruce:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - tree
+    location:
+      col: 43
+      row: 19
+    original_name: symbolSPRUCE0
+    style_tags: ~
+  squirrel:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 44
+      row: 19
+    original_name: symbolSQUIRREL0
+    style_tags: ~
+  stag:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 45
+      row: 19
+    original_name: symbolSTAG0
+    style_tags: ~
+  starling:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 46
+      row: 19
+    original_name: symbolSTARLING0
+    style_tags: ~
+  stem:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 47
+      row: 19
+    original_name: symbolSTEM0
+    style_tags: ~
+  stoat:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 48
+      row: 19
+    original_name: symbolSTOAT0
+    style_tags: ~
+  stone:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - earth
+    location:
+      col: 49
+      row: 19
+    original_name: symbolSTONE0
+    style_tags: ~
+  stork:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 50
+      row: 19
+    original_name: symbolSTORK0
+    style_tags: ~
+  storm:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - air
+    - water
+    - weather
+    - myth
+    location:
+      col: 51
+      row: 19
+    original_name: symbolSTORM0
+    style_tags: ~
+  streak:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - descriptor
+    location:
+      col: 52
+      row: 19
+    original_name: symbolSTREAK0
+    style_tags: ~
+  stream:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - location
+    - element
+    - water
+    location:
+      col: 53
+      row: 19
+    original_name: symbolSTREAM0
+    style_tags: ~
+  strike:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - cat
+    - animal
+    - verb
+    location:
+      col: 54
+      row: 19
+    original_name: symbolSTRIKE0
+    style_tags: ~
+  stumpy:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - tree
+    location:
+      col: 55
+      row: 19
+    original_name: symbolSTUMPY0
+    style_tags: ~
+  sun:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - light
+    - weather
+    location:
+      col: 56
+      row: 19
+    original_name: symbolSUN0
+    style_tags: ~
+  swallow:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - bird
+    - animal
+    location:
+      col: 57
+      row: 19
+    original_name: symbolSWALLOW0
+    style_tags: ~
+  swamp:
+    biome_tags:
+      - wetland
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    - location
+    location:
+      col: 58
+      row: 19
+    original_name: symbolSWAMP0
+    style_tags: ~
+  swan:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 59
+      row: 19
+    original_name: symbolSWAN0
+    style_tags: ~
+  swarm:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bug
+    location:
+      col: 60
+      row: 19
+    original_name: symbolSWARM0
+    style_tags: ~
+  sweet:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - fruit
+    location:
+      col: 61
+      row: 19
+    original_name: symbolSWEET0
+    style_tags: ~
+  swift:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - bird
+    - animal
+    location:
+      col: 62
+      row: 19
+    original_name: symbolSWIFT0
+    style_tags: ~
+  sycamore_leaf:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - leaf
+    - tree
+    location:
+      col: 63
+      row: 19
+    original_name: symbolSYCAMORE0
+    style_tags: ~
+20:
+  tadpole_0:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - other_animal
+    location:
+      col: 0
+      row: 20
+    original_name: symbolTADPOLE0
+    style_tags: ~
+  tadpole_1:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - other_animal
+    location:
+      col: 1
+      row: 20
+    original_name: symbolTADPOLE1
+    style_tags: ~
+  tadpole_2:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - other_animal
+    location:
+      col: 2
+      row: 20
+    original_name: symbolTADPOLE2
+    style_tags: ~
+  tall:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - descriptor
+    - cat
+    - animal
+    location:
+      col: 3
+      row: 20
+    original_name: symbolTALL0
+    style_tags: ~
+  talon:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - other_animal
+    location:
+      col: 4
+      row: 20
+    original_name: symbolTALON0
+    style_tags: ~
+  tangle:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 5
+      row: 20
+    original_name: symbolTANGLE0
+    style_tags: ~
+  tansy:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 6
+      row: 20
+    original_name: symbolTANSY0
+    style_tags: ~
+  teasel:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 7
+      row: 20
+    original_name: symbolTEASEL0
+    style_tags: ~
+  tempest_0:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - air
+    - water
+    - weather
+    location:
+      col: 8
+      row: 20
+    original_name: symbolTEMPEST0
+    style_tags: ~
+  tempest_1:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - air
+    - water
+    - weather
+    location:
+      col: 9
+      row: 20
+    original_name: symbolTEMPEST1
+    style_tags: ~
+  tempest_2:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - air
+    - water
+    - weather
+    location:
+      col: 10
+      row: 20
+    original_name: symbolTEMPEST2
+    style_tags: ~
+  thistle:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 11
+      row: 20
+    original_name: symbolTHISTLE0
+    style_tags: ~
+  thorn:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 12
+      row: 20
+    original_name: symbolTHORN0
+    style_tags: ~
+  thrush:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 13
+      row: 20
+    original_name: symbolTHRUSH0
+    style_tags: ~
+  thunder_myth:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - light
+    - myth
+    - weather
+    location:
+      col: 14
+      row: 20
+    original_name: symbolTHUNDER0
+    style_tags: ~
+  thyme:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 15
+      row: 20
+    original_name: symbolTHYME0
+    style_tags: ~
+  tiny:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    location:
+      col: 16
+      row: 20
+    original_name: symbolTINY0
+    style_tags: ~
+  toad:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - other_animal
+    location:
+      col: 17
+      row: 20
+    original_name: symbolTOAD0
+    style_tags: ~
+  torn:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - descriptor
+    location:
+      col: 18
+      row: 20
+    original_name: symbolTORN0
+    style_tags: ~
+  tree:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - tree
+    location:
+      col: 19
+      row: 20
+    original_name: symbolTREE0
+    style_tags: ~
+  tremble:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    location:
+      col: 20
+      row: 20
+    original_name: symbolTREMBLE0
+    style_tags: ~
+  trickle:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - water
+    location:
+      col: 21
+      row: 20
+    original_name: symbolTRICKLE0
+    style_tags: ~
+  trout:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - fish
+    location:
+      col: 22
+      row: 20
+    original_name: symbolTROUT0
+    style_tags: ~
+  tuft:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - descriptor
+    location:
+      col: 23
+      row: 20
+    original_name: symbolTUFT0
+    style_tags: ~
+  tulip_0:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 24
+      row: 20
+    original_name: symbolTULIP0
+    style_tags: ~
+  tulip_1:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 25
+      row: 20
+    original_name: symbolTULIP1
+    style_tags: ~
+  tumble_0:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - earth
+    location:
+      col: 26
+      row: 20
+    original_name: symbolTUMBLE0
+    style_tags: ~
+  tumble_1:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - cat
+    - animal
+    - verb
+    location:
+      col: 27
+      row: 20
+    original_name: symbolTUMBLE1
+    style_tags: ~
+  turtle:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - other_animal
+    location:
+      col: 28
+      row: 20
+    original_name: symbolTURTLE0
+    style_tags: ~
+  twig:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 29
+      row: 20
+    original_name: symbolTWIG0
+    style_tags: ~
+  twilight:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    - time
+    location:
+      col: 30
+      row: 20
+    original_name: symbolTWILIGHT0
+    style_tags: ~
+21:
+  verbena:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 0
+      row: 21
+    original_name: symbolVERBENA0
+    style_tags: ~
+  vervain:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 1
+      row: 21
+    original_name: symbolVERVAIN0
+    style_tags: ~
+  violet:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 2
+      row: 21
+    original_name: symbolVIOLET0
+    style_tags: ~
+  vole:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 3
+      row: 21
+    original_name: symbolVOLE0
+    style_tags: ~
+22:
+  warbler:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 0
+      row: 22
+    original_name: symbolWARBLER0
+    style_tags: ~
+  wasp:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - bug
+    - animal
+    location:
+      col: 1
+      row: 22
+    original_name: symbolWASP0
+    style_tags: ~
+  weasel:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 2
+      row: 22
+    original_name: symbolWEASEL0
+    style_tags: ~
+  weevil:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - bug
+    - animal
+    location:
+      col: 3
+      row: 22
+    original_name: symbolWEEVIL0
+    style_tags: ~
+  wet:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    - descriptor
+    - element
+    - water
+    location:
+      col: 4
+      row: 22
+    original_name: symbolWET0
+    style_tags: ~
+  wheat:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - other plant
+    location:
+      col: 5
+      row: 22
+    original_name: symbolWHEAT0
+    style_tags: ~
+  whimsy:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    - animal
+    - cat
+    location:
+      col: 6
+      row: 22
+    original_name: symbolWHIMSY0
+    style_tags: ~
+  whirl:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - air
+    location:
+      col: 7
+      row: 22
+    original_name: symbolWHIRL0
+    style_tags: ~
+  whisker:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    location:
+      col: 8
+      row: 22
+    original_name: symbolWHISKER0
+    style_tags: ~
+  whisper:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - cat
+    location:
+      col: 9
+      row: 22
+    original_name: symbolWHISPER0
+    style_tags: ~
+  whistle:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 10
+      row: 22
+    original_name: symbolWHISTLE0
+    style_tags: ~
+  whorl:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - miscellaneous
+    location:
+      col: 11
+      row: 22
+    original_name: symbolWHORL0
+    style_tags: ~
+  willow:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - tree
+    location:
+      col: 12
+      row: 22
+    original_name: symbolWILLOW0
+    style_tags: ~
+  wind_myth:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - air
+    - myth
+    - weather
+    location:
+      col: 13
+      row: 22
+    original_name: symbolWIND0
+    style_tags: ~
+  wing:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - bird
+    location:
+      col: 14
+      row: 22
+    original_name: symbolWING0
+    style_tags: ~
+  wish:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - cat
+    - animal
+    location:
+      col: 15
+      row: 22
+    original_name: symbolWISH0
+    style_tags: ~
+  wisp:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - element
+    - air
+    location:
+      col: 16
+      row: 22
+    original_name: symbolWISP0
+    style_tags: ~
+  wisteria:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 17
+      row: 22
+    original_name: symbolWISTERIA0
+    style_tags: ~
+  wolf_face:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 18
+      row: 22
+    original_name: symbolWOLF0
+    style_tags: ~
+  wolverine:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - animal
+    - mammal
+    location:
+      col: 19
+      row: 22
+    original_name: symbolWOLVERINE0
+    style_tags: ~
+  wood:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - tree
+    location:
+      col: 20
+      row: 22
+    original_name: symbolWOOD0
+    style_tags: ~
+  worm:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - other_animal
+    - animal
+    location:
+      col: 21
+      row: 22
+    original_name: symbolWORM0
+    style_tags: ~
+  wren:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - bird
+    - animal
+    location:
+      col: 22
+      row: 22
+    original_name: symbolWREN0
+    style_tags: ~
+23:
+  yarrow:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - flower
+    location:
+      col: 0
+      row: 23
+    original_name: symbolYARROW0
+    style_tags: ~
+  yew:
+    biome_tags: ~
+    clan_camp_tags: ~
+    clan_symbol_tags:
+    - plant
+    - fruit
+    location:
+      col: 1
+      row: 23
+    original_name: symbolYEW0
+    style_tags: ~
+24: {}

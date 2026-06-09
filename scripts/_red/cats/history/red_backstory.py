@@ -265,7 +265,7 @@ class RedBackstory(StrEnum):
                           "of a monster. The Twolegs then left {PRONOUN/main/object} to fend for "
                           "{PRONOUN/main/self}.")
 
-    #     "refugee3"
+    # "refugee3"
     Kittypet_Cruel = ("{CAT/main} used to be a kittypet, but joined {CLAN/main}Clan after fleeing from "
                       "{PRONOUN/main/poss} cruel Twoleg.")
 

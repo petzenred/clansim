@@ -4,7 +4,6 @@ from re import sub
 
 import i18n
 
-from scripts.cat.sprites import sprites
 from scripts._red.config_manager import config
 from scripts.game_structure.game_essentials import game
 from scripts.game_structure.localization import get_lang_config

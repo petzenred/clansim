@@ -734,7 +734,7 @@ def load_med_den_messages():
     if message_lang == i18n.config.get("locale"):
         return
     MESSAGES = load_lang_resource(
-        "screens/med_den_messages.json"
+        "screens/healer_den_messages.json"
     )
     message_lang = i18n.config.get("locale")
 

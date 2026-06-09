@@ -18,7 +18,7 @@ from definitions import (
 )
 from scripts.cat.cats import Cat, BACKSTORIES # , cat_class
 from scripts.cat.history import History
-from scripts.cat.names import Name
+from scripts.cat.names import OldName
 from scripts.clan_resources.freshkill import FRESHKILL_EVENT_ACTIVE
 from scripts.conditions import (
     medical_cats_condition_fulfilled,
@@ -33,7 +33,7 @@ from scripts.events_module.outsider_events import OutsiderEvents
 from scripts.events_module.relationship.relation_events import Relation_Events
 from scripts.events_module.relationship.pregnancy_events import Pregnancy_Events
 from scripts.game_structure.game_essentials import game
-from scripts.game_structure.windows import SaveError
+from scripts._red.screens.windows import SaveError
 from scripts.events_module.patrol.patrol import Patrol
 from scripts.utility import (
     change_clan_relations,
@@ -454,7 +454,7 @@ class Events:
                             elif invited_cat.age in [Rank.Newborn, Rank.Kit]:
                                 invited_cat.status = invited_cat.age
                                 if not invited_cat.name.suffix:
-                                    invited_cat.name = Name(
+                                    invited_cat.name = OldName(
                                         invited_cat.name.prefix,
                                         invited_cat.name.suffix,
                                         game.clan_obj.biome,

@@ -1,5 +1,4 @@
 # red_condition.py - Class for managing conditions that cats can have.
-import random
 
 # -------------------------------------------------------------------------------- #
 # ----------------------------------------
@@ -8,11 +7,14 @@ import random
 # Imports
 ########################################################################################################################
 
+import random
+
 from definitions import (
     ConditionCategory, ConditionSeverity,
-    cast_to_herb,
+    cast_to_herb, ConditionName,
 )
-from resources._red.conditions import ILLNESSES, INJURIES, PERMANENT_CONDITIONS
+from resources._red.conditions import ILLNESSES, INJURIES, PERMANENT_CONDITIONS, PREGNANCY_CONDITIONS
+from scripts._red.utils.general_utils import one_in_num_chance
 # conditions.yaml - List of all the conditions cats can have.
 # If you add new conditions, make sure to add their key to conditions.en.yaml otherwise they will not display.
 
@@ -28,9 +30,9 @@ class RedCondition:
     name: str
     category: ConditionCategory
     severity: ConditionSeverity
-    herbs: dict # which herb [Herb]: how many are used per moon [int]
+    herbs: dict # which herb [HerbName]: how many are used per moon [int]
     mortality_risk: dict # age [Age]: weight [int]
-    medicine_mortality_risk: dict # age [Age]: weight [int]
+    medicated_mortality_risk: dict # age [Age]: weight [int]
     complication_risks: list[dict]
 
     # illnesses only
@@ -46,26 +48,19 @@ class RedCondition:
     inheritance: dict = None
     moons_until: int = None
 
-    # ------------------------------------- Init ------------------------------------- #
+    # ------------------------------------- INIT ------------------------------------- #
 
-    def __init__(self,
-                 name: str,
-                 category: ConditionCategory,
-                 severity: ConditionSeverity,
-                 herbs: dict,
-                 mortality_risk: dict,
-                 complication_risks: list[dict],
-                 **kwargs):
+    def __init__(self, name: str, category: ConditionCategory, severity: ConditionSeverity,
+                 herbs: dict, mortality_risk: dict,  complication_risks: list[dict], **kwargs):
         self.name = name
         self.category = category
         self.severity = severity
-        if herbs:
-            self._parse_herbs(herbs)
+        self._parse_herbs(herbs)
         self.mortality_risk = mortality_risk
-        if "medicine_mortality_risk" in kwargs:
-            self.medicine_mortality_risk = kwargs["medicine_mortality_risk"]
+        if "medicated_mortality_risk" in kwargs:
+            self.medicated_mortality_risk = kwargs["medicated_mortality_risk"]
         else:
-            self.medicine_mortality_risk = self.mortality_risk
+            self.medicated_mortality_risk = self.mortality_risk
         self.complication_risks = complication_risks
 
         if "infectiousness" in kwargs:
@@ -74,8 +69,8 @@ class RedCondition:
             self.cause_permanent = kwargs["cause_permanent"]
         if "duration_moons" in kwargs:
             self.duration_moons = kwargs["duration_moons"]
-        if "medicine_duration_moons" in kwargs:
-            self.medicine_duration_moons = kwargs["medicine_duration_moons"]
+        if "medicated_duration_moons" in kwargs:
+            self.medicine_duration_moons = kwargs["medicated_duration_moons"]
         if "is_genetic" in kwargs:
             self.is_genetic = kwargs["is_genetic"]
         if "inheritance" in kwargs:
@@ -84,19 +79,28 @@ class RedCondition:
             self.moons_until = kwargs["moons_until"]
 
     def _parse_herbs(self, herbs: dict):
-        """ Parse strings to Herb objects. """
+        """ Parse strings to HerbName objects. """
         self.herbs = {}
         for amount_needed in herbs:
             herbs_needed = herbs[amount_needed]
             for herb in herbs_needed:
                 self.herbs.update({cast_to_herb(herb): amount_needed})
+        return
 
+    # TODO
+    def get_complication(self):
+        """ If a condition can have complications, roll to see if one is caused.
+
+        :return: if a complication happened, the Condition that was caused
+        :rtype: Optional[RedCondition]
+        """
+        raise NotImplementedError("RedCondition.get_complication")
 
 ########################################################################################################################
 # Functions
 ########################################################################################################################
 
-def get_condition(condition_name: str, is_genetic: bool = False) -> RedCondition:
+def get_condition(condition_name: ConditionName, is_genetic: bool = False) -> RedCondition:
     """ Get a condition object. """
     if condition_name in PERMANENT_CONDITIONS:
         return RedCondition(name=condition_name, is_genetic=is_genetic, **PERMANENT_CONDITIONS[condition_name])
@@ -104,6 +108,8 @@ def get_condition(condition_name: str, is_genetic: bool = False) -> RedCondition
         return RedCondition(name=condition_name, is_genetic=is_genetic, **ILLNESSES[condition_name])
     elif condition_name in INJURIES:
         return RedCondition(name=condition_name, is_genetic=is_genetic, **INJURIES[condition_name])
+    elif condition_name in PREGNANCY_CONDITIONS:
+        return RedCondition(name=condition_name, is_genetic=is_genetic, **PREGNANCY_CONDITIONS[condition_name])
     else:
         raise ValueError(f"Unknown condition: {condition_name}")
 

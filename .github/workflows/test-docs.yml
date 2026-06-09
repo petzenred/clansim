@@ -1,4 +1,4 @@
-name: Test Documentation Build
+name: test Documentation Build
 
 on:
   pull_request:

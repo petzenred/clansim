@@ -11,8 +11,9 @@ from modulefinder import Module
 from resources._red.pelt import *
 
 from definitions import (
+    Pronouns,
     cast_to_rank,
-    Rank, WhitePatchPattern, PeltLength, PeltPattern, EyeColour
+    Rank, WhitePatches, PeltLength, PeltPattern, EyeColour
 )
 
 import logging
@@ -48,7 +49,7 @@ class TextHandler:
     lang_resources_path: str
     lang_module: Module
 
-    default_pronouns: dict[int: dict[str: str]]
+    default_pronouns: dict[int, dict[str, str]] # TODO
 
     _previous_lang_iso_code: str = None
 
@@ -86,26 +87,34 @@ class TextHandler:
 
     # ---------------------------------- PUBLIC ---------------------------------- #
 
+    # TODO
+    def handle_text(self, text: str, cats_dict: dict):
+        """ TODO """
+        raise NotImplementedError("TextHandler.handle_text")
+
     def load_new_language(self, lang_iso_code: str):
+        """ TODO """
         # TODO translator
         self.lang_iso_code = lang_iso_code
         self.lang_resources_path = LOCALIZATION_RESOURCES_PATH + self.lang_iso_code
         self.__load_lang_resources_cat()
 
-
     def change_language(self, new_language_code: str):
+        """ TODO """
         self._previous_lang_iso_code = self.lang_iso_code
         self.lang_iso_code = new_language_code
         self.__load_lang_resources_cat()
         return
 
+    # TODO check resources.dicts.patrols.reformat_patrols
+    # TODO move this to ConversionManager
     def update_old_event_text(self, text):
         """ Updates old text for events to the current standard. """
-        # TODO check resources.dicts.patrols.reformat_patrols
-        # TODO move this to ConversionManager
+        raise NotImplementedError("update_old_event_text")
 
+    # TODO
     def handle_text_content_event(self, text, event):
-        """ """
+        """ TODO """
         if not isinstance(text, str):
             text: str = self._catch_old_text_types(text)
 
@@ -311,13 +320,13 @@ class TextHandler:
 
             # are commas necessary?
             if pattern_source["before_colour"] \
-                and not (pelt.white_patch_pattern is WhitePatchPattern.FullWhite) \
-                and (ScarPelt.BlindBoth in pelt.scars):
+                and not (pelt.white_patches is WhitePatches.FullWhite) \
+                and (ScarName.BlindBoth in pelt.scars):
                 commas_f = True
 
             # pick an extra detail
-            if pelt.white_patch_pattern.category in (
-                    WhitePatchPatternCategory.Mostly, WhitePatchPatternCategory.High, WhitePatchPatternCategory.Mid):
+            if pelt.white_patches.category in (
+                    WhitePatchCategory.Mostly, WhitePatchCategory.High, WhitePatchCategory.Mid):
                 mention_white_f = True
 
             # the extra detail is eye colour
@@ -332,9 +341,9 @@ class TextHandler:
             # the extra detail is scarring
             for has_scar in pelt.scars:
                 break_f: bool = False
-                for scar, scar_text in SCAR_TEXT[ScarPelt]:
+                for scar, scar_text in SCAR_TEXT[ScarName]:
                     if has_scar is scar:
-                        if scar is ScarPelt.BlindBoth:
+                        if scar is ScarName.BlindBoth:
                             colour_pattern = "blind, " if commas_f else "blind "
                         else:
                             extra_detail = scar_text
@@ -355,10 +364,10 @@ class TextHandler:
             #  (preferably if they're mid-high or higher, mention
             #  that)
             # cats can be one solid colour because of the FullWhite
-            #   white patch or because of the SingleColour pattern
-            if pelt.white_patch_pattern is WhitePatchPattern.FullWhite:
+            #   white patch or because of the SolidColour pattern
+            if pelt.white_patches is WhitePatches.FullWhite:
                 colour_pattern += "white {GENDER}" + extra_detail
-            elif pelt.pattern is PeltPattern.SingleColour:
+            elif pelt.pattern is PeltPattern.SolidColour:
                 colour_pattern += colour_source[pelt.colour]
                 if mention_white_f:
                     colour_pattern += " and white {GENDER}"
@@ -366,9 +375,9 @@ class TextHandler:
                     colour_pattern += " {GENDER}"
 
             # handle pointed cats
-            elif pelt.white_patch_pattern in (WhitePatchPattern.ColourPoint,
-                                            WhitePatchPattern.Ragdoll,
-                                            WhitePatchPattern.SealPoint):
+            elif pelt.white_patches in (WhitePatches.ColourPoint,
+                                        WhitePatches.Ragdoll,
+                                        WhitePatches.SealPoint):
                 colour_pattern += colour_source[pelt.colour] + " {GENDER} with a white body"
                 mention_eyes_f = False
 
@@ -499,6 +508,7 @@ class TextHandler:
             "med_name": _r, # a random cat who is a medicine cat in m_c's Clan
             "cat_tag": _r, # a specific cat's name, used in filtering for snippets
         """
+        raise NotImplementedError(f"TextHandler._filter_cats")
 
     def filter_text(self, text: str) -> str:
         """ Filter event text to replace pronoun codes, names, etc.

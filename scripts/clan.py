@@ -24,7 +24,6 @@ from resources._red.camps import CAMP_DEN_PLACEMENTS
 from scripts.cat.cats import Cat # , cat_class
 from scripts.cat.history import History
 from scripts.cat.names import names
-from scripts.cat.sprites import sprites
 from scripts.clan_resources.freshkill import FreshkillPile, Nutrition
 from scripts.clan_resources.herb.herb_supply import HerbSupply
 from scripts.events_module.generate_events import OngoingEvent
@@ -468,7 +467,7 @@ class Clan:
             "camp_bg": self.camp_bg,
             "clan_symbol": self.chosen_symbol,
             "gamemode": self.game_mode,
-            "last_focus_change": self.last_focus_change,
+            "last_warrior_focus_change": self.last_focus_change,
             "clans_in_focus": self.clans_in_focus,
             "instructor": self.instructor.ID,
             "reputation": self.reputation,
@@ -476,7 +475,7 @@ class Clan:
             "starting_season": self.starting_season,
             "temperament": self.temperament,
             "version_name": SAVE_CLANSIM_VERSION_NUMBER,
-            "version_commit": get_version_info().version_number,
+            "version_commit": get_version_info().commit_id,
             "source_build": get_version_info().is_source_build,
             "custom_pronouns": self.custom_pronouns,
         }
@@ -890,7 +889,7 @@ class Clan:
                 for cat in clan_data["faded_cats"].split(","):
                     game.clan_obj.faded_ids.append(cat)
 
-        game.clan_obj.last_focus_change = clan_data.get("last_focus_change")
+        game.clan_obj.last_focus_change = clan_data.get("last_warrior_focus_change")
         game.clan_obj.clans_in_focus = clan_data.get("clans_in_focus", [])
 
         # Patrolled cats
@@ -1356,7 +1355,7 @@ class StarClan:
         """
         TODO: DOCS
         """
-        white = pygame.Surface((sprites.size, sprites.size))
+        white = pygame.Surface((sprites.sprite_size, sprites.sprite_size))
         fade_level = 0
         if cat.dead:
             for f in self.forgotten_stages:  # pylint: disable=consider-using-dict-items

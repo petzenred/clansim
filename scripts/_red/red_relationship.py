@@ -33,7 +33,7 @@ def _load_relationships_file():
 ########################################################################################################################
 
 # TODO combine this with game.cat_tracker?
-class RedRelationships:
+class RedRelationshipTracker:
     """ Holds relationship information and allows the game to edit them safely. """
 
     cat_relationships: dict
@@ -84,11 +84,19 @@ class RedRelationships:
 
     # ------------------------------------- CATS ------------------------------------- #
 
-    def cat_get_relationship(self, holder: int = None, subject: int = None):
+    def cat_change_relationship(self, holder: int, subject: int):
+        """ Update a relationship between two cats. """
+        raise NotImplementedError("RedRelationshipTracker.cat_change_relationship")
+
+    def cat_get_relationship(self, holder: int, subject: int):
         """ Get the details of how holder feels about subject. """
         return self.cat_relationships[holder][subject]
 
-    def cat_get_highest_romance(self, holder_id: int, exclude_mate: bool = False, only_potential_mate: bool = True) -> int:
+    def cat_get_highest_romance(self,
+                                holder_id: int,
+                                exclude_mate: bool = False,
+                                only_potential_mate: bool = True
+                                ) -> int:
         """ Get the cat_id of the cat who holder has the strongest romantic feelings for.
 
         If two or more cats tie, one of the tied cats will be randomly chosen.
@@ -111,7 +119,7 @@ class RedRelationships:
 
         for winner_id in winner_ids:
             if exclude_mate:
-                if winner_id in game.cat_tracker.all_cats[holder_id].mate_ids:
+                if winner_id in game.cat_tracker.living_cats[holder_id].mate_ids:
                     winner_ids.remove(winner_id)
             if only_potential_mate:
                 if not self.cat_is_potential_mate(holder_id=holder_id, subject_id=winner_id, no_mates=False):
@@ -127,18 +135,18 @@ class RedRelationships:
         :param bool no_mates: if True, the method can only return True if both cats are single
         """
         # get the RedCat objects from the cat tracker
-        holder_obj = game.cat_tracker.all_cats[holder_id]
-        subject_obj = game.cat_tracker.all_cats[subject_id]
+        holder_obj = game.cat_tracker.living_cats[holder_id]
+        subject_obj = game.cat_tracker.living_cats[subject_id]
         # cats can't be mates with themselves
         if holder_id == subject_id:
             return False
-        # apprentices and children can't have mates
-        if not holder_obj.age.is_adult or holder_obj.rank.apprentice:
+        # children can't have mates, not apprentices regardless of age
+        if (holder_obj.moons < config.cat_config.young_adult_age_moons) or holder_obj.rank.is_apprentice:
             return False
         # if only single cats are allowed, make sure both cats are single
         if no_mates and (holder_obj.mate_ids or subject_obj.mate_ids):
             return False
-        if config.settings.RomanceFormerApprentice:
+        if config.settings.RomanceFormerApprentice: # TODO make sure True for this *DIS*allows dating ex-apprentices
             if subject_id in holder_obj.prev_apps or holder_id in subject_obj.prev_apps:
                 return False
         if config.settings.RomanceFirstCousin:
@@ -155,7 +163,7 @@ class RedRelationships:
     # TODO scripts.utility.check_relationship_value(cat_from, cat_to, rel_value=None)
     # TODO scripts.utility.get_personality_compatibility(cat1, cat2)
     # TODO scripts.utility.get_cats_of_romantic_interest(cat)
-    # TODO scripts.utility.get_amount_of_cats_with_relation_value_towards(cat, value, all_cats)
+    # TODO scripts.utility.get_amount_of_cats_with_relation_value_towards(cat, value, living_cats)
     # TODO scripts.utility.filter_relationship_type(
     #         group: list, filter_types: List[str], event_id: str = None, patrol_leader=None
     # )
@@ -183,11 +191,16 @@ class RedRelationships:
     # TODO
     def clan_get_relationship(self, holder=None, subject=None):
         """ Get the details of how holder feels about subject. """
-        return
+        raise NotImplementedError("RedRelationshipTracker.clan_get_relationship")
+
+    # TODO
+    def clan_update_relationship(self, clan_1, clan_2, change: int):
+        """ Update the relationship between two Clans. """
+        raise NotImplementedError("RedRelationshipTracker.clan_update_relationship")
 
 
 ########################################################################################################################
 # Objects
 ########################################################################################################################
 
-global_rels: RedRelationships = RedRelationships()
+global_rels: RedRelationshipTracker = RedRelationshipTracker()

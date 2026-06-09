@@ -94,9 +94,9 @@ def has_update(update_channel: UpdateChannel):
     global latest_version
     latest_version = latest_version_number.strip()
 
-    if get_version_info().version_number.strip() != latest_version_number.strip():
+    if get_version_info().commit_id.strip() != latest_version_number.strip():
         print(f"Update available!")
-        print(f"Current version: {get_version_info().version_number}")
+        print(f"Current version: {get_version_info().commit_id}")
         print(f"Newest version : {latest_version_number.strip()}")
         return True
     else:

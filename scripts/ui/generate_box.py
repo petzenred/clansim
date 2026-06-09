@@ -1,41 +1,30 @@
+# generate_box.py - Generate the shape, size, and spacing of UI elements.
+
+########################################################################################################################
+# Imports
+########################################################################################################################
+
 from dataclasses import dataclass
-from enum import Enum
 from functools import lru_cache
 from math import ceil, floor
-from typing import Tuple, Dict, Union, Optional
+from typing import Optional
 
 import pygame
 
-import scripts.game_structure.screen_settings
-from scripts.utility import ui_scale_value, ui_scale_dimensions
+import resources._red.red_filepaths as fp
+from definitions import BoxShape
+from scripts._red.utils.ui_utils import ui_scale_value, ui_scale_dimensions
 
+
+########################################################################################################################
+# Classes
+########################################################################################################################
 
 @dataclass(unsafe_hash=True)
 class BoxData:
     name: str
     surface: pygame.Surface
-    tilecount: Tuple[int, int]
-
-
-class BoxStyles(Enum):
-    FRAME = "frame"
-    ROUNDED_BOX = "rounded_box"
-
-
-boxstyles = {
-    "frame": BoxData(
-        "frame",
-        pygame.image.load("resources/images/generated_boxes/frame.png").convert_alpha(),
-        (3, 3),
-    ),
-    "rounded_box": BoxData(
-        "rounded_box",
-        pygame.image.load(
-            "resources/images/generated_boxes/rounded_box.png"
-        ).convert_alpha(),
-        (7, 3),
-    ),
-}
+    tilecount: tuple[int, int]
 
 
 @dataclass
@@ -67,152 +56,67 @@ class Tileset:
     bottomright_noright: Optional[pygame.Surface] = None
 
 
-tilesets: Dict[float, Dict[BoxData, Tileset]] = {}
+########################################################################################################################
+# Constants
+########################################################################################################################
+
+tilesets: dict[float, dict[BoxData, Tileset]] = {}
 
 
-def get_tileset(style: BoxData) -> Tileset:
-    temp_scale = scripts.game_structure.screen_settings.screen_scale
-    if temp_scale in tilesets and style.name in tilesets[temp_scale]:
-        return tilesets[temp_scale][style]
-
-    surface = style.surface
-
-    # ceiling to the nearest multiple of the tilecount
-    width = (
-        ceil(ui_scale_value(surface.get_width()) / style.tilecount[0])
-        * style.tilecount[0]
-    )
-    height = (
-        ceil(ui_scale_value(surface.get_height()) / style.tilecount[1])
-        * style.tilecount[1]
-    )
-
-    scaled_base = pygame.transform.scale(surface, (width, height))
-
-    tile_edge_length = round(height / style.tilecount[1])
-    tile_size = (tile_edge_length, tile_edge_length)
-    ninetile = True
-
-    # make the tiles
-    topleft = _get_tile_from_coords(scaled_base, (0, 0), tile_size)
-    top = _get_tile_from_coords(scaled_base, (1, 0), tile_size)
-    topright = _get_tile_from_coords(scaled_base, (2, 0), tile_size)
-
-    if style.tilecount[1] > 1:
-        left = _get_tile_from_coords(scaled_base, (0, 1), tile_size)
-        middle = _get_tile_from_coords(scaled_base, (1, 1), tile_size)
-        right = _get_tile_from_coords(scaled_base, (2, 1), tile_size)
-        bottomleft = _get_tile_from_coords(scaled_base, (0, 2), tile_size)
-        bottom = _get_tile_from_coords(scaled_base, (1, 2), tile_size)
-        bottomright = _get_tile_from_coords(scaled_base, (2, 2), tile_size)
-    else:
-        left, middle, right, bottomleft, bottom, bottomright = [None] * 6
-        ninetile = False
-
-    try:
-        topleft_notop = _get_tile_from_coords(scaled_base, (3, 0), tile_size)
-        topleft_noleft = _get_tile_from_coords(scaled_base, (3, 1), tile_size)
-        top_noborder = _get_tile_from_coords(scaled_base, (3, 2), tile_size)
-        topright_notop = _get_tile_from_coords(scaled_base, (4, 0), tile_size)
-        topright_noright = _get_tile_from_coords(scaled_base, (4, 1), tile_size)
-        right_noborder = _get_tile_from_coords(scaled_base, (4, 2), tile_size)
-        bottomleft_nobottom = _get_tile_from_coords(scaled_base, (5, 0), tile_size)
-        bottomleft_noleft = _get_tile_from_coords(scaled_base, (5, 1), tile_size)
-        bottom_noborder = _get_tile_from_coords(scaled_base, (5, 2), tile_size)
-        bottomright_nobottom = _get_tile_from_coords(scaled_base, (6, 0), tile_size)
-        bottomright_noright = _get_tile_from_coords(scaled_base, (6, 1), tile_size)
-        left_noborder = _get_tile_from_coords(scaled_base, (6, 2), tile_size)
-
-    except ValueError:
-        (
-            topleft_notop,
-            topleft_noleft,
-            topright_notop,
-            topright_noright,
-            bottomleft_nobottom,
-            bottomleft_noleft,
-            bottomright_nobottom,
-            bottomright_noright,
-            top_noborder,
-            left_noborder,
-            bottom_noborder,
-            right_noborder,
-        ) = [None] * 12
-
-    if temp_scale not in tilesets:
-        tilesets[temp_scale] = {}
-
-    tilesets[temp_scale][style] = Tileset(
-        edge_length=tile_edge_length,
-        ninetile=ninetile,
-        topleft=topleft,
-        top=top,
-        topright=topright,
-        left=left,
-        middle=middle,
-        right=right,
-        bottomleft=bottomleft,
-        bottom=bottom,
-        bottomright=bottomright,
-        top_noborder=top_noborder,
-        left_noborder=left_noborder,
-        bottom_noborder=bottom_noborder,
-        right_noborder=right_noborder,
-        topleft_notop=topleft_notop,
-        topleft_noleft=topleft_noleft,
-        topright_notop=topright_notop,
-        topright_noright=topright_noright,
-        bottomleft_nobottom=bottomleft_nobottom,
-        bottomleft_noleft=bottomleft_noleft,
-        bottomright_nobottom=bottomright_nobottom,
-        bottomright_noright=bottomright_noright,
-    )
-    return tilesets[temp_scale][style]
-
-
-def _get_tile_from_coords(
-    tilemap: pygame.Surface, tile_coords: Tuple[int, int], tile_size: Tuple[int, int]
-):
-    return tilemap.subsurface(
-        (tile_coords[0] * tile_size[0], tile_coords[1] * tile_size[1]), tile_size
-    )
-
+########################################################################################################################
+# Functions
+########################################################################################################################
 
 def get_box(
-    style: Union[BoxStyles, BoxData],
-    unscaled_dimensions: Tuple[int, int],
+    scale: float,
+    style: BoxShape | BoxData,
+    unscaled_dimensions: tuple[int, int],
     sides=True,
     use_extra_if_available: bool = True,
 ) -> pygame.Surface:
     """
     Generate a surface of arbitrary length and height from a given input surface
-    :param style: the BoxStyles style to create from, or BoxData to draw from
-    :param unscaled_dimensions: the SCALED dimensions of the final box
-    :param sides: Whether to render the sides of the box or just end it abruptly.
-        Tuple of booleans in order: Top, right, bottom, left. Also accepts a single boolean for all 4 values
-    :param use_extra_if_available: Whether to use the expanded tileset if the style has it. Default True.
+
+    :param float scale: current game window scale
+    :param style: BoxShape style to create from, or BoxData to draw from
+    :param tuple[int, int] unscaled_dimensions: SCALED dimensions of the final box # FIXME scaled or unscaled??
+    :param bool sides: whether to render the sides of the box or just end it abruptly.
+        tuple of booleans in order: Top, right, bottom, left. Also accepts a single boolean for all 4 values
+    :param bool use_extra_if_available:whether to use the expanded tileset if the style has it. Default True.
+
     :return: A surface
     """
-    if isinstance(style, BoxStyles):
-        style = boxstyles[style.value]
+
+    if style is BoxShape.Frame:
+        style = BoxData(
+            "frame",
+            pygame.image.load(fp.GENERATED_BOX_FRAME).convert_alpha(),
+            (3, 3),
+        )
+    if style is BoxShape.RoundedBox:
+        style = BoxData(
+            "rounded_box",
+            pygame.image.load(fp.GENERATED_BOX_ROUNDED_BOX).convert_alpha(),
+            (7, 3),
+        )
 
     return _get_box(
-        style,
-        ui_scale_dimensions(unscaled_dimensions),
-        sides,
-        use_extra_if_available,
-        scale=scripts.game_structure.screen_settings.screen_scale,
+        style=style,
+        scaled_dimensions=ui_scale_dimensions(dim=unscaled_dimensions, scale=scale),
+        sides=sides,
+        use_extra_if_available=use_extra_if_available,
+        scale=scale,
     )
 
 
 @lru_cache(maxsize=None)
 def _get_box(
     style: BoxData,
-    scaled_dimensions: Tuple[int, int],
-    sides: Union[bool, Tuple[bool, bool, bool, bool]] = True,
+    scaled_dimensions: tuple[int, int],
+    sides: bool | tuple[bool, bool, bool, bool] = True,
     use_extra_if_available=True,
     *,
-    scale
+    scale: float
 ) -> pygame.Surface:
     """
     A wrapper for get_box that lets it be typehinted & still cache properly
@@ -225,7 +129,7 @@ def _get_box(
     notouchytouchyeverpls = scale
 
     tileset = _build_needed_tileset(
-        style, sides, use_extra_if_available=use_extra_if_available
+        style=style, sides=sides, scale=scale, use_extra_if_available=use_extra_if_available
     )
 
     tiny_box = False  # a flag to determine whether the box is technically too small
@@ -461,8 +365,9 @@ def _get_box(
 
 def _build_needed_tileset(
     style: BoxData,
-    sides: Union[bool, Tuple[bool, bool, bool, bool]],
-    use_extra_if_available=True,
+    sides: bool | tuple[bool, bool, bool, bool],
+    scale: float,
+    use_extra_if_available: bool = True,
 ):
     if isinstance(sides, bool):
         border_top = sides
@@ -474,7 +379,7 @@ def _build_needed_tileset(
     else:
         raise Exception("invalid sides argument supplied")
 
-    tileset = get_tileset(style)
+    tileset = _get_tileset(style=style, temp_scale=scale)
 
     output = Tileset(edge_length=tileset.edge_length, ninetile=tileset.ninetile)
 
@@ -577,6 +482,113 @@ def _build_needed_tileset(
     )
 
     return output
+
+
+def _get_tileset(style: BoxData, temp_scale: float) -> Tileset:
+    if temp_scale in tilesets and style.name in tilesets[temp_scale]:
+        return tilesets[temp_scale][style]
+
+    surface = style.surface
+
+    # ceiling to the nearest multiple of the tilecount
+    width = (
+        ceil(ui_scale_value(val=surface.get_width(), scale=temp_scale) / style.tilecount[0])
+        * style.tilecount[0]
+    )
+    height = (
+        ceil(ui_scale_value(val=surface.get_height(), scale=temp_scale) / style.tilecount[1])
+        * style.tilecount[1]
+    )
+
+    scaled_base = pygame.transform.scale(surface, (width, height))
+
+    tile_edge_length = round(height / style.tilecount[1])
+    tile_size = (tile_edge_length, tile_edge_length)
+    ninetile = True
+
+    # make the tiles
+    topleft = _get_tile_from_coords(scaled_base, (0, 0), tile_size)
+    top = _get_tile_from_coords(scaled_base, (1, 0), tile_size)
+    topright = _get_tile_from_coords(scaled_base, (2, 0), tile_size)
+
+    if style.tilecount[1] > 1:
+        left = _get_tile_from_coords(scaled_base, (0, 1), tile_size)
+        middle = _get_tile_from_coords(scaled_base, (1, 1), tile_size)
+        right = _get_tile_from_coords(scaled_base, (2, 1), tile_size)
+        bottomleft = _get_tile_from_coords(scaled_base, (0, 2), tile_size)
+        bottom = _get_tile_from_coords(scaled_base, (1, 2), tile_size)
+        bottomright = _get_tile_from_coords(scaled_base, (2, 2), tile_size)
+    else:
+        left, middle, right, bottomleft, bottom, bottomright = [None] * 6
+        ninetile = False
+
+    try:
+        topleft_notop = _get_tile_from_coords(scaled_base, (3, 0), tile_size)
+        topleft_noleft = _get_tile_from_coords(scaled_base, (3, 1), tile_size)
+        top_noborder = _get_tile_from_coords(scaled_base, (3, 2), tile_size)
+        topright_notop = _get_tile_from_coords(scaled_base, (4, 0), tile_size)
+        topright_noright = _get_tile_from_coords(scaled_base, (4, 1), tile_size)
+        right_noborder = _get_tile_from_coords(scaled_base, (4, 2), tile_size)
+        bottomleft_nobottom = _get_tile_from_coords(scaled_base, (5, 0), tile_size)
+        bottomleft_noleft = _get_tile_from_coords(scaled_base, (5, 1), tile_size)
+        bottom_noborder = _get_tile_from_coords(scaled_base, (5, 2), tile_size)
+        bottomright_nobottom = _get_tile_from_coords(scaled_base, (6, 0), tile_size)
+        bottomright_noright = _get_tile_from_coords(scaled_base, (6, 1), tile_size)
+        left_noborder = _get_tile_from_coords(scaled_base, (6, 2), tile_size)
+
+    except ValueError:
+        (
+            topleft_notop,
+            topleft_noleft,
+            topright_notop,
+            topright_noright,
+            bottomleft_nobottom,
+            bottomleft_noleft,
+            bottomright_nobottom,
+            bottomright_noright,
+            top_noborder,
+            left_noborder,
+            bottom_noborder,
+            right_noborder,
+        ) = [None] * 12
+
+    if temp_scale not in tilesets:
+        tilesets[temp_scale] = {}
+
+    tilesets[temp_scale][style] = Tileset(
+        edge_length=tile_edge_length,
+        ninetile=ninetile,
+        topleft=topleft,
+        top=top,
+        topright=topright,
+        left=left,
+        middle=middle,
+        right=right,
+        bottomleft=bottomleft,
+        bottom=bottom,
+        bottomright=bottomright,
+        top_noborder=top_noborder,
+        left_noborder=left_noborder,
+        bottom_noborder=bottom_noborder,
+        right_noborder=right_noborder,
+        topleft_notop=topleft_notop,
+        topleft_noleft=topleft_noleft,
+        topright_notop=topright_notop,
+        topright_noright=topright_noright,
+        bottomleft_nobottom=bottomleft_nobottom,
+        bottomleft_noleft=bottomleft_noleft,
+        bottomright_nobottom=bottomright_nobottom,
+        bottomright_noright=bottomright_noright,
+    )
+    return tilesets[temp_scale][style]
+
+
+def _get_tile_from_coords(
+    tilemap: pygame.Surface, tile_coords: tuple[int, int], tile_size: tuple[int, int]
+):
+    return tilemap.subsurface(
+        (tile_coords[0] * tile_size[0], tile_coords[1] * tile_size[1]), tile_size
+    )
 
 
 def _handle_corners(tiles, border_side1, border_side2, use_extra_if_available):

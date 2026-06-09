@@ -73,6 +73,8 @@ WINDOWED_SCALE_MULT_Y: int = 175 # TODO should this be 175/200? why does the gam
                                #    when the window is wider than it is tall?
 WINDOWED_SCALE_FACTOR: int = 4
 
+LOADING_SCREEN_DELAY_SEC: float = 0.7
+
 # ----------------------------- WARRIOR CLANS VALUES ----------------------------- #
 
 # How long does freshkill last until it needs to be removed from the freshkill pile?
@@ -172,9 +174,9 @@ HETEROCHROMIA_CHANCE_MODIFIER_PER_PARENT: int = 1
 # settings paths - these are in saves/
 CURRENTCLAN_FILENAME: str = "currentclan.txt"
 GAME_SETTINGS_FILENAME: str = "game_settings.yaml"
-SAVE_VERSION_FILENAME: str = "*_clan.yaml" # * is replaced with Clan token in the IOManager
 
 # save paths - these are in saves/{clan_token}/
+SAVE_VERSION_FILENAME: str = "save_version.yaml"
 SAVE_CLANS_INFO_FILENAME: str = "clans_info.yaml"
 SAVE_CAMP_FILENAME: str = "camp.yaml"
 SAVE_CLAN_SETTINGS_FILENAME: str = "clan_settings.yaml"
@@ -279,6 +281,8 @@ class SortRelationships(Enum):
 class ThemeName(StrEnum):
     """ The different possible themes. """
 
+    Template = "screen_scale_output"
+
     Light = "light"
     Dark = "dark"
     Debug = "debug"
@@ -287,14 +291,15 @@ class ThemeName(StrEnum):
 class ScreenBackground(StrEnum):
     """ Tracks background screens which the game can have. """
 
-    ClanMenu = "" # works as the default
+    SolidColour = "" # works as the default
 
     MainMenu = "menu.png"
     MainMenuLogoless = "menu_logoless.png"
     MacInstaller = "mac_installer_bg_blank.png"
 
+    ClanCamp = "CLAN_CAMP_NOT_A_PATH"
+
     UnknownResidenceCatsList = "urbg.png"
-    OutsideCatsList = "outside_clan_bg.png"
     StarClanCatsList = "starclanbg.png"
     DarkForestCatsList = "darkforestbg.png"
 
@@ -307,12 +312,14 @@ class ScreenBackground(StrEnum):
 
     @property
     def blur_properties(self) -> dict:
-        if self is ScreenBackground.ClanMenu:
+        if self is ScreenBackground.SolidColour:
             return {"vignette_strength": 0, "fade_color": None}
         elif self is ScreenBackground.StarClanCatsList:
             return {"blur_radius": 2}
-        elif self in (ScreenBackground.MainMenuLogoless, ScreenBackground.DarkForestCatsList, ScreenBackground.UnknownResidenceCatsList):
+        elif self in (ScreenBackground.DarkForestCatsList, ScreenBackground.UnknownResidenceCatsList):
             return {"blur_radius": 10}
+        # elif self in (ScreenBackground.MainMenuLogoless, ):
+        #     return {"blur_radius": 10}
         else:
             return {}
 
@@ -384,24 +391,24 @@ class Icon(StrEnum):
 
 class ScreenCategory(StrEnum):
 
-    Any = "any"
+    ScreenCategoryUnset = "screens_category_unset"
 
-    MainMenu = "main menu" # "menu screens"
-    Creation = "creation screens" # "creation screens"
-
-    Profile = "profile screens"
-    Clan = "clan screens"
+    MainMenu = "main_menu_screens" # "menu screens"
+    Creation = "creation_screens" # "creation screens"
+    Profile = "profile_screens"
+    Clan = "clan_screens"
 
 class ScreenName(StrEnum):
 
-    ScreenUnset = ""
+    ScreenUnset = "screen_unset"
 
+    # ScreenCategory = MainMenu
     MainMenu = "main_menu" # "main menu screen"
-    GameSettings = "main_settings_screen" # "main settings screen"
+    GameSettings = "game_settings" # "main settings screen"
     NewClan = "new_clan" # "new clan screen"
     SwitchClan = "switch_clan" # "switch clan screen"
 
-    # profile screens
+    # ScreenCategory = Profile
     Profile = "profile" # "profile screen"
     AdoptiveParents = "adoptive_parents" # "choose adoptive parent screen"
     LeaderCeremony = "leader_ceremony" # "leader ceremony screen"
@@ -414,6 +421,7 @@ class ScreenName(StrEnum):
     ManageRoles = "manage_roles" # "role screen"
     InspectSprite = "inspect_sprite" # "sprite inspect screen" # TODO give hover text
 
+    # ScreenCategory = Clan
     Events = "events" # "events screen"
     Camp = "camp"# "camp screen"
     CatList = "cat_list" # "members screen"
@@ -440,13 +448,27 @@ class ScreenName(StrEnum):
                     self.Allegiances, self.ClanSettings, self.LeaderDen, self.HealerDen,
                     self.WarriorDen, self.FreshkillPile):
             return ScreenCategory.Clan
-        return ScreenCategory.Any
+        return ScreenCategory.ScreenCategoryUnset
 
 
-class ButtonName(StrEnum):
-    """ Buttons. """
+class UniversalButtonName(StrEnum):
+    """ Buttons which are on every (or almost every) screen. """
+
+    DropdownDens = "dropdown_dens" # "dens"
+    DropdownChooseClan = "dropdown_choose_group"
+    # Dropdown = "dropdown_"
+
+    Mute = "mute"
+    Unmute = "unmute"
+
+    MoonsSeasonsArrow = "widget_moons_n_seasons_arrow"
+
+class SwitchScreenButtonName(StrEnum):
+    """ Buttons that take you to a new screen. """
 
     GoScreenMainMenu = "go_screen_main_menu"
+
+    GoScreenContinue = "go_screen_continue"
     GoScreenSwitchClan = "go_screen_switch_clan"
     GoScreenNewClan = "go_screen_new_clan"
     GoScreenGameSettings = "go_screen_game_settings"
@@ -466,19 +488,12 @@ class ButtonName(StrEnum):
 
     # GoScreen = "go_screen_"
 
-    DropdownDens = "dropdown_dens" # "dens"
-    DropdownChooseClan = "dropdown_choose_group"
-    # Dropdown = "dropdown_"
-
-    Mute = "mute"
-    Unmute = "unmute"
-
-    MoonsSeasonsArrow = "widget_moons_n_seasons_arrow"
-
     @property
     def go_to_screen_name(self):
         if self is self.GoScreenMainMenu:
             return ScreenName.MainMenu
+        if self is self.GoScreenContinue:
+            return ScreenName.Camp
         if self is self.GoScreenSwitchClan:
             return ScreenName.SwitchClan
         if self is self.GoScreenNewClan:
@@ -529,7 +544,7 @@ class UIElementPath(StrEnum):
         if self is self.MoonsSeasonsWidget:
             return self.mns_paths
         if ".png" in self.value:
-            return str(IMAGE_RESOURCES_PATH + self.value)
+            return str(IMAGE_RESOURCES_PATH + self.value) # FIXME
         else:
             return None
 
@@ -542,6 +557,13 @@ class UIElementPath(StrEnum):
                 "closed": f"{self.value}_closed.png",
                 "open": f"{self.value}_open.png"
             }
+
+
+class TextCategory(StrEnum):
+    """ TODO """
+
+    Cat = "CAT"
+    Clan = "CLAN"
 
 # ---------------------------------- World enums --------------------------------- #
 
@@ -567,7 +589,7 @@ class Biome(StrEnum):
         if self in [self.Forest, self.Mountain, self.Plains, self.Beach]:
             return True
         return False
-AVAILABLE_BIOMES: list[str] = [Biome.Forest, Biome.Mountain, Biome.Plains, Biome.Beach]
+AVAILABLE_BIOMES: list[Biome] = [Biome.Forest, Biome.Mountain, Biome.Plains, Biome.Beach]
 
 
 class HerbName(Enum):
@@ -894,7 +916,7 @@ class SpecialClanToken(StrEnum):
 
     @property
     def afterlife_screen_background(self):
-        """ Points the RedBaseScreen class to the correct effects for cats in the afterlife. """
+        """ Points the RedBaseScreen class to the correct Clan list background for afterlives. """
         if self is self.StarClan:
             return ScreenBackground.StarClanCatsList
         elif self is self.DarkForest:
@@ -1365,6 +1387,11 @@ class HuntPreyAmount(Enum):
     Medium = 1.8
     Large = 2.4
     Huge = 3.2
+
+class PatrolTag(StrEnum):
+    """ Tags for events that happen on patrol. """
+
+    Disaster = "disaster"
 
 
 # ------------------------------- Pelts and sprites ------------------------------ #
@@ -2431,6 +2458,68 @@ class SpritePose(IntEnum):
         return [cls.Senior0, cls.Senior1, cls.Senior2]
 
 
+class ClanSymbolTag(StrEnum):
+    """ Tags for Clan symbols. Used for both sorting and random Clan generation. """
+
+    Cat = "cat"
+    Verb = "verb"
+    Appearance = "appearance"
+    Emotion = "emotion"
+
+    Animal = "animal"
+    Bird = "bird"
+    Bug = "bug"
+    Fish = "fish"
+    Lizard = "lizard"
+    Mammal = "mammal"
+    Prey = "prey"
+    OtherAnimal = "other_animal" # "other animal"
+
+    Adjective = "adjective"
+
+    Element = "element"
+    Air = "air"
+    Earth = "earth"
+    Fire = "fire"
+    Ice = "ice"
+    Light = "light"
+    Water = "water"
+
+    Location = "location"
+
+    Plant = "plant"
+    Flower = "flower"
+    Fruit = "fruit"
+    Leaf = "leaf"
+    Tree = "tree"
+    Grain = "grain"
+    Herb = "herb"
+    Grass = "grass"
+    Nut = "nut"
+    Vine = "vine"
+    OtherPlant = "other_plant" # "other plant"
+
+    Miscellaneous = "miscellaneous"
+    Myth = "myth"
+    Time = "time"
+    Weather = "weather" # TODO add weather tags
+
+    # TODO add verb
+    # TODO add hot or cold tags?
+    # TODO figure out a way to connect a single sprite under multiple names
+
+    # add style tags - cat face, animal face, symbolic
+    # TODO add "myth" tags - Lion/Tiger/Leopard, plus the original Clans, since those appear in stories told on patrols
+    AnimalFace = "style_face"
+    Symbolic = "style_symbolic"
+
+    HistoryEarthquake = "history_earthquake"
+    HistoryBlaze = "history_blaze"
+    HistoryFlood = "history_flood"
+    HistoryAvalanche = "history_avalanche"
+
+
+
 ########################################################################################################################
 # Dataclasses
 ########################################################################################################################
@@ -2539,7 +2628,7 @@ def cast_to_biome(to_cast) -> Biome:
             return Biome.Mountain
         if to_cast.casefold() in (Biome.Plains, "plains", ):
             return Biome.Plains
-        if to_cast.casefold() in (Biome.Wetlands, "wetlands", ):
+        if to_cast.casefold() in (Biome.Wetlands, "wetland", "wetlands", ):
             return Biome.Wetlands
         if to_cast.casefold() in (Biome.Twolegplace, "twolegplace", ):
             return Biome.Twolegplace
@@ -2909,14 +2998,18 @@ def cast_to_season(to_cast) -> Season:
     if isinstance(to_cast, Season):
         return to_cast
     if isinstance(to_cast, str):
-        if to_cast.casefold() in ["new-leaf", "newleaf"]:
-            return Season.Spring
-        if to_cast.casefold() in ["greenleaf", "green-leaf"]:
-            return Season.Summer
-        if to_cast.casefold() in ["leaffall", "leaf-fall"]:
-            return Season.Autumn
-        if to_cast.casefold() in ["leafbare", "leaf-bare"]:
-            return Season.Winter
+        sk = [b for b in list(Season) if b.value.casefold() == to_cast.casefold()]
+        if sk:
+            return sk[0]
+        else:
+            if to_cast.casefold() in ["spring", "new-leaf", "newleaf"]:
+                return Season.Spring
+            if to_cast.casefold() in ["summer", "greenleaf", "green-leaf"]:
+                return Season.Summer
+            if to_cast.casefold() in ["autumn", "fall", "leaffall", "leaf-fall"]:
+                return Season.Autumn
+            if to_cast.casefold() in ["winter", "leafbare", "leaf-bare"]:
+                return Season.Winter
         raise KeyError(f"Could not cast unrecognized string to Season: {to_cast}")
     if to_cast is None:
         return Season.NoSeason

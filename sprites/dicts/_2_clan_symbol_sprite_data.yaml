@@ -1,0 +1,4744 @@
+0:
+  0:
+    original_name: ~
+1:
+  0:
+    Adder:
+      - animal
+      - lizard
+    Snake:
+      - animal
+      - lizard
+    Serpent:
+      - animal
+      - lizard
+    original_name: symbolADDER0
+  1:
+    Air:
+      - element
+      - air
+    Gust:
+      - element
+      - air
+    Wind:
+      - element
+      - air
+    original_name: symbolAIR0
+  2:
+    Alder:
+      - plant
+      - leaf
+      - tree
+      - biome_wetland
+    original_name: symbolALDER0
+  3:
+    Ant:
+      - animal
+      - bug
+    Bug:
+      - animal
+      - bug
+    original_name: symbolANT0
+  4:
+    Antler:
+      - animal
+      - mammal
+    Deer:
+      - animal
+      - mammal
+    original_name: symbolANTLER0
+  5:
+    Aphid:
+      - animal
+      - bug
+    original_name: symbolAPHID0
+  6:
+    Apple:
+      - plant
+      - fruit
+      - tree
+    original_name: symbolAPPLE0
+  7:
+    Apricot:
+      - plant
+      - fruit
+      - tree
+    original_name: symbolAPRICOT0
+  8:
+    Arch:
+      - style_symbolic
+      - location
+    original_name: symbolARCH0
+  9:
+    Ash:
+      - element
+      - fire
+    Ember:
+      - element
+      - fire
+    Mountain:
+      - element
+      - earth
+      - location
+      - biome_mountain
+    Peak:
+      - element
+      - earth
+      - location
+      - biome_mountain
+    original_name: symbolASHEN0
+  10:
+    Aspen:
+      - plant
+      - tree
+      - biome_forest
+    Birch:
+      - plant
+      - tree
+      - biome_mountain
+      - biome_forest
+    original_name: symbolASPEN0
+  11:
+    Aster:
+      - plant
+      - flower
+    Dawn:
+      - time
+    Morning:
+      - time
+    Dusk:
+      - time
+    original_name: symbolASTER0
+2:
+  0:
+    Badger:
+      - animal
+      - mammal
+      - biome_forest # European badgers live in woodlands
+      - biome_plains # American badgers live in prairies
+      - biome_twolegplace
+    original_name: symbolBADGER0
+  1:
+    Barley:
+      - plant
+      - grain
+      - biome_plains
+      - biome_twolegplace
+    original_name: symbolBARLEY0
+  2:
+    Basil:
+      - plant
+      - herb
+      - leaf
+    original_name: symbolBASIL0
+  3:
+    Bass:
+      - animal
+      - fish
+      - prey
+      - biome_beach
+      - biome_wetland
+    Fish:
+      - animal
+      - fish
+      - prey
+      - biome_beach
+      - biome_wetland
+    original_name: symbolBASS0
+  4:
+    Bat:
+      - animal
+      - mammal
+      - biome_mountain
+    original_name: symbolBAT0
+  5:
+    Bay:
+      - location
+      - element
+      - water
+      - biome_beach
+      - camp_beach_tidepool
+    Lake:
+      - location
+      - element
+      - water
+      - biome_forest
+      - camp_forest_lakeside
+    Shore:
+      - location
+      - element
+      - water
+      - biome_forest
+      - camp_forest_lakeside
+    original_name: symbolBAY0
+  6:
+    Beam:
+      - element
+      - light
+    Field:
+      - element
+      - earth
+      - plant
+      - biome_twolegplace
+#    Thunder:
+#      - biome_twolegplace
+#      - This could be a Clan whose camp is under an overpass. "Thunder" as in Thunderpath
+    original_name: symbolBEAM0
+  7:
+    Bear:
+      - animal
+      - mammal
+      - biome_forest
+      - biome_mountain
+    original_name: symbolBEAR0
+  8:
+    Beaver:
+      - animal
+      - mammal
+      - biome_wetland
+    original_name: symbolBEAVER0
+  9:
+    Bee:
+      - animal
+      - bug
+    Bumble:
+      - animal
+      - bug
+    original_name: symbolBEE0
+  10:
+    Beetle:
+      - animal
+      - bug
+    original_name: symbolBEETLE0
+  11:
+    Berry:
+      - plant
+      - fruit
+    original_name: symbolBERRY0
+  12:
+    Big:
+      - animal
+      - cat
+      - adjective
+    Cave:
+      - location
+      - element
+      - earth
+      - biome_mountain
+      - camp_mountain_cavern
+    Under:
+      - location
+      - element
+      - earth
+      - biome_mountain
+      - camp_mountain_cavern
+    original_name: symbolBIG0
+  13:
+    Air:
+      - element
+      - air
+    Billow:
+      - element
+      - air
+    Gust:
+      - element
+      - air
+      - weather
+    Wind:
+      - element
+      - air
+      - weather
+    original_name: symbolBILLOW0
+  14:
+    Birch:
+      - plant
+      - tree
+      - biome_forest
+    original_name: symbolBIRCH0
+  15:
+    Bird:
+      - animal
+      - bird
+      - prey
+    Chickadee:
+      - animal
+      - bird
+      - prey
+    Cuckoo:
+      - animal
+      - bird
+      - prey
+    original_name: symbolBIRD0
+  16:
+    Bitter:
+      - animal
+      - cat
+      - emotion
+    Claw:
+      - cat
+      - animal
+    Dark:
+      - animal
+      - cat
+      - emotion
+    Scratch:
+      - animal
+      - cat
+      - verb
+    Slash:
+      - animal
+      - cat
+      - verb
+    original_name: symbolBITTER0
+  17:
+    Bittern:
+      - animal
+      - bird
+      - prey
+    original_name: symbolBITTERN0
+  18:
+    Blaze:
+      - element
+      - fire
+    Fire:
+      - element
+      - fire
+    Flame:
+      - element
+      - fire
+    Flare:
+      - element
+      - fire
+    original_name: symbolBLAZE0
+  19:
+    Bliss:
+      - animal
+      - cat
+      - emotion
+    original_name: symbolBLISS0
+  20:
+    Blood:
+      - animal
+      - cat
+      - element
+      - water
+    Rain:
+      - element
+      - water
+      - weather
+    Water:
+      - element
+      - water
+      - biome_beach
+      - biome_wetland
+    original_name: symbolBLOOD0
+  21:
+    Bloom:
+      - plant
+      - flower
+    Blossom:
+      - plant
+      - flower
+    Rose:
+      - plant
+      - flower
+    original_name: symbolBLOOM0
+  22:
+    Bloom:
+      - plant
+      - flower
+    Blossom:
+      - plant
+      - flower
+    Daisy:
+      - plant
+      - flower
+    Meadow:
+      - plant
+      - flower
+    original_name: symbolBLOSSOM0
+  23:
+    Blotch:
+      - appearance
+      - animal
+      - cat
+    original_name: symbolBLOTCH0
+  24:
+    Bluebell:
+      - plant
+      - flower
+    Snowdrop:
+      - plant
+      - flower
+    original_name: symbolBLUEBELL0
+  25:
+    Bluff:
+      - location
+      - biome_desert
+    Cactus:
+      - plant
+      - other_plant
+      - location
+      - biome_desert
+    Desert:
+      - location
+      - biome_desert
+    Sand:
+      - location
+      - biome_desert
+    original_name: symbolBLUFF0
+  26:
+    Beach:
+      - camp_beach_tidepool
+    Bog:
+      - location
+      - biome_wetland
+    Lake:
+      - location
+      - element
+      - water
+      - biome_forest
+      - camp_forest_lakeside
+    Marsh:
+      - location
+      - biome_wetland
+    Pond:
+      - location
+      - element
+      - water
+    Pool:
+      - camp_beach_tidepool
+    Swamp:
+      - location
+      - biome_wetland
+    original_name: symbolBOG0
+  27:
+    Bone:
+      - animal
+      - cat
+    original_name: symbolBONE0
+  28:
+    Borage:
+      - plant
+      - flower
+      - herb
+    Herb:
+      - plant
+      - flower
+      - herb
+    Flower:
+      - plant
+      - flower
+    original_name: symbolBORAGE0
+  29:
+    Branch:
+      - plant
+      - tree
+      - biome_forest
+    Bough:
+      - plant
+      - tree
+      - biome_forest
+    original_name: symbolBOUGH0
+  30:
+    Boulder:
+      - element
+      - earth
+    Cliff:
+      - element
+      - earth
+      - biome_mountain
+      - camp_mountain_cliff
+    Mountain:
+      - element
+      - earth
+      - biome_mountain
+      - camp_mountain_cliff
+    original_name: symbolBOULDER0
+  31:
+    Bounce:
+      - miscellaneous
+      - verb
+    original_name: symbolBOUNCE0
+  32:
+    Bracken:
+      - plant
+      - other_plant
+      - biome_forest
+    original_name: symbolBRACKEN0
+  33:
+    Bramble:
+      - plant
+      - other_plant
+      - biome_forest
+    Thistle:
+      - plant
+      - other_plant
+      - biome_forest
+    Thorn:
+      - plant
+      - other_plant
+      - biome_forest
+    Vine:
+      - plant
+      - other_plant
+      - biome_forest
+    original_name: symbolBRAMBLE0
+  34:
+    Branch:
+      - plant
+      - tree
+      - biome_forest
+    Bough:
+      - plant
+      - tree
+      - biome_forest
+    original_name: symbolBRANCH0
+  35:
+    Brave:
+      - animal
+      - cat
+      - emotion
+    Shield:
+      - miscellaneous
+    original_name: symbolBRAVE0
+  36:
+    Breeze:
+      - element
+      - air
+      - weather
+    original_name: symbolBREEZE0
+  37:
+    Briar:
+      - plant
+      - flower
+      - biome_forest
+    Thicket:
+      - plant
+      - flower
+      - biome_forest
+    original_name: symbolBRIAR0
+  38:
+    Bright:
+      - element
+      - light
+    original_name: symbolBRIGHT0
+  39:
+    Bristle:
+      - animal
+      - cat
+      - verb
+    Hiss:
+      - animal
+      - cat
+      - verb
+    original_name: symbolBRISTLE0
+  40:
+    Broken:
+      - adjective
+      - miscellaneous
+    Shatter:
+      - adjective
+      - miscellaneous
+    Quake:
+      - history_earthquake # TODO add these for Clans formed after an earthquake brings cats together
+    original_name: symbolBROKEN0
+  41:
+    Brook:
+      - location
+      - element
+      - water
+    Creek:
+      - location
+      - element
+      - water
+    River:
+      - location
+      - element
+      - water
+    original_name: symbolBROOK0
+  42:
+    Brush:
+      - location
+      - plant
+      - grass
+    Copse:
+      - location
+      - plant
+      - grass
+    Savannah:
+      - location
+      - plant
+      - grass
+    original_name: symbolBRUSH0
+  43:
+    Bubble:
+      - miscellaneous
+      - element
+      - water
+    Bubbling:
+      - adjective
+      - miscellaneous
+      - element
+      - water
+      - verb
+    original_name: symbolBUBBLING0
+  44:
+    Bud:
+      - plant
+      - flower
+      - season_spring
+    original_name: symbolBUD0
+  45:
+    Bug:
+      - animal
+      - bug
+    original_name: symbolBUG0
+  46:
+    Bee:
+      - animal
+      - bug
+    Bumble:
+      - animal
+      - bug
+    original_name: symbolBUMBLE0
+  47:
+    Burdock:
+      - plant
+      - flower
+      - herb
+    original_name: symbolBURDOCK0
+  48:
+    Fire:
+      - element
+      - fire
+      - biome_forest
+      - history_blaze
+    Blaze:
+      - element
+      - fire
+      - biome_forest
+      - history_blaze
+    Burn:
+      - element
+      - fire
+      - biome_forest
+      - history_blaze
+    original_name: symbolBURN0
+  49:
+    Burnet:
+      - plant
+      - flower
+      - herb
+    original_name: symbolBURNET0
+  50:
+    Burr:
+      - plant
+      - other_plant
+    original_name: symbolBURR0
+  51:
+    Burrow:
+      - location
+      - biome_plains
+      - verb
+      - camp_plains_tunnel
+    original_name: symbolBURROW0
+  52:
+    Bush:
+      - plant
+      - other_plant
+    original_name: symbolBUSH0
+  53:
+    Buttercup:
+      - plant
+      - flower
+    Flower:
+      - plant
+      - flower
+    Meadow:
+      - location
+      - biome_plains
+      - biome_forest
+      - plant
+      - flower
+    original_name: symbolBUTTERCUP0
+  54:
+    Butterfly:
+      - animal
+      - bug
+    original_name: symbolBUTTERFLY0
+  55:
+    Buzzard:
+      - animal
+      - bird
+      - biome_desert
+      - biome_plains
+    original_name: symbolBUZZARD0
+3:
+  0:
+    Canary:
+      - animal
+      - bird
+      - prey
+    Chirp:
+      - animal
+      - bird
+      - prey
+      - verb
+    original_name: symbolCANARY0
+  1:
+    Carnation:
+      - plant
+      - flower
+    original_name: symbolCARNATION0
+  2:
+    Carp:
+      - animal
+      - fish
+      - prey
+      - biome_wetland
+    original_name: symbolCARP0
+  3:
+    Caterpillar:
+      - animal
+      - bug
+    original_name: symbolCATERPILLAR0
+  4:
+    Cave:
+      - location
+      - element
+      - earth
+      - biome_mountain
+      - camp_mountain_cavern
+    Cavern:
+      - location
+      - element
+      - earth
+      - biome_mountain
+      - camp_mountain_cavern
+    Under:
+      - location
+      - element
+      - earth
+      - biome_mountain
+      - camp_mountain_cavern
+    original_name: symbolCAVE0
+  5:
+    Cedar:
+      - plant
+      - tree
+    original_name: symbolCEDAR0
+  6:
+    Chaffinch:
+      - animal
+      - bird
+      - prey
+    original_name: symbolCHAFFINCH0
+  7:
+    Stalk:
+      - animal
+      - cat
+      - verb
+      - skill_stalk
+    Tracker:
+      - animal
+      - cat
+      - adjective
+      - skill_stalk
+    Clay:
+      - element
+      - earth
+      - miscellaneous
+    original_name: symbolCHASING0
+  8:
+    Cherry:
+      - plant
+      - fruit
+      - tree
+    original_name: symbolCHERRY0
+  9:
+    Chervil:
+      - plant
+      - leaf
+      - herb
+    original_name: symbolCHERVIL0
+  10:
+    Chestnut:
+      - plant
+      - tree
+      - nut
+    original_name: symbolCHESTNUT0
+  11:
+    Chirp:
+      - animal
+      - bird
+      - verb
+      - prey
+    original_name: symbolCHIRP0
+  12:
+    Chive:
+      - plant
+      - herb
+      - grass
+    original_name: symbolCHIVE0
+  13:
+    Cicada:
+      - animal
+      - bug
+    original_name: symbolCICADA0
+  14:
+    Cinder:
+      - element
+      - fire
+    Spark:
+      - element
+      - fire
+    original_name: symbolCINDER0
+  15:
+    Clay:
+      - element
+      - earth
+      - miscellaneous
+    original_name: symbolCLAY0
+  16:
+    Clear:
+      - adjective
+      - weather
+    Empty:
+      - adjective
+      - miscellaneous
+    original_name: symbolCLEAR0
+  17:
+    Cloud:
+      - element
+      - air
+      - water
+      - weather
+    Cloudy:
+      - element
+      - air
+      - water
+      - weather
+    original_name: symbolCLOUD0
+  18:
+    Cloud:
+      - element
+      - air
+      - water
+      - weather
+    Cloudy:
+      - element
+      - air
+      - water
+      - weather
+    original_name: symbolCLOUDY0
+  19:
+    Clover:
+      - plant
+      - grass
+    original_name: symbolCLOVER0
+  20:
+    Comfrey:
+      - plant
+      - herb
+      - flower
+    original_name: symbolCOMFREY0
+  21:
+    Condor:
+      - animal
+      - bird
+    original_name: symbolCONDOR0
+  22:
+    Cone:
+      - plant
+      - tree
+    original_name: symbolCONE0
+  23:
+    Conifer:
+      - plant
+      - tree
+      - camp_forest_clearing
+      - camp_forest_lakeside
+    original_name: symbolCONIFER0
+  24:
+    Conker:
+      - plant
+      - tree
+    original_name: symbolCONKER0
+  25:
+    Copse:
+      - location
+      - plant
+      - tree
+      - biome_plains
+      - biome_mountain
+    original_name: symbolCOPSE0
+  26:
+    Cotton:
+      - plant
+      - grass
+      - biome_plains
+    original_name: symbolCOTTON0
+  27:
+    Cheetah:
+      - animal
+      - mammal
+      - biome_plains
+    Cougar:
+      - animal
+      - mammal
+      - biome_mountain
+    original_name: symbolCOUGAR0
+  28:
+    Coyote:
+      - animal
+      - mammal
+    original_name: symbolCOYOTE0
+  29:
+    Bluff:
+      - location
+      - biome_mountain
+      - camp_mountain_cliff
+    Crag:
+      - location
+      - biome_mountain
+      - camp_mountain_cliff
+    Cliff:
+      - location
+      - biome_mountain
+      - camp_mountain_cliff
+    original_name: symbolCRAG0
+  30:
+    Crane:
+      - animal
+      - bird
+      - biome_beach
+      - biome_wetland
+    Heron:
+      - animal
+      - bird
+      - biome_beach
+      - biome_wetland
+    original_name: symbolCRANE0
+  31:
+    Crane:
+      - animal
+      - bird
+      - biome_beach
+      - biome_wetland
+    Heron:
+      - animal
+      - bird
+      - biome_beach
+      - biome_wetland
+    original_name: symbolCRANE1
+  32:
+    Creek:
+      - location
+      - element
+      - water
+    Steam:
+      - location
+      - element
+      - water
+    River:
+      - location
+      - element
+      - water
+    original_name: symbolCREEK0
+  33:
+    Cress:
+      - plant
+      - grass
+    Grass:
+      - plant
+      - grass
+    Prairie:
+      - plant
+      - grass
+    Meadow:
+      - plant
+      - grass
+    original_name: symbolCRESS0
+  34:
+    Crest:
+      - animal
+      - bird
+    Crested:
+      - animal
+      - bird
+      - adjective
+    original_name: symbolCREST0
+  35:
+    Crest:
+      - animal
+      - bird
+    Crested:
+      - animal
+      - bird
+      - adjective
+    Vulture:
+      - animal
+      - bird
+      - biome_plains
+      - biome_desert
+    original_name: symbolCRESTED0
+  36:
+    Cricket:
+      - animal
+      - bug
+      - biome_forest
+      - biome_plains
+    original_name: symbolCRICKET0
+  37:
+    Crocus:
+      - plant
+      - flower
+    original_name: symbolCROCUS0
+  38:
+    Crouch:
+      - animal
+      - cat
+      - verb
+      - skill_ambush
+      - skill_stalk
+    original_name: symbolCROUCH0
+  39:
+    Curl:
+      - animal
+      - appearance
+      - cat
+    Curly:
+      - animal
+      - cat
+      - adjective
+    Tail:
+      - animal
+      - cat
+    original_name: symbolCURL0
+  40:
+    Curlew:
+      - animal
+      - bird
+      - prey
+      - biome_beach
+      - biome_wetland
+    original_name: symbolCURLEW0
+  41:
+    Current:
+      - element
+      - water
+      - biome_beach
+    Wave:
+      - element
+      - water
+      - biome_beach
+    original_name: symbolCURLY0
+  42:
+    Breeze:
+      - element
+      - air
+      - weather
+    Current:
+      - element
+      - water
+      - biome_beach
+    Wind:
+      - element
+      - air
+      - weather
+    original_name: symbolCURRENT0
+  43:
+    Cypress:
+      - plant
+      - tree
+      - biome_beach
+      - biome_mountain
+    original_name: symbolCYPRESS0
+4:
+  0:
+    Dahlia:
+      - plant
+      - flower
+    original_name: symbolDAHLIA0
+  1:
+    Daisy:
+      - plant
+      - flower
+      - herb
+    original_name: symbolDAISY0
+  2:
+    Dance:
+      - animal
+      - cat
+      - verb
+    Dancing:
+      - animal
+      - cat
+      - verb
+    Tail:
+      - animal
+      - cat
+    Tracker:
+      - animal
+      - cat
+      - skill_navigate
+    original_name: symbolDANCING0
+  3:
+    Dandelion:
+      - plant
+      - flower
+      - herb
+    original_name: symbolDANDELION0
+  4:
+    Dapple:
+      - adjective
+      - animal
+      - appearance
+      - cat
+    Dappled:
+      - adjective
+      - animal
+      - appearance
+      - cat
+    Spotted:
+      - adjective
+      - animal
+      - appearance
+      - cat
+    original_name: symbolDAPPLE0
+  5:
+    Dapple:
+      - adjective
+      - animal
+      - appearance
+      - cat
+    Dappled:
+      - adjective
+      - animal
+      - appearance
+      - cat
+    Spotted:
+      - adjective
+      - animal
+      - appearance
+      - cat
+    original_name: symbolDAPPLED0
+  6:
+    Dart:
+      - animal
+      - fish
+      - prey
+      - biome_beach
+    original_name: symbolDART0
+  7:
+    Ambush:
+      - animal
+      - cat
+      - skill_ambush
+    Dash:
+      - animal
+      - cat
+      - verb
+    Runner:
+      - animal
+      - cat
+      - skill_run
+    original_name: symbolDASH0
+  8:
+    Dawn:
+      - element
+      - light
+      - time
+      - biome_forest
+    Morning:
+      - element
+      - light
+      - time
+      - biome_forest
+    Dusk:
+      - element
+      - light
+      - time
+      - biome_wetland
+    original_name: symbolDAWN0
+  9:
+    Day:
+      - element
+      - light
+      - time
+      - biome_desert
+      - biome_plains
+    Sun:
+      - element
+      - fire
+      - light
+      - weather
+      - biome_desert
+      - biome_plains
+    original_name: symbolDAY0
+  10:
+    Dazzle:
+      - element
+      - light
+      - miscellaneous
+    Night:
+      - element
+      - light
+      - time
+      - biome_mountain
+    original_name: symbolDAZZLE0
+  11:
+    Dog:
+      - animal
+      - mammal
+      - biome_twolegplace
+    Hound:
+      - animal
+      - mammal
+      - biome_twolegplace
+    original_name: symbolDOG0
+  12:
+    Dove:
+      - animal
+      - bird
+      - prey
+    original_name: symbolDOVE0
+  13:
+    Deer:
+      - animal
+      - mammal
+      - biome_forest
+    Doe:
+      - animal
+      - mammal
+      - biome_forest
+    Fawn:
+      - animal
+      - mammal
+      - biome_forest
+    original_name: symbolDOE0
+  14:
+    Down:
+      - animal
+      - cat
+      - adjective
+    Valley:
+      - location
+      - biome_mountain
+      - element
+      - earth
+    original_name: symbolDOWN0
+  15:
+    Down:
+      - animal
+      - bird
+    Downy:
+      - animal
+      - bird
+      - adjective
+    Feather:
+      - animal
+      - bird
+    original_name: symbolDOWNY0
+  16:
+    Dream:
+      - animal
+      - cat
+      - verb
+      - miscellaneous
+      - skill_starclan
+      - skill_dark_forest
+      - skill_future
+    original_name: symbolDREAM0
+  17:
+    Cloud:
+      - element
+      - air
+      - weather
+    Cloudy:
+      - element
+      - air
+      - weather
+    Drift:
+      - element
+      - air
+    original_name: symbolDRIFT0
+  18:
+    Drizzle:
+      - element
+      - water
+      - weather
+    Rain:
+      - element
+      - water
+      - weather
+    original_name: symbolDRIZZLE0
+  19:
+    Droplet:
+      - element
+      - water
+      - weather
+    Rain:
+      - element
+      - water
+      - weather
+    original_name: symbolDROPLET0
+  20:
+    Dry:
+      - element
+      - fire
+      - earth
+      - light
+      - weather
+      - biome_desert
+    Sun:
+      - element
+      - fire
+      - light
+      - weather
+      - biome_desert
+    original_name: symbolDRY0
+  21:
+    Duck:
+      - animal
+      - bird
+      - biome_wetland
+      - camp_forest_lakeside
+    original_name: symbolDUCK0
+  22:
+    Dawn:
+      - element
+      - light
+      - time
+      - biome_forest
+    Morning:
+      - element
+      - light
+      - time
+      - biome_forest
+    Dusk:
+      - element
+      - light
+      - time
+      - biome_wetland
+    original_name: symbolDUSK0
+5:
+  0:
+    Eagle:
+      - animal
+      - bird
+      - biome_mountain
+    original_name: symbolEAGLE0
+  1:
+    Burrow:
+      - animal
+      - cat
+      - camp_plains_tunnel
+      - biome_plains
+    Echo:
+      - animal
+      - cat
+      - biome_mountain
+    Tunnel:
+      - animal
+      - cat
+      - camp_plains_tunnel
+      - biome_plains
+    original_name: symbolECHO0
+  2:
+    Edelweiss:
+      - plant
+      - flower
+      - biome_mountain
+    original_name: symbolEDELWEISS0
+  3:
+    Egg:
+      - animal
+      - bird
+      - lizard
+    original_name: symbolEGG0
+  4:
+    Egret:
+      - animal
+      - bird
+    original_name: symbolEGRET0
+  5:
+    Elder:
+      - animal
+      - cat
+      - rank_elder
+    original_name: symbolELDER0
+  6:
+    Elm:
+      - plant
+      - tree
+      - biome_forest
+    original_name: symbolELM0
+  7:
+    Burn:
+      - element
+      - fire
+#    Camp:
+#      - biome_forest
+#      - biome_twolegplace # as in the Clan's camp is in a Twoleg campground
+    Ember:
+      - element
+      - fire
+    Fire:
+      - element
+      - fire
+    original_name: symbolEMBER0
+  8:
+    Ermine:
+      - animal
+      - mammal
+    Ferret:
+      - animal
+      - mammal
+    Weasel:
+      - animal
+      - mammal
+    original_name: symbolERMINE0
+  9:
+    Ermine:
+      - animal
+      - mammal
+    Ferret:
+      - animal
+      - mammal
+    Weasel:
+      - animal
+      - mammal
+    original_name: symbolERMINE1
+  10:
+    Ermine:
+      - animal
+      - mammal
+    Ferret:
+      - animal
+      - mammal
+    Weasel:
+      - animal
+      - mammal
+    original_name: symbolERMINE2
+6:
+  0:
+    Faith:
+      - animal
+      - cat
+      - emotion
+      - skill_starclan
+    original_name: symbolFAITH0
+  1:
+    Falcon:
+      - animal
+      - bird
+      - biome_plains
+      - biome_mountain
+    original_name: symbolFALCON0
+  2:
+    Ambush:
+      - cat
+      - animal
+      - verb
+      - skill_ambush
+    Climb:
+      - cat
+      - animal
+      - verb
+      - skill_climb
+    Fall:
+      - cat
+      - animal
+      - verb
+    Fallen:
+      - cat
+      - animal
+      - adjective
+    Falling:
+      - cat
+      - animal
+      - verb
+    original_name: symbolFALLEN0
+  3:
+    Bone:
+      - animal
+      - cat
+    Fallen:
+      - animal
+      - cat
+      - adjective
+    Skull:
+      - animal
+      - cat
+    original_name: symbolFALLEN1
+  4:
+    Fall:
+      - cat
+      - animal
+      - verb
+    Fallen:
+      - cat
+      - animal
+      - adjective
+    Falling:
+      - cat
+      - animal
+      - verb
+    original_name: symbolFALLING0
+  5:
+    Falling:
+      - element
+      - light
+    original_name: symbolFALLING1
+  6:
+    Fawn:
+      - animal
+      - mammal
+    River:
+      - element
+      - water
+      - biome_wetland
+    original_name: symbolFAWN0
+  7:
+    Antler:
+      - animal
+      - mammal
+    Deer:
+      - animal
+      - mammal
+    original_name: symbolFAWN1
+  8:
+    Down:
+      - animal
+      - bird
+    Downy:
+      - animal
+      - bird
+      - adjective
+    Feather:
+      - animal
+      - bird
+    original_name: symbolFEATHER0
+  9:
+    Fennel:
+      - plant
+      - flower
+      - herb
+    original_name: symbolFENNEL0
+  10:
+    Fern:
+      - plant
+      - leaf
+    Frond:
+      - plant
+      - leaf
+    original_name: symbolFERN0
+  11:
+    Ferret:
+      - animal
+      - mammal
+    Weasel:
+      - animal
+      - mammal
+    original_name: symbolFERRET0
+  12:
+    Fickle:
+      - plant
+      - leaf
+      - miscellaneous
+      - adjective
+    original_name: symbolFICKLE0
+  13:
+    Climb:
+      - animal
+      - cat
+      - verb
+      - skill_climb
+    Fidget:
+      - animal
+      - cat
+      - verb
+    Scavenge:
+      - skill_scavenge
+      - biome_twolegplace
+    Scavenger:
+      - skill_scavenge
+      - biome_twolegplace
+    original_name: symbolFIDGET0
+  14:
+    Bite:
+      - animal
+      - cat
+      - mammal
+    Fang:
+      - adjective
+      - animal
+      - cat
+      - mammal
+    Fierce:
+      - adjective
+      - animal
+      - cat
+      - mammal
+    original_name: symbolFIERCE0
+  15:
+    Fig:
+      - plant
+      - fruit
+      - tree
+    original_name: symbolFIG0
+  16:
+    Fin:
+      - animal
+      - fish
+      - biome_beach
+    Shark:
+      - animal
+      - fish
+      - biome_beach
+    original_name: symbolFIN0
+  17:
+    Finch:
+      - animal
+      - bird
+      - prey
+    original_name: symbolFINCH0
+  18:
+    Fir:
+      - plant
+      - tree
+      - biome_mountain
+      - biome_forest
+    original_name: symbolFIR0
+  19:
+    Fire:
+      - element
+      - fire
+      - biome_forest
+      - history_blaze
+    Blaze:
+      - element
+      - fire
+      - biome_forest
+      - history_blaze
+    Burn:
+      - element
+      - fire
+      - biome_forest
+      - history_blaze
+    original_name: symbolFIRE0
+  20:
+    Fish:
+      - animal
+      - fish
+      - prey
+    Ocean:
+      - location
+      - element
+      - water
+      - biome_beach
+    original_name: symbolFISH0
+  21:
+    Fire:
+      - element
+      - fire
+      - biome_forest
+      - history_blaze
+    Blaze:
+      - element
+      - fire
+      - biome_forest
+      - history_blaze
+    Burn:
+      - element
+      - fire
+      - biome_forest
+      - history_blaze
+    original_name: symbolFLAME0
+  22:
+    Flare:
+      - element
+      - light
+    Flash:
+      - element
+      - light
+    Light:
+      - element
+      - light
+    Bright:
+      - element
+      - light
+    original_name: symbolFLARE0
+  23:
+    Flare:
+      - element
+      - light
+    Flash:
+      - element
+      - light
+    Light:
+      - element
+      - light
+    Bright:
+      - element
+      - light
+    original_name: symbolFLARE1
+  24:
+    Flare:
+      - element
+      - light
+    Flash:
+      - element
+      - light
+    Light:
+      - element
+      - light
+    Bright:
+      - element
+      - light
+    original_name: symbolFLASH0
+  25:
+    Flax:
+      - plant
+      - flower
+    Flower:
+      - plant
+      - flower
+    Meadow:
+      - plant
+      - flower
+    original_name: symbolFLAX0
+  26:
+    Fleck:
+      - animal
+      - cat
+      - appearance
+    Freckle:
+      - animal
+      - cat
+      - appearance
+    Freckled:
+      - animal
+      - cat
+      - appearance
+    Spot:
+      - animal
+      - cat
+      - appearance
+    Spotted:
+      - animal
+      - cat
+      - appearance
+    original_name: symbolFLECK0
+  27:
+    Fleet:
+      - animal
+      - cat
+      - adjective
+    Swift:
+      - animal
+      - cat
+      - adjective
+    original_name: symbolFLEET0
+  28:
+    Flicker:
+      - element
+      - fire
+    Spark:
+      - element
+      - fire
+    Ember:
+      - element
+      - fire
+    original_name: symbolFLICKER0
+  29:
+    Flight:
+      - animal
+      - bird
+    Wing:
+      - animal
+      - bird
+    Bird:
+      - animal
+      - bird
+      - prey
+    original_name: symbolFLIGHT0
+  30:
+    Flint:
+      - element
+      - earth
+    Rock:
+      - element
+      - earth
+    original_name: symbolFLINT0
+  31:
+    Flit:
+      - animal
+      - fish
+      - prey
+      - biome_beach
+    Ocean:
+      - location
+      - element
+      - water
+      - biome_beach
+    Kelp:
+      - element
+      - water
+      - plant
+      - other_plant
+      - biome_beach
+    original_name: symbolFLIT0
+  32:
+    Flood:
+      - element
+      - water
+      - weather
+      - history_flood
+    Water:
+      - element
+      - water
+    Tsunami:
+      - element
+      - water
+      - weather
+      - history_flood
+      - biome_beach
+    Wave:
+      - element
+      - water
+      - biome_beach
+    Ocean:
+      - location
+      - element
+      - water
+      - biome_beach
+    Beach:
+      - location
+      - element
+      - water
+      - biome_beach
+    original_name: symbolFLOOD0
+  33:
+    Flower:
+      - plant
+      - flower
+    Daisy:
+      - plant
+      - flower
+      - biome_plains
+    original_name: symbolFLOWER0
+  34:
+    Fluff:
+      - animal
+      - cat
+      - appearance
+      - biome_twolegplace
+      - rank_kittypet
+    Fluffy:
+      - animal
+      - cat
+      - appearance
+      - adjective
+      - biome_twolegplace
+      - rank_kittypet
+    original_name: symbolFLUFF0
+  35:
+    Fluff:
+      - animal
+      - cat
+      - appearance
+      - biome_twolegplace
+      - rank_kittypet
+    Fluffy:
+      - animal
+      - cat
+      - appearance
+      - adjective
+      - biome_twolegplace
+      - rank_kittypet
+    original_name: symbolFLUFFY0
+  36:
+    Flurry:
+      - element
+      - ice
+      - weather
+    Snow:
+      - element
+      - ice
+      - weather
+    Blizzard:
+      - element
+      - ice
+      - weather
+    original_name: symbolFLURRY0
+  37:
+    Butterfly:
+      - animal
+      - bug
+    Flutter:
+      - animal
+      - bug
+      - verb
+    Moth:
+      - animal
+      - bug
+      - biome_wetland
+    original_name: symbolFLUTTER0
+  38:
+    Fly:
+      - animal
+      - bug
+      - biome_wetland
+    original_name: symbolFLY0
+  39:
+    Fog:
+      - element
+      - air
+      - water
+      - weather
+    Foggy:
+      - element
+      - air
+      - water
+      - weather
+    Mist:
+      - element
+      - air
+      - water
+      - weather
+    Misty:
+      - element
+      - air
+      - water
+      - weather
+    original_name: symbolFOG0
+  40:
+    Freckle:
+      - animal
+      - cat
+      - appearance
+    Freckled:
+      - animal
+      - cat
+      - appearance
+    Spot:
+      - animal
+      - cat
+      - appearance
+    Spotted:
+      - animal
+      - cat
+      - appearance
+    original_name: symbolFRECKLE0
+  41:
+    Fringe:
+      - animal
+      - cat
+      - appearance
+    Tuft:
+      - animal
+      - cat
+      - appearance
+    original_name: symbolFRINGE0
+  42:
+    Fringe:
+      - plant
+      - flower
+    Weed:
+      - plant
+      - grass
+    original_name: symbolFRINGE1
+  43:
+    Frog:
+      - animal
+      - lizard
+    Toad:
+      - animal
+      - lizard
+    original_name: symbolFROG0
+  44:
+    Frond:
+      - plant
+      - leaf
+    Fern:
+      - plant
+      - leaf
+    original_name: symbolFROND0
+  45:
+    Blizzard:
+      - element
+      - ice
+      - weather
+    Frost:
+      - element
+      - ice
+      - weather
+    Ice:
+      - element
+      - ice
+    Snow:
+      - element
+      - ice
+      - weather
+    original_name: symbolFROST0
+  46:
+    Fruit:
+      - plant
+      - fruit
+    original_name: symbolFRUIT0
+  47:
+    Curl:
+      - miscellaneous
+    Curled:
+      - adjective
+      - miscellaneous
+    Furl:
+      - miscellaneous
+    Furled:
+      - adjective
+      - miscellaneous
+    Tail:
+      - animal
+      - cat
+    original_name: symbolFURLED0
+  48:
+    Furze:
+      - plant
+      - leaf
+    original_name: symbolFURZE0
+  49:
+    Fuzz:
+      - animal
+      - cat
+      - appearance
+    Fuzzy:
+      - animal
+      - cat
+      - appearance
+    Grass:
+      - plant
+      - grass
+      - biome_plains
+    Meadow:
+      - plant
+      - grass
+      - biome_plains
+    Moor:
+      - biome_plains
+    Plains:
+      - plant
+      - grass
+      - biome_plains
+    original_name: symbolFUZZ0
+7:
+  0:
+    Gander:
+      - animal
+      - bird
+    Goose:
+      - animal
+      - bird
+    original_name: symbolGANDER0
+  1:
+    Garlic:
+      - plant
+      - herb
+    original_name: symbolGARLIC0
+  2:
+    Gentle:
+      - animal
+      - cat
+      - emotion
+      - adjective
+    Love:
+      - animal
+      - cat
+      - emotion
+    Queen:
+      - animal
+      - cat
+      - rank_queen
+    Sweet:
+      - animal
+      - cat
+      - emotion
+      - adjective
+    original_name: symbolGENTLE0
+  3:
+    Ghost:
+      - animal
+      - cat
+      - skill_starclan
+      - skill_dark_forest
+    original_name: symbolGHOST0
+  4:
+    Glade:
+      - plant
+      - flower
+    Fox:
+      - animal
+      - mammal
+      - biome_forest
+      - biome_plains
+    original_name: symbolGLADE0
+  5:
+    Glint:
+      - element
+      - light
+      - miscellaneous
+    Glimmer:
+      - element
+      - light
+      - miscellaneous
+    original_name: symbolGLINT0
+  6:
+    Goose:
+      - animal
+      - bird
+    original_name: symbolGOOSE0
+  7:
+    Gorge:
+      - location
+      - element
+      - earth
+      - camp_beach_fjord
+    Fjord:
+      - location
+      - biome_beach
+      - biome_mountain
+      - camp_beach_fjord
+    Valley:
+      - location
+      - element
+      - earth
+      - camp_beach_fjord
+    original_name: symbolGORGE0
+  8:
+    Gorge:
+      - location
+      - element
+      - earth
+      - camp_beach_fjord
+    Fjord:
+      - location
+      - biome_beach
+      - biome_mountain
+      - camp_beach_fjord
+    Valley:
+      - location
+      - element
+      - earth
+      - camp_beach_fjord
+    original_name: symbolGORGE1
+  9:
+    Furze:
+      - plant
+      - flower
+    Gorse:
+      - plant
+      - flower
+    Heather:
+      - plant
+      - flower
+    original_name: symbolGORSE0
+  10:
+    Fern:
+      - plant
+      - leaf
+    Frond:
+      - plant
+      - leaf
+    Gossamer:
+      - plant
+      - leaf
+    original_name: symbolGOSSAMER0
+  11:
+    Grass:
+      - plant
+      - grass
+      - biome_plains
+    Meadow:
+      - plant
+      - grass
+      - biome_plains
+    Moor:
+      - biome_plains
+    Plain:
+      - plant
+      - grass
+      - biome_plains
+    Plains:
+      - plant
+      - grass
+      - biome_plains
+    original_name: symbolGRASS0
+  12:
+    Crow:
+      - animal
+      - bird
+      - biome_forest
+    Grackle:
+      - animal
+      - bird
+      - prey
+      - biome_forest
+    Raven:
+      - animal
+      - bird
+      - biome_forest
+    original_name: symbolGRACKLE0
+  13:
+    Grouse:
+      - animal
+      - bird
+      - prey
+      - biome_plains
+    Turkey:
+      - animal
+      - bird
+      - biome_forest
+      - biome_plains
+    original_name: symbolGROUSE0
+  14:
+    Gull:
+      - animal
+      - bird
+      - biome_beach
+    original_name: symbolGULL0
+  15:
+    Guppy:
+      - animal
+      - fish
+      - prey
+      - biome_wetland
+    original_name: symbolGUPPY0
+  16:
+    Breeze:
+      - element
+      - air
+      - weather
+    Gust:
+      - element
+      - air
+      - weather
+    Wind:
+      - element
+      - air
+      - weather
+    original_name: symbolGUST0
+8:
+  0:
+    Hail:
+      - element
+      - ice
+      - weather
+    original_name: symbolHAIL0
+  1:
+    Half:
+      - miscellaneous
+      - style_symbolic
+    original_name: symbolHALF0
+  2:
+    Hare:
+      - animal
+      - mammal
+      - prey
+      - biome_plains
+    Rabbit:
+      - animal
+      - mammal
+      - prey
+      - biome_plains
+    original_name: symbolHARE0
+  3:
+    Egg:
+      - animal
+      - other_animal
+    Hatch:
+      - animal
+      - other_animal
+    original_name: symbolHATCH0
+  4:
+    Haven:
+      - animal
+      - cat
+      - emotion
+    Hope:
+      - animal
+      - cat
+      - emotion
+    Love:
+      - animal
+      - cat
+      - emotion
+    original_name: symbolHAVEN0
+  5:
+    Hawthorn:
+      - plant
+      - tree
+    original_name: symbolHAWTHORN0
+  6:
+    Hazel:
+      - plant
+      - tree
+    original_name: symbolHAZEL0
+  7:
+    Haze:
+      - element
+      - air
+      - weather
+    Hazy:
+      - element
+      - air
+      - weather
+    Fog:
+      - element
+      - air
+      - water
+      - weather
+    Foggy:
+      - element
+      - air
+      - water
+      - weather
+    Smog:
+      - element
+      - air
+      - weather
+      - biome_twolegplace
+    original_name: symbolHAZY0
+  8:
+    Heart:
+      - animal
+      - cat
+      - emotion
+    Love:
+      - animal
+      - cat
+      - emotion
+    original_name: symbolHEART0
+  9:
+    Heath:
+      - plant
+      - grass
+      - flower
+      - biome_plains
+    Heather:
+      - plant
+      - grass
+      - flower
+      - biome_plains
+    original_name: symbolHEATH0
+  10:
+    Heath:
+      - plant
+      - grass
+      - flower
+      - biome_plains
+    Heather:
+      - plant
+      - grass
+      - flower
+      - biome_plains
+    original_name: symbolHEATHER0
+  11:
+    Big:
+      - animal
+      - cat
+      - adjective
+    Heavy:
+      - animal
+      - cat
+      - adjective
+    Large:
+      - animal
+      - cat
+      - adjective
+    original_name: symbolHEAVY0
+  12:
+    Heron:
+      - animal
+      - bird
+      - biome_wetlands
+    original_name: symbolHERON0
+  13:
+    Hickory:
+      - plant
+      - tree
+      - leaf
+      - nut
+      - biome_forest
+      - biome_plains
+      - biome_wetlands
+    original_name: symbolHICKORY0
+  14:
+    Hill:
+      - location
+      - biome_plains
+      - camp_plains_grassland
+    Moor:
+      - location
+      - biome_plains
+      - camp_plains_grassland
+    Plain:
+      - location
+      - biome_plains
+      - camp_plains_grassland
+    Plains:
+      - location
+      - biome_plains
+      - camp_plains_grassland
+    original_name: symbolHILL0
+  15:
+    Hollow:
+      - location
+      - plant
+      - tree
+      - biome_forest
+      - camp_forest_gully
+    original_name: symbolHOLLOW0
+  16:
+    Berry:
+      - plant
+      - fruit
+    Holly:
+      - plant
+      - tree
+      - leaf
+      - fruit
+    original_name: symbolHOLLY0
+  17:
+    Hope:
+      - animal
+      - cat
+      - emotion
+    original_name: symbolHOPE0
+  18:
+    Dog:
+      - animal
+      - mammal
+      - biome_twolegplace
+    Hound:
+      - animal
+      - mammal
+      - biome_twolegplace
+    original_name: symbolHOUND0
+  19:
+    Howl:
+      - animal
+      - mammal
+      - verb
+      - biome_forest
+      - biome_mountain
+    Wolf:
+      - animal
+      - mammal
+      - biome_forest
+      - biome_mountain
+    original_name: symbolHOWL0
+  20:
+    Hyacinth:
+      - plant
+      - flower
+      - biome_plains
+      - biome_desert
+    original_name: symbolHYACINTH0
+9:
+  0:
+    Ibis:
+      - animal
+      - bird
+      - biome_wetland
+    original_name: symbolIBIS0
+  1:
+    Ice:
+      - element
+      - ice
+    Crystal:
+      - element
+      - earth
+      - biome_mountain
+      - camp_mountain_crystal_river
+    original_name: symbolICE0
+  2:
+    Icicle:
+      - element
+      - ice
+    original_name: symbolICICLE0
+  3:
+    Blizzard:
+      - element
+      - ice
+      - weather
+    Frost:
+      - element
+      - ice
+      - weather
+    Ice:
+      - element
+      - ice
+      - weather
+    Snow:
+      - element
+      - ice
+      - weather
+    original_name: symbolICY0
+  4:
+    Iris:
+      - plant
+      - flower
+      - biome_desert
+      - biome_mountain
+    original_name: symbolIRIS0
+  5:
+    Icy:
+      - plant
+      - leaf
+      - vine
+    original_name: symbolIVY0
+10:
+  0:
+    Jackdaw:
+      - animal
+      - bird
+      - prey
+    original_name: symbolJACKDAW0
+  1:
+    Jackdaw:
+      - animal
+      - bird
+      - prey
+    original_name: symbolJACKDAW1
+  2:
+    Jasmine:
+      - plant
+      - flower
+      - biome_desert
+    original_name: symbolJASMINE0
+  3:
+    Jay:
+      - animal
+      - bird
+    original_name: symbolJAY0
+  4:
+    Junco:
+      - animal
+      - bird
+      - prey
+    original_name: symbolJUNCO0
+  5:
+    Juniper:
+      - plant
+      - fruit
+      - tree
+      - biome_mountain
+    original_name: symbolJUNIPER0
+11:
+  0:
+    Kestrel:
+      - animal
+      - bird
+      - biome_plains
+    original_name: symbolKESTREL0
+  1:
+    Kink:
+      - animal
+      - cat
+      - adjective
+    Tail:
+      - animal
+      - cat
+    original_name: symbolKINK0
+  2:
+    Kite:
+      - animal
+      - bird
+      - biome_beach
+      - biome_desert
+    original_name: symbolKITE0
+  3:
+    Kitty:
+      - animal
+      - cat
+      - biome_twolegplace
+    original_name: symbolKITTY0
+12:
+  0:
+    Lake:
+      - location
+      - element
+      - water
+      - biome_wetlands
+      - camp_forest_lakeside
+    original_name: symbolLAKE0
+  1:
+    Larch:
+      - plant
+      - tree
+      - biome_mountain
+    original_name: symbolLARCH0
+  2:
+    Larkspur:
+      - plant
+      - tree
+    original_name: symbolLARKSPUR0
+  3:
+    Lark:
+      - animal
+      - bird
+      - prey
+    original_name: symbolLARK0
+  4:
+    Laurel:
+      - plant
+      - tree
+      - leaf
+      - biome_beach
+      - biome_wetlands
+    original_name: symbolLAUREL0
+  5:
+    Lavender:
+      - plant
+      - flower
+    original_name: symbolLAVENDER0
+  6:
+    Forest:
+      - plant
+      - leaf
+      - tree
+    Leaf:
+      - plant
+      - leaf
+      - tree
+    Tree:
+      - plant
+      - leaf
+      - tree
+    original_name: symbolLEAF0
+  7:
+    Hunt:
+      - animal
+      - cat
+      - verb
+      - skill_ambush
+      - skill_stalk
+    Jump:
+      - animal
+      - cat
+      - verb
+      - biome_mountain
+      - skill_ambush
+    Leap:
+      - animal
+      - cat
+      - verb
+      - biome_mountain
+      - skill_ambush
+    Spring:
+      - animal
+      - cat
+      - verb
+      - biome_mountain
+      - skill_ambush
+    original_name: symbolLEAP0
+  8:
+    Leopard:
+      - animal
+      - mammal
+      - myth
+    original_name: symbolLEOPARD0
+  9:
+    Light:
+      - element
+      - light
+    Star:
+      - element
+      - light
+      - myth
+    original_name: symbolLIGHT0
+  10:
+    Lightning:
+      - element
+      - light
+      - weather
+    Scar:
+      - animal
+      - cat
+      - appearance
+    Storm:
+      - element
+      - water
+      - light
+      - weather
+    original_name: symbolLIGHTNING0
+  11:
+    Lilac:
+      - plant
+      - flower
+      - tree
+      - biome_mountain
+    original_name: symbolLILAC0
+  12:
+    Lily:
+      - plant
+      - flower
+      - biome_mountain
+    original_name: symbolLILY0
+  13:
+    Little:
+      - animal
+      - cat
+      - adjective
+    Small:
+      - animal
+      - cat
+      - adjective
+    Tiny:
+      - animal
+      - cat
+      - adjective
+    original_name: symbolLITTLE0
+  14:
+    Lizard:
+      - animal
+      - lizard
+    original_name: symbolLIZARD0
+  15:
+    Locust:
+      - animal
+      - bug
+      - biome_desert
+      - biome_plains
+    original_name: symbolLOCUST0
+  16:
+    Log:
+      - plant
+      - tree
+      - biome_forest
+    original_name: symbolLOG0
+  17:
+    Long:
+      - animal
+      - cat
+      - adjective
+    original_name: symbolLONG0
+  18:
+    Lupine:
+      - plant
+      - flower
+      - biome_desert
+    original_name: symbolLUPINE0
+  19:
+    Lynx:
+      - animal
+      - mammal
+      - biome_mountain
+    original_name: symbolLYNX0
+13:
+  0:
+    Magpie:
+      - animal
+      - bird
+      - biome_forest
+      - biome_plains
+    original_name: symbolMAGPIE0
+  1:
+    Mallow:
+      - plant
+      - flower
+      - biome_wetland
+    original_name: symbolMALLOW0
+  2:
+    Mantis:
+      - animal
+      - bug
+    original_name: symbolMANTIS0
+  3:
+    Forest:
+      - plant
+      - leaf
+      - tree
+      - biome_forest
+    Maple:
+      - plant
+      - leaf
+      - tree
+      - biome_forest
+    original_name: symbolMAPLE0
+  4:
+    Marigold:
+      - plant
+      - flower
+      - biome_forest
+      - biome_plains
+    original_name: symbolMARIGOLD0
+  5:
+    Bog:
+      - location
+      - biome_wetland
+    Marsh:
+      - location
+      - biome_wetland
+    original_name: symbolMARSH0
+  6:
+    Meadow:
+      - location
+      - biome_plains
+    Plain:
+      - location
+      - biome_plains
+    Plains:
+      - location
+      - biome_plains
+    Moor:
+      - location
+      - biome_plains
+    original_name: symbolMEADOW0
+  7:
+    Midge:
+      - animal
+      - bug
+    original_name: symbolMIDGE0
+  8:
+    Midnight:
+      - element
+      - time
+    Moon:
+      - element
+      - light
+    Night:
+      - element
+      - time
+    original_name: symbolMIDNIGHT0
+  9:
+    Beach:
+      - element
+      - water
+      - biome_beach
+    Shore:
+      - element
+      - water
+      - biome_beach
+    Water:
+      - element
+      - water
+      - biome_beach
+      - biome_wetland
+    Wave:
+      - element
+      - water
+      - biome_beach
+    original_name: symbolMILK0
+  10:
+    Bug:
+      - animal
+      - bug
+    Butterfly:
+      - animal
+      - bug
+    Moth:
+      - animal
+      - bug
+    original_name: symbolMILKWEED0
+  11:
+    Fish:
+      - animal
+      - fish
+      - prey
+      - biome_beach
+      - biome_wetland
+    Minnow:
+      - animal
+      - fish
+      - prey
+      - biome_beach
+      - biome_wetland
+    original_name: symbolMINNOW0
+  12:
+    Fog:
+      - element
+      - air
+      - water
+      - weather
+    Mist:
+      - element
+      - air
+      - water
+      - weather
+    original_name: symbolMIST0
+  13:
+    Mole:
+      - animal
+      - mammal
+      - prey
+    original_name: symbolMOLE0
+  14:
+    Mole:
+      - animal
+      - mammal
+      - prey
+    original_name: symbolMOLE1
+  15:
+    Full:
+      - element
+      - light
+    Moon:
+      - element
+      - light
+    Night:
+      - element
+      - time
+    original_name: symbolMOON0
+  16:
+    Moss:
+      - plant
+      - other_plant
+    Mound:
+      - element
+      - earth
+    original_name: symbolMOSS0
+  17:
+    Moss:
+      - plant
+      - other_plant
+    original_name: symbolMOSS1
+  18:
+    Grotto:
+      - location
+      - plant
+      - other_plant
+      - biome_forest
+      - camp_forest_grotto
+    Tunnel:
+      - location
+      - biome_plains
+      - camp_plains_tunnel
+    Cave:
+      - location
+      - plant
+      - other_plant
+      - biome_mountain
+      - camp_mountain_cavern
+    Cavern:
+      - location
+      - plant
+      - other_plant
+      - biome_mountain
+      - camp_mountain_cavern
+    Moss:
+      - plant
+      - other_plant
+      - biome_mountain
+      - camp_mountain_cavern
+    Under:
+      - location
+      - element
+      - earth
+      - biome_mountain
+      - camp_mountain_cavern
+    original_name: symbolMOSSY0
+  19:
+    Moth:
+      - animal
+      - bug
+    original_name: symbolMOTH0
+  20:
+    Freckle:
+      - animal
+      - cat
+      - appearance
+    Freckled:
+      - animal
+      - cat
+      - appearance
+    Mottle:
+      - animal
+      - cat
+      - appearance
+    Mottled:
+      - animal
+      - cat
+      - appearance
+    Spotted:
+      - animal
+      - cat
+      - appearance
+    original_name: symbolMOTTLE0
+  21:
+    Freckle:
+      - animal
+      - cat
+      - appearance
+    Freckled:
+      - animal
+      - cat
+      - appearance
+    Mottle:
+      - animal
+      - cat
+      - appearance
+    Mottled:
+      - animal
+      - cat
+      - appearance
+    Spotted:
+      - animal
+      - cat
+      - appearance
+    original_name: symbolMOTTLED0
+  22:
+    Mouse:
+      - animal
+      - mammal
+      - prey
+    original_name: symbolMOUSE0
+  23:
+    Mulberry:
+      - plant
+      - fruit
+    original_name: symbolMULBERRY0
+  24:
+    Myrtle:
+      - plant
+      - flower
+    original_name: symbolMYRTLE0
+14:
+  0:
+    Nectar:
+      - plant
+      - flower
+    original_name: symbolNECTAR0
+  1:
+    Nectar:
+      - plant
+      - flower
+    original_name: symbolNECTAR1
+  2:
+    Nectar:
+      - plant
+      - flower
+    original_name: symbolNECTAR2
+  3:
+    Nettle:
+      - plant
+      - leaf
+      - biome_forest
+    original_name: symbolNETTLE0
+  4:
+    Night:
+      - element
+      - time
+    original_name: symbolNIGHT0
+  5:
+    Nightingale:
+      - animal
+      - bird
+      - prey
+      - biome_forest
+    original_name: symbolNIGHTINGALE0
+15:
+  0:
+    Oak:
+      - plant
+      - leaf
+      - tree
+      - biome_forest
+    original_name: symbolOAK0
+  1:
+    Oat:
+      - plant
+      - grain
+      - biome_plains
+      - biome_twolegplace
+    original_name: symbolOAT0
+  2:
+    Oleander:
+      - plant
+      - flower
+      - biome_plains
+    original_name: symbolOLEANDER0
+  3:
+    Claw:
+      - animal
+      - cat
+      - verb
+    One:
+      - animal
+      - cat
+      - miscellaneous
+    original_name: symbolONE0
+  4:
+    One:
+      - animal
+      - cat
+      - miscellaneous
+    Tail:
+      - animal
+      - cat
+    original_name: symbolONE1
+  5:
+    Orchid:
+      - plant
+      - flower
+      - biome_forest
+      - biome_wetland
+    original_name: symbolORCHID0
+  6:
+    Oriole:
+      - animal
+      - bird
+      - prey
+      - biome_forest
+      - biome_wetland
+    original_name: symbolORIOLE0
+  7:
+    Osprey:
+      - animal
+      - bird
+      - biome_desert
+    original_name: symbolOSPREY0
+  8:
+    Owl:
+      - animal
+      - bird
+      - biome_forest
+      - biome_plains
+    original_name: symbolOWL0
+16:
+  0:
+    Pansy:
+      - plant
+      - flower
+    original_name: symbolPANSY0
+  1:
+    Panther:
+      - animal
+      - mammal
+    original_name: symbolPANTHER0
+  2:
+    Parsley:
+      - plant
+      - leaf
+      - herb
+      - biome_mountain
+    original_name: symbolPARSLEY0
+  3:
+    Partridge:
+      - animal
+      - bird
+      - biome_forest
+      - biome_plains
+      - prey
+    original_name: symbolPARTRIDGE0
+  4:
+    Patch:
+      - animal
+      - cat
+      - appearance
+    original_name: symbolPATCH0
+  5:
+    Patchouli:
+      - plant
+      - flower
+      - biome_wetland
+    original_name: symbolPATCHOULI0
+  6:
+    Peach:
+      - plant
+      - fruit
+      - tree
+      - biome_mountain
+    original_name: symbolPEACH0
+  7:
+    Mountain:
+      - location
+      - element
+      - earth
+      - biome_mountain
+    Peak:
+      - location
+      - element
+      - earth
+      - biome_mountain
+    original_name: symbolPEAK0
+  8:
+    Pear:
+      - plant
+      - fruit
+      - tree
+      - biome_mountain
+    original_name: symbolPEAR0
+  9:
+    Pebble:
+      - element
+      - earth
+    original_name: symbolPEBBLE0
+  10:
+    Perch:
+      - animal
+      - bird
+      - prey
+    original_name: symbolPERCH0
+  11:
+    Petal:
+      - plant
+      - flower
+    original_name: symbolPETAL0
+  12:
+    Pheasant:
+      - animal
+      - bird
+      - prey
+      - biome_forest
+      - biome_plains
+    original_name: symbolPHEASANT0
+  13:
+    Pigeon:
+      - animal
+      - bird
+      - prey
+      - biome_forest
+      - biome_plains
+      - biome_twolegplace
+    original_name: symbolPIGEON0
+  14:
+    Pike:
+      - animal
+      - fish
+      - biome_wetland
+    original_name: symbolPIKE0
+  15:
+    Pine:
+      - plant
+      - tree
+      - biome_forest
+      - biome_mountain
+    original_name: symbolPINE0
+  16:
+    Pipit:
+      - animal
+      - bird
+      - biome_mountain
+      - prey
+    original_name: symbolPIPIT0
+  17:
+    Plover:
+      - animal
+      - bird
+      - prey
+      - biome_beach
+      - biome_plains
+    original_name: symbolPLOVER0
+  18:
+    Pond:
+      - location
+      - element
+      - water
+    Pool:
+      - location
+      - element
+      - water
+      - biome_beach
+      - camp_beach_tidepool
+    Lake:
+      - location
+      - element
+      - water
+      - biome_forest
+      - camp_forest_lakeside
+    original_name: symbolPOND0
+  19:
+    Pool:
+      - location
+      - element
+      - water
+      - biome_beach
+      - camp_beach_tidepool
+    Fisher:
+      - animal
+      - cat
+      - skill_fish
+    original_name: symbolPOOL0
+  20:
+    Prance:
+      - animal
+      - cat
+      - verb
+    Spirit:
+      - animal
+      - cat
+      - skill_starclan
+      - skill_future
+      - skill_dark_forest
+    original_name: symbolPRANCE0
+  21:
+    Primrose:
+      - plant
+      - flower
+      - biome_forest
+      - biome_plains
+      - biome_twolegplace
+    original_name: symbolPRIMROSE0
+  22:
+    Pumpkin:
+      - plant
+      - fruit
+      - biome_twolegplace
+    original_name: symbolPUMPKIN0
+17:
+  0:
+    Quail:
+      - animal
+      - bird
+      - prey
+      - biome_forest
+      - biome_plains
+    original_name: symbolQUAIL0
+  1:
+    Quick:
+      - animal
+      - cat
+      - adjective
+      - skill_run
+    Run:
+      - animal
+      - cat
+      - skill_run
+    Runner:
+      - animal
+      - cat
+      - skill_run
+    original_name: symbolQUICK0
+  2:
+    Quill:
+      - animal
+      - mammal
+      - miscellaneous
+    original_name: symbolQUILL0
+18:
+  0:
+    Rabbit:
+      - animal
+      - mammal
+      - prey
+      - biome_forest
+      - biome_plains
+    Hare:
+      - animal
+      - mammal
+      - prey
+      - biome_forest
+      - biome_plains
+    original_name: symbolRABBIT0
+  1:
+    Racoon:
+      - animal
+      - mammal
+      - biome_forest
+    original_name: symbolRACCOON0
+  2:
+    Patch:
+      - animal
+      - cat
+      - appearance
+    Ragged:
+      - animal
+      - cat
+      - appearance
+    original_name: symbolRAGGED0
+  3:
+    Rain:
+      - element
+      - water
+      - weather
+    Storm:
+      - element
+      - water
+      - weather
+    original_name: symbolRAIN0
+  4:
+    Rat:
+      - animal
+      - mammal
+      - prey
+      - biome_twolegplace
+    original_name: symbolRAT0
+  5:
+    Raven:
+      - animal
+      - bird
+      - biome_plains
+      - biome_forest
+      - biome_twolegplace
+    original_name: symbolRAVEN0
+  6:
+    Reed:
+      - plant
+      - grass
+      - biome_beach
+      - biome_wetland
+    Rye:
+      - plant
+      - grain
+      - biome_plains
+      - biome_twolegplace
+    original_name: symbolREED0
+  7:
+    Rift:
+      - element
+      - earth
+      - history_earthquake # TODO add these for Clans formed after an earthquake brings cats together
+    original_name: symbolRIFT0
+  8:
+    Rindle:
+      - location
+      - element
+      - water
+    River:
+      - location
+      - element
+      - water
+    original_name: symbolRINDLE0
+  9:
+    Pool:
+      - element
+      - water
+      - biome_beach
+      - camp_beach_tidepool
+    Ripple:
+      - element
+      - water
+      - biome_wetland
+    original_name: symbolRIPPLE0
+  10:
+    River:
+      - location
+      - element
+      - water
+      - biome_wetland
+      - myth
+    Wave:
+      - element
+      - water
+      - biome_beach
+    original_name: symbolRIVER0
+  11:
+    Roach:
+      - animal
+      - bug
+      - biome_twolegplace
+    original_name: symbolROACH0
+  12:
+    Roar:
+      - animal
+      - mammal
+      - verb
+    Tiger: # TODO add one in the style_face style
+      - animal
+      - mammal
+    original_name: symbolROAR0
+  13:
+    Boulder:
+      - element
+      - earth
+      - biome_mountain
+    Rock:
+      - element
+      - earth
+      - biome_mountain
+    original_name: symbolROCK0
+  14:
+    Rook:
+      - animal
+      - bird
+      - prey
+      - biome_beach
+    original_name: symbolROOK0
+  15:
+    Root:
+      - plant
+      - other_plant
+    original_name: symbolROOT0
+  16:
+    Rose:
+      - plant
+      - flower
+      - biome_forest
+      - biome_mountain
+      - biome_plains
+    original_name: symbolROSE0
+  17:
+    Briar:
+      - plant
+      - flower
+      - biome_forest
+    Rose:
+      - plant
+      - flower
+      - biome_forest
+      - biome_mountain
+      - biome_plains
+    original_name: symbolROSY0
+  18:
+    Rowan:
+      - plant
+      - tree
+      - fruit
+      - biome_mountain
+    original_name: symbolROWAN0
+  19:
+    Rubble:
+      - element
+      - earth
+      - biome_mountain
+    original_name: symbolRUBBLE0
+  20:
+    Rue:
+      - plant
+      - flower
+      - biome_forest
+    original_name: symbolRUE0
+  21:
+    Fleet:
+      - animal
+      - cat
+      - verb
+      - skill_run
+    Run:
+      - animal
+      - cat
+      - verb
+      - skill_run
+    Runner:
+      - animal
+      - cat
+      - verb
+      - skill_run
+    Running:
+      - animal
+      - cat
+      - verb
+      - skill_run
+    Speed:
+      - animal
+      - cat
+      - verb
+      - skill_run
+    original_name: symbolRUNNING0
+  22:
+    Reed:
+      - plant
+      - grass
+      - biome_beach
+      - biome_wetland
+    Rush:
+      - plant
+      - grass
+      - biome_beach
+      - biome_wetland
+    original_name: symbolRUSH0
+  23:
+    Rye:
+      - plant
+      - grain
+      - biome_plains
+      - biome_twolegplace
+    original_name: symbolRYE0
+19:
+  0:
+    Sable:
+      - animal
+      - mammal
+      - style_face
+      - biome_forest
+      - biome_mountain
+    original_name: symbolSABLE0
+  1:
+    Saffron:
+      - plant
+      - flower
+      - herb
+      - biome_desert
+    original_name: symbolSAFFRON0
+  2:
+    Sapling:
+      - plant
+      - tree
+      - biome_forest
+    original_name: symbolSAPLING0
+  3:
+    Scale:
+      - animal
+      - fish
+      - lizard
+    original_name: symbolSCALE0
+  4:
+    Brindle:
+      - animal
+      - cat
+      - appearance
+    Mottle:
+      - animal
+      - cat
+      - appearance
+    Mottled:
+      - animal
+      - cat
+      - appearance
+    original_name: symbolSCORCH0
+  5:
+    Seed:
+      - plant
+      - nut
+    original_name: symbolSEED0
+  6:
+    Adder:
+      - animal
+      - lizard
+    Hiss:
+      - animal
+      - lizard
+      - verb
+    Rattle:
+      - animal
+      - lizard
+      - biome_desert
+    Serpent:
+      - animal
+      - lizard
+      - biome_desert
+    Snake:
+      - animal
+      - lizard
+      - biome_desert
+    original_name: symbolSERPENT0
+  7:
+    Shade:
+      - animal
+      - cat
+      - element
+      - light
+    Shadow:
+      - animal
+      - cat
+      - element
+      - light
+    original_name: symbolSHADE0
+  8:
+    Shadow:
+      - animal
+      - cat
+      - myth
+    original_name: symbolSHADOW0
+  9:
+    Earth:
+      - element
+      - earth
+    Shard:
+      - element
+      - earth
+    original_name: symbolSHARD0
+  10:
+    Fox:
+      - animal
+      - mammal
+      - style_face
+    Sharp:
+      - animal
+      - cat
+      - adjective
+      - miscellaneous
+    original_name: symbolSHARP0
+  11:
+    Shatter:
+      - history_earthquake # TODO add these for Clans formed after an earthquake brings cats together
+    original_name: symbolSHATTER0
+  12:
+    Shell:
+      - animal
+      - lizard
+      - biome_beach
+      - biome_wetland
+    original_name: symbolSHELL0
+  13:
+    Shrew:
+      - animal
+      - mammal
+      - prey
+      - biome_forest
+      - biome_plains
+    original_name: symbolSHREW0
+  14:
+    Shrike:
+      - animal
+      - bird
+      - biome_forest
+    original_name: symbolSHRIKE0
+  15:
+    Shrike:
+      - animal
+      - bird
+      - biome_forest
+    original_name: symbolSHRIKE1
+  16:
+    Shrub: # TODO add a camp
+      - plant
+      - tree
+      - biome_desert
+      - biome_mountain
+    original_name: symbolSHRUB0
+  17:
+    Shy:
+      - animal
+      - cat
+      - emotion
+    original_name: symbolSHY0
+  18:
+    Silent:
+      - animal
+      - cat
+      - adjective
+      - skill_ambush
+      - skill_stalk
+    Whisper:
+      - animal
+      - cat
+      - adjective
+      - skill_ambush
+      - skill_stalk
+    original_name: symbolSILENT0
+  19:
+    Forest:
+      - plant
+      - tree
+    Sky:
+      - plant
+      - tree
+      - myth
+    Tree:
+      - plant
+      - tree
+    original_name: symbolSKY0
+  20:
+    Bright:
+      - element
+      - light
+    Light:
+      - element
+      - light
+    Sky:
+      - element
+      - air
+      - biome_mountain
+      - biome_plains
+    original_name: symbolSKY1
+  21:
+    Sleep:
+      - animal
+      - cat
+      - adjective
+      - emotion
+    Sleepy:
+      - animal
+      - cat
+      - adjective
+      - emotion
+    Slumber:
+      - animal
+      - cat
+      - verb
+    original_name: symbolSLEEPY0
+  22:
+    Blackthorn:
+      - plant
+      - fruit
+      - biome_plains
+    Branch:
+      - plant
+      - tree
+    Sloe:
+      - plant
+      - fruit
+      - biome_plains
+    original_name: symbolSLOE0
+  23:
+    Slope:
+      - miscellaneous
+#    Thunder: # as in Thunderpath, for a Clan whose camp is under an overpass
+#      - element
+#      - air
+#      - light
+#      - biome_twolegplace
+    original_name: symbolSLOPE0
+  24:
+    Hidden:
+      - animal
+      - cat
+      - adjective
+      - skill_ambush
+      - skill_stalk
+      - camp_mountain_cavern
+      - camp_mountain_crystal_river
+    Sleep:
+      - animal
+      - cat
+      - verb
+    Slumber:
+      - animal
+      - cat
+      - verb
+    original_name: symbolSLUMBER0
+  25:
+    Little:
+      - animal
+      - cat
+      - adjective
+    Small:
+      - animal
+      - cat
+      - adjective
+    Tiny:
+      - animal
+      - cat
+      - adjective
+    original_name: symbolSMALL0
+  26:
+    Smoke:
+      - element
+      - air
+      - fire
+    original_name: symbolSMOKE0
+  27:
+    Snail:
+      - animal
+      - bug
+    original_name: symbolSNAIL0
+  28:
+    Adder:
+      - animal
+      - lizard
+    Serpent:
+      - animal
+      - lizard
+    Snake:
+      - animal
+      - lizard
+    original_name: symbolSNAKE0
+  29:
+    Snap:
+      - plant
+      - tree
+      - miscellaneous
+    original_name: symbolSNAP0
+  30:
+    Flurry:
+      - element
+      - ice
+      - weather
+    Snow:
+      - element
+      - ice
+      - weather
+    original_name: symbolSNOW0
+  31:
+    Soft:
+      - adjective
+    original_name: symbolSOFT0
+  32:
+    Sorrel:
+      - plant
+      - flower
+      - biome_forest
+    original_name: symbolSORREL0
+  33:
+    Sparrow:
+      - animal
+      - bird
+      - prey
+      - biome_forest
+      - biome_plains
+    original_name: symbolSPARROW0
+  34:
+    Spider:
+      - animal
+      - bug
+      - biome_desert
+      - biome_plains
+      - biome_forest
+      - skill_ambush
+    original_name: symbolSPIDER0
+  35:
+    Forest:
+      - plant
+      - tree
+      - biome_forest
+    Mountain:
+      - element
+      - earth
+      - biome_mountain
+    Spike:
+      - miscellaneous
+    original_name: symbolSPIKE0
+  36:
+    Splash:
+      - element
+      - water
+      - biome_beach
+      - biome_wetland
+    original_name: symbolSPLASH0
+  37:
+    Splinter:
+      - adjective
+    original_name: symbolSPLINTER0
+  38:
+    Mushroom:
+      - plant
+      - other_plant
+      - biome_forest
+    Spore:
+      - plant
+      - other_plant
+      - biome_forest
+    original_name: symbolSPORE0
+  39:
+    Freckle:
+      - animal
+      - cat
+      - appearance
+    Freckled:
+      - animal
+      - cat
+      - appearance
+    Spot:
+      - animal
+      - cat
+      - appearance
+    Spotted:
+      - animal
+      - cat
+      - appearance
+    original_name: symbolSPOT0
+  40:
+    Freckle:
+      - animal
+      - cat
+      - appearance
+    Freckled:
+      - animal
+      - cat
+      - appearance
+    Spot:
+      - animal
+      - cat
+      - appearance
+    Spotted:
+      - animal
+      - cat
+      - appearance
+    original_name: symbolSPOTTED0
+  41:
+    Bloom:
+      - plant
+      - flower
+    Blossom:
+      - plant
+      - flower
+    original_name: symbolSPRING0
+  42:
+    Sprout:
+      - plant
+      - tree
+      - herb
+    original_name: symbolSPROUT0
+  43:
+    Spruce:
+      - plant
+      - tree
+      - biome_forest
+    original_name: symbolSPRUCE0
+  44:
+    Squirrel:
+      - animal
+      - mammal
+      - prey
+      - biome_forest
+    original_name: symbolSQUIRREL0
+  45:
+    Antler:
+      - animal
+      - mammal
+      - biome_forest
+      - biome_mountain
+    Deer:
+      - animal
+      - mammal
+      - biome_forest
+      - biome_mountain
+    Elk:
+      - animal
+      - mammal
+      - biome_mountain
+    original_name: symbolSTAG0
+  46:
+    Starling:
+      - animal
+      - bird
+      - prey
+      - biome_forest
+      - biome_twolegplace
+    original_name: symbolSTARLING0
+  47:
+    Stem:
+      - plant
+      - leaf
+      - herb
+      - vine
+    Vine:
+      - plant
+      - leaf
+      - herb
+      - vine
+    original_name: symbolSTEM0
+  48:
+    Stoat:
+      - animal
+      - mammal
+      - biome_beach
+      - biome_forest
+      - biome_mountain
+    Tail:
+      - animal
+      - cat
+      - appearance
+    original_name: symbolSTOAT0
+  49:
+    Boulder:
+      - element
+      - earth
+      - biome_desert
+      - biome_mountain
+    Stone:
+      - element
+      - earth
+      - biome_desert
+      - biome_mountain
+    original_name: symbolSTONE0
+  50:
+    Stork:
+      - animal
+      - bird
+      - biome_plains
+      - biome_wetland
+    original_name: symbolSTORK0
+  51:
+    Storm:
+      - element
+      - air
+      - light
+      - water
+      - weather
+      - myth
+    Thunder:
+      - element
+      - air
+      - light
+      - weather
+    original_name: symbolSTORM0
+  52:
+    Grass:
+      - plant
+      - grass
+      - biome_plains
+    Stream:
+      - adjective
+    original_name: symbolSTREAK0
+  53:
+    River:
+      - location
+      - element
+      - water
+      - biome_wetland
+    Stream:
+      - location
+      - element
+      - water
+      - biome_wetland
+    original_name: symbolSTREAM0
+  54:
+    Claw:
+      - animal
+      - cat
+      - verb
+    Fighter:
+      - animal
+      - cat
+      - verb
+    Strike:
+      - animal
+      - cat
+      - verb
+#    Warrior:
+#      - animal
+#      - cat
+#      - verb
+    original_name: symbolSTRIKE0
+  55:
+    Stump:
+      - plant
+      - tree
+      - biome_forest
+      - biome_mountain
+      - biome_plains
+    original_name: symbolSTUMPY0
+  56:
+    Day:
+      - element
+      - fire
+      - light
+      - time
+      - biome_beach
+      - biome_desert
+    Sun:
+      - element
+      - fire
+      - light
+      - weather
+      - biome_desert
+      - biome_plains
+    original_name: symbolSUN0
+  57:
+    Swallow:
+      - animal
+      - bird
+      - prey
+      - biome_forest
+      - biome_plains
+    original_name: symbolSWALLOW0
+  58:
+    Bog:
+      - location
+      - plant
+      - grass
+      - biome_wetland
+    Marsh:
+      - location
+      - plant
+      - grass
+      - biome_wetland
+    Reed:
+      - plant
+      - grass
+      - biome_wetland
+    Swamp:
+      - location
+      - plant
+      - grass
+      - biome_wetland
+    original_name: symbolSWAMP0
+  59:
+    Swan:
+      - animal
+      - bird
+      - biome_wetland
+    original_name: symbolSWAN0
+  60:
+    Bee:
+      - animal
+      - bug
+    Hive:
+      - animal
+      - bug
+    Swarm:
+      - animal
+      - bug
+    original_name: symbolSWARM0
+  61:
+    Berry:
+      - plant
+      - fruit
+      - biome_mountain
+      - biome_plains
+    Strawberry:
+      - plant
+      - fruit
+      - biome_mountain
+      - biome_plains
+    original_name: symbolSWEET0
+  62:
+    Bird:
+      - animal
+      - bird
+      - prey
+      - skill_ambush
+    Swift:
+      - animal
+      - bird
+      - adjective
+    original_name: symbolSWIFT0
+  63:
+    Sycamore:
+      - plant
+      - leaf
+      - tree
+      - biome_wetland
+    original_name: symbolSYCAMORE0
+20:
+  0:
+    Tadpole:
+      - element
+      - water
+      - animal
+      - lizard
+    original_name: symbolTADPOLE0
+  1:
+    Tadpole:
+      - element
+      - water
+      - animal
+      - lizard
+    original_name: symbolTADPOLE1
+  2:
+    Tadpole:
+      - element
+      - water
+      - animal
+      - lizard
+    original_name: symbolTADPOLE2
+  3:
+    High:
+      - animal
+      - cat
+      - adjective
+      - biome_mountain
+    Tall:
+      - animal
+      - cat
+      - appearance
+      - adjective
+    original_name: symbolTALL0
+  4:
+    Claw:
+      - animal
+      - cat
+      - other_animal
+      - skill_fight
+    Talon:
+      - animal
+      - cat
+      - other_animal
+      - skill_fight
+    original_name: symbolTALON0
+  5:
+    Tangle:
+      - animal
+      - cat
+      - appearance
+      - plant
+      - grass
+    original_name: symbolTANGLE0
+  6:
+    Tansy:
+      - plant
+      - flower
+      - herb
+      - biome_beach
+      - biome_plains
+      - biome_mountain
+    original_name: symbolTANSY0
+  7:
+    Teasel:
+      - plant
+      - flower
+      - grass
+      - herb
+      - biome_plains
+    original_name: symbolTEASEL0
+  8:
+    Gale:
+      - element
+      - air
+      - weather
+    Storm:
+      - element
+      - air
+      - water
+      - weather
+    Tempest:
+      - element
+      - air
+      - water
+      - weather
+    Tide:
+      - element
+      - water
+      - biome_beach
+      - camp_beach_tidal_cave
+    original_name: symbolTEMPEST0
+  9:
+    Gale:
+      - element
+      - air
+      - weather
+    Storm:
+      - element
+      - air
+      - water
+      - weather
+    Tempest:
+      - element
+      - air
+      - water
+      - weather
+    Tide:
+      - element
+      - water
+      - biome_beach
+      - camp_beach_tidal_cave
+    original_name: symbolTEMPEST1
+  10:
+    Storm:
+      - element
+      - air
+      - water
+      - weather
+    Tempest:
+      - element
+      - air
+      - water
+      - weather
+    Tide:
+      - element
+      - water
+      - biome_beach
+      - camp_beach_tidal_cave
+    original_name: symbolTEMPEST2
+  11:
+    Thistle:
+      - plant
+      - flower
+      - biome_plains
+    original_name: symbolTHISTLE0
+  12:
+    Thorn:
+      - plant
+      - other_plant
+      - biome_forest
+    original_name: symbolTHORN0
+  13:
+    Thrush:
+      - animal
+      - bird
+      - prey
+      - biome_forest
+      - biome_plains
+    original_name: symbolTHRUSH0
+  14:
+    Storm:
+      - element
+      - air
+      - water
+      - light
+      - weather
+      - myth
+    Thunder:
+      - element
+      - air
+      - light
+      - weather
+      - myth
+    original_name: symbolTHUNDER0
+  15:
+    Thyme:
+      - plant
+      - herb
+      - biome_forest
+      - biome_twolegplace
+    original_name: symbolTHYME0
+  16:
+    Little:
+      - animal
+      - cat
+      - adjective
+    Small:
+      - animal
+      - cat
+      - adjective
+    Tiny:
+      - animal
+      - cat
+      - adjective
+    original_name: symbolTINY0
+  17:
+    Toad:
+      - animal
+      - lizard
+      - biome_wetlands
+    original_name: symbolTOAD0
+  18:
+    Grass:
+      - plant
+      - grass
+      - biome_plains
+    Torn:
+      - adjective
+    original_name: symbolTORN0
+  19:
+    Forest:
+      - plant
+      - tree
+      - biome_forest
+    Tree:
+      - plant
+      - tree
+      - biome_forest
+    original_name: symbolTREE0
+  20:
+    Tremble:
+      - history_earthquake
+    original_name: symbolTREMBLE0
+  21:
+    Pool:
+      - element
+      - water
+      - biome_beach
+      - camp_beach_tidepool
+    Tide:
+      - element
+      - water
+      - biome_beach
+      - camp_beach_tidal_cave
+    Trickle:
+      - element
+      - water
+      - biome_beach
+      - camp_beach_tidal_cave
+    original_name: symbolTRICKLE0
+  22:
+    Trout:
+      - animal
+      - fish
+      - prey
+      - biome_wetland
+    original_name: symbolTROUT0
+  23:
+    Fringe:
+      - animal
+      - cat
+      - appearance
+    Tuft:
+      - animal
+      - cat
+      - appearance
+    original_name: symbolTUFT0
+  24:
+    Flower:
+      - plant
+      - flower
+      - biome_mountain
+    Tulip:
+      - plant
+      - flower
+      - biome_mountain
+    original_name: symbolTULIP0
+  25:
+    Flower:
+      - plant
+      - flower
+      - biome_mountain
+    Tulip:
+      - plant
+      - flower
+      - biome_mountain
+    original_name: symbolTULIP1
+  26:
+    Avalanche:
+      - history_avalanche
+    Tumble:
+      - history_earthquake
+    original_name: symbolTUMBLE0
+  27:
+    Fall:
+      - animal
+      - cat
+      - verb
+    Fallen:
+      - animal
+      - cat
+      - verb
+    Tumble:
+      - animal
+      - cat
+      - verb
+    original_name: symbolTUMBLE1
+  28:
+    Turtle:
+      - animal
+      - lizard
+      - element
+      - water
+      - biome_beach
+      - biome_wetland
+    original_name: symbolTURTLE0
+  29:
+    Twig:
+      - plant
+      - tree
+    original_name: symbolTWIG0
+  30:
+    Dusk:
+      - element
+      - light
+      - time
+    Twilight:
+      - element
+      - light
+      - time
+    original_name: symbolTWILIGHT0
+21:
+  0:
+    Verbena:
+      - plant
+      - flower
+      - herb
+      - biome_wetland
+    original_name: symbolVERBENA0
+  1:
+    Vervain:
+      - plant
+      - flower
+      - herb
+      - biome_forest
+    original_name: symbolVERVAIN0
+  2:
+    Violet:
+      - plant
+      - flower
+      - biome_beach
+      - biome_plains
+    original_name: symbolVIOLET0
+  3:
+    Vole:
+      - animal
+      - mammal
+      - prey
+      - biome_forest
+      - biome_wetland
+    original_name: symbolVOLE0
+22:
+  0:
+    Warbler:
+      - animal
+      - bird
+      - prey
+      - biome_forest
+      - biome_mountain
+    original_name: symbolWARBLER0
+  1:
+    Wasp:
+      - animal
+      - bug
+    original_name: symbolWASP0
+  2:
+    Weasel:
+      - animal
+      - mammal
+      - biome_forest
+      - biome_mountain
+    original_name: symbolWEASEL0
+  3:
+    Weevil:
+      - animal
+      - bug
+      - biome_wetland
+    original_name: symbolWEEVIL0
+  4:
+    Wet:
+    - animal
+    - cat
+    - adjective
+    - element
+    - water
+    - biome_beach
+    - biome_wetland
+    original_name: symbolWET0
+  5:
+    Wheat:
+      - plant
+      - grain
+      - biome_plains
+      - biome_twolegplace
+    original_name: symbolWHEAT0
+  6:
+    Whimsy:
+      - animal
+      - cat
+      - emotion
+      - miscellaneous
+    original_name: symbolWHIMSY0
+  7:
+    Tornado:
+      - element
+      - air
+      - weather
+      - biome_plains
+    Wind:
+      - element
+      - air
+      - weather
+    Whirl:
+      - element
+      - air
+      - miscellaneous
+    original_name: symbolWHIRL0
+  8:
+#    Tiger:
+#      - animal
+#      - mammal
+    Whisker:
+      - animal
+      - cat
+      - appearance
+    original_name: symbolWHISKER0
+  9:
+    Hidden:
+      - animal
+      - cat
+    Secret:
+      - animal
+      - cat
+    Whisper:
+      - animal
+      - cat
+    original_name: symbolWHISPER0
+  10:
+    Chirp:
+      - animal
+      - bird
+      - verb
+    Song:
+      - animal
+      - bird
+      - verb
+    Whistle:
+      - animal
+      - bird
+      - verb
+    original_name: symbolWHISTLE0
+  11:
+    Shell:
+      - animal
+      - lizard
+      - biome_beach
+      - biome_wetland
+    Whorl:
+      - miscellaneous
+    original_name: symbolWHORL0
+  12:
+    Willow:
+      - plant
+      - tree
+      - biome_wetland
+    original_name: symbolWILLOW0
+  13:
+    Wind:
+      - element
+      - air
+      - biome_plains
+      - biome_mountain
+      - myth
+    original_name: symbolWIND0
+  14:
+    Bird:
+      - animal
+      - bird
+    Flight:
+      - animal
+      - bird
+    Wing:
+      - animal
+      - bird
+    original_name: symbolWING0
+  15:
+    Hope:
+      - animal
+      - cat
+      - emotion
+    Wish:
+      - animal
+      - cat
+      - emotion
+    original_name: symbolWISH0
+  16:
+    Smoke:
+      - element
+      - air
+      - fire
+    Wisp:
+      - element
+      - air
+    original_name: symbolWISP0
+  17:
+    Wisteria:
+      - plant
+      - flower
+      - tree
+      - biome_wetland
+    original_name: symbolWISTERIA0
+  18:
+    Wolf:
+      - animal
+      - mammal
+      - style_face
+      - biome_forest
+      - biome_mountain
+    original_name: symbolWOLF0
+  19:
+    Wolverine:
+      - animal
+      - mammal
+      - biome_mountain
+    original_name: symbolWOLVERINE0
+  20:
+    Tree:
+      - plant
+      - tree
+      - biome_forest
+      - camp_forest_gully
+    Wood:
+      - plant
+      - tree
+      - biome_forest
+      - camp_forest_gully
+    original_name: symbolWOOD0
+  21:
+    Worm:
+      - animal
+      - bug
+      - camp_plains_tunnel
+    original_name: symbolWORM0
+  22:
+    Wren:
+      - animal
+      - bird
+      - prey
+      - biome_forest
+      - biome_mountain
+    original_name: symbolWREN0
+23:
+  0:
+    Yarrow:
+      - plant
+      - flower
+      - herb
+      - biome_forest
+    original_name: symbolYARROW0
+  1:
+    Yew:
+      - plant
+      - fruit
+      - tree
+      - biome_mountain
+    original_name: symbolYEW0

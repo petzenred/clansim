@@ -22,7 +22,7 @@ class MusicManager:
     queued_track: Optional[str]
 
     number_of_tracks: int
-    volume: float = config.settings["music_volume"] / 100
+    volume: float = config.settings.VolumeMusic / 100
 
     muted_f: bool
     audio_disabled_f: bool
@@ -30,10 +30,11 @@ class MusicManager:
     def __init__(self):
         self.current_playlist = []
         self.number_of_tracks = len(self.current_playlist)
-        self.muted_f = False
-        self.audio_disabled_f = False
         self.current_track = None
         self.queued_track = None
+        # TODO why do these both exist?
+        self.muted_f = False
+        self.audio_disabled_f = False
         return
 
     def external_music_start(self):
@@ -122,7 +123,7 @@ class MusicManager:
 
         # convert to a float and change volume accordingly
         self.volume = new_volume / 100
-        config.settings["music_volume"] = new_volume
+        config.settings.VolumeMusic = new_volume
         if pygame.mixer.music.get_busy():
             pygame.mixer.music.set_volume(self.volume)
 
@@ -202,11 +203,11 @@ music_manager = MusicManager()
 
 
 class _SoundManager:
-    volume: float = config.settings["sound_volume"] / 100
+    volume: float = config.settings.VolumeSound / 100
 
     def __init__(self):
         self.pressed = None
-        logger.debug(f"UI Sounds volume: {self.volume}")
+        logger.debug(f"UI Sounds volume: {self.volume * 100}%")
         self._load_sounds()
 
     def _load_sounds(self):
@@ -281,7 +282,7 @@ class _SoundManager:
 
         # convert to a float and change volume accordingly
         self.volume = new_volume / 100
-        config.settings["sound_volume"] = new_volume
+        config.settings.VolumeSound = new_volume
         for sound in self.sounds:
             for each in self.sounds[sound]:
                 pygame.mixer.Sound.set_volume(each, self.volume)

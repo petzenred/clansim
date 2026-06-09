@@ -49,8 +49,8 @@ class Game:
     game_mode: GameMode = GameMode.UnsetGameMode
     cat_tracker: CatTracker = None
     active_clan_token: str = None
-    current_moon: int = 0
-    current_season: Season = Season.Spring
+    current_moon: int = 0 # TODO move this to time_manager
+    current_season: Season = Season.Spring # TODO move this to time_manager
 
     clansim_version: str # TODO set this
 
@@ -295,10 +295,9 @@ class Game:
         logger.info(f"Setting active Clan to {new_active_clan_token}")
         self.active_clan_token = new_active_clan_token
         io_manager.update_active_clan_token(new_active_clan_token=new_active_clan_token)
-        self._save_manager.update_active_clan_token(new_active_clan_token=new_active_clan_token)
         self._screen_manager.update_active_clan_token(new_active_clan_token=new_active_clan_token)
 
-        if new_active_clan_token and not io_manager.check_save_validity(new_active_clan_token):
+        if new_active_clan_token and not io_manager._check_save_validity(new_active_clan_token):
             logger.warning(f"Can't change active Clan to '{new_active_clan_token}' "
                            f"because there is no corresponding valid save")
             logger.warning(f"Setting active Clan to None")
@@ -318,7 +317,8 @@ class Game:
             self._future_events[moon] = []
 
         # run any events whose scheduled time has come
-        if self._future_events[0]:
+        # if self._future_events[0]:
+        if self._future_events:
             num_events = len(self._future_events)
             for n in range(num_events):
                 event: tuple = self._future_events.pop(n)
@@ -331,9 +331,10 @@ class Game:
     # ------------------------------------ PUBLIC ------------------------------------ #
 
     def update_game(self):
-        if self.current_screen_obj != self.switches["cur_screen"]:
-            self.current_screen_obj = self.switches["cur_screen"]
-            self.switch_screens = True
+        # replaced by screen_manager.queue_screen_switch()
+        # if self.current_screen_obj != self.switches["cur_screen"]:
+        #     self.current_screen_obj = self.switches["cur_screen"]
+        #     self.switch_screens = True
         self.clicked = False
         self.keyspressed = []
         self._update_future_events()
@@ -370,13 +371,14 @@ class Game:
         config.load_clan_settings()
         # TODO handle what happens if any of the save files are malformed
         # TODO create a custom MalformedSaveError to catch here to make that easier
-        self._save_manager.load_save(game_obj=self)
+        self._save_manager.load_save()
         # TODO move the stuff below to self.update_active_clan_prefix_everywhere
         clan_obj = self.cat_tracker.get_clan_object(clan_token=self.active_clan_token)
         self._screen_manager.set_active_clan_camp(camp_key=clan_obj.camp.camp_key)
         return
 
     def save(self):
+        # TODO self.time_manager.get_save_info()
         self._save_clans_and_cats()
         self._save_events()
         raise NotImplementedError("game.save")

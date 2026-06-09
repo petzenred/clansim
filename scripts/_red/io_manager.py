@@ -1,4 +1,4 @@
-# io_utils.py - I/O utility methods and classes.
+ # io_utils.py - I/O utility methods and classes.
 
 # -------------------------------------------------------------------------------- #
 # ----------------------------------------
@@ -13,6 +13,8 @@ __all__ = ['io_manager']
 
 import os
 import json
+import platform
+import subprocess
 from pathlib import Path
 from typing import Optional
 
@@ -123,12 +125,12 @@ class IOManager:
         else:
             # files and directories in saves/
             self.active_clan_save_folder_filepath = Path(get_save_dir(), self.active_clan_token)
-            self.save_version_filepath = Path(get_save_dir(),
-                                              definitions.SAVE_VERSION_FILENAME.replace(
-                                                  f"*", self.active_clan_token))
 
             # files and directories in saves/{clan_token}/
-            self.camp_filepath = Path(self.active_clan_save_folder_filepath, definitions.SAVE_CAMP_FILENAME)
+            self.save_version_filepath = Path(self.active_clan_save_folder_filepath,
+                                              definitions.SAVE_VERSION_FILENAME)
+            self.camp_filepath = Path(self.active_clan_save_folder_filepath,
+                                      definitions.SAVE_CAMP_FILENAME)
             self.clan_settings_filepath = Path(self.active_clan_save_folder_filepath,
                                            definitions.SAVE_CLAN_SETTINGS_FILENAME)
             self.clans_info_filepath = Path(self.active_clan_save_folder_filepath,
@@ -141,7 +143,8 @@ class IOManager:
                                                  definitions.SAVE_CURRENT_MOON_EVENTS_FILENAME)
             self.ongoing_events_dirpath = Path(self.active_clan_save_folder_filepath,
                                                definitions.ONGOING_EVENTS_DIR)
-            self.clan_cats_dirpath = Path(self.active_clan_save_folder_filepath, definitions.CLAN_CATS_DIR)
+            self.clan_cats_dirpath = Path(self.active_clan_save_folder_filepath,
+                                          definitions.CLAN_CATS_DIR)
 
             # files in saves/{clan_token}/cats/
             self.outsider_clan_filepath = Path(self.clan_cats_dirpath, definitions.LONER_CLAN_TOKEN+ ".yaml")
@@ -162,31 +165,27 @@ class IOManager:
         # first make sure the "saves/" folder exists
         if not os.path.exists(get_save_dir()):
             os.makedirs(get_save_dir())
-            logger.info("No saves folder existed. Created empty saves folder")
+            logger.warning("No saves folder existed. Created empty saves folder")
 
         else:
             for clan_token in [f.name for f in list(os.scandir(get_save_dir())) if f.is_dir()]:
-                if self.check_save_validity(clan_token=clan_token):
+                if self._check_save_validity(clan_token=clan_token):
                     valid_saves.append(clan_token)
                 else:
                     invalid_saves.append(clan_token)
 
         return valid_saves, invalid_saves
 
-    def check_save_validity(self, clan_token: str) -> bool:
+    def _check_save_validity(self, clan_token: str) -> bool:
         """ Check if a save file is valid to play. """
         # was the method passed a valid clan token
         if not isinstance(clan_token, str):
             logger.error(f"Parameter clan_token needs to be a string but was a {type(clan_token)}")
             return False
 
-        # does a save folder "saves/Sky/" have a corresponding Clan details file "saves/SkyClan.yaml"
-        if not os.path.exists(self.save_version_filepath):
-            logger.debug(f"{clan_token} save is missing expected file '{self.save_version_filepath}'")
-            return False
-
         # TWO-PART TEST: does the save folder contain everything it should
-        save_folder_contents: list = list( os.scandir(self.active_clan_save_folder_filepath) )
+        save_folder_path = Path(get_save_dir(), clan_token)
+        save_folder_contents: list = list( os.scandir(save_folder_path) )
         folders: list = [f.name for f in save_folder_contents if f.is_dir()]
         files: list = [f.name for f in save_folder_contents if f.is_file()]
 
@@ -196,12 +195,12 @@ class IOManager:
             if folder in expected_folders:
                 expected_folders.remove(folder)
         if expected_folders:
-            logger.debug(f"Found unexpected save folder(s): {expected_folders}")
+            logger.debug(f"Found unexpected save folder(s) in save with token {clan_token}: {expected_folders}")
             return False
 
         # PART TWO: does the save folder "Example/" contain all the required save files
         expected_files: list = [
-            definitions.SAVE_CLANS_INFO_FILENAME, definitions.SAVE_CAMP_FILENAME,
+            definitions.SAVE_VERSION_FILENAME, definitions.SAVE_CLANS_INFO_FILENAME, definitions.SAVE_CAMP_FILENAME,
             definitions.SAVE_CLAN_SETTINGS_FILENAME, definitions.SAVE_CONDITIONS_FILENAME,
             definitions.SAVE_RELATIONSHIPS_FILENAME, definitions.SAVE_CURRENT_MOON_EVENTS_FILENAME,
         ]
@@ -511,6 +510,27 @@ class IOManager:
         else:
             return True
 
+    # ------------------------------ OPEN EXTERNAL LINK ------------------------------ #
+
+    def open_external_link(self, link_target):
+        platform_system: str = platform.system()
+        if platform_system == "Darwin":
+            subprocess.Popen(["open", "-u", link_target])
+        elif platform_system == "Windows":
+            os.system(f'start "" {link_target}')
+        elif platform_system == "Linux":
+            subprocess.Popen(["xdg-open", link_target])
+        return
+
+    def open_system_link(self, system_link: Path):
+        platform_system: str = platform.system()
+        if platform_system == "Darwin":
+            subprocess.Popen(["open", "-R", system_link])
+        elif platform_system == "Windows":
+            os.startfile(system_link)  # pylint: disable=no-member
+        elif platform_system == "Linux":
+            subprocess.Popen(["xdg-open", system_link])
+        return
 
 ########################################################################################################################
 # Object creation

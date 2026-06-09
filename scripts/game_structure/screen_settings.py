@@ -1,15 +1,22 @@
-import logging
+# screen_settings.py -
+
+########################################################################################################################
+# Imports
+########################################################################################################################
+
 import os.path
 from typing import TYPE_CHECKING
 
 import ujson
 
 # from resources.game_config import SCREEN_CONFIG
+from scripts.screens.BaseScreen import BaseScreen
 from scripts._red.config_manager import config
 from scripts.housekeeping.datadir import get_save_dir
 
 if TYPE_CHECKING:
-    pass
+    from scripts.screens.BaseScreen import BaseScreen
+    # from scripts.screens.Screens import Screens
 
 from math import floor
 from typing import Optional, Tuple
@@ -20,6 +27,7 @@ import pygame_gui
 from scripts.ui.ui_manager import UIManager
 from scripts.ui.generate_screen_scale_json import generate_screen_scale
 
+import logging
 logger = logging.getLogger(__name__)
 
 
@@ -33,29 +41,30 @@ screen_x = 800
 screen_y = 700
 screen_scale = 1
 game_screen_size = (800, 700)
-MANAGER: Optional[pygame_gui.UIManager] = None
+ui_manager: Optional[pygame_gui.UIManager] = None
 screen: Optional[pygame.Surface] = None
 curr_variable_dict = {}
 
-display_change_in_progress = False  # this acts as a lock to ensure we don't end up in a loop of fullscreen changes
+display_change_in_progress_f = False  # this acts as a lock to ensure we don't end up in a loop of fullscreen changes
 
-SCREEN_CONFIG: dict = config.get_config_value("cat_generation")
 
 ########################################################################################################################
 # Methods
 ########################################################################################################################
 
+# ------------------------------------ PUBLIC ------------------------------------ #
 
 def set_display_mode(
     fullscreen=None,
-    source_screen: Optional["BaseScreen"] = None,
+    source_screen: Optional[BaseScreen] = None,
     show_confirm_dialog=True,
     ingame_switch=True,
 ):
-    global display_change_in_progress
+    """ Determine screen_scale, screen_x, screen_y, window_pos, and game_screen_size. """
+    global display_change_in_progress_f
 
     # if we're already in the process of changing the display
-    if display_change_in_progress:
+    if display_change_in_progress_f:
         return
 
     global offset
@@ -64,10 +73,10 @@ def set_display_mode(
     global screen_scale
     global game_screen_size
     global screen
-    global MANAGER
+    global ui_manager
     global curr_variable_dict
 
-    display_change_in_progress = True
+    display_change_in_progress_f = True
 
     old_offset = offset
     old_scale = screen_scale
@@ -76,7 +85,7 @@ def set_display_mode(
     from scripts.game_structure.game_essentials import game
 
     if fullscreen is None:
-        fullscreen = game.settings["fullscreen"]
+        fullscreen = config.settings.Fullscreen
 
     screen_config = SCREEN_CONFIG
 
@@ -93,7 +102,7 @@ def set_display_mode(
         display_size = display_sizes[screen_config["fullscreen_display"]]
         # display_size = [3840, 2160]
 
-        determine_screen_scale(display_size[0], display_size[1], ingame_switch)
+        _determine_screen_scale(display_size[0], display_size[1], ingame_switch)
 
         screen = pygame.display.set_mode(
             display_size, pygame.FULLSCREEN, display=screen_config["fullscreen_display"]
@@ -112,20 +121,20 @@ def set_display_mode(
         screen = pygame.display.set_mode((screen_x, screen_y))
     game_screen_size = (screen_x, screen_y)
 
-    if source_screen is None or MANAGER is None:
-        MANAGER = load_manager((screen_x, screen_y), offset, scale=screen_scale)
+    if source_screen is None or ui_manager is None:
+        ui_manager = _load_ui_manager((screen_x, screen_y), offset, scale=screen_scale)
     else:
         # generate new theme
-        origin = "resources/theme/master_screen_scale.json"
-        theme_location = "resources/theme/generated/screen_scale.json"
+        origin = "resources/theme/master_screen_scale.json" # TODO hardcoded filepath
+        theme_location = "resources/theme/generated/screen_scale.json" # TODO hardcoded filepath
         generate_screen_scale(origin, theme_location, screen_scale)
-        MANAGER.get_theme().load_theme(theme_location)
+        ui_manager.get_theme().load_theme(theme_location)
 
     if source_screen is not None:
         import scripts.screens.screens_core.screens_core
 
-        MANAGER.set_window_resolution(game_screen_size)
-        MANAGER.set_offset(offset)
+        ui_manager.set_window_resolution(game_screen_size)
+        ui_manager.set_offset(offset)
         scripts.screens.screens_core.screens_core.rebuild_bgs()
         if old_scale != screen_scale:
             from scripts.screens.all_screens import AllScreens
@@ -144,9 +153,9 @@ def set_display_mode(
                     (mouse_pos[1] - old_offset[1]) / old_scale,
                 )
 
-            MANAGER.clear_and_reset()
-            MANAGER.set_window_resolution(game_screen_size)
-            MANAGER.set_offset(offset)
+            ui_manager.clear_and_reset()
+            ui_manager.set_window_resolution(game_screen_size)
+            ui_manager.set_offset(offset)
             pygame.mouse.set_pos(mouse_pos)
 
             AllScreens.rebuild_all_screens()
@@ -155,23 +164,23 @@ def set_display_mode(
             scripts.debug_console.debug_mode.rebuild_console()
 
             screen_name = source_screen.name.replace(" ", "_")
-            new_screen: "BaseScreen" = getattr(AllScreens, screen_name)
+            new_screen: BaseScreen = getattr(AllScreens, screen_name)
             new_screen.screen_switches()
             if ingame_switch:
                 new_screen.display_change_load(curr_variable_dict)
     if curr_variable_dict is not None and show_confirm_dialog:
         from scripts.screens.all_screens import AllScreens
 
-        new_screen: "BaseScreen" = getattr(
+        new_screen: BaseScreen = getattr(
             AllScreens, game.switches["cur_screen"].replace(" ", "_")
         )
         new_screen.display_change_load(curr_variable_dict)
 
     # preloading the associated fonts
-    if not MANAGER.ui_theme.get_font_dictionary().check_font_preloaded(
+    if not ui_manager.ui_theme.get_font_dictionary().check_font_preloaded(
         f"notosans_bold_aa_{floor(11 * screen_scale)}"
     ):
-        MANAGER.preload_fonts(
+        ui_manager.preload_fonts(
             [
                 {
                     "name": "notosans",
@@ -211,16 +220,17 @@ def set_display_mode(
             ]
         )
 
-    display_change_in_progress = False
+    display_change_in_progress_f = False
     if source_screen is not None and show_confirm_dialog:
-        from scripts.game_structure.windows import ConfirmDisplayChanges
+        from scripts._red.screens.windows import ConfirmDisplayChanges
 
         ConfirmDisplayChanges(source_screen=source_screen)
 
     pygame_gui.core.utility.set_default_manager(MANAGER)
 
+# ----------------------------------- PRIVATE ------------------------------------ #
 
-def determine_screen_scale(x, y, ingame_switch):
+def _determine_screen_scale(x, y, ingame_switch):
     global screen_scale, screen_x, screen_y, offset, game_screen_size
 
     if ingame_switch:
@@ -256,7 +266,7 @@ def determine_screen_scale(x, y, ingame_switch):
     game_screen_size = (screen_x, screen_y)
 
 
-def toggle_fullscreen(
+def old_toggle_fullscreen(
     fullscreen: Optional[bool] = None,
     source_screen: Optional["BaseScreen"] = None,
     show_confirm_dialog: bool = True,

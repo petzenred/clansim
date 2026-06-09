@@ -1,20 +1,15 @@
-# red_cat.py - Contains the Cat class.
-
-# -------------------------------------------------------------------------------- #
-# ----------------------------------------
+# red_cat.py - Contains the RedCat class.
 
 ########################################################################################################################
 # Imports
 ########################################################################################################################
 
-# from __future__ import annotations
-
-# import ujson  # type: ignore
 import random
 from dataclasses import dataclass, field
 
+import pygame
+
 from definitions import (
-    Age,
     GenderAlign, GenderKits, cast_to_gender_align, cast_to_gender_kits,
     Location, cast_to_location,
     Pronouns, DEFAULT_PRONOUNS, parse_to_pronouns,
@@ -22,23 +17,23 @@ from definitions import (
     RedSkill, SkillCategory, cast_to_skill,
 
     cast_to_language,
-    ConditionCategory,
+    ConditionCategory, SpritePose, PeltLength, Biome,
 )
+from scripts._red.red_exceptions import InitializationError
 from scripts.game_structure.game_essentials import game
 from scripts._red.cats.history.red_backstory import (RedBackstoryCategory, RedBackstory,
                                                      cast_to_backstory, cast_to_backstory_category)
 from scripts._red.cats.history.red_history import RedHistory
+from scripts._red.cats.red_personality import RedPersonality
 from scripts._red.cats.red_name import RedName
 from scripts._red.cats.red_pelt import CatPelt
 from scripts._red.cats.red_condition import RedCondition, get_random_permanent_condition
 from scripts._red.config_manager import config
 
+from scripts._red.utils.general_utils import one_in_num_chance
+
 import logging
-
-from scripts._red.general_utils import one_in_num_chance
-
 logger = logging.getLogger(__name__)
-
 
 
 ########################################################################################################################
@@ -52,6 +47,7 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class CatHealth:
+    in_healer_den: bool = False # sick
     paralysed: bool = False
     birth_cooldown: int = 0
     conditions: list[RedCondition] = field(default_factory=list)
@@ -66,28 +62,37 @@ class RedCat:
     """
 
     cat_id: int
-    name: RedName
+    name: RedName = None
     pelt: CatPelt
+    sprite_pose: SpritePose = SpritePose.UnchosenPose
+    sprite_obj: pygame.Surface = None
     alive: bool = True
     faded: bool = False # TODO handle this - FadedCats shouldn't really be made into RedCat objects
+    accessories: list = list() # TODO
+
+    # personality
+    lawfulness: int
+    sociability: int
+    aggression: int
+    stability: int
 
     # status
     location: Location
-    clan_prefix: str
+    clan_token: str
     health: CatHealth = CatHealth()
     rank: Rank = None
-    backstory: RedBackstory = RedBackstory.Unknown
     moons: int # the cat's current age (once a cat dies, this never changes)
     moons_dead: int
-    skills: dict
+    skills: dict = {}
     gender_kits: GenderKits
     gender_align: GenderAlign
     pronouns: Pronouns
 
-    age: Age # TODO there shouldn't be both moons and age
-
-    nutrition: int = 71
+    nutrition: int = 71 # FIXME hardcoded number
     history: RedHistory # maybe this should just be a dictionary where the key is the moon an event happened
+    backstory: RedBackstory = RedBackstory.Unknown
+    # TODO dynamically update a cat's afterlife - maybe in RedPersonality? This is affected by their history
+    #  and their personality
     afterlife: Location # which afterlife is this cat headed toward? By default, the same as their Clan
 
     # flags
@@ -98,139 +103,177 @@ class RedCat:
 
     # ------------------------------------- INIT ------------------------------------- #
 
-    def __init__(self, save_file: dict = None, **kwargs, ):
-        """ Initialise the cat. """
+    def __init__(self, save_file: dict = None, autoadd_to_cat_tracker: bool = True, **kwargs, ):
+        """ Initialize the cat. """
         if len(kwargs) > 20:
-            raise ValueError(f"Tried to initialize a RedCat object with more than 20 kwargs")
+            raise ValueError(f"Tried to initialize a RedCat object with more than 20 kwargs. What the heck")
 
         # if loading the cat from a save file, do that
         if save_file:
-            self._parse_save_file(cat_id=kwargs["cat_id"], save=save_file)
+            self.clan_token = kwargs.pop("clan_token")
+            self._parse_cat_save_file(cat_id=kwargs["cat_id"], save_file=save_file)
             return
         else:
-            if ( "backstory" in kwargs.keys() or "backstory_category" in kwargs.keys() ) and \
-                    "moons" in kwargs.keys() and "clan_name" in kwargs.keys() and "alive" in kwargs.keys():
-                self.create_new_cat(**kwargs)
-            else:
-                backstory = "missing"
-                if "backstory_category" in kwargs.keys():
-                    backstory = kwargs["backstory_category"]
-                if "backstory" in kwargs.keys():
-                    backstory = cast_to_backstory(kwargs["backstory"])
-                raise KeyError(f"Creating a cat from scratch requires the creator to "
-                               f"provide a valid backstory or backstory category and a valid age in moons.\n"
-                               f"Moons: {'missing' if 'moons' not in kwargs.keys() else kwargs['moons']}\n"
-                               f"RedBackstory (/category): {backstory}\n"
-                               f"Clan: {'missing' if 'clan_name' not in kwargs.keys() else kwargs['clan_name']}Clan\n"
-                               f"Alive: {'missing' if 'alive' not in kwargs.keys() else kwargs['alive']}"
-                               )
+            required_keys: list[str] = ["moons", "clan_token", "alive", ]
+            # make sure all the required keys are provided
+            for rk in required_keys:
+                if rk not in kwargs:
+                    raise InitializationError(f"Can't initialize cat because of missing key \"{rk}\"")
+            if not "backstory" in kwargs or not "backstory_category" in kwargs:
+                bs: str = "missing" if "backstory" not in kwargs else kwargs["backstory"]
+                raise InitializationError(
+                    f"Creating a cat from scratch requires the creator to provide a valid backstory or "
+                        f"backstory category and a valid age in moons.\n"
+                    f"Moons [int]: {'missing' if 'moons' not in kwargs.keys() else kwargs['moons']}\n"
+                    f"Backstory [RedBackstory/RedBackstoryCategory]: "
+                        f"{bs if 'backstory_category' not in kwargs else kwargs['backstory_category']}\n"
+                    f"Clan token [str]: {'missing' if 'clan_token' not in kwargs.keys() else kwargs['clan_token']}\n"
+                    f"Clan name [str]: {'missing' if 'clan_name' not in kwargs.keys() else kwargs['clan_name']}\n"
+                    f"Alive [bool]: {'missing' if 'alive' not in kwargs.keys() else kwargs['alive']}"
+                )
+
+            self._create_new_cat(autoadd_to_cat_tracker=autoadd_to_cat_tracker, **kwargs)
 
         if kwargs:
             logger.warning(f"Did not use the following passed arguments when "
                            f"generating RedCat object with cat_id {self.cat_id}: {kwargs}")
         return
 
-    def _parse_save_file(self, cat_id: int, save: dict):
+    def _parse_cat_save_file(self, cat_id: int, save_file: dict):
         """ Parse the save file entry for a single cat. """
-        save_file_sections: list[str] = list(save.keys())
+        save_file_sections: list[str] = list(save_file.keys())
 
         self.cat_id = cat_id
 
-        # parse the cat's gender
-        if "gender" in save_file_sections:
-            save_file_sections.remove("gender")
-            self.gender_kits = GenderKits(save["gender"])
-            self.gender_align = GenderAlign(save["gender"])
-            # FIXME pronouns should be independent of language? how does the translation work?
-            if save["gender"]["custom_pronouns"]:
-                self.pronouns = parse_to_pronouns(
-                    save["gender"][cast_to_language(config.settings.Language)]["custom_pronouns"]
-                )
+        try:
+            # TODO parse the cat's nutrition - maybe integrate nutrition into health?
+
+            # parse the cat's status
+            # this needs to happen before parsing the cat's name
+            # since verifying a name references this object.clan_token
+            if "status" in save_file_sections:
+                save_file_sections.remove("status")
+                self.moons = int(save_file["status"]["moons"])
+                self.moons_dead = int(save_file["status"]["moons_dead"]) # if moons_dead = -1, the cat is alive
+                self.alive = self.moons_dead < 0
+                self.location = cast_to_location(save_file["status"]["location"])
+                self.health = CatHealth(save_file["status"]["health"])
+                self.rank = cast_to_rank(save_file["status"]["rank"])
             else:
-                self.pronouns = DEFAULT_PRONOUNS[cast_to_language(config.settings.Language)][self.gender_align]
+                raise InitializationError(f"Could not find key 'status' in save file for "
+                                          f"cat #{self.cat_id} from {self.clan_token}")
+
+            # parse the cat's name
+            if "name" in save_file_sections:
+                save_file_sections.remove("name")
+                self.name = RedName(cat_obj=self, save_file=save_file["name"])
+            else:
+                raise InitializationError(f"Could not find key 'name' in save file for cat #{self.cat_id}")
+
+            # parse the cat's gender
+            if "gender" in save_file_sections:
+                save_file_sections.remove("gender")
+                self.gender_kits = GenderKits(save_file["gender"]["kits"])
+                self.gender_align = GenderAlign(save_file["gender"]["align"])
+                # FIXME pronouns should be independent of language? how does the translation work?
+                if save_file["gender"]["custom_pronouns"]:
+                    self.pronouns = parse_to_pronouns(
+                        save_file["gender"]["custom_pronouns"][cast_to_language(config.settings.Language)]
+                    )
+                else:
+                    self.pronouns = DEFAULT_PRONOUNS[cast_to_language(config.settings.Language)][self.gender_align]
+            else:
+                raise InitializationError(f"Could not find key 'gender' in save file for "
+                                          f"cat #{self.cat_id} from {self.clan_token}")
+
+            # parse the cat's pelt
+            if "pelt" in save_file_sections:
+                save_file_sections.remove("pelt")
+                self.pelt = CatPelt(loading_from_save=True, save_file=save_file["pelt"])
+            else:
+                raise InitializationError(f"Could not find key 'pelt' in save file for "
+                                          f"cat #{self.cat_id} from {self.clan_token}")
+
+            # parse the cat's flags
+            if "flags" in save_file_sections:
+                save_file_sections.remove("flags")
+                self.favourite_f = save_file["flags"]["favourite"]
+                self.no_kits_f = save_file["flags"]["no_kits"]
+                self.no_retire_f = save_file["flags"]["no_retire"]
+                self.no_romance_f = save_file["flags"]["no_romance"]
+            else:
+                raise InitializationError(f"Could not find key 'flags' in save file for "
+                                          f"cat #{self.cat_id} from {self.clan_token}")
+
+            # parse the cat's personality
+            if "personality" in save_file_sections:
+                save_file_sections.remove("personality")
+                self.lawfulness = int(save_file["personality"]["lawfulness"])
+                self.sociability = int(save_file["personality"]["sociability"])
+                self.aggression = int(save_file["personality"]["aggression"])
+                self.stability = int(save_file["personality"]["stability"])
+            else:
+                raise InitializationError(f"Could not find key 'personality' in save file for "
+                                          f"cat #{self.cat_id} from {self.clan_token}")
+
+            # parse the cat's skills
+            if "skills" in save_file_sections:
+                # skills is a dictionary of names and the amount of XP the cat has in said skill
+                save_file_sections.remove("skills")
+                for skill_name in save_file["skills"]:
+                    self.skills[RedSkill(skill_name)] = save_file["skills"][skill_name]
+            else:
+                raise InitializationError(f"Could not find key 'skills' in save file for cat #{self.cat_id} "
+                                          f"from {self.clan_token}")
+
+            # TODO parse the cat's history
+            # if "history" in save_file_sections:
+            #     save_file_sections.remove("history")
+            #     self.history = RedHistory(save_file=save["history"], cat_id=self.cat_id)
+            # else:
+            #     raise InitializationError(f"Could not find key 'history' in save file for "
+            #                               f"cat #{self.cat_id} from {self.clan_token}")
+
+            # TODO parse the cat's relationships
+            # TODO relationships is now its own file
+            # if "relationships" in save_file_sections:
+            #     self.mate_id = save["relationships"]["mate_id"]
+            #     raise NotImplementedError(f"RedCat objects can't parse a 'relationships' section from cats.yaml yet")
+            # else:
+            #     raise KeyError(f"Could not find key 'relationships' in save file for cat #{self.cat_id}")
+
+        except BaseException as err:
+            logger.exception(msg=f"There was an exception while loading cat #{self.cat_id} from {self.clan_token}",
+                             exc_info=err)
+            msg: str = f"{self.name} (cat_id #{self.cat_id})" if self.name else f" with cat_id #{self.cat_id}"
+            msg += (f", member of group with token \"{self.clan_token}\" wasn't added to the CatTracker "
+                    f"because something went wrong while parsing their save file")
+            logger.warning(msg)
+            # TODO close the game if there's an error when loading, instead of letting it hang. But in main, not here
+            game.quit(savesettings=False, clearevents=False)
+
         else:
-            raise KeyError(f"Could not find key 'gender' in save file cats.yaml for RedCat {self.cat_id}")
+            # if there are any keys remaining in the save file that didn't get used, make sure that gets logged
+            if save_file:
+                logger.warning(f"After creating the {self.name} RedCat object (Clan token {self.clan_token}), there "
+                               f"was some information in the save file which wasn't used:\n{save_file_sections}")
 
-        # parse the cat's name
-        if "name" in save_file_sections:
-            save_file_sections.remove("name")
-            self.name = RedName(prefix=save["name"]["prefix"], suffix=save["name"]["suffix"],
-                                special_suffix_hidden=save["name"]["special_suffix_hidden"], load_existing_name=True)
-        else:
-            raise AttributeError(f"Could not assign a name to RedCat {self.cat_id} from the save file cats.yaml")
+            game.cat_tracker.add_cat_to_tracker(cat_obj=self, cat_id=self.cat_id)
+            return
 
-        # parse the cat's status
-        if "status" in save_file_sections:
-            save_file_sections.remove("status")
-            self.moons = int(save["status"]["moons"])
-            self.moons_dead = int(save["status"]["moons_dead"]) # if moons_dead = -1, the cat is alive
-            self.alive = self.moons_dead >= 0
-            self.location = cast_to_location(save["status"]["location"])
-            self.health = save["status"]["health"]
-            self.rank = cast_to_rank(save["status"]["rank"])
-        else:
-            raise KeyError(f"Could not find key 'status' in save file cats.yaml for RedCat {self.cat_id}")
-
-        # parse the cat's pelt
-        if "pelt" in save_file_sections:
-            save_file_sections.remove("pelt")
-            self.pelt = CatPelt(loading_from_save=True, save_file=save["pelt"])
-        else:
-            raise KeyError(f"Could not find key 'pelt' in save file cats.yaml for RedCat {self.cat_id}")
-
-        # parse the cat's flags
-        if "flags" in save_file_sections:
-            save_file_sections.remove("flags")
-            self.favourite_f = save["flags"]["favourite"]
-            self.no_kits_f = save["flags"]["no_kits"]
-            self.no_retire_f = save["flags"]["no_retire"]
-            self.no_romance_f = save["flags"]["no_romance"]
-        else:
-            raise KeyError(f"Could not find key 'flags' in save file cats.yaml for RedCat {self.cat_id}")
-
-        # parse the cat's history
-        if "history" in save_file_sections:
-            save_file_sections.remove("history")
-            self.history = RedHistory(save_file=save["history"], cat_id=self.cat_id)
-        else:
-            raise KeyError(f"Could not find key 'history' in save file cats.yaml for RedCat {self.cat_id}")
-
-        # TODO parse the cat's personality
-        if "personality" in save_file_sections:
-            raise NotImplementedError(f"RedCat objects can't parse a 'personality' section from cats.yaml yet")
-        else:
-            raise KeyError(f"Could not find key 'personality' in save file cats.yaml for RedCat {self.cat_id}")
-
-        # TODO parse the cat's relationships
-        if "relationships" in save_file_sections:
-            self.mate_id = save["relationships"]["mate_id"]
-            raise NotImplementedError(f"RedCat objects can't parse a 'relationships' section from cats.yaml yet")
-        else:
-            raise KeyError(f"Could not find key 'relationships' in save file cats.yaml for RedCat {self.cat_id}")
-
-        # TODO parse the cat's skills
-        if "skills" in save_file_sections:
-            raise NotImplementedError(f"RedCat objects can't parse a 'skills' section from cats.yaml yet")
-        else:
-            raise KeyError(f"Could not find key 'skills' in save file cats.yaml for RedCat {self.cat_id}")
-
-        # if save_file_sections still has any keys in it, then there was a section we weren't looking for
-        if save_file_sections:
-            raise KeyError(f"Unexpected key or keys in cats.yaml for RedCat {self.cat_id}: {save_file_sections}")
-
-        # TODO add the cat to game.cat_tracker
-        game.cat_tracker.add_new_cat(cat_obj=self, cat_id=self.cat_id)
-        return
-
-    def create_new_cat(self, alive: bool, clan_name: str, moons: int, parents: list = None, **kwargs):
+    def _create_new_cat(self, autoadd_to_cat_tracker: bool, **kwargs):
         """ Generate a cat.
 
         Any attributes of the RedCat class not given will be randomly chosen (or chosen based
         on the parents if they are provided.)
+
+        TODO make sure that cats who are generated already dead have a Clan that they were a member of, if relevant
         """
 
-        if not parents:
+        if "parents" not in kwargs:
             parents = []
+        else:
+            parents = kwargs.pop("parents")
 
         def get_social_skill_xp() -> int:
             """ Determine how good the cat is a specific kind of social interaction. """
@@ -249,12 +292,12 @@ class RedCat:
             moons_spent_learning: int = 0
             xp: int = 0
             xp_bounds: tuple = (0, 0)
-            if self.age in (Age.Newborn, Age.Kitten):
+            if self.moons < config.cat_config.adolescent_age_moons:
                 pass # keep xp at 0
 
-            elif self.rank.apprentice:
+            elif self.rank.is_apprentice:
                 # cats who haven't started working yet
-                moons_spent_learning: int = (self.moons - config.cat_config.apprentice_age_moons)
+                moons_spent_learning: int = (self.moons - config.cat_config.adolescent_age_moons)
                 for moon in range(moons_spent_learning):
                     xp += random.randint(*config.cat_config.base_timeskip_xp_gain_rank[self.rank])
 
@@ -265,37 +308,37 @@ class RedCat:
 
             elif self.rank is Rank.Elder:
                 # cats who stopped learning once they retired
-                moons_spent_learning = config.cat_config.warrior_age_moons - config.cat_config.apprentice_age_moons
+                moons_spent_learning = config.cat_config.young_adult_age_moons - config.cat_config.adolescent_age_moons
                 for _ in range(moons_spent_learning):
                     xp += random.randint(*config.cat_config.base_timeskip_xp_gain_rank[Rank.WarriorApp])
-                moons_spent_working = config.cat_config.elder_age_moons - config.cat_config.warrior_age_moons
+                moons_spent_working = config.cat_config.elder_age_moons - config.cat_config.young_adult_age_moons
                 for _ in range(moons_spent_working):
                     xp += random.randint(*config.cat_config.base_timeskip_xp_gain_rank[Rank.Warrior])
 
             elif self.rank is Rank.Healer:
                 # healers have different learning rates than warriors and mediators
-                moons_spent_working = self.moons - config.cat_config.warrior_age_moons
+                moons_spent_working = self.moons - config.cat_config.young_adult_age_moons
                 for _ in range(moons_spent_working):
                     xp += random.randint(*config.cat_config.base_timeskip_xp_gain_rank[Rank.Healer])
-                moons_spent_learning = config.cat_config.warrior_age_moons - config.cat_config.apprentice_age_moons
+                moons_spent_learning = config.cat_config.young_adult_age_moons - config.cat_config.adolescent_age_moons
                 for _ in range(moons_spent_learning):
                     xp += random.randint(*config.cat_config.base_timeskip_xp_gain_rank[Rank.WarriorApp])
 
             elif self.rank is Rank.Mediator:
                 # mediators have different learning rates than warriors and healers
-                moons_spent_working = self.moons - config.cat_config.warrior_age_moons
+                moons_spent_working = self.moons - config.cat_config.young_adult_age_moons
                 for _ in range(moons_spent_working):
                     xp += random.randint(*config.cat_config.base_timeskip_xp_gain_rank[Rank.Mediator])
-                moons_spent_learning = config.cat_config.warrior_age_moons - config.cat_config.apprentice_age_moons
+                moons_spent_learning = config.cat_config.young_adult_age_moons - config.cat_config.adolescent_age_moons
                 for _ in range(moons_spent_learning):
                     xp += random.randint(*config.cat_config.base_timeskip_xp_gain_rank[Rank.MediatorApp])
 
             elif self.rank in (Rank.Warrior, Rank.Deputy, Rank.Leader):
                 # warriors have different learning rates than healers and mediators
-                moons_spent_working = self.moons - config.cat_config.warrior_age_moons
+                moons_spent_working = self.moons - config.cat_config.young_adult_age_moons
                 for _ in range(moons_spent_working):
                     xp += random.randint(*config.cat_config.base_timeskip_xp_gain_rank[self.rank])
-                moons_spent_learning = config.cat_config.warrior_age_moons - config.cat_config.apprentice_age_moons
+                moons_spent_learning = config.cat_config.young_adult_age_moons - config.cat_config.adolescent_age_moons
                 for _ in range(moons_spent_learning):
                     xp += random.randint(*config.cat_config.base_timeskip_xp_gain_rank[Rank.WarriorApp])
 
@@ -303,19 +346,20 @@ class RedCat:
                 raise ValueError(f"Can't figure out how much XP to give to a {self.rank}")
             return xp
 
-        if alive:
+        if kwargs["alive"]:
             self.alive = True
         else:
             self.alive = False
 
         # set age
-        if moons < 0:
+        if kwargs["moons"] < 0:
             raise ValueError(f"A cat can't be less than 0 moons old. What are you doing?")
-        self.moons = int(moons)
+        self.moons = int(kwargs["moons"])
 
         # set Clan
-        self.clan_prefix = clan_name
+        self.clan_token = kwargs["clan_token"]
 
+        # FIXME cat history and backstory
         # set backstory - prioritize specific backstories over backstory categories
         if "backstory" in kwargs.keys():
             self.backstory = cast_to_backstory(kwargs["backstory"])
@@ -365,10 +409,10 @@ class RedCat:
         if self.backstory.category is RedBackstoryCategory.Rogue:
             self.rank = Rank.Rogue
             self.location = Location.Wilderness
-        if self.moons < config.cat_config.apprentice_age_moons:
+        if self.moons < config.cat_config.adolescent_age_moons:
             self.rank = Rank.Kit
             self.location = Location.ClanNursery
-        elif self.moons <= config.cat_config.warrior_age_moons:
+        elif self.moons <= config.cat_config.young_adult_age_moons:
             self.rank = Rank.WarriorApp
             self.location = Location.ClanApprentice
         elif self.moons >= config.cat_config.elder_age_moons and one_in_num_chance(3):
@@ -429,29 +473,56 @@ class RedCat:
         self.pelt = CatPelt(gender=self.gender_kits, parent_pelts=[p.pelt for p in parents])
 
         # generate the cat's name
-        prefix = None
-        suffix = None
-        biome = None
+        prefix = ""
+        suffix = ""
+        biome = Biome.NoBiome
         if "prefix" in kwargs:
             prefix = kwargs.pop("prefix")
         if "suffix" in kwargs:
             suffix = kwargs.pop("suffix")
-        clan_obj = game.cat_tracker.get_clan_object(self.clan_prefix)
+        clan_obj = game.cat_tracker.get_clan_object(self.clan_token)
         if clan_obj.camp.value:
             biome = clan_obj.camp.biome
-        self.name = RedName(prefix=prefix, suffix=suffix, biome=biome)
+        self.name = RedName(cat_obj=self, prefix=prefix, suffix=suffix, biome=biome,)
 
-        game.cat_tracker.add_new_cat(cat_obj=self)
+        # add the cat to the cat tracker (maybe)
+        if autoadd_to_cat_tracker:
+            game.cat_tracker.add_cat_to_tracker(cat_obj=self)
         return
 
-    # ------------------------------------- KILL ------------------------------------- #
+    # ------------------------------- SETTER FUNCTIONS ------------------------------- #
 
-    def kill_cat(self):
-        raise NotImplementedError("RedCat.kill_cat")
+    def kill(self):
+        """ Kill this cat. """
+        # the CatTracker updates the RedClan object this cat is a member of
+        game.cat_tracker.kill_cat(cat_obj=self, afterlife=self.afterlife)
 
-    # --------------------------------- RANK CHANGES --------------------------------- #
+        self.location = self.afterlife # leave Clan prefix as it was, but change the location
+        self.alive = False
+        self.moons_dead = 0
 
-    def change_rank
+        # TODO account for death message being passed (e.g. from Kill Cat screen in profile menu, or from an event)
+        return
+
+    def change_clan(self, new_clan_token: str, new_rank: Rank = None):
+        """ Move the cat to a new Clan, potentially with a new rank.
+
+        :param str new_clan_token: the Clan's identifying token
+        :param Rank new_rank: the rank to add the cat to
+        """
+        # Can't really change too much here, since when nursing queens switch Clans, their kits are automatically
+        # moved with them in the CatTracker. Therefore, all the work is done there.
+        game.cat_tracker.change_cat_clan(new_clan_token=new_clan_token, cat_obj=self, new_rank=new_rank)
+        return
+
+    def change_rank(self, new_rank: Rank):
+        """ Update the cat's rank, and update their Clan on the rank change.
+
+        :param Rank new_rank: the rank to add the cat to
+        """
+        clan_obj = game.cat_tracker.get_clan_object(clan_token=self.clan_token)
+        clan_obj.change_cat_rank_from_cat_object(cat_obj=self, new_rank=new_rank, old_rank=self.rank)
+        return
 
     # ---------------------------------- CONDITIONS ---------------------------------- #
 
@@ -477,7 +548,9 @@ class RedCat:
         """ Simulate a single moon passing for this cat. """
         # TODO update the cat's age
         # TODO has the afterlife they'll go to changed
-        # TODO have they had a litter (maybe only check this for GenderKits.Female cats)
+        # TODO have they had a litter or gotten pregnant
+        if self.gender_kits is GenderKits.Female or config.settings.MiracleGays:
+            pass
         # TODO will they ask someone to be their mate
         # TODO will they get hurt
         # TODO will they go missing
@@ -489,7 +562,8 @@ class RedCat:
     def get_queen_object(self):
         """ Get the RedCat object of the nursing queen looking after this kit.
 
-        :return RedCat: the queen if there is one, or None
+        :return: the queen if there is one, or None
+        :rtype: RedCat
         """
         parent_ids = self.history.attachments.parent_ids
         if not parent_ids:
@@ -499,3 +573,53 @@ class RedCat:
             if self.cat_id in cat_obj.history.attachments.curr_litter_ids:
                 return cat_obj
         return None
+
+    # TODO
+    def get_sprite(self) -> pygame.Surface:
+        """ Update the cat's sprite if necessary and return it.
+
+        :return: the cat's sprite
+        :rtype: pygame.Surface
+        """
+        """
+        
+            # First, check if the cat is faded.
+            if cat.faded:
+                # Don't update the sprite if the cat is faded.
+                return
+    
+            # apply
+            cat.sprite = generate_sprite(cat)
+            # update class dictionary
+            cat.all_cats[cat.ID] = cat
+        
+        """
+        raise NotImplementedError("RedCat.get_sprite")
+
+    # ------------------------------------ PRIVATE ----------------------------------- #
+
+    # TODO
+    def _update_sprite_pose(self):
+        """ TODO """
+        # cats in the healer's den
+        if self.health.in_healer_den:
+            if self.moons < config.cat_config.young_adult_age_moons:
+                self.sprite_pose = SpritePose.SickAdult
+            else:
+                self.sprite_pose = SpritePose.SickYoung
+
+        # cats who are permanently paralysed
+        if self.health.paralysed:
+            if self.moons < config.cat_config.young_adult_age_moons:
+                self.sprite_pose = SpritePose.ParaYoung
+            else:
+                if self.pelt.length is PeltLength.Long:
+                    self.sprite_pose = SpritePose.ParaAdultLong
+                else:
+                    self.sprite_pose = SpritePose.ParaAdultShort
+
+        # all other cats
+        if self.moons < 1:
+            self.sprite_pose = self.pelt.sprites[""]
+
+

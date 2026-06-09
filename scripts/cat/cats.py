@@ -22,7 +22,7 @@ from definitions import (Age, Rank,
                          LOC_DARK_FOREST, LOC_DEAD_OTHER, LOC_STARCLAN, LOC_NOT_CLAN, LOC_CLAN, DEAD_LOCATIONS,
                          CLAN_ROLES_RANK_SORT_REVERSE_ORDER)
 from scripts.cat.history import History
-from scripts.cat.names import Name, names
+from scripts.cat.names import OldName, names
 from scripts.cat.pelts import Pelt
 from scripts.cat.personality import Personality
 from scripts.cat.skills import CatSkills
@@ -300,7 +300,7 @@ class Cat:
         # NAME
         # load_existing_name is needed so existing cats don't get their names changed/fixed for no reason
         if self.pelt is not None:
-            self.name = Name(
+            self.name = OldName(
                 prefix,
                 suffix,
                 biome=biome,
@@ -309,7 +309,7 @@ class Cat:
                 cat=self,
             )
         else:
-            self.name = Name(
+            self.name = OldName(
                 status,
                 prefix,
                 suffix,
@@ -352,7 +352,7 @@ class Cat:
         self.status.outside_clan = False
         self.exiled = False
         self.inheritance = None  # This should never be used, but just for safety
-        self.name = Name(prefix=prefix, suffix=suffix, cat=self)
+        self.name = OldName(prefix=prefix, suffix=suffix, cat=self)
         if "df" in kwargs:
             self.df = kwargs["df"]
         else:
@@ -2370,7 +2370,7 @@ class Cat:
     # ---------------------------------------------------------------------------- #
     #                                 relationships                                #
     # ---------------------------------------------------------------------------- #
-    # TODO replace with red_relationship.RedRelationships.cat_is_potential_mate
+    # TODO replace with red_relationship.RedRelationshipTracker.cat_is_potential_mate
     def is_potential_mate(
         self,
         other_cat: Cat,
@@ -3442,7 +3442,7 @@ class Cat:
                 "pattern": self.pelt.pattern,
                 "tortie_base": self.pelt.tortiebase,
                 "tortie_color": self.pelt.tortiecolour,
-                "tortie_pattern": self.pelt.tortiepattern,
+                "tortie_patches": self.pelt.tortiepattern,
                 "skin": self.pelt.skin,
                 "tint": self.pelt.tint,
                 "skill_dict": self.skills.get_skill_dict(),
