@@ -7,12 +7,11 @@ from definitions import *
 import scripts.game_structure.screen_settings
 from scripts.game_structure import image_cache
 from scripts.game_structure.game_essentials import game
-from scripts.game_structure.screen_settings import MANAGER
+from scripts.game_structure.screen_settings import ui_manager
 from scripts.ui.ui_elements import UISurfaceImageButton, UIImageButton
 from scripts.housekeeping.version import get_version_info
-from scripts.ui.generate_box import get_box, BoxStyles
-from scripts.ui.generate_button import get_button_dict, ButtonStyles
-from scripts.ui.icon import Icon
+from scripts.ui.generate_box import get_box
+from scripts.ui.generate_button import get_button_dict
 from scripts.utility import (
     ui_scale,
     ui_scale_offset,
@@ -51,37 +50,37 @@ def rebuild_core(*, should_rebuild_bgs=True):
     menu_buttons["events_screen"] = UISurfaceImageButton(
         ui_scale(pygame.Rect((246, 60), (82, 30))),
         "screens.core.events",
-        get_button_dict(ButtonStyles.MENU_LEFT, (82, 30)),
+        get_button_dict(definitions.ButtonStyle.MenuLeft, (82, 30)),
         visible=False,
-        manager=MANAGER,
-        object_id=pygame_gui.core.ObjectID("#events_button", "@buttonstyles_menu_left"),
+        manager=ui_manager,
+        object_id=pygame_gui.core.ObjectID("#events_button", "@definitions.ButtonStyle_menu_left"),
         starting_height=5,
     )
     menu_buttons["camp_screen"] = UISurfaceImageButton(
         ui_scale(pygame.Rect((0, 60), (58, 30))),
         "screens.core.camp",
-        get_button_dict(ButtonStyles.MENU_MIDDLE, (58, 30)),
+        get_button_dict(definitions.ButtonStyle.MenuMiddle, (58, 30)),
         visible=False,
-        manager=MANAGER,
-        object_id="@buttonstyles_menu_middle",
+        manager=ui_manager,
+        object_id="@definitions.ButtonStyle_menu_middle",
         starting_height=5,
         anchors={"left": "left", "left_target": menu_buttons["events_screen"]},
     )
     menu_buttons["catlist_screen"] = UISurfaceImageButton(
         ui_scale(pygame.Rect((0, 60), (88, 30))),
         "screens.core.cat_list",
-        get_button_dict(ButtonStyles.MENU_MIDDLE, (88, 30)),
+        get_button_dict(definitions.ButtonStyle.MenuMiddle, (88, 30)),
         visible=False,
-        object_id="@buttonstyles_menu_middle",
+        object_id="@definitions.ButtonStyle_menu_middle",
         starting_height=5,
         anchors={"left": "left", "left_target": menu_buttons["camp_screen"]},
     )
     menu_buttons["patrol_screen"] = UISurfaceImageButton(
         ui_scale(pygame.Rect((0, 60), (80, 30))),
         "screens.core.patrol",
-        get_button_dict(ButtonStyles.MENU_RIGHT, (80, 30)),
+        get_button_dict(definitions.ButtonStyle.MenuRight, (80, 30)),
         visible=False,
-        manager=MANAGER,
+        manager=ui_manager,
         object_id="#patrol_button",
         starting_height=5,
         anchors={"left": "left", "left_target": menu_buttons["catlist_screen"]},
@@ -89,10 +88,10 @@ def rebuild_core(*, should_rebuild_bgs=True):
     menu_buttons["main_menu"] = UISurfaceImageButton(
         ui_scale(pygame.Rect((25, 25), (153, 30))),
         "buttons.main_menu",
-        get_button_dict(ButtonStyles.SQUOVAL, (153, 30)),
+        get_button_dict(definitions.ButtonStyle.SquOval, (153, 30)),
         visible=False,
-        manager=MANAGER,
-        object_id="@buttonstyles_squoval",
+        manager=ui_manager,
+        object_id="@definitions.ButtonStyle_squoval",
         starting_height=5,
     )
 
@@ -102,9 +101,9 @@ def rebuild_core(*, should_rebuild_bgs=True):
     menu_buttons["allegiances"] = UISurfaceImageButton(
         scale_rect,
         "screens.core.allegiances",
-        get_button_dict(ButtonStyles.SQUOVAL, (118, 30)),
+        get_button_dict(definitions.ButtonStyle.SquOval, (118, 30)),
         visible=False,
-        manager=MANAGER,
+        manager=ui_manager,
         object_id=pygame_gui.core.ObjectID(class_id="@image_button", object_id=None),
         starting_height=5,
         anchors={"top": "top", "right": "right"},
@@ -116,9 +115,9 @@ def rebuild_core(*, should_rebuild_bgs=True):
     menu_buttons["clan_settings"] = UISurfaceImageButton(
         scale_rect,
         "screens.core.settings",
-        get_button_dict(ButtonStyles.SQUOVAL, (85, 30)),
+        get_button_dict(definitions.ButtonStyle.SquOval, (85, 30)),
         visible=False,
-        manager=MANAGER,
+        manager=ui_manager,
         object_id=pygame_gui.core.ObjectID(class_id="@image_button", object_id=None),
         starting_height=5,
         anchors={"top_target": menu_buttons["allegiances"], "right": "right"},
@@ -134,7 +133,7 @@ def rebuild_core(*, should_rebuild_bgs=True):
             ui_scale_dimensions((190, 35)),
         ),
         visible=False,
-        manager=MANAGER,
+        manager=ui_manager,
         starting_height=5,
         anchors={
             "bottom": "bottom",
@@ -149,7 +148,7 @@ def rebuild_core(*, should_rebuild_bgs=True):
         "",
         heading_rect,
         visible=False,
-        manager=MANAGER,
+        manager=ui_manager,
         object_id=pygame_gui.core.ObjectID(
             "#text_box_34_horizcenter_vertcenter", "#dark"
         ),
@@ -166,14 +165,14 @@ def rebuild_core(*, should_rebuild_bgs=True):
         ui_scale(pygame.Rect((25, 60), (153, 75))),
         visible=False,
         allow_scroll_x=False,
-        manager=MANAGER,
+        manager=ui_manager,
         starting_height=5,
     )
     menu_buttons["moons_n_seasons_arrow"] = UIImageButton(
         ui_scale(pygame.Rect((174, 80), (22, 34))),
         "",
         visible=False,
-        manager=MANAGER,
+        manager=ui_manager,
         object_id="#arrow_mns_button",
         starting_height=5,
     )
@@ -185,53 +184,53 @@ def rebuild_core(*, should_rebuild_bgs=True):
         ),
         visible=False,
         starting_height=5,
-        manager=MANAGER,
+        manager=ui_manager,
         anchors={"top_target": menu_buttons["main_menu"]},
     )
     menu_buttons["dens"] = UISurfaceImageButton(
         ui_scale(pygame.Rect((25, 5), (71, 30))),
         "screens.core.dens",
-        get_button_dict(ButtonStyles.SQUOVAL, (71, 30)),
+        get_button_dict(definitions.ButtonStyle.SquOval, (71, 30)),
         visible=False,
-        manager=MANAGER,
-        object_id="@buttonstyles_squoval",
+        manager=ui_manager,
+        object_id="@definitions.ButtonStyle_squoval",
         starting_height=6,
         anchors={"top_target": menu_buttons["main_menu"]},
     )
     menu_buttons["lead_den"] = UISurfaceImageButton(
         ui_scale(pygame.Rect((25, 100), (112, 28))),
         "screens.core.leader_den",
-        get_button_dict(ButtonStyles.ROUNDED_RECT, (112, 28)),
+        get_button_dict(definitions.ButtonStyle.RoundedRect, (112, 28)),
         visible=False,
-        manager=MANAGER,
-        object_id="@buttonstyles_rounded_rect",
+        manager=ui_manager,
+        object_id="@definitions.ButtonStyle_rounded_rect",
         starting_height=6,
     )
     menu_buttons["med_cat_den"] = UISurfaceImageButton(
         ui_scale(pygame.Rect((25, 140), (151, 28))),
         "screens.core.medicine_cat_den",
-        get_button_dict(ButtonStyles.ROUNDED_RECT, (151, 28)),
-        object_id="@buttonstyles_rounded_rect",
+        get_button_dict(definitions.ButtonStyle.RoundedRect, (151, 28)),
+        object_id="@definitions.ButtonStyle_rounded_rect",
         visible=False,
-        manager=MANAGER,
+        manager=ui_manager,
         starting_height=6,
     )
     menu_buttons["warrior_den"] = UISurfaceImageButton(
         ui_scale(pygame.Rect((25, 180), (121, 28))),
         "screens.core.warriors_den",
-        get_button_dict(ButtonStyles.ROUNDED_RECT, (121, 28)),
-        object_id="@buttonstyles_rounded_rect",
+        get_button_dict(definitions.ButtonStyle.RoundedRect, (121, 28)),
+        object_id="@definitions.ButtonStyle_rounded_rect",
         visible=False,
-        manager=MANAGER,
+        manager=ui_manager,
         starting_height=6,
     )
     menu_buttons["clearing"] = UISurfaceImageButton(
         ui_scale(pygame.Rect((25, 220), (81, 28))),
         "screens.core.clearing",
-        get_button_dict(ButtonStyles.ROUNDED_RECT, (81, 28)),
+        get_button_dict(definitions.ButtonStyle.RoundedRect, (81, 28)),
         visible=False,
-        manager=MANAGER,
-        object_id="@buttonstyles_rounded_rect",
+        manager=ui_manager,
+        object_id="@definitions.ButtonStyle_rounded_rect",
         starting_height=6,
     )
 
@@ -239,7 +238,7 @@ def rebuild_core(*, should_rebuild_bgs=True):
 
     version_number = pygame_gui.elements.UILabel(
         ui_scale(pygame.Rect((50, 50), (-1, -1))),
-        get_version_info().version_number[0:8],
+        get_version_info().commit_id[0:8],
         object_id=get_text_box_theme(),
         anchors={"bottom": "bottom", "right": "right"},
     )
@@ -291,22 +290,22 @@ def rebuild_mute(location: str):
 
     menu_buttons["mute_button"] = UISurfaceImageButton(
         mute_pos,
-        Icon.SPEAKER,
-        get_button_dict(ButtonStyles.ICON, (34, 34)),
+        definitions.Icon.Speaker,
+        get_button_dict(definitions.ButtonStyle.definitions.Icon, (34, 34)),
         visible=False,
-        manager=MANAGER,
-        object_id="@buttonstyles_icon",
+        manager=ui_manager,
+        object_id="@definitions.ButtonStyle_definitions.Icon",
         starting_height=6,
         anchors=anchors,
     )
 
     menu_buttons["unmute_button"] = UISurfaceImageButton(
         mute_pos,
-        Icon.MUTE,
-        get_button_dict(ButtonStyles.ICON, (34, 34)),
+        definitions.Icon.MUTE,
+        get_button_dict(definitions.ButtonStyle.definitions.Icon, (34, 34)),
         visible=False,
-        manager=MANAGER,
-        object_id="@buttonstyles_icon",
+        manager=ui_manager,
+        object_id="@definitions.ButtonStyle_definitions.Icon",
         starting_height=6,
         anchors=anchors,
     )
@@ -326,7 +325,7 @@ def rebuild_bgs():
         != vignette.get_size()
     ):
         game_frame = get_box(
-            BoxStyles.FRAME,
+            definitions.BoxShape.Frame,
             (820, 720),
         )
 

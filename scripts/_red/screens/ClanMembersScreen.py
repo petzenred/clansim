@@ -6,10 +6,12 @@ import pygame
 import pygame_gui
 from pygame_gui.core import ObjectID
 
-from definitions import PROFILE_SCREEN_NAME, CLAN_PATROL_SCREEN_NAME, CLAN_CAMP_SCREEN_NAME
+from scripts._red.screens.screen_manager import screen_manager
+
+from definitions import PROFILE_SCREEN_NAME, CLAN_PATROL_SCREEN_NAME, CLAN_CAMP_SCREEN_NAME, ScreenName
 from scripts.cat.cats import Cat
 from scripts.game_structure.game_essentials import game
-from scripts.game_structure.screen_settings import game_screen_size, MANAGER
+from scripts.game_structure.screen_settings import game_screen_size, ui_manager
 from scripts.ui.ui_elements import (
     UIImageButton,
     UIDropDownContainer,
@@ -27,8 +29,8 @@ class ClanMembersScreen(BaseScreen):
     previous_search_text = ""
     clan_name = "ErrorClan"
 
-    def __init__(self, name=None):
-        super().__init__(name)
+    def __init__(self):
+        super().__init__(ScreenName.CatList)
         self.ur_bg_image = pygame.image.load("resources/images/urbg.png").convert()
         self.sc_bg_image = pygame.image.load(
             "resources/images/starclanbg.png"
@@ -290,7 +292,7 @@ class ClanMembersScreen(BaseScreen):
             ui_scale(pygame.Rect((0, 0), (800, 700))),
             object_id="#list_screen",
             starting_height=1,
-            manager=MANAGER,
+            manager=ui_manager,
             visible=True,
         )
 
@@ -299,7 +301,7 @@ class ClanMembersScreen(BaseScreen):
             ui_scale(pygame.Rect((104, 134), (700, 400))),
             object_id="#cat_list_bar",
             starting_height=3,
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         # need to use add_element instead of specifying container in self.cat_list_bar
@@ -326,7 +328,7 @@ class ClanMembersScreen(BaseScreen):
             self.search_bar_image,
             container=self.cat_list_bar,
             object_id="#search_bar",
-            manager=MANAGER,
+            manager=ui_manager,
             starting_height=1,
         )
 
@@ -337,7 +339,7 @@ class ClanMembersScreen(BaseScreen):
             object_id="#search_entry_box",
             placeholder_text="general.name_search",
             container=self.cat_list_bar,
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         # SHOW LIVING/DEAD
@@ -346,13 +348,13 @@ class ClanMembersScreen(BaseScreen):
             "screens.list.view_dead"
             if self.death_status != "dead"
             else "screens.list.view_living",
-            get_button_dict(ButtonStyles.DROPDOWN, (103, 34)),
+            get_button_dict(ButtonStyles.DropDown, (103, 34)),
             object_id="@buttonstyles_dropdown",
             container=self.cat_list_bar,
             tool_tip_text="screens.list.view_dead_tooltip"
             if self.death_status != "dead"
             else "screens.list.view_living_tooltip",
-            manager=MANAGER,
+            manager=ui_manager,
             starting_height=1,
         )
 
@@ -363,10 +365,10 @@ class ClanMembersScreen(BaseScreen):
         self.cat_list_bar_elements["choose_group_button"] = UISurfaceImageButton(
             ui_scale(pygame.Rect((273, 0), (190, 34))),
             "screens.list.choose_group",
-            get_button_dict(ButtonStyles.DROPDOWN, (190, 34)),
+            get_button_dict(ButtonStyles.DropDown, (190, 34)),
             container=self.cat_list_bar,
             object_id="@buttonstyles_dropdown",
-            manager=MANAGER,
+            manager=ui_manager,
             starting_height=1,
         )
 
@@ -375,7 +377,7 @@ class ClanMembersScreen(BaseScreen):
             ui_scale(pygame.Rect((273, 32), (0, 0))),
             container=self.cat_list_bar,
             object_id="#choose_group_container",
-            manager=MANAGER,
+            manager=ui_manager,
             starting_height=1,
         )
 
@@ -387,11 +389,11 @@ class ClanMembersScreen(BaseScreen):
             self.choose_group_buttons[object_id.strip("#")] = UISurfaceImageButton(
                 ui_scale(pygame.Rect((0, y_pos), (190, 34))),
                 text,
-                get_button_dict(ButtonStyles.DROPDOWN, (190, 34)),
+                get_button_dict(ButtonStyles.DropDown, (190, 34)),
                 container=self.living_groups_container,
                 object_id=ObjectID(class_id="@buttonstyles_dropdown", object_id=None),
                 starting_height=2,
-                manager=MANAGER,
+                manager=ui_manager,
             )
             y_pos += 32
 
@@ -402,7 +404,7 @@ class ClanMembersScreen(BaseScreen):
             starting_height=1,
             parent_button=self.cat_list_bar_elements["choose_group_button"],
             child_button_container=self.living_groups_container,
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.choose_living_dropdown.close()
@@ -413,7 +415,7 @@ class ClanMembersScreen(BaseScreen):
             ui_scale(pygame.Rect((273, 32), (0, 0))),
             container=self.cat_list_bar,
             object_id="#choose_group_container",
-            manager=MANAGER,
+            manager=ui_manager,
             starting_height=1,
             visible=False,
         )
@@ -427,11 +429,11 @@ class ClanMembersScreen(BaseScreen):
             self.choose_group_buttons[object_id.strip("#")] = UISurfaceImageButton(
                 ui_scale(pygame.Rect((0, y_pos), (190, 34))),
                 name,
-                get_button_dict(ButtonStyles.DROPDOWN, (190, 34)),
+                get_button_dict(ButtonStyles.DropDown, (190, 34)),
                 container=self.dead_groups_container,
                 object_id=ObjectID(None, "@buttonstyles_dropdown"),
                 starting_height=2,
-                manager=MANAGER,
+                manager=ui_manager,
                 visible=False,
             )
             y_pos += 32
@@ -444,7 +446,7 @@ class ClanMembersScreen(BaseScreen):
             parent_button=self.cat_list_bar_elements["choose_group_button"],
             child_button_container=self.dead_groups_container,
             visible=False,
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.choose_dead_dropdown.close()
@@ -454,7 +456,7 @@ class ClanMembersScreen(BaseScreen):
             ui_scale(pygame.Rect((461, 0), (75, 34))),
             f"screens.list.filter_label",
             {
-                "normal": get_button_dict(ButtonStyles.DROPDOWN, (77, 34))[
+                "normal": get_button_dict(ButtonStyles.DropDown, (77, 34))[
                     "normal"
                 ].subsurface(
                     (0, 0), (75, 34)
@@ -463,7 +465,7 @@ class ClanMembersScreen(BaseScreen):
             object_id="@buttonstyles_dropdown",
             container=self.cat_list_bar,
             starting_height=1,
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.cat_list_bar_elements["sort_by_button"] = UIImageButton(
@@ -472,7 +474,7 @@ class ClanMembersScreen(BaseScreen):
             object_id=ObjectID("#filter_by_button", "@buttonstyles_dropdown"),
             container=self.cat_list_bar,
             starting_height=1,
-            manager=MANAGER,
+            manager=ui_manager,
             anchors={"left_target": self.cat_list_bar_elements["sort_by_label"]},
         )
 
@@ -481,7 +483,7 @@ class ClanMembersScreen(BaseScreen):
             container=self.cat_list_bar,
             object_id="#sort_by_button_container",
             starting_height=2,
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         buttons = [
@@ -496,11 +498,11 @@ class ClanMembersScreen(BaseScreen):
             self.sort_by_buttons[button] = UISurfaceImageButton(
                 ui_scale(pygame.Rect((0, -2 if i > 0 else 0), (64, 34))),
                 f"screens.list.{button}",
-                get_button_dict(ButtonStyles.DROPDOWN, (64, 34)),
+                get_button_dict(ButtonStyles.DropDown, (64, 34)),
                 object_id="@buttonstyles_dropdown",
                 container=self.sort_by_button_container,
                 starting_height=1,
-                manager=MANAGER,
+                manager=ui_manager,
                 anchors={"top_target": self.sort_by_buttons[buttons[i - 1]]}
                 if i > 0 and buttons[i - 1] in self.sort_by_buttons
                 else None,
@@ -513,7 +515,7 @@ class ClanMembersScreen(BaseScreen):
             starting_height=2,
             parent_button=self.cat_list_bar_elements["sort_by_button"],
             child_button_container=self.sort_by_button_container,
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.sort_by_dropdown.close()
@@ -547,34 +549,34 @@ class ClanMembersScreen(BaseScreen):
         self.display_container_elements["first_page_button"] = UISurfaceImageButton(
             ui_scale(pygame.Rect((285, 600), (34, 34))),
             Icon.ARROW_DOUBLELEFT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
             container=self.list_screen_container,
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.display_container_elements["previous_page_button"] = UISurfaceImageButton(
             ui_scale(pygame.Rect((310, 600), (34, 34))),
             Icon.ARROW_LEFT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
             container=self.list_screen_container,
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.display_container_elements["last_page_button"] = UISurfaceImageButton(
             ui_scale(pygame.Rect((481, 600), (34, 34))),
             Icon.ARROW_DOUBLERIGHT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
             container=self.list_screen_container,
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.display_container_elements["next_page_button"] = UISurfaceImageButton(
             ui_scale(pygame.Rect((456, 600), (34, 34))),
             Icon.ARROW_RIGHT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
             container=self.list_screen_container,
-            manager=MANAGER,
+            manager=ui_manager,
         )
         # page number
         self.display_container_elements[
@@ -586,7 +588,7 @@ class ClanMembersScreen(BaseScreen):
             object_id=get_text_box_theme("#page_entry_box")
             if self.death_status == "living"
             else ObjectID("#dark", "#page_entry_box"),
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.display_container_elements["page_number"] = pygame_gui.elements.UITextBox(
             "",
@@ -595,12 +597,12 @@ class ClanMembersScreen(BaseScreen):
             object_id=get_text_box_theme("#text_box_30_horizleft")
             if self.death_status == "living"
             else "#text_box_30_horizleft_light",
-            manager=MANAGER,
+            manager=ui_manager,
         )  # Text will be filled in later
 
         # this speeds up the load time 1000%
         # don't ask why
-        MANAGER.update(1)
+        ui_manager.update(1)
 
         # Determine the starting list of cats.
         self.get_cat_list()
@@ -728,7 +730,7 @@ class ClanMembersScreen(BaseScreen):
                 text_theme=get_text_box_theme("#text_box_30_horizcenter")
                 if self.death_status == "living"
                 else "#text_box_30_horizcenter_light",
-                manager=MANAGER,
+                manager=ui_manager,
                 anchors={
                     "top_target": self.cat_list_bar_elements["search_bar_entry"],
                     "centerx": "centerx",

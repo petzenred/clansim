@@ -4,7 +4,9 @@ import i18n
 import pygame.transform
 import pygame_gui.elements
 
-from definitions import PROFILE_SCREEN_NAME
+from scripts._red.screens.screen_manager import screen_manager
+
+from definitions import ScreenName
 from scripts.cat.cats import Cat
 from scripts.game_structure import image_cache
 from scripts.game_structure.game_essentials import (
@@ -16,7 +18,7 @@ from scripts.ui.ui_elements import (
     UIRelationStatusBar,
     UISurfaceImageButton,
 )
-from scripts.game_structure.windows import RelationshipLog
+from scripts._red.screens.windows import RelationshipLog
 from scripts.utility import (
     get_text_box_theme,
     ui_scale,
@@ -25,11 +27,11 @@ from scripts.utility import (
     ui_scale_blit,
     ui_scale_offset,
 )
-from .BaseScreen import BaseScreen
-from ..game_structure.screen_settings import MANAGER, screen
-from ..ui.generate_box import get_box, BoxStyles
-from ..ui.generate_button import get_button_dict, ButtonStyles
-from ..ui.icon import Icon
+from scripts.screens.BaseScreen import BaseScreen
+from scripts.game_structure.screen_settings import ui_manager, screen
+from scripts.ui.generate_box import get_box, BoxStyles
+from scripts.ui.generate_button import get_button_dict, ButtonStyles
+from scripts.ui.icon import Icon
 
 import logging
 logger = logging.getLogger(__name__)
@@ -47,8 +49,8 @@ class ProfileRelationshipsScreen(BaseScreen):
 
     inspect_cat: Optional[Cat] = None
 
-    def __init__(self, name=None):
-        super().__init__(name)
+    def __init__(self):
+        super().__init__(ScreenName.SeeRelationships)
         self.all_relations = None
         self.the_cat = None
         self.previous_cat = None
@@ -78,13 +80,13 @@ class ProfileRelationshipsScreen(BaseScreen):
                 self.inspect_cat = event.ui_element.return_cat_object()
                 self.update_inspected_relation()
             elif event.ui_element == self.back_button:
-                self.change_screen(PROFILE_SCREEN_NAME)
+                self.change_screen(ScreenName.Profile)
             elif event.ui_element == self.switch_focus_button:
                 game.switches["cat"] = self.inspect_cat.ID
                 self.update_focus_cat()
             elif event.ui_element == self.view_profile_button:
                 game.switches["cat"] = self.inspect_cat.ID
-                self.change_screen(PROFILE_SCREEN_NAME)
+                self.change_screen(ScreenName.Profile)
             elif event.ui_element == self.next_cat_button:
                 if isinstance(Cat.fetch_cat(self.next_cat), Cat):
                     game.switches["cat"] = self.next_cat
@@ -203,18 +205,18 @@ class ProfileRelationshipsScreen(BaseScreen):
         self.next_cat_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((622, 25), (153, 30))),
             "buttons.next_cat",
-            get_button_dict(ButtonStyles.SQUOVAL, (153, 30)),
+            get_button_dict(ButtonStyles.SquOval, (153, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
             sound_id="page_flip",
         )
         self.previous_cat_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((25, 25), (153, 30))),
             "buttons.previous_cat",
-            get_button_dict(ButtonStyles.SQUOVAL, (153, 30)),
+            get_button_dict(ButtonStyles.SquOval, (153, 30)),
             object_id="@buttonstyles_squoval",
             sound_id="page_flip",
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         back_rect = ui_scale(pygame.Rect((0, 0), (105, 30)))
@@ -222,9 +224,9 @@ class ProfileRelationshipsScreen(BaseScreen):
         self.back_button = UISurfaceImageButton(
             back_rect,
             "buttons.back",
-            get_button_dict(ButtonStyles.SQUOVAL, (105, 30)),
+            get_button_dict(ButtonStyles.SquOval, (105, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
             anchors={"bottom": "bottom", "left": "left"},
         )
 
@@ -239,13 +241,13 @@ class ProfileRelationshipsScreen(BaseScreen):
             ui_scale_dimensions((228, 39)),
         )
         self.details_frame_image = get_box(
-            BoxStyles.ROUNDED_BOX, (230, 340), sides=(True, False, True, True)
+            BoxStyles.RoundedBox, (230, 340), sides=(True, False, True, True)
         )
         self.selected_cat_container = pygame_gui.core.UIContainer(
-            ui_scale(pygame.Rect((53, 143), (220, 320))), MANAGER
+            ui_scale(pygame.Rect((53, 143), (220, 320))), ui_manager
         )
         self.toggle_frame_image = get_box(
-            BoxStyles.ROUNDED_BOX, (220, 120), sides=(True, False, True, True)
+            BoxStyles.RoundedBox, (220, 120), sides=(True, False, True, True)
         )
 
         self.list_frame_image = pygame.transform.scale(
@@ -281,9 +283,9 @@ class ProfileRelationshipsScreen(BaseScreen):
         self.previous_page_button = UISurfaceImageButton(
             rect,
             Icon.ARROW_LEFT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
-            manager=MANAGER,
+            manager=ui_manager,
             anchors={"right": "right", "top": "top", "right_target": self.page_number},
         )
         del rect
@@ -291,9 +293,9 @@ class ProfileRelationshipsScreen(BaseScreen):
         self.next_page_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((25, 616), (34, 34))),
             Icon.ARROW_RIGHT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
-            manager=MANAGER,
+            manager=ui_manager,
             anchors={"left_target": self.page_number},
         )
 
@@ -315,7 +317,7 @@ class ProfileRelationshipsScreen(BaseScreen):
         self.log_icon = UISurfaceImageButton(
             ui_scale(pygame.Rect((169, 258), (34, 34))),
             Icon.NOTEPAD,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
             container=self.selected_cat_container,
         )
@@ -548,7 +550,7 @@ class ProfileRelationshipsScreen(BaseScreen):
                 self.inspect_cat.get_info_block(relationship=True),
                 ui_scale(pygame.Rect((15, 185), (90, 70))),
                 object_id="#text_box_22_horizleft_spacing_95",
-                manager=MANAGER,
+                manager=ui_manager,
                 container=self.selected_cat_container,
             )
 
@@ -615,7 +617,7 @@ class ProfileRelationshipsScreen(BaseScreen):
                 "\n".join(col2),
                 col2_rect,
                 object_id="#text_box_22_horizleft_spacing_95",
-                manager=MANAGER,
+                manager=ui_manager,
                 container=self.selected_cat_container,
                 anchors={"right": "right", "top": "top"},
             )

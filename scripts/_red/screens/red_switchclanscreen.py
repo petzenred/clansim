@@ -13,16 +13,15 @@ from pygame_gui.core import ObjectID
 from pygame_gui.elements import UIImage
 
 from definitions import (
-    ScreenName, ScreenCategory
+    ScreenName
 )
 
-from scripts._red.clans.red_clan import RedClan
 from scripts._red.screens.red_base_screen import RedBaseScreen
 from scripts._red.config_manager import config
 
 from scripts.game_structure.game_essentials import game
-from scripts.game_structure.screen_settings import MANAGER
-from scripts.game_structure.windows import DeleteCheck
+from scripts.game_structure.screen_settings import ui_manager
+from scripts._red.screens.windows import DeleteCheck
 
 from scripts.ui.generate_button import get_button_dict, ButtonStyles
 from scripts.ui.icon import Icon
@@ -46,14 +45,15 @@ logger = logging.getLogger(__name__)
 
 
 
-class SwitchClanScreen(RedBaseScreen):
+class RedSwitchClanScreen(RedBaseScreen):
     """
     TODO: DOCS
     """
 
     def handle_event(self, event):
-        """
-        TODO: DOCS
+        """ This is where events that occur on this page are handled.
+
+        For the pygame_gui rewrite, button presses are also handled here.
         """
         if event.type == pygame_gui.UI_BUTTON_START_PRESS:
             self.mute_button_pressed(event)
@@ -137,8 +137,8 @@ class SwitchClanScreen(RedBaseScreen):
         self.main_menu = UISurfaceImageButton(
             ui_scale(pygame.Rect((25, 25), (153, 30))),
             "buttons.main_menu",
-            get_button_dict(ButtonStyles.SQUOVAL, (153, 30)),
-            manager=MANAGER,
+            get_button_dict(ButtonStyles.SquOval, (153, 30)),
+            manager=ui_manager,
             object_id="@buttonstyles_squoval",
             starting_height=1,
         )
@@ -148,14 +148,14 @@ class SwitchClanScreen(RedBaseScreen):
             # pylint: disable=line-too-long
             ui_scale(pygame.Rect((100, 600), (600, 70))),
             object_id=get_text_box_theme("#text_box_30_horizcenter"),
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.current_clan = pygame_gui.elements.UITextBox(
             "screens.switch_clan.current_clan",
             ui_scale(pygame.Rect((0, 100), (600, 40))),
             object_id=get_text_box_theme("#text_box_30_horizcenter"),
-            manager=MANAGER,
+            manager=ui_manager,
             anchors={"centerx": "centerx"},
             text_kwargs={
                 "clan": game.clan_obj.name if game.clan_obj else "",
@@ -200,7 +200,7 @@ class SwitchClanScreen(RedBaseScreen):
                     ),
                     clan + "Clan",
                     get_button_dict(
-                        ButtonStyles.DROPDOWN,
+                        ButtonStyles.DropDown,
                         (
                             200,
                             item_height
@@ -208,7 +208,7 @@ class SwitchClanScreen(RedBaseScreen):
                         ),
                     ),
                     object_id=ObjectID("#text_box_34_horizcenter_vertcenter", "#dark"),
-                    manager=MANAGER,
+                    manager=ui_manager,
                     anchors={
                         "centerx": "centerx",
                         "top_target": self.clan_buttons[-1][-1],
@@ -230,7 +230,7 @@ class SwitchClanScreen(RedBaseScreen):
                     ),
                     "",
                     object_id="#exit_window_button",
-                    manager=MANAGER,
+                    manager=ui_manager,
                     starting_height=2,
                     anchors={"top_target": self.clan_buttons[-1][-1]},
                 )
@@ -245,21 +245,21 @@ class SwitchClanScreen(RedBaseScreen):
         self.next_page_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((456, 540), (34, 34))),
             Icon.ARROW_RIGHT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.previous_page_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((310, 540), (34, 34))),
             Icon.ARROW_LEFT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
         )
         self.page_number = pygame_gui.elements.UITextBox(
             "",
             ui_scale(pygame.Rect((0, 540), (110, 35))),
             object_id=get_text_box_theme("#text_box_30_horizcenter"),
-            manager=MANAGER,
+            manager=ui_manager,
             anchors={
                 "left": "left",
                 "right": "right",

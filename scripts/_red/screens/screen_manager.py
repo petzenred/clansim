@@ -34,13 +34,14 @@ import pygame
 import pygame_gui
 
 from definitions import (
-    ScreenBackground, ButtonName, ButtonStyle, BoxShape, Icon, UIElementPath,
+    ScreenBackground, SwitchScreenButtonName, ButtonStyle, BoxShape, Icon, UIElementPath,
     CampKey, ScreenName, Season,
     AVAILABLE_SEASONS,
     DEFAULT_WINDOW_POS,
     DEFAULT_WINDOW_SIZE_X, DEFAULT_WINDOW_SIZE_Y, DEFAULT_SCREEN_SCALE,
     FULLSCREEN_SCALE_MULT_X, FULLSCREEN_SCALE_MULT_Y, FULLSCREEN_SCALE_ADJ, FULLSCREEN_SCALE_FACTOR,
-    WINDOWED_SCALE_MULT_X, WINDOWED_SCALE_MULT_Y, WINDOWED_SCALE_FACTOR
+    WINDOWED_SCALE_MULT_X, WINDOWED_SCALE_MULT_Y, WINDOWED_SCALE_FACTOR, cast_to_camp_key, ThemeName, ClanSymbolTag,
+    STAR_CLAN_TOKEN, DF_CLAN_TOKEN, UR_CLAN_TOKEN, UniversalButtonName
 )
 import resources._red.red_filepaths as fp
 
@@ -100,60 +101,71 @@ class ScreenManager:
 
     uim: UIManager = None # Optional[pygame_gui.UIManager]
 
-    # this acts as a lock to ensure we don't end up in a loop of fullscreen changes
-    display_change_in_progress_f: bool = False
-    curr_surface_obj: Optional[pygame.Surface] = None # screen
+    active_clan_token: str = None
+    active_clan_camp_key: CampKey = CampKey.NoCamp
+    _time_manager = None # type = TimeManager # FIXME set this
 
-    _monitor_size_x: int = 0 # changed from screen size to make the difference between monitor and window sizes clearer
-    _monitor_size_y: int = 0
-    window_size_x: int = DEFAULT_WINDOW_SIZE_X # screen_x
-    window_size_y: int = DEFAULT_WINDOW_SIZE_Y # screen_y
-
-    window_pos: tuple[int, int] = DEFAULT_WINDOW_POS # where the window is located on the screen
-    window_scale: float = DEFAULT_SCREEN_SCALE # screen_scale
-
-    # used when changing screens
+    # flags
+    display_change_in_progress_f: bool = False # this acts as a lock to ensure we don't end up
+                                               # in a loop of fullscreen changes
     switch_screens_f: bool = False
-    curr_screen_info: Optional[dict] = None
-    switch_to_screen_name: ScreenName = ScreenName.ScreenUnset
-    curr_screen_name: ScreenName = ScreenName.ScreenUnset
-    last_screen_name: ScreenName = ScreenName.ScreenUnset
-    last_non_profile_screen_name: ScreenName = ScreenName.ScreenUnset
+    mns_widget_open_f: bool = False # whether the Moons and Season widget should be open or closed
 
+    # changed from screen size to make the difference between monitor and window sizes clearer
+    _monitor_size_x: int = 0 # screen_settings.game_screen_size[0]
+    _monitor_size_y: int = 0 # screen_settings.game_screen_size[1]
+    window_size_x: int = DEFAULT_WINDOW_SIZE_X # screen_settings.screen_x
+    window_size_y: int = DEFAULT_WINDOW_SIZE_Y # screen_settings.screen_y
+    window_pos: tuple[int, int] = DEFAULT_WINDOW_POS # where the window is located on the screen
+    window_scale: float = DEFAULT_SCREEN_SCALE # screen_settings.screen_scale
+
+    # information about the current screen
+    curr_surface_obj: Optional[pygame.Surface] = None # screen_settings.screen, BaseScreen.game_screen
+    curr_screen_name: ScreenName = ScreenName.ScreenUnset
+    curr_screen_info: Optional[dict] = None
     viewing_clan_token: str = None
     viewing_living_cats: bool = True
     viewing_list_page: int = 1
 
-    active_clan_token: str = None
-    active_clan_camp_key: CampKey = CampKey.NoCamp
-    all_screen_objs: dict = {} # AllScreens
+    # used when changing screens
+    switch_to_screen_name: ScreenName = ScreenName.ScreenUnset
+    last_screen_name: ScreenName = ScreenName.ScreenUnset
+    last_non_profile_screen_name: ScreenName = ScreenName.ScreenUnset
 
-    game_frame_surface_obj: Optional[pygame.Surface] = None
-    core_vignette_surface_obj = pygame.image.load(fp.CORE_VIGNETTE)
-    vignette_surface_obj: Optional[pygame.Surface] = None
-    drop_shadow_surface_obj: Optional[pygame.Surface] = None
-    fade_surface_obj: Optional[pygame.Surface] = None
+    # TODO what are these?
+    game_frame_surface_obj: pygame.Surface = None
+    # core_vignette_surface_obj = pygame.image.load(fp.CORE_VIGNETTE)
+    # core_vignette_surface_obj = pygame.image.load(fp.CORE_VIGNETTE).convert() ?
+    vignette_surface_obj: pygame.Surface = None
+    drop_shadow_surface_obj: pygame.Surface = None
+    fade_surface_obj: pygame.Surface = None
+    version_number_label: pygame_gui.elements.UILabel
+    dev_watermark: pygame_gui.elements.UILabel
 
-    menu_buttons: dict[ButtonName | UIElementPath, pygame_gui.core.UIElement] = {}
-    mns_widget_open_f: bool = False # whether the Moons and Season widget should be open or closed
-
-    game_bgs: dict = {}
-    default_windowed_bgs: dict[ScreenBackground, pygame.Surface] = {}
+    # TODO what are these?
+    #  I think I should combine game_bgs and all_screen_objs
+    #  Actually, I think the difference is that backgrounds either one of three things:
+    #  A camp, a solid colour, or the main menu
+    # global default_fullscreen_bgs
+    # global default_game_bgs
+    all_screen_objs: dict = {} # dict[ScreenName, RedBaseScreen]
+    menu_buttons: dict[str | UIElementPath, pygame_gui.core.UIElement] = {}
+    non_camp_bgs: dict[ScreenBackground, pygame.Surface] = {}
+    # only the active Clan's camp is created and saved
+    camp_bgs: dict[Season, pygame.Surface] = {}
     default_fullscreen_bgs: dict[ScreenBackground | Season, pygame.Surface] = {}
-
-    version_number_label: pygame_gui.elements.UILabel = None
-    dev_watermark: pygame_gui.elements.UILabel = None
 
     def _ready_to_go(self) -> bool:
         ready_f: bool = True
-        if not self._monitor_size_x:
+        if not self._monitor_size_x: # is the screen size known?
             ready_f = False
-        if not self.uim:
+        if not self.uim: # has the PyGame UI manager been created?
             ready_f = False
-        if self.curr_screen_name is ScreenName.ScreenUnset:
+        if self.curr_screen_name is ScreenName.ScreenUnset: # has the current screen been set?
             ready_f = False
-        if not self.active_clan_token:
+        if not self.active_clan_token: # is the current Clan known? FIXME what if no Clan exists yet?
             ready_f = False
+        # TODO make sure all backgrounds have been created
         if not ready_f:
             raise InitializationError(f"Screen manager hasn't been fully initialized yet")
         return ready_f
@@ -167,7 +179,6 @@ class ScreenManager:
         # create the buttons and RedBaseScreen objects
         self._set_display_mode()
         self.rebuild_core()
-        self.curr_screen_name = ScreenName.MainMenu
         return
 
     def _load_ui_manager(self):
@@ -194,7 +205,7 @@ class ScreenManager:
         # don't need to update old settings data from pre-localization
         #   since unlike ClanGen, ClanSim never didn't have localizations
 
-        # initialize pygame_gui manager, and load themes
+        # initialize pygame_gui manager
         manager = UIManager(
             window_resolution=(self.window_size_x, self.window_size_y),
             offset=self.window_pos,
@@ -205,35 +216,21 @@ class ScreenManager:
             translation_directory_paths=translation_paths
         )
 
+        # load fonts
         manager.add_font_paths(
             font_name=fp.NOTOSANS_FONT.Name,
-            regular_path=fp.NOTOSANS_FONT.Regular,
-            bold_path=fp.NOTOSANS_FONT.Bold,
-            italic_path=fp.NOTOSANS_FONT.Italic,
-            bold_italic_path=fp.NOTOSANS_FONT.BoldItalic,
-        )
+            regular_path=str(fp.NOTOSANS_FONT.Regular),
+            bold_path=str(fp.NOTOSANS_FONT.Bold),
+            italic_path=str(fp.NOTOSANS_FONT.Italic),
+            bold_italic_path=str(fp.NOTOSANS_FONT.BoldItalic))
         manager.add_font_paths(
             font_name=fp.CLANGEN_FONT.Name,
-            regular_path=fp.CLANGEN_FONT.Regular
-        )
-
-        generate_screen_scale(
-            input_file=fp.LIGHT_THEME_FILEPATH,
-            output_file=fp.SCREEN_SCALE_OUTPUT_FILEPATH,
-            multiplier=self.window_scale
-        )
-
-        try:
-            # FIXME does loading both of these mean the later overwrites the former?
-            # TODO catch warnings.warn() UserWarning (try/except doesn't work)
-            manager.get_theme().load_theme(fp.SCREEN_SCALE_OUTPUT_FILEPATH)
-            manager.get_theme().load_theme(fp.DARK_THEME_FILEPATH)
-        except Exception as err:
-            msg: str = f"Something went wrong while loading the UI themes!"
-            logger.warning(msg=msg, exc_info=err)
-            raise InitializationError(msg)
+            regular_path=str(fp.CLANGEN_FONT.Regular))
 
         self.uim = manager
+
+        self._generate_and_load_theme()
+
         return
 
 # ------------------------------------ PUBLIC ------------------------------------ #
@@ -241,7 +238,7 @@ class ScreenManager:
     def set_active_clan_camp(self, camp_key: CampKey):
         """ Update the ScreenManager on the active Clan's camp location. """
         logger.debug(f"Setting ScreenManager.active_camp_key to {camp_key}")
-        self.active_clan_camp_key = camp_key
+        self.active_clan_camp_key = cast_to_camp_key(camp_key)
         self._build_camp_bgs()
         return
 
@@ -255,6 +252,7 @@ class ScreenManager:
         """ Swap between fullscreen modes. """
         # if the display is already being changed, wait until it's done changing, then proceed
         # FIXME this risks an infinite loop
+
         while self.display_change_in_progress_f:
             logger.debug(f"Waiting to toggle fullscreen mode until previous display change finishes...")
             continue
@@ -274,20 +272,20 @@ class ScreenManager:
 
         Menu buttons are used very often, so they are generated here.
         """
+        logger.debug(f"Rebuilding screens core...")
         if should_rebuild_buttons:
             self.rebuild_buttons()
         if should_rebuild_bgs:
             self.build_bg_surfaces()
+        logger.debug(f"Finished rebuilding screens core")
+        return
 
     def rebuild_buttons(self):
-        """ Builds screens and buttons.
-
-        Menu buttons are used very often, so they are generated here.
-        """
+        """ Builds menu buttons, which are used very often, so they are generated here. """
         from scripts.ui.generate_button import get_button_dict
 
         # the buttons have to be added individually as some of them rely on others in anchors
-        self.menu_buttons[ButtonName.GoScreenEvents] = UISurfaceImageButton(
+        self.menu_buttons[SwitchScreenButtonName.GoScreenEvents] = UISurfaceImageButton(
             ui_scale(rect=pygame.Rect((246, 60), (82, 30)), scale=self.window_scale),
             "screens.core.events",
             get_button_dict(ButtonStyle.MenuLeft, (82, 30), scale=self.window_scale),
@@ -297,7 +295,7 @@ class ScreenManager:
             starting_height=5,
             screen_manager=self,
         )
-        self.menu_buttons[ButtonName.GoScreenCamp] = UISurfaceImageButton(
+        self.menu_buttons[SwitchScreenButtonName.GoScreenCamp] = UISurfaceImageButton(
             ui_scale(rect=pygame.Rect((0, 60), (58, 30)), scale=self.window_scale),
             "screens.core.camp",
             get_button_dict(ButtonStyle.MenuMiddle, (58, 30), scale=self.window_scale),
@@ -305,10 +303,10 @@ class ScreenManager:
             manager=self.uim,
             object_id="@ButtonStyle_menu_middle",
             starting_height=5,
-            anchors={"left": "left", "left_target": self.menu_buttons[ButtonName.GoScreenEvents]},
+            anchors={"left": "left", "left_target": self.menu_buttons[SwitchScreenButtonName.GoScreenEvents]},
             screen_manager=self,
         )
-        self.menu_buttons[ButtonName.GoScreenCatList] = UISurfaceImageButton(
+        self.menu_buttons[SwitchScreenButtonName.GoScreenCatList] = UISurfaceImageButton(
             ui_scale(rect=pygame.Rect((0, 60), (88, 30)), scale=self.window_scale),
             "screens.core.cat_list",
             get_button_dict(ButtonStyle.MenuMiddle, (88, 30), scale=self.window_scale),
@@ -316,10 +314,10 @@ class ScreenManager:
             manager=self.uim, # TODO this was missing originally, make sure it should be here
             object_id="@ButtonStyle_menu_middle",
             starting_height=5,
-            anchors={"left": "left", "left_target": self.menu_buttons[ButtonName.GoScreenCamp]},
+            anchors={"left": "left", "left_target": self.menu_buttons[SwitchScreenButtonName.GoScreenCamp]},
             screen_manager=self,
         )
-        self.menu_buttons[ButtonName.GoScreenPatrol] = UISurfaceImageButton(
+        self.menu_buttons[SwitchScreenButtonName.GoScreenPatrol] = UISurfaceImageButton(
             ui_scale(rect=pygame.Rect((0, 60), (80, 30)), scale=self.window_scale),
             "screens.core.patrol",
             get_button_dict(ButtonStyle.MenuRight, (80, 30), scale=self.window_scale),
@@ -327,10 +325,10 @@ class ScreenManager:
             manager=self.uim,
             object_id="#patrol_button",
             starting_height=5,
-            anchors={"left": "left", "left_target": self.menu_buttons[ButtonName.GoScreenCatList]},
+            anchors={"left": "left", "left_target": self.menu_buttons[SwitchScreenButtonName.GoScreenCatList]},
             screen_manager=self,
         )
-        self.menu_buttons[ButtonName.GoScreenMainMenu] = UISurfaceImageButton(
+        self.menu_buttons[SwitchScreenButtonName.GoScreenMainMenu] = UISurfaceImageButton(
             ui_scale(rect=pygame.Rect((25, 25), (153, 30)), scale=self.window_scale),
             "buttons.main_menu",
             get_button_dict(ButtonStyle.SquOval, (153, 30), scale=self.window_scale),
@@ -344,7 +342,7 @@ class ScreenManager:
         # used so we can anchor to the right with numbers that make sense
         scale_rect = ui_scale(rect=pygame.Rect((0, 0), (118, 30)), scale=self.window_scale)
         scale_rect.topright = ui_scale_offset(coords=(-25, 25), scale=self.window_scale)
-        self.menu_buttons[ButtonName.GoScreenAllegiances] = UISurfaceImageButton(
+        self.menu_buttons[SwitchScreenButtonName.GoScreenAllegiances] = UISurfaceImageButton(
             scale_rect,
             "screens.core.allegiances",
             get_button_dict(ButtonStyle.SquOval, (118, 30), scale=self.window_scale),
@@ -359,7 +357,7 @@ class ScreenManager:
         # used so we can anchor to the right with numbers that make sense
         scale_rect = ui_scale(rect=pygame.Rect((0, 0), (85, 30)), scale=self.window_scale)
         scale_rect.topright = ui_scale_offset(coords=(-25, 5), scale=self.window_scale)
-        self.menu_buttons[ButtonName.GoScreenClanSettings] = UISurfaceImageButton(
+        self.menu_buttons[SwitchScreenButtonName.GoScreenClanSettings] = UISurfaceImageButton(
             scale_rect,
             "screens.core.settings",
             get_button_dict(ButtonStyle.SquOval, (85, 30), scale=self.window_scale),
@@ -367,7 +365,7 @@ class ScreenManager:
             manager=self.uim,
             object_id=pygame_gui.core.ObjectID(class_id="@image_button", object_id=None),
             starting_height=5,
-            anchors={"top_target": self.menu_buttons[ButtonName.GoScreenAllegiances], "right": "right"},
+            anchors={"top_target": self.menu_buttons[SwitchScreenButtonName.GoScreenAllegiances], "right": "right"},
             screen_manager=self,
         )
         del scale_rect
@@ -385,13 +383,13 @@ class ScreenManager:
             starting_height=5,
             anchors={
                 "bottom": "bottom",
-                "bottom_target": self.menu_buttons[ButtonName.GoScreenCamp],
+                "bottom_target": self.menu_buttons[SwitchScreenButtonName.GoScreenCamp],
                 "centerx": "centerx",},
         )
         # it has to be at least 193 to make "cats outside the clan" fit
         heading_rect = ui_scale(rect=pygame.Rect((0, 0), (193, 35)), scale=self.window_scale)
         heading_rect.bottomleft = ui_scale_offset(coords=(0, 1), scale=self.window_scale)  # yes, this is intentional.
-        self.menu_buttons[ButtonName.DropdownChooseClan] = pygame_gui.elements.UITextBox(
+        self.menu_buttons[UniversalButtonName.DropdownChooseClan] = pygame_gui.elements.UITextBox(
             "",
             heading_rect,
             visible=False,
@@ -402,7 +400,7 @@ class ScreenManager:
             starting_height=5,
             anchors={
                 "bottom": "bottom",
-                "bottom_target": self.menu_buttons[ButtonName.GoScreenCamp],
+                "bottom_target": self.menu_buttons[SwitchScreenButtonName.GoScreenCamp],
                 "centerx": "centerx",
             },
         )
@@ -415,7 +413,7 @@ class ScreenManager:
             manager=self.uim,
             starting_height=5,
         )
-        self.menu_buttons[ButtonName.MoonsSeasonsArrow] = UIImageButton(
+        self.menu_buttons[UniversalButtonName.MoonsSeasonsArrow] = UIImageButton(
             relative_rect=ui_scale(rect=pygame.Rect((174, 80), (22, 34)), scale=self.window_scale),
             text="",
             visible=False,
@@ -433,9 +431,9 @@ class ScreenManager:
             visible=False,
             starting_height=5,
             manager=self.uim,
-            anchors={"top_target": self.menu_buttons[ButtonName.GoScreenMainMenu]},
+            anchors={"top_target": self.menu_buttons[SwitchScreenButtonName.GoScreenMainMenu]},
         )
-        self.menu_buttons[ButtonName.DropdownDens] = UISurfaceImageButton(
+        self.menu_buttons[UniversalButtonName.DropdownDens] = UISurfaceImageButton(
             ui_scale(rect=pygame.Rect((25, 5), (71, 30)), scale=self.window_scale),
             "screens.core.dens",
             get_button_dict(ButtonStyle.SquOval, (71, 30), scale=self.window_scale),
@@ -443,10 +441,10 @@ class ScreenManager:
             manager=self.uim,
             object_id="@ButtonStyle_squoval",
             starting_height=6,
-            anchors={"top_target": self.menu_buttons[ButtonName.GoScreenMainMenu]},
+            anchors={"top_target": self.menu_buttons[SwitchScreenButtonName.GoScreenMainMenu]},
             screen_manager=self,
         )
-        self.menu_buttons[ButtonName.GoScreenLeaderDen] = UISurfaceImageButton(
+        self.menu_buttons[SwitchScreenButtonName.GoScreenLeaderDen] = UISurfaceImageButton(
             ui_scale(rect=pygame.Rect((25, 100), (112, 28))),
             "screens.core.leader_den",
             get_button_dict(ButtonStyle.RoundedRect, (112, 28), scale=self.window_scale),
@@ -456,7 +454,7 @@ class ScreenManager:
             starting_height=6,
             screen_manager=self,
         )
-        self.menu_buttons[ButtonName.GoScreenHealerDen] = UISurfaceImageButton(
+        self.menu_buttons[SwitchScreenButtonName.GoScreenHealerDen] = UISurfaceImageButton(
             ui_scale(rect=pygame.Rect((25, 140), (151, 28)), scale=self.window_scale),
             "screens.core.medicine_cat_den",
             get_button_dict(ButtonStyle.RoundedRect, (151, 28), scale=self.window_scale),
@@ -466,7 +464,7 @@ class ScreenManager:
             starting_height=6,
             screen_manager=self,
         )
-        self.menu_buttons[ButtonName.GoScreenWarriorDen] = UISurfaceImageButton(
+        self.menu_buttons[SwitchScreenButtonName.GoScreenWarriorDen] = UISurfaceImageButton(
             ui_scale(rect=pygame.Rect((25, 180), (121, 28)), scale=self.window_scale),
             "screens.core.warriors_den",
             get_button_dict(ButtonStyle.RoundedRect, (121, 28), scale=self.window_scale),
@@ -476,7 +474,7 @@ class ScreenManager:
             starting_height=6,
             screen_manager=self,
         )
-        self.menu_buttons[ButtonName.GoScreenFreshkillPile] = UISurfaceImageButton(
+        self.menu_buttons[SwitchScreenButtonName.GoScreenFreshkillPile] = UISurfaceImageButton(
             ui_scale(rect=pygame.Rect((25, 220), (81, 28)), scale=self.window_scale),
             "screens.core.clearing",
             get_button_dict(ButtonStyle.RoundedRect, (81, 28), scale=self.window_scale),
@@ -492,14 +490,14 @@ class ScreenManager:
         # TODO for the NewClan screen, this is moved to the top right; I need to deal with that since I removed the
         #   location parameter
         logger.debug(f"Running the section of ScreenManager.rebuild_core() which used to be screen_core.rebuild_mute()")
-        if ButtonName.Mute in self.menu_buttons:
-            self.menu_buttons[ButtonName.Mute].kill()
-            self.menu_buttons[ButtonName.Unmute].kill()
+        if UniversalButtonName.Mute in self.menu_buttons:
+            self.menu_buttons[UniversalButtonName.Mute].kill()
+            self.menu_buttons[UniversalButtonName.Unmute].kill()
 
         # place the mute button at the bottom right of the screen
         mute_pos = ui_scale(rect=pygame.Rect((0, 0), (34, 34)), scale=self.window_scale)
         mute_pos.bottomright = ui_scale_offset(coords=(-25, -25), scale=self.window_scale)
-        self.menu_buttons[ButtonName.Mute] = UISurfaceImageButton(
+        self.menu_buttons[UniversalButtonName.Mute] = UISurfaceImageButton(
             mute_pos,
             Icon.Speaker,
             get_button_dict(ButtonStyle.Icon, (34, 34), scale=self.window_scale),
@@ -510,7 +508,7 @@ class ScreenManager:
             anchors={"bottom": "bottom", "right": "right"},
             screen_manager=self,
         )
-        self.menu_buttons[ButtonName.Unmute] = UISurfaceImageButton(
+        self.menu_buttons[UniversalButtonName.Unmute] = UISurfaceImageButton(
             mute_pos,
             Icon.MUTE,
             get_button_dict(ButtonStyle.Icon, (34, 34), scale=self.window_scale),
@@ -552,7 +550,7 @@ class ScreenManager:
             self.version_number_label = None
         return
 
-    # TODO this should be called when switching between themes
+    # FIXME this should be called when switching between themes
     def build_bg_surfaces(self):
         """ Rebuilds the menu, cat list, and camp backgrounds. """
         self._build_menu_bgs()
@@ -567,7 +565,15 @@ class ScreenManager:
 
         :param ScreenName new_screen_name: the screen to switch to
         """
-        logger.debug(f"Queue screen switch: {self.curr_screen_name} -> {new_screen_name}")
+        # if self.curr_screen_name == new_screen_name:
+        #     logger.debug(f"Skipping queued screen switch from {self.curr_screen_name} to {new_screen_name}")
+        #     return
+        if self.curr_screen_name is new_screen_name:
+            logger.warning(f"Skipping requested screen switch from {self.curr_screen_name} "
+                           f"to {new_screen_name}")
+            return
+        else:
+            logger.debug(f"Queue screen switch: {self.curr_screen_name} -> {new_screen_name}")
         self.switch_to_screen_name = new_screen_name
 
         # music_manager.check_music(new_screen_name) moved to RedBaseScreen
@@ -585,7 +591,7 @@ class ScreenManager:
         # TODO update game.rpc.update_rpc.set()
 
         if (
-                (self.active_clan_token is not None)
+                self.active_clan_token is not None
                 and config.settings.ShowMoonSeasonWidget
                 and new_screen_name is not ScreenName.Events
         ):
@@ -607,12 +613,18 @@ class ScreenManager:
 
         Used to be BaseScreen.screen_switches().
         """
-        logger.debug(f"Running screen switch: {self.curr_screen_name} -> {self.switch_to_screen_name}")
-        old_screen_obj = self.all_screen_objs[self.curr_screen_name]
-        new_screen_obj = self.all_screen_objs[self.switch_to_screen_name]
+        if self.switch_to_screen_name is ScreenName.ScreenUnset:
+            raise ValueError(f"Can't switch to screen ScreenUnset!")
 
-        old_screen_obj.exit_screen()
-        new_screen_obj.enter_screen()
+        logger.debug(f"Running screen switch: {self.curr_screen_name} -> {self.switch_to_screen_name}")
+
+        if self.curr_screen_name is not ScreenName.ScreenUnset:
+            # old_screen_obj = self.all_screen_objs[self.curr_screen_name]
+            # old_screen_obj.exit_screen()
+            self.all_screen_objs[self.curr_screen_name].exit_screen()
+        # new_screen_obj = self.all_screen_objs[self.switch_to_screen_name]
+        # new_screen_obj.enter_screen()
+        self.all_screen_objs[self.switch_to_screen_name].enter_screen()
 
         self.last_screen_name = self.curr_screen_name
         self.curr_screen_name = self.switch_to_screen_name
@@ -621,18 +633,86 @@ class ScreenManager:
         self.switch_screens_f = False
         return
 
-    # TODO
-    def set_screen_background(self, bg_name: ScreenBackground):
+    def show_screen_background(self, screen_name: ScreenName):
         """ Set the currently active background for a screen.
 
-        :param ScreenBackground bg_name: TODO
+        This is called by ScreenManager.run_screen_switch().
+
+        The options are a solid colour (a shade of brown which depends on the current theme), the main menu background,
+        or one of several special backgrounds for the 'Clan members' lists for StarClan, the Dark Forest, and the
+        Unknown Residence where non-Clan cats go when they die.
+
+        :param ScreenName screen_name: the screen whose background should be loaded
         """
-        raise NotImplementedError("ScreenManager.set_screen_background")
-        # if the input is default, select the right default for the display mode
-        if bg_name is ScreenBackground.ClanMenu:
-            pass
+        # TODO when should the screen use a transition?
+        do_transition_f: bool = False
+
+        # find the correct background
+        bg_name = ScreenBackground.SolidColour
+        if screen_name is ScreenName.MainMenu:
+            bg_name = ScreenBackground.MainMenuLogoless
+        elif screen_name is ScreenName.Camp and config.settings.ShowCampBackground:
+            bg_name = ScreenBackground.ClanCamp
+        elif screen_name is ScreenName.CatList and not self.viewing_living_cats:
+            if self.viewing_clan_token is STAR_CLAN_TOKEN:
+                bg_name = ScreenBackground.StarClanCatsList
+            elif self.viewing_clan_token is DF_CLAN_TOKEN:
+                bg_name = ScreenBackground.DarkForestCatsList
+            elif self.viewing_clan_token is UR_CLAN_TOKEN:
+                bg_name = ScreenBackground.UnknownResidenceCatsList
+
+        # actually run the blit
+        # if do_transition_f:
+        #     # enable the transition if required
+        #     if self.bg_transition:
+        #         # this determines how many frames the fade can show for
+        #         # in order to remove visual artifacts
+        #         self.bg_transition_time = 5
+        #         self.bg_transition = False
+        #
+        #     # actually run the transition
+        #     if self.bg_transition_time > 0:
+        #         temp = blur_bg.copy()
+        #         temp.set_alpha(
+        #             255 // self.bg_transition_time
+        #         )  # this determines the actual fade rate
+        #         scripts.game_structure.screen_settings.screen.blit(temp, (0, 0))
+        #         self.bg_transition_time -= 1
+        #     else:
+        #         # if we've done the transition, just blit the full-alpha version on top to remove artifacts.
+        #         scripts.game_structure.screen_settings.screen.blit(blur_bg, (0, 0))
+
+        # now blit the foreground
+        if bg_name is ScreenBackground.ClanCamp:
+            self.curr_surface_obj.blit(self.camp_bgs[self._time_manager.curr_season], ui_scale_blit((0, 0)))
+        else:
+            self.curr_surface_obj.blit(self.non_camp_bgs[bg_name], ui_scale_blit((0, 0)))
+
+        return
 
     # ----------------------------------- PRIVATE ------------------------------------ #
+
+    def _generate_and_load_theme(self):
+        """ Generates a new file with scaled theme elements and loads in to the PyGame UI manager. """
+        logger.debug(f"Creating and loading new theme...")
+        try:
+            generate_screen_scale(
+                input_file=fp.THEME_FILEPATHS[config.settings.Theme],
+                output_file=fp.SCREEN_SCALE_OUTPUT_FILEPATH,
+                multiplier=self.window_scale)
+
+            # TODO catch warnings.warn() UserWarning (try/except doesn't work)
+            # self.uim.get_theme().load_theme(fp.SCREEN_SCALE_OUTPUT_FILEPATH)
+            theme: pygame_gui.core.UIAppearanceTheme = \
+                self.uim.create_new_theme(theme_path=fp.SCREEN_SCALE_OUTPUT_FILEPATH)
+            self.uim.set_ui_theme(theme=theme, update_all_sprites=True)
+        except Exception as err:
+            msg: str = f"Something went wrong while loading the UI theme!"
+            logger.warning(msg=msg, exc_info=err)
+            raise InitializationError(msg)
+        else:
+            logger.debug(f"Successfully loaded theme")
+            return
 
     def _set_screen_sizes(self):
         """ Calculates values for window size, scaling factor, and position.
@@ -696,12 +776,6 @@ class ScreenManager:
 
         # TODO "# generate new theme" used to be below "# set the screen mode"; was moving it correct?
 
-        # generate new theme
-        generate_screen_scale(
-            input_file=fp.LIGHT_THEME_FILEPATH,
-            output_file=fp.SCREEN_SCALE_OUTPUT_FILEPATH,
-            multiplier=self.window_scale)
-        self.uim.get_theme().load_theme(fp.SCREEN_SCALE_OUTPUT_FILEPATH)
 
         # set the screen mode
         # THIS MUST BE RUN BEFORE ANY IMAGES ARE LOADED
@@ -719,7 +793,12 @@ class ScreenManager:
             )
 
         # TODO "# generate new theme" used to be here; was moving it correct?
+        # generate new theme
+        self._generate_and_load_theme()
 
+        # FIXME - add the loading animation here
+
+        # <------------------- DEBUG -------------------> #
         # this reloads the current screen if this method has been called because of a screen change, not the game loading
         if self.curr_screen_name is not ScreenName.ScreenUnset:
 
@@ -731,6 +810,8 @@ class ScreenManager:
                 self._reload_curr_screen(old_window_pos=old_window_pos,
                                          old_scale=old_scale,
                                          mouse_pos=mouse_pos)
+
+        # <------------------- DEBUG -------------------> #
 
         # preloading the associated fonts
         # FIXME doesn't this happen in _load_ui_manager?
@@ -786,9 +867,8 @@ class ScreenManager:
         return
 
     def _reload_curr_screen(self, old_window_pos: tuple[int, int], old_scale: float, mouse_pos: tuple[int, int]):
-        """ This reloads the current screen if this method has been called because of a screen change,
+        """ This reloads the current screen if this method has been called because the display mode has changed,
         not the game loading.
-
         """
         if self.curr_screen_name is not ScreenName.ScreenUnset:
 
@@ -797,7 +877,7 @@ class ScreenManager:
             self.build_bg_surfaces()
 
             if old_scale != self.window_scale:
-                self.curr_screen_obj.exit_screen()
+                self.all_screen_objs[self.curr_screen_name].exit_screen()
 
                 if config.settings.Fullscreen:
                     mouse_pos = (int(mouse_pos[0] * self.window_scale) + self.window_pos[0],
@@ -812,7 +892,7 @@ class ScreenManager:
                 pygame.mouse.set_pos(mouse_pos)
 
                 if self._ready_to_go():
-                    self._rebuild_all_screens()
+                    self.build_all_screens()
                     self.rebuild_core()
                     # scripts.debug_console.debug_mode.rebuild_console() # TODO fix debug mode
 
@@ -831,11 +911,11 @@ class ScreenManager:
             logger.warning(f"Can't reload the current screen because no screen has been loaded yet!")
 
     # FIXME
-    @classmethod
-    def _rebuild_all_screens(cls):
+    def build_all_screens(self):
         """ Import all screens for initialization (must be done after pygame_gui manager is created). """
+        logger.debug(f"ScreenManager is building all screens...")
         from scripts._red.screens.red_main_menu_screen import MainMenuScreen
-        cls.main_menu_screen = MainMenuScreen()
+        self.all_screen_objs[ScreenName.MainMenu] = MainMenuScreen()
         # from scripts._red.screens.NewClanScreen import NewClanScreen
         # cls.new_clan_screen = NewClanScreen()
         # from scripts._red.screens.SwitchClanScreen import SwitchClanScreen
@@ -889,6 +969,7 @@ class ScreenManager:
         # from scripts._red.screens.ProfileRoleScreen import ProfileRoleScreen
         # cls.profile_role_screen = ProfileRoleScreen()
 
+        logger.debug(f"ScreenManager is finished building all screens")
         return
 
     def _build_menu_bgs(self):
@@ -896,11 +977,6 @@ class ScreenManager:
 
         Used to be screen_core.rebuild_bgs().
         """
-        # global default_fullscreen_bgs
-        default_fullscreen_bgs: dict[ScreenBackground, pygame.Surface]
-        # global default_game_bgs
-        default_game_bgs: dict[ScreenBackground, pygame.Surface]
-
         if (
                 self.vignette_surface_obj is None
                     or
@@ -908,10 +984,11 @@ class ScreenManager:
         ):
             from scripts.ui.generate_box import get_box
             self.game_frame_surface_obj = get_box(style=BoxShape.Frame,
-                                                  unscaled_dimensions=(820, 720),
+                                                  unscaled_dimensions=(820, 720), # FIXME hardcoded numbers
                                                   scale=self.window_scale)
 
-            core_vignette = pygame.image.load(file=fp.CORE_VIGNETTE)
+            #core_vignette = pygame.image.load(file=fp.CORE_VIGNETTE)
+            core_vignette = pygame.image.load(file=fp.CORE_VIGNETTE).convert()
             self.vignette_surface_obj = pygame.transform.scale(
                 surface=core_vignette, size=self.curr_surface_obj.get_size())
 
@@ -923,34 +1000,43 @@ class ScreenManager:
                 flags=pygame.SRCALPHA,
             )
             game_box: pygame.Surface = pygame.Surface(
-                size=(self.window_size_x + ui_scale_value(30, scale=self.window_scale),
-                      self.window_size_y + ui_scale_value(30, scale=self.window_scale)),
+                size=(self.window_size_x + ui_scale_value(30, scale=self.window_scale), # FIXME hardcoded numbers
+                      self.window_size_y + ui_scale_value(30, scale=self.window_scale)), # FIXME hardcoded numbers
                 flags=pygame.SRCALPHA,
             )
-            self._feather_surface(surface=game_box, feather_width=15)
-            self.drop_shadow_surface_obj.blit(game_box, ui_scale_blit(coords=(-15, -15),
+            self._feather_surface(surface=game_box, feather_width=15) # FIXME hardcoded numbers
+            self.drop_shadow_surface_obj.blit(game_box, ui_scale_blit(coords=(-15, -15), # FIXME hardcoded numbers
                                                                       scale=self.window_scale,
                                                                       window_pos=self.window_pos))
             del game_box
 
-        # build the default background for windowed mode (only for the currently active theme)
-        windowed_surface_obj = pygame.Surface((self.window_size_x, self.window_size_y))
-        windowed_surface_obj.fill(config.screen_config.themes[config.settings.Theme]["bg_colour"])
-        self.default_windowed_bgs[ScreenBackground.ClanMenu] = windowed_surface_obj
-
         # build fullscreen pygame.Surface objects (only for the currently active theme)
-        self.default_fullscreen_bgs[ScreenBackground.ClanMenu] = self._process_surface_blur(
-            surface=pygame.transform.scale(surface=windowed_surface_obj, size=self.curr_surface_obj.get_size()),
-            **ScreenBackground.ClanMenu.blur_properties
+        logger.debug(f"Building Surface object for the solid colour background")
+        solid_colour_bg_obj: pygame.Surface = pygame.Surface(size=self.curr_surface_obj.get_size())
+        solid_colour_bg_obj.fill(config.screen_config.themes[config.settings.Theme]["bg_colour"])
+        self.non_camp_bgs[ScreenBackground.SolidColour] = self._process_surface_blur(
+            surface=solid_colour_bg_obj,
+            **ScreenBackground.SolidColour.blur_properties
         )
+
+        # create the backgrounds that are photos (e.g. the main menu)
+        logger.debug(f"Building Surface objects for backgrounds which are photos")
         for bg_name in (ScreenBackground.MainMenuLogoless, ScreenBackground.StarClanCatsList,
                         ScreenBackground.DarkForestCatsList, ScreenBackground.UnknownResidenceCatsList):
             bg: pygame.Surface = pygame.transform.scale(
                 surface=pygame.image.load(bg_name.path).convert(),
                 size=self.curr_surface_obj.get_size()
             )
-            # apply blur effect to non-camp background screens
-            self.default_fullscreen_bgs[bg_name] = self._process_surface_blur(
+            # the main menu has a tint in dark mode
+            if bg_name is ScreenBackground.MainMenuLogoless and config.settings.Theme is ThemeName.Dark:
+                bg.fill(
+                    color=config.screen_config.themes[ThemeName.Dark]["mainmenu_tint"],
+                    rect=bg.get_rect(),
+                    special_flags=pygame.BLEND_MULT,
+                )
+            # self.non_camp_bgs[bg_name] = bg
+            # FIXME apply blur effect to non-camp background screens
+            self.non_camp_bgs[bg_name] = self._process_surface_blur(
                 surface=bg, **bg_name.blur_properties
             )
 
@@ -974,9 +1060,9 @@ class ScreenManager:
                     size=self.curr_surface_obj.get_size()
                 )
                 # apply blur effect to camp background
-                self.default_fullscreen_bgs[season] = self._process_surface_blur(surface=surface_obj)
+                self.camp_bgs[season] = self._process_surface_blur(surface=surface_obj)
         else:
-            logger.warning(f"Couldn't build camp backgrounds because no camp is set in screen_manager!\n"
+            logger.warning(f"Couldn't build camp backgrounds because no camp is set in screen_manager! "
                            f"If the game is initializing, this is expected and this message can be ignored.")
 
         return
@@ -984,7 +1070,7 @@ class ScreenManager:
     def _process_surface_blur(
             self,
             surface: pygame.Surface,
-            blur_radius: Optional[int] = 5, # accepts None
+            blur_radius: Optional[int] = None, # default was 5
             vignette_strength: Optional[int] = None,
             fade_color: Optional[tuple[int, int, int]] = None
     ) -> pygame.Surface:

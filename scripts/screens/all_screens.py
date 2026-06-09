@@ -29,32 +29,32 @@ from definitions import (
     WARRIOR_DEN_SCREEN_NAME
 )
 
-from .ClanAllegiancesScreen import ClanAllegiancesScreen
-from .ProfileCeremonyScreen import ProfileCeremonyScreen
-from .ProfileGenderScreen import ProfileGenderScreen
-from .ProfileAdoptScreen import ProfileAdoptScreen
-from .ProfileMateScreen import ProfileMateScreen
-from .ProfileMentorScreen import ProfileMentorScreen
-from .ClanCampScreen import ClanCampScreen
-from .ClanSettingsScreen import ClanSettingsScreen
-from .ClanFreshkillScreen import ClanFreshkillScreen
-from .ClanEventsScreen import ClanEventsScreen
-from .ProfileFamilyScreen import ProfileFamilyScreen
-from .LeaderDenScreen import LeaderDenScreen
-from .ClanMembersScreen import ClanMembersScreen
-from .NewClanScreen import NewClanScreen
-from .MedDenScreen import MedDenScreen
-from .ProfileMediationScreen import ProfileMediationScreen
-from .ClanPatrolScreen import ClanPatrolScreen
-from .ProfileScreen import ProfileScreen
-from .ProfileRelationshipsScreen import ProfileRelationshipsScreen
-from .ProfileRoleScreen import ProfileRoleScreen
+from scripts._red.screens.ClanAllegiancesScreen import ClanAllegiancesScreen
+from scripts._red.screens.ProfileCeremonyScreen import ProfileCeremonyScreen
+from scripts._red.screens.ProfileGenderScreen import ProfileGenderScreen
+from scripts._red.screens.ProfileAdoptScreen import ProfileAdoptScreen
+from scripts._red.screens.ProfileMateScreen import ProfileMateScreen
+from scripts._red.screens.ProfileMentorScreen import ProfileMentorScreen
+from scripts._red.screens.ClanCampScreen import ClanCampScreen
+from scripts._red.screens.ClanSettingsScreen import ClanSettingsScreen
+from scripts._red.screens.DenFreshkillScreen import ClanFreshkillScreen
+from scripts._red.screens.ClanEventsScreen import ClanEventsScreen
+from scripts._red.screens.ProfileFamilyScreen import ProfileFamilyScreen
+from scripts._red.screens.DenLeaderScreen import LeaderDenScreen
+from scripts._red.screens.ClanMembersScreen import ClanMembersScreen
+from scripts._red.screens.NewClanScreen import NewClanScreen
+from scripts._red.screens.DenHealerScreen import MedDenScreen
+from scripts._red.screens.ProfileMediationScreen import ProfileMediationScreen
+from scripts._red.screens.ClanPatrolScreen import ClanPatrolScreen
+from scripts._red.screens.ProfileScreen import ProfileScreen
+from scripts._red.screens.ProfileRelationshipsScreen import ProfileRelationshipsScreen
+from scripts._red.screens.ProfileRoleScreen import ProfileRoleScreen
 from .BaseScreen import BaseScreen
-from .MainSettingsScreen import MainSettingsScreen
-from .ProfileSpriteInspectScreen import ProfileSpriteInspectScreen
-from .MainMenuScreen import MainMenuScreen
-from .SwitchClanScreen import SwitchClanScreen
-from .WarriorDenScreen import WarriorDenScreen
+from scripts._red.screens.MainSettingsScreen import MainSettingsScreen
+from scripts._red.screens.ProfileInspectScreen import ProfileSpriteInspectScreen
+from scripts._red.screens.red_main_menu_screen import MainMenuScreen
+from scripts._red.screens.SwitchClanScreen import SwitchClanScreen
+from scripts._red.screens.DenWarriorScreen import WarriorDenScreen
 
 # ---------------------------------------------------------------------------- #
 #                                  UI RULES                                    #

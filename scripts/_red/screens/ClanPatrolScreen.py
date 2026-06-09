@@ -5,7 +5,9 @@ import i18n
 import pygame
 import pygame_gui
 
-from definitions import CLAN_MEMBERS_SCREEN_NAME, CLAN_CAMP_SCREEN_NAME, PatrolType, Biome
+from scripts._red.screens.screen_manager import screen_manager
+
+from definitions import CLAN_MEMBERS_SCREEN_NAME, CLAN_CAMP_SCREEN_NAME, PatrolType, Biome, ScreenName
 from scripts.cat.cats import Cat
 from scripts.game_structure.game_essentials import game
 from scripts.ui.ui_elements import (
@@ -20,13 +22,13 @@ from scripts.utility import (
     shorten_text_to_fit,
     ui_scale_dimensions,
 )
-from .BaseScreen import BaseScreen
-from ..game_structure import image_cache
-from ..game_structure.propagating_thread import PropagatingThread
-from ..game_structure.screen_settings import MANAGER
-from ..ui.generate_box import BoxStyles, get_box
-from ..ui.generate_button import get_button_dict, ButtonStyles
-from ..ui.icon import Icon
+from scripts.screens.BaseScreen import BaseScreen
+from scripts.game_structure import image_cache
+from scripts.game_structure.propagating_thread import PropagatingThread
+from scripts.game_structure.screen_settings import ui_manager
+from scripts.ui.generate_box import BoxStyles, get_box
+from scripts.ui.generate_button import get_button_dict, ButtonStyles
+from scripts.ui.icon import Icon
 
 import logging
 logger = logging.getLogger(__name__)
@@ -44,8 +46,8 @@ class ClanPatrolScreen(BaseScreen):
     selected_apprentice_index = 0
     selected_mate_index = 0
 
-    def __init__(self, name=None):
-        super().__init__(name)
+    def __init__(self):
+        super().__init__(ScreenName.Patrol)
 
         self.in_progress_data = None
         self.able_box = pygame.transform.scale(
@@ -375,18 +377,18 @@ class ClanPatrolScreen(BaseScreen):
                 self.elements["add_remove_cat"] = UISurfaceImageButton(
                     ui_scale(pygame.Rect((0, 460), (127, 30))),
                     "buttons.remove_cat",
-                    get_button_dict(ButtonStyles.SQUOVAL, (127, 30)),
+                    get_button_dict(ButtonStyles.SquOval, (127, 30)),
                     object_id="@buttonstyles_squoval",
-                    manager=MANAGER,
+                    manager=ui_manager,
                     anchors={"centerx": "centerx"},
                 )
             elif self.selected_cat is None or len(self.current_patrol) >= 6:
                 self.elements["add_remove_cat"] = UISurfaceImageButton(
                     ui_scale(pygame.Rect((0, 460), (98, 30))),
                     "buttons.add_cat",
-                    get_button_dict(ButtonStyles.SQUOVAL, (98, 30)),
+                    get_button_dict(ButtonStyles.SquOval, (98, 30)),
                     object_id="@buttonstyles_squoval",
-                    manager=MANAGER,
+                    manager=ui_manager,
                     anchors={"centerx": "centerx"},
                 )
                 self.elements["add_remove_cat"].disable()
@@ -394,9 +396,9 @@ class ClanPatrolScreen(BaseScreen):
                 self.elements["add_remove_cat"] = UISurfaceImageButton(
                     ui_scale(pygame.Rect((0, 460), (98, 30))),
                     "buttons.add_cat",
-                    get_button_dict(ButtonStyles.SQUOVAL, (98, 30)),
+                    get_button_dict(ButtonStyles.SquOval, (98, 30)),
                     object_id="@buttonstyles_squoval",
-                    manager=MANAGER,
+                    manager=ui_manager,
                     anchors={"centerx": "centerx"},
                 )
 
@@ -458,7 +460,7 @@ class ClanPatrolScreen(BaseScreen):
                 text,
                 ui_scale(pygame.Rect((250, 525), (300, 400))),
                 object_id=get_text_box_theme("#text_box_30_horizcenter"),
-                manager=MANAGER,
+                manager=ui_manager,
             )
 
             able_no_med = [
@@ -552,17 +554,17 @@ class ClanPatrolScreen(BaseScreen):
         )
         self.elements["cat_frame"] = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((300, 165), (200, 275))),
-            get_box(BoxStyles.FRAME, (200, 275)),
-            manager=MANAGER,
+            get_box(BoxStyles.Frame, (200, 275)),
+            manager=ui_manager,
         )
         self.elements["cat_frame"].disable()
 
         # Frames
         self.elements["able_frame"] = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((40, 490), (270, 171))),
-            get_box(BoxStyles.ROUNDED_BOX, (270, 171)),
+            get_box(BoxStyles.RoundedBox, (270, 171)),
             starting_height=1,
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.elements["able_frame"].disable()
 
@@ -572,7 +574,7 @@ class ClanPatrolScreen(BaseScreen):
             ui_scale(pygame.Rect((40, 460), (270, 30))),
             "screens.patrol.able_cats_label",
             {
-                "normal": get_button_dict(ButtonStyles.HORIZONTAL_TAB, (100, 30))[
+                "normal": get_button_dict(ButtonStyles.HorizontalTab, (100, 30))[
                     "disabled"
                 ]
             },
@@ -584,8 +586,8 @@ class ClanPatrolScreen(BaseScreen):
 
         self.elements["patrol_frame"] = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((490, 490), (270, 140))),
-            get_box(BoxStyles.ROUNDED_BOX, (270, 140)),
-            manager=MANAGER,
+            get_box(BoxStyles.RoundedBox, (270, 140)),
+            manager=ui_manager,
         )
         self.elements["patrol_frame"].disable()
 
@@ -593,9 +595,9 @@ class ClanPatrolScreen(BaseScreen):
         self.elements["add_remove_cat"] = UISurfaceImageButton(
             ui_scale(pygame.Rect((0, 460), (98, 30))),
             "buttons.add_cat",
-            get_button_dict(ButtonStyles.SQUOVAL, (98, 30)),
+            get_button_dict(ButtonStyles.SquOval, (98, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
             anchors={"centerx": "centerx"},
         )
         # No cat is selected when the screen is opened, so the button is disabled
@@ -605,67 +607,67 @@ class ClanPatrolScreen(BaseScreen):
         self.elements["random"] = UISurfaceImageButton(
             ui_scale(pygame.Rect((323, 495), (34, 34))),
             Icon.DICE,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
             sound_id="dice_roll",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.elements["add_one"] = UISurfaceImageButton(
             ui_scale(pygame.Rect((363, 495), (34, 34))),
             "+1",
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_rounded_rect",
             sound_id="dice_roll",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.elements["add_three"] = UISurfaceImageButton(
             ui_scale(pygame.Rect((403, 495), (34, 34))),
             "+3",
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_rounded_rect",
             sound_id="dice_roll",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.elements["add_six"] = UISurfaceImageButton(
             ui_scale(pygame.Rect((443, 495), (34, 34))),
             "+6",
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_rounded_rect",
             sound_id="dice_roll",
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         # patrol type buttons - disabled for now
         self.elements["paw"] = UISurfaceImageButton(
             ui_scale(pygame.Rect((323, 560), (34, 34))),
             Icon.PAW,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.elements["paw"].disable()
         self.elements["mouse"] = UISurfaceImageButton(
             ui_scale(pygame.Rect((363, 560), (34, 34))),
             Icon.MOUSE,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.elements["mouse"].disable()
         self.elements["claws"] = UISurfaceImageButton(
             ui_scale(pygame.Rect((403, 560), (34, 34))),
             Icon.SCRATCHES,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.elements["claws"].disable()
         self.elements["herb"] = UISurfaceImageButton(
             ui_scale(pygame.Rect((443, 560), (34, 34))),
             Icon.HERB,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.elements["herb"].disable()
 
@@ -675,14 +677,14 @@ class ClanPatrolScreen(BaseScreen):
             "",
             object_id="#patrol_last_page",
             starting_height=2,
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.elements["next_page"] = UIImageButton(
             ui_scale(pygame.Rect((241, 462), (34, 34))),
             "",
             object_id="#patrol_next_page",
             starting_height=2,
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         # Tabs for the current patrol
@@ -691,10 +693,10 @@ class ClanPatrolScreen(BaseScreen):
         self.elements["patrol_tab"] = UISurfaceImageButton(
             tab_rect,
             "screens.patrol.patrol_label",
-            get_button_dict(ButtonStyles.HORIZONTAL_TAB, (80, 35)),
+            get_button_dict(ButtonStyles.HorizontalTab, (80, 35)),
             object_id="@buttonstyles_horizontal_tab",
             starting_height=2,
-            manager=MANAGER,
+            manager=ui_manager,
             anchors={
                 "bottom": "bottom",
                 "left": "left",
@@ -708,10 +710,10 @@ class ClanPatrolScreen(BaseScreen):
         self.elements["skills"] = UISurfaceImageButton(
             tab_rect,
             "screens.patrol.skills_traits_label",
-            get_button_dict(ButtonStyles.HORIZONTAL_TAB, (154, 35)),
+            get_button_dict(ButtonStyles.HorizontalTab, (154, 35)),
             object_id="@buttonstyles_horizontal_tab",
             starting_height=2,
-            manager=MANAGER,
+            manager=ui_manager,
             anchors={
                 "bottom": "bottom",
                 "left": "left",
@@ -724,10 +726,10 @@ class ClanPatrolScreen(BaseScreen):
         self.elements["remove_all"] = UISurfaceImageButton(
             ui_scale(pygame.Rect((560, -4), (124, 35))),
             "screens.patrol.remove_all_label",
-            get_button_dict(ButtonStyles.HORIZONTAL_TAB_MIRRORED, (124, 35)),
+            get_button_dict(ButtonStyles.HorizontalTabMirrored, (124, 35)),
             starting_height=2,
             object_id="@buttonstyles_horizontal_tab_mirrored",
-            manager=MANAGER,
+            manager=ui_manager,
             anchors={"left": "left", "top_target": self.elements["patrol_frame"]},
         )
 
@@ -737,16 +739,16 @@ class ClanPatrolScreen(BaseScreen):
             ui_scale(pygame.Rect((510, 510), (240, 90))),
             visible=False,
             object_id="#text_box_22_horizcenter_spacing_95",
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         # Start Patrol Button
         self.elements["patrol_start"] = UISurfaceImageButton(
             ui_scale(pygame.Rect((0, 600), (135, 30))),
             "screens.patrol.go_on_patrol",
-            get_button_dict(ButtonStyles.SQUOVAL, (135, 30)),
+            get_button_dict(ButtonStyles.SquOval, (135, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
             anchors={"centerx": "centerx"},
         )
         self.elements["patrol_start"].disable()
@@ -758,7 +760,7 @@ class ClanPatrolScreen(BaseScreen):
                 "screens.patrol.current_prey",
                 ui_scale(pygame.Rect((300, 630), (200, 400))),
                 object_id=get_text_box_theme("#text_box_30_horizcenter"),
-                manager=MANAGER,
+                manager=ui_manager,
                 text_kwargs={"prey": str(current_amount)},
             )
             needed_amount = round(game.clan_obj.freshkill_pile.amount_food_needed(), 2)
@@ -766,7 +768,7 @@ class ClanPatrolScreen(BaseScreen):
                 "screens.patrol.needed_prey",
                 ui_scale(pygame.Rect((300, 647), (200, 400))),
                 object_id=get_text_box_theme("#text_box_30_horizcenter"),
-                manager=MANAGER,
+                manager=ui_manager,
                 text_kwargs={"prey": str(needed_amount)},
             )
         self.update_cat_images_buttons()
@@ -794,8 +796,8 @@ class ClanPatrolScreen(BaseScreen):
         # Layout images
         self.elements["event_bg"] = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((381, 165), (354, 270))),
-            get_box(BoxStyles.ROUNDED_BOX, (354, 270), sides=(True, True, True, False)),
-            manager=MANAGER,
+            get_box(BoxStyles.RoundedBox, (354, 270), sides=(True, True, True, False)),
+            manager=ui_manager,
         )
         self.elements["event_bg"].disable()
         self.elements["info_bg"] = pygame_gui.elements.UIImage(
@@ -804,12 +806,12 @@ class ClanPatrolScreen(BaseScreen):
                 pygame.image.load("resources/images/patrol_info.png").convert_alpha(),
                 ui_scale_dimensions((420, 204)),
             ),
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.elements["image_frame"] = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((65, 140), (320, 320))),
-            get_box(BoxStyles.FRAME, (320, 320)),
-            manager=MANAGER,
+            get_box(BoxStyles.Frame, (320, 320)),
+            manager=ui_manager,
         )
         self.elements["intro_image"] = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((75, 150), (300, 300))),
@@ -831,7 +833,7 @@ class ClanPatrolScreen(BaseScreen):
             self.display_text,
             ui_scale(pygame.Rect((385, 172), (335, 250))),
             object_id="#text_box_30_horizleft_pad_10_10_spacing_95",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         # Patrol Info
         # TEXT CATEGORIES AND CHECKING FOR REPEATS
@@ -858,7 +860,7 @@ class ClanPatrolScreen(BaseScreen):
             "screens.patrol.label_patrol_info",
             ui_scale(pygame.Rect((105, 460), (240, 200))),
             object_id="#text_box_22_horizleft",
-            manager=MANAGER,
+            manager=ui_manager,
             text_kwargs={
                 "leader": str(self.patrol_obj.patrol_leader.name),
                 "p_l": self.patrol_obj.patrol_leader,
@@ -877,7 +879,7 @@ class ClanPatrolScreen(BaseScreen):
                 self.elements["cat" + str(u)] = pygame_gui.elements.UIImage(
                     ui_scale(pygame.Rect((pos_x, pos_y), (50, 50))),
                     self.patrol_obj.patrol_cats[u].sprite,
-                    manager=MANAGER,
+                    manager=ui_manager,
                 )
                 pos_x += 50
                 if pos_x > 450:
@@ -890,17 +892,17 @@ class ClanPatrolScreen(BaseScreen):
         self.elements["proceed"] = UISurfaceImageButton(
             ui_scale(pygame.Rect((550, 433), (172, 30))),
             "screens.patrol.proceed",
-            get_button_dict(ButtonStyles.DROPDOWN, (172, 30)),
+            get_button_dict(ButtonStyles.DropDown, (172, 30)),
             object_id="@buttonstyles_dropdown",
             starting_height=2,
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.elements["not_proceed"] = UIImageButton(
             ui_scale(pygame.Rect((550, 461), (172, 30))),
             "screens.patrol.dont_proceed",
             object_id="#not_proceed_button",
             starting_height=2,
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.elements["antagonize"] = UIImageButton(
@@ -908,7 +910,7 @@ class ClanPatrolScreen(BaseScreen):
             "screens.patrol.antagonize",
             object_id="#antagonize_button",
             sound_id="antagonize",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         if not self.patrol_obj.patrol_event.antag_success_outcomes:
             self.elements["antagonize"].hide()
@@ -946,13 +948,13 @@ class ClanPatrolScreen(BaseScreen):
             ui_scale(pygame.Rect((400, 137), (162, 30))),
             "screens.patrol.back_to_clan",
             object_id="#return_to_clan",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.elements["patrol_again"] = UIImageButton(
             ui_scale(pygame.Rect((560, 137), (162, 30))),
             "screens.patrol.patrol_again",
             object_id="#patrol_again",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         # Update patrol art, if needed.
         if (
@@ -965,7 +967,7 @@ class ClanPatrolScreen(BaseScreen):
             "",
             ui_scale(pygame.Rect((550, 500), (172, 150))),
             object_id=get_text_box_theme("#text_box_22_horizcenter_spacing_95"),
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.elements["patrol_results"].set_text(self.results_text)
 
@@ -1055,7 +1057,7 @@ class ClanPatrolScreen(BaseScreen):
                     cat.sprite, ui_scale_dimensions((50, 50))
                 ),
                 cat_object=cat,
-                manager=MANAGER,
+                manager=ui_manager,
             )
             pos_x += 50
             if pos_x >= 300:
@@ -1079,7 +1081,7 @@ class ClanPatrolScreen(BaseScreen):
                         cat.sprite, ui_scale_dimensions((50, 50))
                     ),
                     cat_object=cat,
-                    manager=MANAGER,
+                    manager=ui_manager,
                 )
                 pos_x += 75
                 if pos_x >= 725:
@@ -1184,7 +1186,7 @@ class ClanPatrolScreen(BaseScreen):
                 pygame.transform.scale(
                     self.selected_cat.sprite, ui_scale_dimensions((150, 150))
                 ),
-                manager=MANAGER,
+                manager=ui_manager,
                 anchors={"centerx": "centerx"},
             )
 
@@ -1195,7 +1197,7 @@ class ClanPatrolScreen(BaseScreen):
                 short_name,
                 ui_scale(pygame.Rect((0, 0), (200, 34))),
                 object_id=get_text_box_theme("#text_box_30_horizcenter"),
-                manager=MANAGER,
+                manager=ui_manager,
                 anchors={
                     "top_target": self.elements["selected_image"],
                     "centerx": "centerx",
@@ -1206,7 +1208,7 @@ class ClanPatrolScreen(BaseScreen):
                 self.selected_cat.get_info_block(patrol=True),
                 ui_scale(pygame.Rect((0, -5), (190, 110))),
                 object_id=get_text_box_theme("#text_box_22_horizcenter_spacing_95"),
-                manager=MANAGER,
+                manager=ui_manager,
                 anchors={
                     "top_target": self.elements["selected_name"],
                     "centerx": "centerx",
@@ -1228,7 +1230,7 @@ class ClanPatrolScreen(BaseScreen):
                     pygame.transform.scale(
                         self.mate.sprite, ui_scale_dimensions((100, 100))
                     ),
-                    manager=MANAGER,
+                    manager=ui_manager,
                 )
                 # Check for name length
                 name = str(self.mate.name)  # get name
@@ -1252,7 +1254,7 @@ class ClanPatrolScreen(BaseScreen):
                     if self.mate in self.able_cats
                     else "screens.patrol.unavailable",
                     object_id="#patrol_select_button",
-                    manager=MANAGER,
+                    manager=ui_manager,
                     anchors={"top_target": self.elements["mate_frame"]},
                 )
                 # Disable mate_button if the cat is not able to go on a patrol
@@ -1264,16 +1266,16 @@ class ClanPatrolScreen(BaseScreen):
                     self.elements["cycle_mate_left_button"] = UISurfaceImageButton(
                         ui_scale(pygame.Rect((148, 390), (34, 34))),
                         Icon.ARROW_LEFT,
-                        get_button_dict(ButtonStyles.ICON, (34, 34)),
+                        get_button_dict(ButtonStyles.Icon, (34, 34)),
                         object_id="@buttonstyles_icon",
-                        manager=MANAGER,
+                        manager=ui_manager,
                     )
                     self.elements["cycle_mate_right_button"] = UISurfaceImageButton(
                         ui_scale(pygame.Rect((218, 390), (34, 34))),
                         Icon.ARROW_RIGHT,
-                        get_button_dict(ButtonStyles.ICON, (34, 34)),
+                        get_button_dict(ButtonStyles.Icon, (34, 34)),
                         object_id="@buttonstyles_icon",
-                        manager=MANAGER,
+                        manager=ui_manager,
                     )
                     self.update_button()
 
@@ -1286,7 +1288,7 @@ class ClanPatrolScreen(BaseScreen):
                 self.elements["app_mentor_frame"] = pygame_gui.elements.UIImage(
                     ui_scale(pygame.Rect((495, 190), (166, 170))),
                     self.app_frame,
-                    manager=MANAGER,
+                    manager=ui_manager,
                 )
 
                 if (
@@ -1323,7 +1325,7 @@ class ClanPatrolScreen(BaseScreen):
                         ui_scale(pygame.Rect((553, 300), (95, 30))),
                         name,
                         object_id=get_text_box_theme(),
-                        manager=MANAGER,
+                        manager=ui_manager,
                     )
                     self.elements["app_mentor_info"] = pygame_gui.elements.UITextBox(
                         relation,
@@ -1336,7 +1338,7 @@ class ClanPatrolScreen(BaseScreen):
                         pygame.transform.scale(
                             self.app_mentor.sprite, ui_scale_dimensions((100, 100))
                         ),
-                        manager=MANAGER,
+                        manager=ui_manager,
                     )
 
                     # Button to switch to that cat
@@ -1346,7 +1348,7 @@ class ClanPatrolScreen(BaseScreen):
                         if self.app_mentor in self.able_cats
                         else "screens.patrol.unavailable",
                         object_id="#patrol_select_button",
-                        manager=MANAGER,
+                        manager=ui_manager,
                         anchors={"top_target": self.elements["app_mentor_frame"]},
                     )
                     # Disable mate_button if the cat is not able to go on a patrol
@@ -1360,7 +1362,7 @@ class ClanPatrolScreen(BaseScreen):
                         ] = UISurfaceImageButton(
                             ui_scale(pygame.Rect((548, 390), (34, 34))),
                             Icon.ARROW_LEFT,
-                            get_button_dict(ButtonStyles.ICON, (34, 34)),
+                            get_button_dict(ButtonStyles.Icon, (34, 34)),
                             object_id="@buttonstyles_icon",
                         )
                         self.elements[
@@ -1368,9 +1370,9 @@ class ClanPatrolScreen(BaseScreen):
                         ] = UISurfaceImageButton(
                             ui_scale(pygame.Rect((618, 390), (34, 34))),
                             Icon.ARROW_RIGHT,
-                            get_button_dict(ButtonStyles.ICON, (34, 34)),
+                            get_button_dict(ButtonStyles.Icon, (34, 34)),
                             object_id="@buttonstyles_icon",
-                            manager=MANAGER,
+                            manager=ui_manager,
                         )
                         self.update_button()
 

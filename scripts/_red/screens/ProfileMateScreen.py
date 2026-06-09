@@ -4,7 +4,9 @@ import i18n
 import pygame.transform
 import pygame_gui.elements
 
-from definitions import PROFILE_SCREEN_NAME
+from scripts._red.screens.screen_manager import screen_manager
+
+from definitions import ScreenName
 from scripts.cat.cats import Cat
 from scripts.game_structure import image_cache
 from scripts.game_structure.game_essentials import (
@@ -23,19 +25,19 @@ from scripts.utility import (
     ui_scale_offset,
     shorten_text_to_fit,
 )
-from .BaseScreen import BaseScreen
-from ..game_structure.screen_settings import MANAGER
-from ..ui.generate_box import BoxStyles, get_box
-from ..ui.generate_button import get_button_dict, ButtonStyles
-from ..ui.icon import Icon
+from scripts.screens.BaseScreen import BaseScreen
+from scripts.game_structure.screen_settings import ui_manager
+from scripts.ui.generate_box import BoxStyles, get_box
+from scripts.ui.generate_button import get_button_dict, ButtonStyles
+from scripts.ui.icon import Icon
 
 import logging
 logger = logging.getLogger(__name__)
 
 
 class ProfileMateScreen(BaseScreen):
-    def __init__(self, name=None):
-        super().__init__(name)
+    def __init__(self):
+        super().__init__(ScreenName.ChooseMate)
         self.list_frame_image = None
         self.next_cat = None
         self.previous_cat = None
@@ -111,7 +113,7 @@ class ProfileMateScreen(BaseScreen):
             # Cat buttons list
             if event.ui_element == self.back_button:
                 self.selected_mate_index = 0
-                self.change_screen(PROFILE_SCREEN_NAME)
+                self.change_screen(ScreenName.Profile)
             elif event.ui_element == self.toggle_mate:
                 if self.work_thread is not None and self.work_thread.is_alive():
                     return
@@ -190,7 +192,7 @@ class ProfileMateScreen(BaseScreen):
                     return
 
                 game.switches["cat"] = event.ui_element.cat_object.ID
-                self.change_screen(PROFILE_SCREEN_NAME)
+                self.change_screen(ScreenName.Profile)
 
     def screen_switches(self):
         """Sets up the elements that are always on the page"""
@@ -199,8 +201,8 @@ class ProfileMateScreen(BaseScreen):
 
         self.list_frame_image = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((0, 391), (650, 194))),
-            get_box(BoxStyles.ROUNDED_BOX, (650, 194)),
-            manager=MANAGER,
+            get_box(BoxStyles.RoundedBox, (650, 194)),
+            manager=ui_manager,
             anchors={"centerx": "centerx"},
         )
 
@@ -233,62 +235,62 @@ class ProfileMateScreen(BaseScreen):
         self.next_cat_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((622, 25), (153, 30))),
             "buttons.next_cat",
-            get_button_dict(ButtonStyles.SQUOVAL, (153, 30)),
+            get_button_dict(ButtonStyles.SquOval, (153, 30)),
             object_id="@buttonstyles_squoval",
             sound_id="page_flip",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.previous_cat_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((25, 25), (153, 30))),
             "buttons.previous_cat",
-            get_button_dict(ButtonStyles.SQUOVAL, (153, 30)),
+            get_button_dict(ButtonStyles.SquOval, (153, 30)),
             object_id="@buttonstyles_squoval",
             sound_id="page_flip",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.back_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((25, 60), (105, 30))),
             "buttons.back",
-            get_button_dict(ButtonStyles.SQUOVAL, (105, 30)),
+            get_button_dict(ButtonStyles.SquOval, (105, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         # Tab containers:
         contain_rect = ui_scale(pygame.Rect((85, 400), (630, 219)))
 
-        self.mates_container = pygame_gui.core.UIContainer(contain_rect, MANAGER)
+        self.mates_container = pygame_gui.core.UIContainer(contain_rect, ui_manager)
 
         # All the perm elements the exist inside self.mates_container
         self.mates_next_page = UISurfaceImageButton(
             ui_scale(pygame.Rect((366, 179), (34, 34))),
             Icon.ARROW_RIGHT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
             container=self.mates_container,
         )
         self.mates_last_page = UISurfaceImageButton(
             ui_scale(pygame.Rect((230, 179), (34, 34))),
             Icon.ARROW_LEFT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
             container=self.mates_container,
         )
 
-        self.offspring_container = pygame_gui.core.UIContainer(contain_rect, MANAGER)
+        self.offspring_container = pygame_gui.core.UIContainer(contain_rect, ui_manager)
 
         # All the perm elements the exist inside self.offspring_container
         self.offspring_next_page = UISurfaceImageButton(
             ui_scale(pygame.Rect((366, 179), (34, 34))),
             Icon.ARROW_RIGHT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
             container=self.offspring_container,
         )
         self.offspring_last_page = UISurfaceImageButton(
             ui_scale(pygame.Rect((230, 179), (34, 34))),
             Icon.ARROW_LEFT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
             container=self.offspring_container,
         )
@@ -308,20 +310,20 @@ class ProfileMateScreen(BaseScreen):
             container=self.offspring_container,
         )
 
-        self.potential_container = pygame_gui.core.UIContainer(contain_rect, MANAGER)
+        self.potential_container = pygame_gui.core.UIContainer(contain_rect, ui_manager)
 
         # All the perm elements the exist inside self.potential_container
         self.potential_next_page = UISurfaceImageButton(
             ui_scale(pygame.Rect((366, 179), (34, 34))),
             Icon.ARROW_RIGHT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
             container=self.potential_container,
         )
         self.potential_last_page = UISurfaceImageButton(
             ui_scale(pygame.Rect((230, 179), (34, 34))),
             Icon.ARROW_LEFT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
             container=self.potential_container,
         )
@@ -435,7 +437,7 @@ class ProfileMateScreen(BaseScreen):
                 ui_scale(pygame.Rect((240, 13), (150, 150))),
                 pygame.transform.scale(_mate.sprite, ui_scale_dimensions((150, 150))),
                 cat_object=_mate,
-                manager=MANAGER,
+                manager=ui_manager,
                 container=self.mates_container,
             )
             return
@@ -485,7 +487,7 @@ class ProfileMateScreen(BaseScreen):
                 ui_scale(pygame.Rect((pos_x, pos_y), (50, 50))),
                 _mate.sprite,
                 cat_object=_mate,
-                manager=MANAGER,
+                manager=ui_manager,
                 container=self.mates_container,
             )
             pos_x += 60
@@ -596,7 +598,7 @@ class ProfileMateScreen(BaseScreen):
                 ui_scale(pygame.Rect((pos_x, pos_y), (50, 50))),
                 _off.sprite,
                 cat_object=_off,
-                manager=MANAGER,
+                manager=ui_manager,
                 container=self.offspring_container,
                 tool_tip_text=info_text,
                 starting_height=2,
@@ -876,7 +878,7 @@ class ProfileMateScreen(BaseScreen):
             info,
             ui_scale(pygame.Rect((206, 175), (94, 100))),
             object_id="#text_box_22_horizcenter_vertcenter_spacing_95",
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         if reset_selected_cat:
@@ -903,7 +905,7 @@ class ProfileMateScreen(BaseScreen):
         self.tab_buttons["potential"] = UISurfaceImageButton(
             button_rect,
             "screens.choose_mate.potential",
-            get_button_dict(ButtonStyles.HORIZONTAL_TAB, (153, 39)),
+            get_button_dict(ButtonStyles.HorizontalTab, (153, 39)),
             object_id="@buttonstyles_horizontal_tab",
             starting_height=2,
             anchors={"bottom": "bottom", "bottom_target": self.list_frame_image},
@@ -915,7 +917,7 @@ class ProfileMateScreen(BaseScreen):
             self.tab_buttons["mates"] = UISurfaceImageButton(
                 button_rect,
                 "screens.choose_mate.current",
-                get_button_dict(ButtonStyles.HORIZONTAL_TAB, (153, 39)),
+                get_button_dict(ButtonStyles.HorizontalTab, (153, 39)),
                 object_id="@buttonstyles_horizontal_tab",
                 starting_height=2,
                 anchors={
@@ -929,7 +931,7 @@ class ProfileMateScreen(BaseScreen):
         self.tab_buttons["offspring"] = UISurfaceImageButton(
             button_rect,
             "screens.choose_mate.offspring",
-            get_button_dict(ButtonStyles.HORIZONTAL_TAB, (153, 39)),
+            get_button_dict(ButtonStyles.HorizontalTab, (153, 39)),
             object_id="@buttonstyles_horizontal_tab",
             starting_height=2,
             anchors={
@@ -1031,7 +1033,7 @@ class ProfileMateScreen(BaseScreen):
             info,
             ui_scale(pygame.Rect((500, 175), (94, 100))),
             object_id="#text_box_22_horizcenter_vertcenter_spacing_95",
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         if self.kits_selected_pair:
@@ -1043,14 +1045,14 @@ class ProfileMateScreen(BaseScreen):
             self.toggle_mate = UISurfaceImageButton(
                 ui_scale(pygame.Rect((323, 310), (153, 30))),
                 "screens.choose_mate.unset_mate",
-                get_button_dict(ButtonStyles.SQUOVAL, (153, 30)),
+                get_button_dict(ButtonStyles.SquOval, (153, 30)),
                 object_id="@buttonstyles_squoval",
             )
         else:
             self.toggle_mate = UISurfaceImageButton(
                 ui_scale(pygame.Rect((323, 310), (153, 30))),
                 "screens.choose_mate.set_mate",
-                get_button_dict(ButtonStyles.SQUOVAL, (153, 30)),
+                get_button_dict(ButtonStyles.SquOval, (153, 30)),
                 object_id="@buttonstyles_squoval",
             )
 

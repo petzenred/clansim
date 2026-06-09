@@ -4,7 +4,9 @@ import i18n
 import pygame.transform
 import pygame_gui.elements
 
-from definitions import PROFILE_SCREEN_NAME
+from scripts._red.screens.screen_manager import screen_manager
+
+from definitions import PROFILE_SCREEN_NAME, ScreenName
 from scripts.cat.cats import Cat
 from scripts.game_structure import image_cache
 from scripts.game_structure.game_essentials import (
@@ -22,19 +24,19 @@ from scripts.utility import (
     ui_scale_dimensions,
     ui_scale_offset,
 )
-from .BaseScreen import BaseScreen
-from ..game_structure.screen_settings import MANAGER
-from ..ui.generate_box import BoxStyles, get_box
-from ..ui.generate_button import get_button_dict, ButtonStyles
-from ..ui.icon import Icon
+from scripts.screens.BaseScreen import BaseScreen
+from scripts.game_structure.screen_settings import ui_manager
+from scripts.ui.generate_box import BoxStyles, get_box
+from scripts.ui.generate_button import get_button_dict, ButtonStyles
+from scripts.ui.icon import Icon
 
 import logging
 logger = logging.getLogger(__name__)
 
 
 class ProfileAdoptScreen(BaseScreen):
-    def __init__(self, name=None):
-        super().__init__(name)
+    def __init__(self):
+        super().__init__(ScreenName.AdoptiveParents)
         self.next_cat = None
         self.previous_cat = None
         self.next_cat_button = None
@@ -171,7 +173,7 @@ class ProfileAdoptScreen(BaseScreen):
         """Sets up the elements that are always on the page"""
         super().screen_switches()
         self.show_mute_buttons()
-        list_frame = get_box(BoxStyles.ROUNDED_BOX, (650, 194))
+        list_frame = get_box(BoxStyles.RoundedBox, (650, 194))
 
         self.list_frame = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((75, 391), (650, 194))), list_frame
@@ -187,7 +189,7 @@ class ProfileAdoptScreen(BaseScreen):
             ui_scale(pygame.Rect((725, 70), (34, 34))),
             "",
             object_id="#help_button",
-            manager=MANAGER,
+            manager=ui_manager,
             tool_tip_text="screens.choose_adoptive_parent.help_tooltip",
         )
 
@@ -216,70 +218,70 @@ class ProfileAdoptScreen(BaseScreen):
                 image_cache.load_image("resources/images/icon_adoption.png").convert_alpha(),
                 ui_scale_dimensions((376, 258)),
             ),
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.next_cat_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((622, 25), (153, 30))),
             "buttons.next_cat",
-            get_button_dict(ButtonStyles.SQUOVAL, (153, 30)),
+            get_button_dict(ButtonStyles.SquOval, (153, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
             sound_id="page_flip",
         )
         self.previous_cat_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((25, 25), (153, 30))),
             "buttons.previous_cat",
-            get_button_dict(ButtonStyles.SQUOVAL, (153, 30)),
+            get_button_dict(ButtonStyles.SquOval, (153, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
             sound_id="page_flip",
         )
         self.back_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((25, 60), (105, 30))),
             "buttons.back",
-            get_button_dict(ButtonStyles.SQUOVAL, (105, 30)),
+            get_button_dict(ButtonStyles.SquOval, (105, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         # Tab containers:
         contain_rect = ui_scale(pygame.Rect((85, 400), (630, 219)))
 
-        self.adoptive_container = pygame_gui.core.UIContainer(contain_rect, MANAGER)
+        self.adoptive_container = pygame_gui.core.UIContainer(contain_rect, ui_manager)
 
         # All the perm elements the exist inside self.mates_container
         self.adoptive_next_page = UISurfaceImageButton(
             ui_scale(pygame.Rect((366, 179), (34, 34))),
             Icon.ARROW_RIGHT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
             container=self.adoptive_container,
         )
         self.adoptive_last_page = UISurfaceImageButton(
             ui_scale(pygame.Rect((230, 179), (34, 34))),
             Icon.ARROW_LEFT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
             container=self.adoptive_container,
         )
 
-        self.birth_container = pygame_gui.core.UIContainer(contain_rect, MANAGER)
+        self.birth_container = pygame_gui.core.UIContainer(contain_rect, ui_manager)
 
-        self.potential_container = pygame_gui.core.UIContainer(contain_rect, MANAGER)
+        self.potential_container = pygame_gui.core.UIContainer(contain_rect, ui_manager)
 
         # All the perm elements the exist inside self.potential_container
         self.potential_next_page = UISurfaceImageButton(
             ui_scale(pygame.Rect((366, 179), (34, 34))),
             Icon.ARROW_RIGHT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
             container=self.potential_container,
         )
         self.potential_last_page = UISurfaceImageButton(
             ui_scale(pygame.Rect((230, 179), (34, 34))),
             Icon.ARROW_LEFT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
             container=self.potential_container,
         )
@@ -315,7 +317,7 @@ class ProfileAdoptScreen(BaseScreen):
         self.toggle_adoptive_parent = UISurfaceImageButton(
             ui_scale(pygame.Rect((303, 310), (192, 30))),
             "screens.choose_adoptive_parent.set_parent",
-            get_button_dict(ButtonStyles.SQUOVAL, (192, 30)),
+            get_button_dict(ButtonStyles.SquOval, (192, 30)),
             object_id="@buttonstyles_squoval",
         )
 
@@ -391,7 +393,7 @@ class ProfileAdoptScreen(BaseScreen):
                     birth_parents[0].sprite, ui_scale_dimensions((150, 150))
                 ),
                 cat_object=birth_parents[0],
-                manager=MANAGER,
+                manager=ui_manager,
                 container=self.birth_container,
                 tool_tip_text=str(birth_parents[0].name),
             )
@@ -406,7 +408,7 @@ class ProfileAdoptScreen(BaseScreen):
                         _par.sprite, ui_scale_dimensions((150, 150))
                     ),
                     cat_object=_par,
-                    manager=MANAGER,
+                    manager=ui_manager,
                     container=self.birth_container,
                     tool_tip_text=str(_par.name),
                     starting_height=2,
@@ -483,7 +485,7 @@ class ProfileAdoptScreen(BaseScreen):
                 ui_scale(pygame.Rect((pos_x, pos_y), (50, 50))),
                 _off.sprite,
                 cat_object=_off,
-                manager=MANAGER,
+                manager=ui_manager,
                 container=self.adoptive_container,
                 starting_height=2,
             )
@@ -717,7 +719,7 @@ class ProfileAdoptScreen(BaseScreen):
             info,
             ui_scale(pygame.Rect((500, 175), (94, 100))),
             object_id="#text_box_22_horizcenter_vertcenter_spacing_95",
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         if reset_selected_cat:
@@ -747,7 +749,7 @@ class ProfileAdoptScreen(BaseScreen):
         self.tab_buttons["potential"] = UISurfaceImageButton(
             button_rect,
             "screens.choose_adoptive_parent.potential",
-            get_button_dict(ButtonStyles.HORIZONTAL_TAB, (153, 39)),
+            get_button_dict(ButtonStyles.HorizontalTab, (153, 39)),
             object_id="@buttonstyles_horizontal_tab",
             starting_height=2,
             anchors={"bottom": "bottom", "bottom_target": self.list_frame},
@@ -759,7 +761,7 @@ class ProfileAdoptScreen(BaseScreen):
             self.tab_buttons["adoptive"] = UISurfaceImageButton(
                 button_rect,
                 "screens.choose_adoptive_parent.adoptive",
-                get_button_dict(ButtonStyles.HORIZONTAL_TAB, (153, 39)),
+                get_button_dict(ButtonStyles.HorizontalTab, (153, 39)),
                 object_id="@buttonstyles_horizontal_tab",
                 starting_height=2,
                 anchors={
@@ -775,7 +777,7 @@ class ProfileAdoptScreen(BaseScreen):
             self.tab_buttons["birth"] = UISurfaceImageButton(
                 button_rect,
                 "screens.choose_adoptive_parent.birth",
-                get_button_dict(ButtonStyles.HORIZONTAL_TAB, (153, 39)),
+                get_button_dict(ButtonStyles.HorizontalTab, (153, 39)),
                 object_id="@buttonstyles_horizontal_tab",
                 starting_height=2,
                 anchors={
@@ -833,7 +835,7 @@ class ProfileAdoptScreen(BaseScreen):
             self.toggle_adoptive_parent = UISurfaceImageButton(
                 ui_scale(pygame.Rect((303, 310), (192, 30))),
                 "screens.choose_adoptive_parent.set_parent",
-                get_button_dict(ButtonStyles.SQUOVAL, (192, 30)),
+                get_button_dict(ButtonStyles.SquOval, (192, 30)),
                 object_id="@buttonstyles_squoval",
             )
             self.toggle_adoptive_parent.disable()
@@ -841,14 +843,14 @@ class ProfileAdoptScreen(BaseScreen):
             self.toggle_adoptive_parent = UISurfaceImageButton(
                 ui_scale(pygame.Rect((303, 310), (192, 30))),
                 "screens.choose_adoptive_parent.unset_parent",
-                get_button_dict(ButtonStyles.SQUOVAL, (192, 30)),
+                get_button_dict(ButtonStyles.SquOval, (192, 30)),
                 object_id="@buttonstyles_squoval",
             )
         else:
             self.toggle_adoptive_parent = UISurfaceImageButton(
                 ui_scale(pygame.Rect((303, 310), (192, 30))),
                 "screens.choose_adoptive_parent.set_parent",
-                get_button_dict(ButtonStyles.SQUOVAL, (192, 30)),
+                get_button_dict(ButtonStyles.SquOval, (192, 30)),
                 object_id="@buttonstyles_squoval",
             )
 
@@ -897,7 +899,7 @@ class ProfileAdoptScreen(BaseScreen):
             info,
             ui_scale(pygame.Rect((206, 175), (94, 100))),
             object_id="#text_box_22_horizcenter_vertcenter_spacing_95",
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
     def on_use(self):

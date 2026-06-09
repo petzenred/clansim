@@ -4,7 +4,9 @@ import i18n
 import pygame
 import pygame_gui
 
-from definitions import PROFILE_SCREEN_NAME
+from scripts._red.screens.screen_manager import screen_manager
+
+from definitions import PROFILE_SCREEN_NAME, ScreenName
 from scripts.cat.cats import Cat
 from scripts.clan_resources.herb.herb_supply import MESSAGES
 from scripts.game_structure.game_essentials import game
@@ -22,12 +24,12 @@ from scripts.utility import (
     event_text_adjust,
     ui_scale_offset,
 )
-from .BaseScreen import BaseScreen
-from ..conditions import get_amount_cat_for_one_medic, medical_cats_condition_fulfilled
-from ..game_structure.screen_settings import MANAGER
-from ..ui.generate_box import BoxStyles, get_box
-from ..ui.generate_button import get_button_dict, ButtonStyles
-from ..ui.icon import Icon
+from scripts.screens.BaseScreen import BaseScreen
+from scripts.conditions import get_amount_cat_for_one_medic, medical_cats_condition_fulfilled
+from scripts.game_structure.screen_settings import ui_manager
+from scripts.ui.generate_box import BoxStyles, get_box
+from scripts.ui.generate_button import get_button_dict, ButtonStyles
+from scripts.ui.icon import Icon
 
 
 class MedDenScreen(BaseScreen):
@@ -35,8 +37,8 @@ class MedDenScreen(BaseScreen):
     conditions_hover = {}
     cat_names = []
 
-    def __init__(self, name=None):
-        super().__init__(name)
+    def __init__(self):
+        super().__init__(ScreenName.HealerDen)
         self.help_button = None
         self.log_box = None
         self.log_title = None
@@ -135,23 +137,23 @@ class MedDenScreen(BaseScreen):
         self.back_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((25, 25), (105, 30))),
             "buttons.back",
-            get_button_dict(ButtonStyles.SQUOVAL, (105, 30)),
+            get_button_dict(ButtonStyles.SquOval, (105, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.next_med = UISurfaceImageButton(
             ui_scale(pygame.Rect((645, 278), (34, 34))),
             Icon.ARROW_RIGHT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.last_med = UISurfaceImageButton(
             ui_scale(pygame.Rect((600, 278), (34, 34))),
             Icon.ARROW_LEFT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         if game.clan_obj.game_mode != "classic":
@@ -159,40 +161,40 @@ class MedDenScreen(BaseScreen):
                 ui_scale(pygame.Rect((725, 25), (34, 34))),
                 "",
                 object_id="#help_button",
-                manager=MANAGER,
+                manager=ui_manager,
                 tool_tip_text="screens.med_den.help_tooltip",
             )
             self.last_page = UISurfaceImageButton(
                 ui_scale(pygame.Rect((330, 636), (34, 34))),
                 Icon.ARROW_LEFT,
-                get_button_dict(ButtonStyles.ICON, (34, 34)),
+                get_button_dict(ButtonStyles.Icon, (34, 34)),
                 object_id="@buttonstyles_icon",
             )
             self.next_page = UISurfaceImageButton(
                 ui_scale(pygame.Rect((476, 636), (34, 34))),
                 Icon.ARROW_RIGHT,
-                get_button_dict(ButtonStyles.ICON, (34, 34)),
+                get_button_dict(ButtonStyles.Icon, (34, 34)),
                 object_id="@buttonstyles_icon",
-                manager=MANAGER,
+                manager=ui_manager,
             )
 
             self.hurt_sick_title = pygame_gui.elements.UITextBox(
                 "screens.med_den.hurt_sick_title",
                 ui_scale(pygame.Rect((140, 410), (200, 30))),
                 object_id=get_text_box_theme("#text_box_40_horizcenter"),
-                manager=MANAGER,
+                manager=ui_manager,
             )
             self.log_title = pygame_gui.elements.UITextBox(
                 "screens.med_den.log_title",
                 ui_scale(pygame.Rect((140, 410), (200, 30))),
                 object_id=get_text_box_theme("#text_box_40_horizcenter"),
-                manager=MANAGER,
+                manager=ui_manager,
             )
             self.log_title.hide()
             self.cat_bg = pygame_gui.elements.UIImage(
                 ui_scale(pygame.Rect((140, 440), (560, 200))),
-                get_box(BoxStyles.ROUNDED_BOX, (560, 200)),
-                manager=MANAGER,
+                get_box(BoxStyles.RoundedBox, (560, 200)),
+                manager=ui_manager,
             )
             self.cat_bg.disable()
             log_text = game.herb_events_list.copy()
@@ -200,7 +202,7 @@ class MedDenScreen(BaseScreen):
                 f"{f'<br>-------------------------------<br>'.join(log_text)}<br>",
                 ui_scale(pygame.Rect((150, 450), (540, 180))),
                 object_id="#text_box_26_horizleft_verttop_pad_14_0_10",
-                manager=MANAGER,
+                manager=ui_manager,
             )
             self.log_box.hide()
             tab_rect = ui_scale(pygame.Rect((109, 462), (100, 30)))
@@ -208,9 +210,9 @@ class MedDenScreen(BaseScreen):
             self.cats_tab = UISurfaceImageButton(
                 tab_rect,
                 Icon.CAT_HEAD + i18n.t("screens.med_den.hurt_sick_label"),
-                get_button_dict(ButtonStyles.VERTICAL_TAB, (100, 30)),
+                get_button_dict(ButtonStyles.VerticalTab, (100, 30)),
                 object_id="@buttonstyles_vertical_tab",
-                manager=MANAGER,
+                manager=ui_manager,
                 anchors={"right": "right", "right_target": self.cat_bg},
             )
             self.cats_tab.disable()
@@ -219,9 +221,9 @@ class MedDenScreen(BaseScreen):
             self.log_tab = UISurfaceImageButton(
                 tab_rect,
                 Icon.NOTEPAD + i18n.t("screens.med_den.log_label"),
-                get_button_dict(ButtonStyles.VERTICAL_TAB, (100, 30)),
+                get_button_dict(ButtonStyles.VerticalTab, (100, 30)),
                 object_id="@buttonstyles_vertical_tab",
-                manager=MANAGER,
+                manager=ui_manager,
                 anchors={
                     "right": "right",
                     "right_target": self.cat_bg,
@@ -232,24 +234,24 @@ class MedDenScreen(BaseScreen):
             self.in_den_tab = UISurfaceImageButton(
                 ui_scale(pygame.Rect((370, 409), (75, 35))),
                 "screens.med_den.in_den",
-                get_button_dict(ButtonStyles.HORIZONTAL_TAB, (75, 35)),
+                get_button_dict(ButtonStyles.HorizontalTab, (75, 35)),
                 object_id="@buttonstyles_horizontal_tab",
-                manager=MANAGER,
+                manager=ui_manager,
             )
             self.in_den_tab.disable()
             self.out_den_tab = UISurfaceImageButton(
                 ui_scale(pygame.Rect((460, 409), (112, 35))),
                 "screens.med_den.out_den",
-                get_button_dict(ButtonStyles.HORIZONTAL_TAB, (112, 35)),
+                get_button_dict(ButtonStyles.HorizontalTab, (112, 35)),
                 object_id="@buttonstyles_horizontal_tab",
-                manager=MANAGER,
+                manager=ui_manager,
             )
             self.minor_tab = UISurfaceImageButton(
                 ui_scale(pygame.Rect((587, 409), (70, 35))),
                 "screens.med_den.minor",
-                get_button_dict(ButtonStyles.HORIZONTAL_TAB, (70, 35)),
+                get_button_dict(ButtonStyles.HorizontalTab, (70, 35)),
                 object_id="@buttonstyles_horizontal_tab",
-                manager=MANAGER,
+                manager=ui_manager,
             )
             self.tab_showing = self.in_den_tab
 
@@ -473,7 +475,7 @@ class MedDenScreen(BaseScreen):
                 ui_scale(pygame.Rect((435, 165), (150, 150))),
                 cat.sprite,
                 cat_object=cat,
-                manager=MANAGER,
+                manager=ui_manager,
             )
             name = str(cat.name)
             short_name = shorten_text_to_fit(name, 137, 15)
@@ -481,14 +483,14 @@ class MedDenScreen(BaseScreen):
                 ui_scale(pygame.Rect((525, 155), (225, 30))),
                 short_name,
                 object_id=get_text_box_theme("#text_box_30_horizcenter"),
-                manager=MANAGER,
+                manager=ui_manager,
             )
             self.med_info = UITextBoxTweaked(
                 "",
                 ui_scale(pygame.Rect((580, 185), (120, 120))),
                 object_id=get_text_box_theme("#text_box_22_horizcenter"),
                 line_spacing=1,
-                manager=MANAGER,
+                manager=ui_manager,
             )
             med_skill = cat.skills.skill_string(short=True)
             med_exp = i18n.t("general.exp_label", exp=cat.experience_level)
@@ -573,7 +575,7 @@ class MedDenScreen(BaseScreen):
                 ui_scale(pygame.Rect((pos_x, pos_y), (50, 50))),
                 cat.sprite,
                 cat_object=cat,
-                manager=MANAGER,
+                manager=ui_manager,
                 tool_tip_text=conditions,
                 starting_height=2,
             )
@@ -585,7 +587,7 @@ class MedDenScreen(BaseScreen):
                     short_name,
                     ui_scale(pygame.Rect((pos_x - 30, pos_y + 50), (110, -1))),
                     object_id="#text_box_30_horizcenter",
-                    manager=MANAGER,
+                    manager=ui_manager,
                 )
             )
 
@@ -622,7 +624,7 @@ class MedDenScreen(BaseScreen):
                 "",
                 object_id="#med_cat_den_hover",
                 tool_tip_text=herb_display,
-                manager=MANAGER,
+                manager=ui_manager,
             )
         else:
             count = 1
@@ -654,7 +656,7 @@ class MedDenScreen(BaseScreen):
                 "",
                 object_id="#med_cat_den_hover_big",
                 tool_tip_text=herb_display,
-                manager=MANAGER,
+                manager=ui_manager,
             )
 
         # otherwise draw the herbs you have
@@ -668,33 +670,33 @@ class MedDenScreen(BaseScreen):
                     ui_scale(pygame.Rect((108, 95), (396, 224))),
                     pygame.transform.scale(
                         pygame.image.load(
-                            "resources/images/med_cat_den/cobweb1.png"
+                            "resources/images/healer_den_screen/cobweb1.png"
                         ).convert_alpha(),
                         (792, 448),
                     ),
-                    manager=MANAGER,
+                    manager=ui_manager,
                 )
                 if count > 1:
                     self.herbs["cobweb2"] = pygame_gui.elements.UIImage(
                         ui_scale(pygame.Rect((108, 95), (396, 224))),
                         pygame.transform.scale(
                             pygame.image.load(
-                                "resources/images/med_cat_den/cobweb2.png"
+                                "resources/images/healer_den_screen/cobweb2.png"
                             ).convert_alpha(),
                             (792, 448),
                         ),
-                        manager=MANAGER,
+                        manager=ui_manager,
                     )
                 continue
             self.herbs[herb] = pygame_gui.elements.UIImage(
                 ui_scale(pygame.Rect((108, 95), (396, 224))),
                 pygame.transform.scale(
                     pygame.image.load(
-                        f"resources/images/med_cat_den/{herb}.png"
+                        f"resources/images/healer_den_screen/{herb}.png"
                     ).convert_alpha(),
                     (792, 448),
                 ),
-                manager=MANAGER,
+                manager=ui_manager,
             )
 
     def exit_screen(self):

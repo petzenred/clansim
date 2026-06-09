@@ -9,6 +9,9 @@ import pygame
 import pygame_gui
 import ujson
 
+from scripts._red.screens.screen_manager import screen_manager
+
+from definitions import ScreenName
 from scripts.cat.cats import Cat
 from scripts.game_structure.game_essentials import game
 from scripts.ui.ui_elements import UIImageButton, UISurfaceImageButton
@@ -18,11 +21,10 @@ from scripts.utility import (
     ui_scale_dimensions,
     ui_scale_offset,
 )  # pylint: disable=redefined-builtin
-from .BaseScreen import BaseScreen
-from ..game_structure.screen_settings import MANAGER, toggle_fullscreen
-from ..housekeeping.datadir import get_data_dir
-from ..housekeeping.version import get_version_info
-from ..ui.generate_button import get_button_dict, ButtonStyles
+from scripts.screens.BaseScreen import BaseScreen
+from scripts.housekeeping.datadir import get_data_dir
+from scripts.housekeeping.version import get_version_info
+from scripts.ui.generate_button import get_button_dict, ButtonStyles
 
 logger = logging.getLogger(__name__)
 
@@ -51,8 +53,8 @@ class ClanSettingsScreen(BaseScreen):
     # Contains the text for the checkboxes.
     checkboxes_text = {}
 
-    def __init__(self, name):
-        super().__init__(name)
+    def __init__(self):
+        super().__init__(ScreenName.ClanSettings)
         self.opens = {
             "general": self.open_general_settings,
             "relation": self.open_relation_settings,
@@ -73,7 +75,7 @@ class ClanSettingsScreen(BaseScreen):
                 subprocess.Popen(["xdg-open", event.link_target])
         if event.type == pygame_gui.UI_BUTTON_START_PRESS:
             if event.ui_element == self.fullscreen_toggle:
-                toggle_fullscreen(source_screen=self)
+                screen_manager.toggle_fullscreen()
             elif event.ui_element == self.open_data_directory_button:
                 if platform.system() == "Darwin":
                     subprocess.Popen(["open", "-R", get_data_dir()])
@@ -144,41 +146,41 @@ class ClanSettingsScreen(BaseScreen):
         self.general_settings_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((100, 140), (150, 30))),
             "screens.clan_settings.general",
-            get_button_dict(ButtonStyles.MENU_LEFT, (150, 30)),
+            get_button_dict(ButtonStyles.MenuLeft, (150, 30)),
             object_id="@buttonstyles_menu_left",
-            manager=MANAGER,
+            manager=screen_manager.uim,
         )
         self.relation_settings_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((0, 140), (150, 30))),
             "screens.clan_settings.relation",
-            get_button_dict(ButtonStyles.MENU_MIDDLE, (150, 30)),
+            get_button_dict(ButtonStyles.MenuMiddle, (150, 30)),
             object_id="@buttonstyles_menu_middle",
-            manager=MANAGER,
+            manager=screen_manager.uim,
             anchors={"left_target": self.general_settings_button},
         )
         self.role_settings_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((0, 140), (150, 30))),
             "screens.clan_settings.role",
-            get_button_dict(ButtonStyles.MENU_MIDDLE, (150, 30)),
+            get_button_dict(ButtonStyles.MenuMiddle, (150, 30)),
             object_id="@buttonstyles_menu_middle",
-            manager=MANAGER,
+            manager=screen_manager.uim,
             anchors={"left_target": self.relation_settings_button},
         )
         self.clan_stats_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((0, 140), (150, 30))),
             "screens.clan_settings.stats",
-            get_button_dict(ButtonStyles.MENU_RIGHT, (150, 30)),
+            get_button_dict(ButtonStyles.MenuRight, (150, 30)),
             object_id="@buttonstyles_menu_right",
-            manager=MANAGER,
+            manager=screen_manager.uim,
             anchors={"left_target": self.role_settings_button},
         )
 
         self.open_data_directory_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((25, 645), (178, 30))),
             "buttons.open_data_directory",
-            get_button_dict(ButtonStyles.SQUOVAL, (178, 30)),
+            get_button_dict(ButtonStyles.SquOval, (178, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=screen_manager.uim,
             tool_tip_text="buttons.open_data_directory_tooltip",
         )
 
@@ -189,7 +191,7 @@ class ClanSettingsScreen(BaseScreen):
             rect,
             "buttons.toggle_fullscreen",
             object_id="#toggle_fullscreen_button",
-            manager=MANAGER,
+            manager=screen_manager.uim,
             starting_height=2,
             tool_tip_text="buttons.toggle_fullscreen_tooltip",
             anchors={
@@ -254,7 +256,7 @@ class ClanSettingsScreen(BaseScreen):
         ] = pygame_gui.elements.UIScrollingContainer(
             ui_scale(pygame.Rect((0, 245), (700, 300))),
             allow_scroll_x=False,
-            manager=MANAGER,
+            manager=screen_manager.uim,
         )
 
         n = 0
@@ -268,7 +270,7 @@ class ClanSettingsScreen(BaseScreen):
                 ui_scale(pygame.Rect((x_val, n * 39), (500, 39))),
                 container=self.checkboxes_text["container_general"],
                 object_id=get_text_box_theme("#text_box_30_horizleft_pad_0_8"),
-                manager=MANAGER,
+                manager=screen_manager.uim,
             )
             self.checkboxes_text[code].disable()
             n += 1
@@ -281,7 +283,7 @@ class ClanSettingsScreen(BaseScreen):
             "screens.clan_settings.general_info",
             ui_scale(pygame.Rect((100, 185), (600, 50))),
             object_id=get_text_box_theme("#text_box_30_horizcenter"),
-            manager=MANAGER,
+            manager=screen_manager.uim,
         )
 
         # This is where the actual checkboxes are created. I don't like
@@ -302,7 +304,7 @@ class ClanSettingsScreen(BaseScreen):
         ] = pygame_gui.elements.UIScrollingContainer(
             ui_scale(pygame.Rect((0, 245), (700, 300))),
             allow_scroll_x=False,
-            manager=MANAGER,
+            manager=screen_manager.uim,
         )
 
         n = 0
@@ -317,7 +319,7 @@ class ClanSettingsScreen(BaseScreen):
                 ui_scale(pygame.Rect((x_val, n * 39), (500, 39))),
                 container=self.checkboxes_text["container_role"],
                 object_id=get_text_box_theme("#text_box_30_horizleft_pad_0_8"),
-                manager=MANAGER,
+                manager=screen_manager.uim,
             )
             self.checkboxes_text[code].disable()
             n += 1
@@ -326,7 +328,7 @@ class ClanSettingsScreen(BaseScreen):
             "screens.clan_settings.role_info",
             ui_scale(pygame.Rect((100, 185), (600, 50))),
             object_id=get_text_box_theme("#text_box_30_horizcenter"),
-            manager=MANAGER,
+            manager=screen_manager.uim,
         )
 
         self.refresh_checkboxes()
@@ -343,7 +345,7 @@ class ClanSettingsScreen(BaseScreen):
         ] = pygame_gui.elements.UIScrollingContainer(
             ui_scale(pygame.Rect((0, 245), (700, 300))),
             allow_scroll_x=False,
-            manager=MANAGER,
+            manager=screen_manager.uim,
         )
 
         n = 0
@@ -357,7 +359,7 @@ class ClanSettingsScreen(BaseScreen):
                 ui_scale(pygame.Rect((x_val, n * 39), (500, 39))),
                 container=self.checkboxes_text["container_relation"],
                 object_id=get_text_box_theme("#text_box_30_horizleft_pad_0_8"),
-                manager=MANAGER,
+                manager=screen_manager.uim,
             )
             self.checkboxes_text[code].disable()
             n += 1
@@ -366,7 +368,7 @@ class ClanSettingsScreen(BaseScreen):
             "screens.clan_settings.relation_info",
             ui_scale(pygame.Rect((100, 185), (600, 50))),
             object_id=get_text_box_theme("#text_box_30_horizcenter"),
-            manager=MANAGER,
+            manager=screen_manager.uim,
         )
 
         self.refresh_checkboxes()

@@ -5,7 +5,9 @@ import i18n
 import pygame.transform
 import pygame_gui.elements
 
-from definitions import PROFILE_SCREEN_NAME
+from scripts._red.screens.screen_manager import screen_manager
+
+from definitions import ScreenName
 from scripts.cat.cats import Cat
 from scripts.game_structure import image_cache
 from scripts.game_structure.game_essentials import game
@@ -21,19 +23,19 @@ from scripts.utility import (
     shorten_text_to_fit,
     ui_scale_dimensions,
 )
-from .BaseScreen import BaseScreen
-from ..game_structure.screen_settings import MANAGER
-from ..ui.generate_box import get_box, BoxStyles
-from ..ui.generate_button import get_button_dict, ButtonStyles
-from ..ui.icon import Icon
+from scripts.screens.BaseScreen import BaseScreen
+from scripts.game_structure.screen_settings import ui_manager
+from scripts.ui.generate_box import get_box, BoxStyles
+from scripts.ui.generate_button import get_button_dict, ButtonStyles
+from scripts.ui.icon import Icon
 
 import logging
 logger = logging.getLogger(__name__)
 
 
 class ProfileMediationScreen(BaseScreen):
-    def __init__(self, name=None):
-        super().__init__(name)
+    def __init__(self):
+        super().__init__(ScreenName.Mediation)
         self.back_button = None
         self.selected_mediator = None
         self.selected_cat_1 = None
@@ -54,7 +56,7 @@ class ProfileMediationScreen(BaseScreen):
             self.mute_button_pressed(event)
 
             if event.ui_element == self.back_button:
-                self.change_screen(PROFILE_SCREEN_NAME)
+                self.change_screen(ScreenName.Profile)
             elif event.ui_element == self.last_med:
                 self.selected_mediator -= 1
                 self.update_mediator_info()
@@ -154,25 +156,25 @@ class ProfileMediationScreen(BaseScreen):
         self.back_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((25, 25), (105, 30))),
             "buttons.back",
-            get_button_dict(ButtonStyles.SQUOVAL, (105, 30)),
+            get_button_dict(ButtonStyles.SquOval, (105, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.selected_frame_1 = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((50, 80), (200, 350))),
-            get_box(BoxStyles.ROUNDED_BOX, (200, 350)),
+            get_box(BoxStyles.RoundedBox, (200, 350)),
         )
         self.selected_frame_1.disable()
         self.selected_frame_2 = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((550, 80), (200, 350))),
-            get_box(BoxStyles.ROUNDED_BOX, (200, 350)),
+            get_box(BoxStyles.RoundedBox, (200, 350)),
         )
         self.selected_frame_2.disable()
 
         self.cat_bg = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((50, 470), (700, 150))),
-            get_box(BoxStyles.ROUNDED_BOX, (700, 150)),
+            get_box(BoxStyles.RoundedBox, (700, 150)),
         )
         self.cat_bg.disable()
 
@@ -182,108 +184,108 @@ class ProfileMediationScreen(BaseScreen):
             ui_scale(pygame.Rect((368, 325), (100, 20))),
             "screens.mediation.allow_romantic",
             object_id=get_text_box_theme("#text_box_22_horizleft"),
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.mediate_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((280, 350), (105, 30))),
             "screens.mediation.mediate",
-            get_button_dict(ButtonStyles.SQUOVAL, (105, 30)),
+            get_button_dict(ButtonStyles.SquOval, (105, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.sabotage_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((400, 350), (109, 30))),
             "screens.mediation.sabotage",
-            get_button_dict(ButtonStyles.SQUOVAL, (105, 30)),
+            get_button_dict(ButtonStyles.SquOval, (105, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.next_med = UISurfaceImageButton(
             ui_scale(pygame.Rect((476, 270), (34, 34))),
             Icon.ARROW_RIGHT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
         )
         self.last_med = UISurfaceImageButton(
             ui_scale(pygame.Rect((280, 270), (34, 34))),
             Icon.ARROW_LEFT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
         )
 
         self.next_page = UISurfaceImageButton(
             ui_scale(pygame.Rect((433, 619), (34, 34))),
             Icon.ARROW_RIGHT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.previous_page = UISurfaceImageButton(
             ui_scale(pygame.Rect((333, 619), (34, 34))),
             Icon.ARROW_LEFT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.deselect_1 = UISurfaceImageButton(
             ui_scale(pygame.Rect((68, 434), (127, 30))),
             "buttons.remove_cat",
-            get_button_dict(ButtonStyles.SQUOVAL, (127, 30)),
+            get_button_dict(ButtonStyles.SquOval, (127, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.deselect_2 = UISurfaceImageButton(
             ui_scale(pygame.Rect((605, 434), (127, 30))),
             "buttons.remove_cat",
-            get_button_dict(ButtonStyles.SQUOVAL, (127, 30)),
+            get_button_dict(ButtonStyles.SquOval, (127, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.results = pygame_gui.elements.UITextBox(
             "",
             ui_scale(pygame.Rect((280, 385), (229, 100))),
             object_id=get_text_box_theme("#text_box_22_horizcenter_spacing_95"),
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.error = pygame_gui.elements.UITextBox(
             "",
             ui_scale(pygame.Rect((280, 37), (229, 57))),
             object_id=get_text_box_theme("#text_box_22_horizcenter_spacing_95"),
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.random1 = UISurfaceImageButton(
             ui_scale(pygame.Rect((198, 432), (34, 34))),
             Icon.DICE,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
-            manager=MANAGER,
+            manager=ui_manager,
             sound_id="dice_roll",
         )
         self.random2 = UISurfaceImageButton(
             ui_scale(pygame.Rect((568, 432), (34, 34))),
             Icon.DICE,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
-            manager=MANAGER,
+            manager=ui_manager,
             sound_id="dice_roll",
         )
 
         self.search_bar_image = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((55, 625), (118, 34))),
             pygame.image.load("resources/images/search_bar.png").convert_alpha(),
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.search_bar = pygame_gui.elements.UITextEntryLine(
             ui_scale(pygame.Rect((60, 629), (115, 27))),
             object_id="#search_entry_box",
             placeholder_text="general.name_search",
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.update_buttons()
@@ -347,7 +349,7 @@ class ProfileMediationScreen(BaseScreen):
                 text,
                 ui_scale(pygame.Rect((x_value, 260), (155, 60))),
                 object_id=get_text_box_theme("#text_box_22_horizcenter_spacing_95"),
-                manager=MANAGER,
+                manager=ui_manager,
             )
 
             mediator_number = len(self.mediators)
@@ -554,7 +556,7 @@ class ProfileMediationScreen(BaseScreen):
             col1,
             ui_scale(pygame.Rect((x + 21, y + 126), (90, -1))),
             object_id="#text_box_22_horizleft_spacing_95",
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         mates = False
@@ -603,7 +605,7 @@ class ProfileMediationScreen(BaseScreen):
             col2,
             ui_scale(pygame.Rect((x + 110, y + 126), (80, -1))),
             object_id="#text_box_22_horizleft_spacing_95",
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         # ------------------------------------------------------------------------------------------------------------ #
@@ -898,7 +900,7 @@ class ProfileMediationScreen(BaseScreen):
             if self.allow_romantic
             else "@unchecked_checkbox",
             tool_tip_text="screens.mediation.allow_romantic_tooltip",
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
     def update_search_cats(self, search_text):

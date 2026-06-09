@@ -5,13 +5,15 @@ import pygame
 import pygame_gui
 from pygame_gui.core import UIContainer
 
+from scripts._red.screens.screen_manager import screen_manager
+
 from definitions import (
-    INTERACTION_NEGATIVE, INTERACTION_POSITIVE
+    INTERACTION_NEGATIVE, INTERACTION_POSITIVE, ScreenName
 )
 from scripts.cat.cats import Cat
 from scripts.clan import OtherClan
 from scripts.game_structure.game_essentials import game
-from scripts.game_structure.screen_settings import MANAGER
+from scripts.game_structure.screen_settings import ui_manager
 from scripts.ui.ui_elements import (
     UIImageButton,
     UISpriteButton,
@@ -35,8 +37,8 @@ from scripts.utility import (
 
 
 class LeaderDenScreen(BaseScreen):
-    def __init__(self, name=None):
-        super().__init__(name)
+    def __init__(self):
+        super().__init__(ScreenName.LeaderDen)
 
         self.current_page = 1
         self.help_button = None
@@ -138,15 +140,15 @@ class LeaderDenScreen(BaseScreen):
         self.back_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((25, 25), (105, 30))),
             "buttons.back",
-            get_button_dict(ButtonStyles.SQUOVAL, (105, 30)),
+            get_button_dict(ButtonStyles.SquOval, (105, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.help_button = UIImageButton(
             ui_scale(pygame.Rect((725, 25), (34, 34))),
             "",
             object_id="#help_button",
-            manager=MANAGER,
+            manager=ui_manager,
             tool_tip_text="screens.leader_den.help_tooltip",
         )
         # This is here incase the leader comes back
@@ -164,7 +166,7 @@ class LeaderDenScreen(BaseScreen):
                 ).convert_alpha(),
                 object_id="#lead_den_bg",
                 starting_height=1,
-                manager=MANAGER,
+                manager=ui_manager,
             )
         except FileNotFoundError:
             self.screen_elements["bg_image"] = pygame_gui.elements.UIImage(
@@ -174,7 +176,7 @@ class LeaderDenScreen(BaseScreen):
                 ).convert_alpha(),
                 object_id="#lead_den_bg",
                 starting_height=1,
-                manager=MANAGER,
+                manager=ui_manager,
             )
 
         if not self.no_leader:
@@ -185,7 +187,7 @@ class LeaderDenScreen(BaseScreen):
                 ),
                 object_id="#lead_cat_image",
                 starting_height=3,
-                manager=MANAGER,
+                manager=ui_manager,
             )
 
         self.helper_cat = None
@@ -238,7 +240,7 @@ class LeaderDenScreen(BaseScreen):
                     ),
                     object_id="#helper_cat_image",
                     starting_height=2,
-                    manager=MANAGER,
+                    manager=ui_manager,
                 )
 
         # FOCUS FRAME - container and inner elements
@@ -261,7 +263,7 @@ class LeaderDenScreen(BaseScreen):
             html_text="screens.leader_den.clan_notice_text",
             object_id=get_text_box_theme("#text_box_30_horizcenter_spacing_95"),
             visible=False,
-            manager=MANAGER,
+            manager=ui_manager,
             text_kwargs={
                 "m_c": game.clan_obj.leader if not self.no_leader else None,
                 "count": 1,
@@ -272,7 +274,7 @@ class LeaderDenScreen(BaseScreen):
             html_text=f"screens.leader_den.outsider_notice_text",
             object_id=get_text_box_theme("#text_box_30_horizcenter_spacing_95"),
             visible=False,
-            manager=MANAGER,
+            manager=ui_manager,
             text_kwargs={
                 "count": 1,
                 "m_c": game.clan_obj.leader if not self.no_leader else None,
@@ -334,7 +336,7 @@ class LeaderDenScreen(BaseScreen):
             relative_rect=ui_scale(pygame.Rect((68, 410), (445, -1))),
             html_text="screens.leader_den.temper_text",
             object_id=get_text_box_theme("#text_box_30_horizcenter"),
-            manager=MANAGER,
+            manager=ui_manager,
             text_kwargs={
                 "temper": i18n.t(f"screens.leader_den.{self.clan_temper}"),
                 "clan": game.clan_obj.name,
@@ -374,7 +376,7 @@ class LeaderDenScreen(BaseScreen):
             ui_scale(pygame.Rect((509, 61), (240, 398))),
             object_id="#focus_frame_container",
             starting_height=3,
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.focus_frame_elements["frame"] = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((0, 31), (240, 364))),
@@ -384,27 +386,27 @@ class LeaderDenScreen(BaseScreen):
             object_id="#lead_den_focus_frame",
             container=self.focus_frame_container,
             starting_height=1,
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.focus_frame_elements["clans_tab"] = UISurfaceImageButton(
             ui_scale(pygame.Rect((30, 2), (69, 34))),
             "screens.leader_den.clans",
-            get_button_dict(ButtonStyles.HORIZONTAL_TAB, (69, 34)),
+            get_button_dict(ButtonStyles.HorizontalTab, (69, 34)),
             object_id="@buttonstyles_horizontal_tab",
             container=self.focus_frame_container,
             starting_height=2,
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.focus_frame_elements["clans_tab"].disable()
 
         self.focus_frame_elements["outsiders_tab"] = UISurfaceImageButton(
             ui_scale(pygame.Rect((111, 2), (102, 34))),
             "screens.leader_den.outsiders",
-            get_button_dict(ButtonStyles.HORIZONTAL_TAB, (102, 34)),
+            get_button_dict(ButtonStyles.HorizontalTab, (102, 34)),
             object_id="@buttonstyles_horizontal_tab",
             container=self.focus_frame_container,
             starting_height=2,
-            manager=MANAGER,
+            manager=ui_manager,
             tab_movement={
                 "hovered": False,
             },
@@ -421,15 +423,15 @@ class LeaderDenScreen(BaseScreen):
                 ui_scale(pygame.Rect((66, 451), (50, 50))),
                 object_id="#other_clan_selection_container",
                 starting_height=1,
-                manager=MANAGER,
+                manager=ui_manager,
             )
         )
         self.other_clan_selection_elements["frame"] = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((0, 0), (662, 194))),
-            get_box(BoxStyles.FRAME, (662, 194)),
+            get_box(BoxStyles.Frame, (662, 194)),
             container=self.other_clan_selection_container,
             starting_height=1,
-            manager=MANAGER,
+            manager=ui_manager,
         )
         for i, other_clan in enumerate(game.clan_obj.all_clans):
             if other_clan.name == game.clan_obj.name:
@@ -439,7 +441,7 @@ class LeaderDenScreen(BaseScreen):
                 ui_scale(pygame.Rect((8 + (x_pos * i), 10), (134, 174))),
                 starting_height=1,
                 container=self.other_clan_selection_container,
-                manager=MANAGER,
+                manager=ui_manager,
             )
             self.other_clan_selection_elements[f"button{i}"] = UIImageButton(
                 ui_scale(pygame.Rect((0, 0), (134, 174))),
@@ -447,7 +449,7 @@ class LeaderDenScreen(BaseScreen):
                 object_id="#other_clan_select_button",
                 starting_height=2,
                 container=self.other_clan_selection_elements[f"container{i}"],
-                manager=MANAGER,
+                manager=ui_manager,
                 anchors={"centerx": "centerx"},
             )
 
@@ -459,7 +461,7 @@ class LeaderDenScreen(BaseScreen):
                 object_id=f"#clan_symbol{i}",
                 starting_height=1,
                 container=self.other_clan_selection_elements[f"container{i}"],
-                manager=MANAGER,
+                manager=ui_manager,
                 anchors={"center": "center"},
             )
 
@@ -470,7 +472,7 @@ class LeaderDenScreen(BaseScreen):
                 text=f"{other_clan.name}Clan",
                 object_id=get_text_box_theme("#text_box_30_horizcenter"),
                 container=self.other_clan_selection_elements[f"container{i}"],
-                manager=MANAGER,
+                manager=ui_manager,
                 anchors={
                     "centerx": "centerx",
                     "top_target": self.other_clan_selection_elements[f"clan_symbol{i}"],
@@ -483,7 +485,7 @@ class LeaderDenScreen(BaseScreen):
                 text=f"screens.leader_den.{other_clan.temperament.strip()}",
                 object_id=get_text_box_theme("#text_box_22_horizcenter"),
                 container=self.other_clan_selection_elements[f"container{i}"],
-                manager=MANAGER,
+                manager=ui_manager,
                 anchors={
                     "centerx": "centerx",
                     "top_target": self.other_clan_selection_elements[f"clan_name{i}"],
@@ -496,7 +498,7 @@ class LeaderDenScreen(BaseScreen):
                 text=f"screens.leader_den.{get_other_clan_relation(other_clan.relations).strip()}",
                 object_id=get_text_box_theme("#text_box_22_horizcenter"),
                 container=self.other_clan_selection_elements[f"container{i}"],
-                manager=MANAGER,
+                manager=ui_manager,
                 anchors={
                     "centerx": "centerx",
                     "top_target": self.other_clan_selection_elements[f"clan_temper{i}"],
@@ -508,33 +510,33 @@ class LeaderDenScreen(BaseScreen):
             ui_scale(pygame.Rect((59, 455), (0, 0))),
             object_id="#outsider_selection_container",
             starting_height=1,
-            manager=MANAGER,
+            manager=ui_manager,
             visible=False,
         )
         self.outsider_selection_elements["page_left"] = UISurfaceImageButton(
             ui_scale(pygame.Rect((0, 70), (34, 34))),
             Icon.ARROW_LEFT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
             container=self.outsider_selection_container,
             starting_height=1,
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.outsider_selection_elements["page_right"] = UISurfaceImageButton(
             ui_scale(pygame.Rect((646, 70), (34, 34))),
             Icon.ARROW_RIGHT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
             container=self.outsider_selection_container,
             starting_height=1,
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.outsider_selection_elements["frame"] = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((28, 0), (624, 174))),
-            get_box(BoxStyles.ROUNDED_BOX, (624, 174)),
+            get_box(BoxStyles.RoundedBox, (624, 174)),
             container=self.outsider_selection_container,
             starting_height=2,
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.focus_outsider_container = pygame_gui.elements.UIAutoResizingContainer(
@@ -542,7 +544,7 @@ class LeaderDenScreen(BaseScreen):
             object_id="#focus_outsider_container",
             container=self.focus_frame_container,
             starting_height=1,
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
     def open_clans_tab(self):
@@ -595,7 +597,7 @@ class LeaderDenScreen(BaseScreen):
             ui_scale(pygame.Rect((0, 0), (240, 398))),
             object_id="#focus_clan_container",
             container=self.focus_frame_container,
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.focus_clan_elements["clan_symbol"] = pygame_gui.elements.UIImage(
@@ -607,7 +609,7 @@ class LeaderDenScreen(BaseScreen):
             object_id="#clan_symbol",
             starting_height=1,
             container=self.focus_clan_container,
-            manager=MANAGER,
+            manager=ui_manager,
             anchors={"centerx": "centerx"},
         )
 
@@ -620,7 +622,7 @@ class LeaderDenScreen(BaseScreen):
             text=f"{self.focus_clan.name}Clan",
             object_id="#text_box_30_horizcenter",
             container=self.focus_clan_container,
-            manager=MANAGER,
+            manager=ui_manager,
             anchors={
                 "centerx": "centerx",
                 "top_target": self.focus_clan_elements["clan_symbol"],
@@ -631,7 +633,7 @@ class LeaderDenScreen(BaseScreen):
             text=f"screens.leader_den.{self.focus_clan.temperament.strip()}",
             object_id="#text_box_22_horizcenter",
             container=self.focus_clan_container,
-            manager=MANAGER,
+            manager=ui_manager,
             anchors={
                 "centerx": "centerx",
                 "top_target": self.focus_clan_elements["clan_name"],
@@ -642,7 +644,7 @@ class LeaderDenScreen(BaseScreen):
             text=f"screens.leader_den.{relation}",
             object_id="#text_box_22_horizcenter",
             container=self.focus_clan_container,
-            manager=MANAGER,
+            manager=ui_manager,
             anchors={
                 "centerx": "centerx",
                 "top_target": self.focus_clan_elements["clan_temper"],
@@ -652,11 +654,11 @@ class LeaderDenScreen(BaseScreen):
         self.focus_frame_elements[INTERACTION_NEGATIVE] = UISurfaceImageButton(
             ui_scale(pygame.Rect((0, 265), (121, 30))),
             "provoke",
-            get_button_dict(ButtonStyles.SQUOVAL, (121, 30)),
+            get_button_dict(ButtonStyles.SquOval, (121, 30)),
             object_id="@buttonstyles_squoval",
             container=self.focus_clan_container,
             starting_height=3,
-            manager=MANAGER,
+            manager=ui_manager,
             visible=False,
             anchors={"centerx": "centerx"},
             sound_id=INTERACTION_NEGATIVE
@@ -664,11 +666,11 @@ class LeaderDenScreen(BaseScreen):
         self.focus_frame_elements[INTERACTION_POSITIVE] = UISurfaceImageButton(
             ui_scale(pygame.Rect((0, 305), (121, 30))),
             "befriend",
-            get_button_dict(ButtonStyles.SQUOVAL, (121, 30)),
+            get_button_dict(ButtonStyles.SquOval, (121, 30)),
             container=self.focus_clan_container,
             object_id="@buttonstyles_squoval",
             starting_height=3,
-            manager=MANAGER,
+            manager=ui_manager,
             visible=False,
             anchors={"centerx": "centerx"},
         )
@@ -804,7 +806,7 @@ class LeaderDenScreen(BaseScreen):
             object_id="#focus_outsider_container",
             container=self.focus_frame_container,
             starting_height=1,
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.focus_outsider_elements["cat_sprite"] = pygame_gui.elements.UIImage(
@@ -815,7 +817,7 @@ class LeaderDenScreen(BaseScreen):
             object_id="#focus_cat_sprite",
             container=self.focus_outsider_container,
             starting_height=1,
-            manager=MANAGER,
+            manager=ui_manager,
             anchors={"centerx": "centerx"},
         )
 
@@ -824,7 +826,7 @@ class LeaderDenScreen(BaseScreen):
             text=shorten_text_to_fit(str(self.focus_cat.name), 220, 15),
             object_id="#text_box_30_horizcenter",
             container=self.focus_outsider_container,
-            manager=MANAGER,
+            manager=ui_manager,
             anchors={
                 "centerx": "centerx",
                 "top_target": self.focus_outsider_elements["cat_sprite"],
@@ -835,7 +837,7 @@ class LeaderDenScreen(BaseScreen):
             text=f"general.{self.focus_cat.status}",
             object_id="#text_box_22_horizcenter",
             container=self.focus_outsider_container,
-            manager=MANAGER,
+            manager=ui_manager,
             anchors={
                 "centerx": "centerx",
                 "top_target": self.focus_outsider_elements["cat_name"],
@@ -847,7 +849,7 @@ class LeaderDenScreen(BaseScreen):
             text=f"cat.personality.{self.focus_cat.personality.trait}",
             object_id="#text_box_22_horizcenter",
             container=self.focus_outsider_container,
-            manager=MANAGER,
+            manager=ui_manager,
             anchors={
                 "centerx": "centerx",
                 "top_target": self.focus_outsider_elements["cat_status"],
@@ -858,7 +860,7 @@ class LeaderDenScreen(BaseScreen):
             text="screens.leader_den.outsider_skill",
             object_id="#text_box_22_horizcenter",
             container=self.focus_outsider_container,
-            manager=MANAGER,
+            manager=ui_manager,
             anchors={
                 "centerx": "centerx",
                 "top_target": self.focus_outsider_elements["cat_trait"],
@@ -877,7 +879,7 @@ class LeaderDenScreen(BaseScreen):
             object_id="#focus_outsider_button_container",
             container=self.focus_outsider_container,
             starting_height=1,
-            manager=MANAGER,
+            manager=ui_manager,
             visible=True,
             anchors={
                 "centerx": "centerx",
@@ -888,13 +890,13 @@ class LeaderDenScreen(BaseScreen):
         self.focus_button["hunt_down"] = UISurfaceImageButton(
             ui_scale(pygame.Rect((0, 0), (121, 30))),
             "screens.leader_den.hunt_down",
-            get_button_dict(ButtonStyles.SQUOVAL, (121, 30)),
+            get_button_dict(ButtonStyles.SquOval, (121, 30)),
             object_id="@buttonstyles_squoval",
             tool_tip_text="screens.leader_den.hunt_down_tooltip",
             tool_tip_text_kwargs={"r_c": self.focus_cat},
             container=self.focus_outsider_button_container,
             starting_height=3,
-            manager=MANAGER,
+            manager=ui_manager,
             anchors={
                 "centerx": "centerx",
             },
@@ -903,13 +905,13 @@ class LeaderDenScreen(BaseScreen):
         self.focus_button["drive_off"] = UISurfaceImageButton(
             ui_scale(pygame.Rect((0, 5), (121, 30))),
             "screens.leader_den.drive_off",
-            get_button_dict(ButtonStyles.SQUOVAL, (121, 30)),
+            get_button_dict(ButtonStyles.SquOval, (121, 30)),
             object_id="@buttonstyles_squoval",
             tool_tip_text="screens.leader_den.drive_off_tooltip",
             tool_tip_text_kwargs={"r_c": self.focus_cat},
             container=self.focus_outsider_button_container,
             starting_height=3,
-            manager=MANAGER,
+            manager=ui_manager,
             anchors={
                 "centerx": "centerx",
                 "top_target": self.focus_button["hunt_down"],
@@ -919,13 +921,13 @@ class LeaderDenScreen(BaseScreen):
         self.focus_button["invite_in"] = UISurfaceImageButton(
             ui_scale(pygame.Rect((0, 5), (121, 30))),
             "screens.leader_den.invite_in",
-            get_button_dict(ButtonStyles.SQUOVAL, (121, 30)),
+            get_button_dict(ButtonStyles.SquOval, (121, 30)),
             object_id="@buttonstyles_squoval",
             tool_tip_text="screens.leader_den.invite_in_tooltip",
             tool_tip_text_kwargs={"r_c": self.focus_cat},
             container=self.focus_outsider_button_container,
             starting_height=3,
-            manager=MANAGER,
+            manager=ui_manager,
             visible=False,
             anchors={
                 "centerx": "centerx",
@@ -1026,7 +1028,7 @@ class LeaderDenScreen(BaseScreen):
             container=self.outsider_selection_container,
             starting_height=3,
             object_id="#outsider_cat_list",
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         # Kill all currently displayed cats
@@ -1047,7 +1049,7 @@ class LeaderDenScreen(BaseScreen):
                 object_id=f"#sprite{str(i)}",
                 tool_tip_text=str(cat.name),
                 starting_height=2,
-                manager=MANAGER,
+                manager=ui_manager,
             )
 
             # changing pos

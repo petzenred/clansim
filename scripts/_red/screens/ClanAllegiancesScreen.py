@@ -2,9 +2,12 @@ import i18n
 import pygame
 import pygame_gui
 
+from scripts._red.screens.screen_manager import screen_manager
+
+from definitions import ScreenName
 from scripts.cat.cats import Cat
 from scripts.game_structure.game_essentials import game
-from scripts.game_structure.screen_settings import MANAGER
+from scripts.game_structure.screen_settings import ui_manager
 from scripts.utility import (
     get_text_box_theme,
     ui_scale,
@@ -13,14 +16,14 @@ from scripts.utility import (
     adjust_list_text,
     event_text_adjust,
 )
-from .BaseScreen import BaseScreen
+from scripts.screens.BaseScreen import BaseScreen
 
 
 class ClanAllegiancesScreen(BaseScreen):
     allegiance_list = []
 
-    def __init__(self, name=None):
-        super().__init__(name)
+    def __init__(self):
+        super().__init__(ScreenName.Allegiances)
         self.names_boxes = None
         self.ranks_boxes = None
         self.scroll_container = None
@@ -42,7 +45,7 @@ class ClanAllegiancesScreen(BaseScreen):
             ui_scale(pygame.Rect((0, 115), (400, 40))),
             text_kwargs={"clan_name": game.clan_obj.name},
             object_id=get_text_box_theme("#text_box_34_horizcenter_vertcenter"),
-            manager=MANAGER,
+            manager=ui_manager,
             anchors={"centerx": "centerx"},
         )
 
@@ -56,7 +59,7 @@ class ClanAllegiancesScreen(BaseScreen):
         self.scroll_container = pygame_gui.elements.UIScrollingContainer(
             ui_scale(pygame.Rect((50, 165), (715, 470))),
             allow_scroll_x=False,
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.ranks_boxes = []
@@ -68,7 +71,7 @@ class ClanAllegiancesScreen(BaseScreen):
                     ui_scale(pygame.Rect((0, 0), (150, -1))),
                     object_id=get_text_box_theme("#text_box_30_horizleft"),
                     container=self.scroll_container,
-                    manager=MANAGER,
+                    manager=ui_manager,
                     anchors={"top_target": self.names_boxes[-1]}
                     if len(self.names_boxes) > 0
                     else None,
@@ -85,7 +88,7 @@ class ClanAllegiancesScreen(BaseScreen):
                     ),
                     object_id=get_text_box_theme("#text_box_30_horizleft"),
                     container=self.scroll_container,
-                    manager=MANAGER,
+                    manager=ui_manager,
                     anchors={
                         "top_target": self.ranks_boxes[-1],
                         "left_target": self.ranks_boxes[-1],

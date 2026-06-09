@@ -8,7 +8,9 @@ import pygame
 import pygame_gui
 from pygame_gui.core import ObjectID, UIContainer
 
-from definitions import PROFILE_SCREEN_NAME
+from scripts._red.screens.screen_manager import screen_manager
+
+from definitions import ScreenName
 from scripts.cat.cats import Cat
 from scripts.game_structure.game_essentials import game
 from scripts.ui.ui_elements import (
@@ -25,16 +27,16 @@ from scripts.utility import (
 )
 from scripts.game_structure.localization import load_lang_resource
 from scripts.utility import ui_scale
-from .BaseScreen import BaseScreen
-from ..game_structure import localization as pronouns
-from ..game_structure.screen_settings import MANAGER
-from ..game_structure.windows import PronounCreation
-from ..ui.generate_button import get_button_dict, ButtonStyles
+from scripts.screens.BaseScreen import BaseScreen
+from scripts.game_structure import localization as pronouns
+from scripts.game_structure.screen_settings import ui_manager
+from scripts._red.screens.windows import PronounCreation
+from scripts.ui.generate_button import get_button_dict, ButtonStyles
 
 
 class ProfileGenderScreen(BaseScreen):
-    def __init__(self, name=None):
-        super().__init__(name)
+    def __init__(self):
+        super().__init__(ScreenName.SpecifyGender)
         self.pronouns_dict = None
         self.next_cat_button = None
         self.previous_cat_button = None
@@ -69,7 +71,7 @@ class ProfileGenderScreen(BaseScreen):
     def handle_event(self, event):
         if event.type == pygame_gui.UI_BUTTON_START_PRESS:
             if event.ui_element == self.back_button:
-                self.change_screen(PROFILE_SCREEN_NAME)
+                self.change_screen(ScreenName.Profile)
             elif event.ui_element == self.next_cat_button:
                 if isinstance(Cat.fetch_cat(self.next_cat), Cat):
                     game.switches["cat"] = self.next_cat
@@ -92,7 +94,7 @@ class ProfileGenderScreen(BaseScreen):
                         object_id=get_text_box_theme(
                             "#text_box_30_horizcenter_spacing_95"
                         ),
-                        manager=MANAGER,
+                        manager=ui_manager,
                     )
 
             elif event.ui_element == self.buttons["add_pronouns"]:
@@ -129,36 +131,36 @@ class ProfileGenderScreen(BaseScreen):
         self.next_cat_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((622, 25), (153, 30))),
             "buttons.next_cat",
-            get_button_dict(ButtonStyles.SQUOVAL, (153, 30)),
+            get_button_dict(ButtonStyles.SquOval, (153, 30)),
             object_id="@buttonstyles_squoval",
             sound_id="page_flip",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.previous_cat_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((25, 25), (153, 30))),
             "buttons.previous_cat",
-            get_button_dict(ButtonStyles.SQUOVAL, (153, 30)),
+            get_button_dict(ButtonStyles.SquOval, (153, 30)),
             object_id="@buttonstyles_squoval",
             sound_id="page_flip",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.back_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((25, 60), (105, 30))),
             "buttons.back",
-            get_button_dict(ButtonStyles.SQUOVAL, (105, 30)),
+            get_button_dict(ButtonStyles.SquOval, (105, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.current_container = UIContainer(
             ui_scale(pygame.Rect((50, 285), (350, 335))),
-            manager=MANAGER,
+            manager=ui_manager,
             starting_height=5,
         )
 
         self.saved_container = UIContainer(
             ui_scale(pygame.Rect((0, 285), (350, 335))),
-            manager=MANAGER,
+            manager=ui_manager,
             starting_height=5,
             anchors={"left": "left", "left_target": self.current_container},
         )
@@ -218,14 +220,14 @@ class ProfileGenderScreen(BaseScreen):
                 ).convert_alpha(),
                 ui_scale_dimensions((699, 520)),
             ),
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.selected_cat_elements["cat_image"] = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((180, 105), (150, 150))),
             pygame.transform.scale(
                 self.the_cat.sprite, ui_scale_dimensions((150, 150))
             ),
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         # In what case would a cat have no genderalign? -key
@@ -238,7 +240,7 @@ class ProfileGenderScreen(BaseScreen):
             text,
             ui_scale(pygame.Rect((130, 250), (250, 30))),
             object_id=get_text_box_theme("#text_box_30_horizcenter_spacing_95"),
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.selected_cat_elements["header"] = pygame_gui.elements.UILabel(
@@ -255,34 +257,34 @@ class ProfileGenderScreen(BaseScreen):
             ui_scale(pygame.Rect((385, 247), (400, 40))),
             visible=False,
             object_id="#text_box_30_horizleft",
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.selected_cat_elements["description"] = pygame_gui.elements.UITextBox(
             "screens.change_gender.description",
             ui_scale(pygame.Rect((332, 132), (290, 75))),
             object_id="#text_box_30_horizcenter_spacing_95",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.buttons["add_pronouns"] = UISurfaceImageButton(
             ui_scale(pygame.Rect((320, 645), (162, 30))),
             "screens.change_gender.add_pronouns",
-            get_button_dict(ButtonStyles.SQUOVAL, (162, 30)),
+            get_button_dict(ButtonStyles.SquOval, (162, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.selected_cat_elements["gender"] = pygame_gui.elements.UITextEntryLine(
             ui_scale(pygame.Rect((350, 220), (165, 30))),
             placeholder_text=self.the_cat.get_genderalign_string(),
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.buttons["save"] = UISurfaceImageButton(
             ui_scale(pygame.Rect((532, 220), (73, 30))),
             "buttons.save",
-            get_button_dict(ButtonStyles.SQUOVAL, (73, 30)),
+            get_button_dict(ButtonStyles.SquOval, (73, 30)),
             object_id="@buttonstyles_squoval",
             starting_height=2,
-            manager=MANAGER,
+            manager=ui_manager,
         )
         (
             self.next_cat,
@@ -297,7 +299,7 @@ class ProfileGenderScreen(BaseScreen):
             "screens.change_gender.current_pronouns",
             ui_scale(pygame.Rect((0, 10), (175, 32))),
             object_id=ObjectID("#text_box_34_horizcenter", "#dark"),
-            manager=MANAGER,
+            manager=ui_manager,
             container=self.current_container,
             anchors={"centerx": "centerx"},
         )
@@ -308,7 +310,7 @@ class ProfileGenderScreen(BaseScreen):
         ] = pygame_gui.elements.UIScrollingContainer(
             ui_scale(pygame.Rect((0, 5), (337, 270))),
             object_id=get_text_box_theme("#text_box_30_horizleft_pad_0_8"),
-            manager=MANAGER,
+            manager=ui_manager,
             allow_scroll_x=False,
             container=self.current_container,
             anchors={
@@ -330,7 +332,7 @@ class ProfileGenderScreen(BaseScreen):
             self.elements[f"cat_pronouns_{n}"] = pygame_gui.elements.UIPanel(
                 block_rect,
                 container=self.removalboxes_text["container_general"],
-                manager=MANAGER,
+                manager=ui_manager,
                 anchors={
                     "centerx": "centerx",
                     "top_target": self.elements[f"cat_pronouns_{n - 1}"],
@@ -358,7 +360,7 @@ class ProfileGenderScreen(BaseScreen):
                 container=self.elements[f"cat_pronouns_{n}"],
                 object_id="#exit_window_button",
                 starting_height=2,
-                manager=MANAGER,
+                manager=ui_manager,
                 anchors={"centery": "centery", "right": "right"},
             )
 
@@ -369,7 +371,7 @@ class ProfileGenderScreen(BaseScreen):
                 text_box_rect,
                 container=self.elements[f"cat_pronouns_{n}"],
                 object_id="#text_box_30_horizleft_pad_0_8",
-                manager=MANAGER,
+                manager=ui_manager,
                 anchors={"center": "center"},
             )
 
@@ -381,7 +383,7 @@ class ProfileGenderScreen(BaseScreen):
                 object_id="#blank_button_small",
                 container=self.elements[f"cat_pronouns_{n}"],
                 tool_tip_text=displayname if short_name != displayname else None,
-                manager=MANAGER,
+                manager=ui_manager,
                 starting_height=2,
             )
 
@@ -403,7 +405,7 @@ class ProfileGenderScreen(BaseScreen):
             "screens.change_gender.saved_pronouns",
             ui_scale(pygame.Rect((0, 10), (175, 32))),
             object_id=ObjectID("#text_box_34_horizleft", "#dark"),
-            manager=MANAGER,
+            manager=ui_manager,
             container=self.saved_container,
             anchors={"centerx": "centerx"},
         )
@@ -413,7 +415,7 @@ class ProfileGenderScreen(BaseScreen):
         ] = pygame_gui.elements.UIScrollingContainer(
             relative_rect=ui_scale(pygame.Rect((0, 5), (337, 270))),
             object_id=get_text_box_theme("#text_box_30_horizleft_pad_0_8"),
-            manager=MANAGER,
+            manager=ui_manager,
             allow_scroll_x=False,
             container=self.saved_container,
             anchors={
@@ -447,7 +449,7 @@ class ProfileGenderScreen(BaseScreen):
             self.elements[f"{n}"] = pygame_gui.elements.UIPanel(
                 block_rect,
                 container=self.removalboxes_text["container_general2"],
-                manager=MANAGER,
+                manager=ui_manager,
                 anchors={
                     "centerx": "centerx",
                     "top_target": self.elements[f"{n - 1}"],
@@ -473,7 +475,7 @@ class ProfileGenderScreen(BaseScreen):
                 container=self.elements[f"{n}"],
                 object_id="#exit_window_button",
                 starting_height=2,
-                manager=MANAGER,
+                manager=ui_manager,
                 anchors={"centery": "centery", "right": "right"},
             )
             # though we've made the remove button visible, it needs to be disabled so that the user cannnot remove
@@ -493,7 +495,7 @@ class ProfileGenderScreen(BaseScreen):
                 container=self.elements[f"{n}"],
                 object_id="#add_button",
                 starting_height=2,
-                manager=MANAGER,
+                manager=ui_manager,
                 anchors={
                     "centery": "centery",
                     "right": "right",
@@ -510,7 +512,7 @@ class ProfileGenderScreen(BaseScreen):
                 ui_scale(pygame.Rect((-20, 0), (200, -1))),
                 container=self.elements[f"{n}"],
                 object_id="#text_box_30_horizleft_pad_0_8",
-                manager=MANAGER,
+                manager=ui_manager,
                 anchors={"center": "center"},
             )
 
@@ -524,7 +526,7 @@ class ProfileGenderScreen(BaseScreen):
                 object_id="#blank_button_small",
                 container=self.elements[f"{n}"],
                 tool_tip_text=displayname if short_name != displayname else None,
-                manager=MANAGER,
+                manager=ui_manager,
                 starting_height=2,
             )
 
@@ -577,3 +579,9 @@ class ProfileGenderScreen(BaseScreen):
         self.current_container.kill()
         self.saved_container.kill()
         self.reset_buttons_and_boxes()
+
+    def update_previous_next_cat_buttons(self):
+        """Updates disabled status of previous and next cat buttons. """
+        self.previous_cat_button.enable() if self.previous_cat else self.previous_cat_button.disable()  # pylint: disable=no-member
+        self.next_cat_button.enable() if self.next_cat else self.next_cat_button.disable()  # pylint: disable=no-member
+

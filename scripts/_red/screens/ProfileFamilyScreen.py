@@ -4,7 +4,9 @@ import i18n
 import pygame.transform
 import pygame_gui.elements
 
-from definitions import PROFILE_SCREEN_NAME
+from scripts._red.screens.screen_manager import screen_manager
+
+from definitions import PROFILE_SCREEN_NAME, ScreenName
 from scripts.cat.cats import Cat
 from scripts.game_structure import image_cache
 from scripts.game_structure.game_essentials import game
@@ -20,11 +22,11 @@ from scripts.utility import (
     ui_scale_dimensions,
     adjust_list_text,
 )
-from .BaseScreen import BaseScreen
-from ..game_structure.screen_settings import MANAGER
-from ..ui.generate_box import BoxStyles, get_box
-from ..ui.generate_button import get_button_dict, ButtonStyles
-from ..ui.icon import Icon
+from scripts.screens.BaseScreen import BaseScreen
+from scripts.game_structure.screen_settings import ui_manager
+from scripts.ui.generate_box import BoxStyles, get_box
+from scripts.ui.generate_button import get_button_dict, ButtonStyles
+from scripts.ui.icon import Icon
 
 import logging
 logger = logging.getLogger(__name__)
@@ -33,8 +35,8 @@ logger = logging.getLogger(__name__)
 class ProfileFamilyScreen(BaseScreen):
     # Page numbers for siblings and offspring
 
-    def __init__(self, name=None):
-        super().__init__(name)
+    def __init__(self,):
+        super().__init__(ScreenName.FamilyTree)
         self.next_cat = None
         self.previous_cat = None
         self.grandkits_tab = None
@@ -196,53 +198,53 @@ class ProfileFamilyScreen(BaseScreen):
         self.next_cat_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((622, 25), (153, 30))),
             "buttons.next_cat",
-            get_button_dict(ButtonStyles.SQUOVAL, (153, 30)),
+            get_button_dict(ButtonStyles.SquOval, (153, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
             sound_id="page_flip",
         )
         self.previous_cat_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((25, 25), (153, 30))),
             "buttons.previous_cat",
-            get_button_dict(ButtonStyles.SQUOVAL, (153, 30)),
+            get_button_dict(ButtonStyles.SquOval, (153, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
             sound_id="page_flip",
         )
         self.back_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((25, 60), (105, 30))),
             "buttons.back",
-            get_button_dict(ButtonStyles.SQUOVAL, (105, 30)),
+            get_button_dict(ButtonStyles.SquOval, (105, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         # our container for the family tree, this will center itself based on visible relation group buttons
         # it starts with just the center cat frame inside it, since that will always be visible
         self.family_tree = pygame_gui.core.UIContainer(
-            ui_scale(pygame.Rect((360, 225), (80, 90))), MANAGER
+            ui_scale(pygame.Rect((360, 225), (80, 90))), ui_manager
         )
 
         # now grab the other necessary UI elements
         self.previous_group_page = UISurfaceImageButton(
             ui_scale(pygame.Rect((470, 640), (34, 34))),
             Icon.ARROW_LEFT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
         )
         self.previous_group_page.disable()
         self.next_group_page = UISurfaceImageButton(
             ui_scale(pygame.Rect((541, 640), (34, 34))),
             Icon.ARROW_RIGHT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.next_group_page.disable()
         self.relation_backdrop = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((314, 475), (420, 171))),
-            get_box(BoxStyles.ROUNDED_BOX, (420, 171)),
-            manager=MANAGER,
+            get_box(BoxStyles.RoundedBox, (420, 171)),
+            manager=ui_manager,
         )
         self.relation_backdrop.disable()
 
@@ -256,13 +258,13 @@ class ProfileFamilyScreen(BaseScreen):
                 ).convert_alpha(),
                 ui_scale_dimensions((425, 170)),
             ),
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.cat_elements["root_cat_image"] = UISpriteButton(
             ui_scale(pygame.Rect((231, 575), (50, 50))),
             game.switches["root_cat"].sprite,
             cat_id=game.switches["root_cat"].ID,
-            manager=MANAGER,
+            manager=ui_manager,
             tool_tip_text=f'Started viewing tree at {game.switches["root_cat"].name}',
         )
 
@@ -270,8 +272,8 @@ class ProfileFamilyScreen(BaseScreen):
 
         self.center_cat_frame = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((0, 0), (80, 90))),
-            get_box(BoxStyles.FRAME, (80, 90)),
-            manager=MANAGER,
+            get_box(BoxStyles.Frame, (80, 90)),
+            manager=ui_manager,
             container=self.family_tree,
         )
         self.center_cat_frame.disable()
@@ -322,7 +324,7 @@ class ProfileFamilyScreen(BaseScreen):
             "screens.family_tree.heading",
             ui_scale(pygame.Rect((150, 25), (500, 50))),
             object_id=get_text_box_theme("#text_box_30_horizcenter"),
-            manager=MANAGER,
+            manager=ui_manager,
             text_kwargs={"name": self.the_cat.name, "m_c": self.the_cat},
         )
 
@@ -393,7 +395,7 @@ class ProfileFamilyScreen(BaseScreen):
         self.family_tree.kill()
         self.family_tree = pygame_gui.core.UIContainer(
             ui_scale(pygame.Rect((0, 275 - y_dim / 2), (x_dim, y_dim))),
-            MANAGER,
+            ui_manager,
             anchors={"centerx": "centerx"},
         )
 
@@ -402,7 +404,7 @@ class ProfileFamilyScreen(BaseScreen):
             ui_scale(pygame.Rect((75, 484), (150, 150))),
             self.the_cat.sprite,
             cat_id=self.the_cat.ID,
-            manager=MANAGER,
+            manager=ui_manager,
         )
         name = str(self.the_cat.name)
         short_name = shorten_text_to_fit(name, 130, 11)
@@ -410,13 +412,13 @@ class ProfileFamilyScreen(BaseScreen):
             "screens.family_tree.lineage",
             ui_scale(pygame.Rect((75, 641), (150, 75))),
             object_id=get_text_box_theme("#text_box_22_horizcenter_spacing_95"),
-            manager=MANAGER,
+            manager=ui_manager,
             text_kwargs={"name": short_name, "m_c": self.the_cat},
         )
         self.center_cat_frame = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((x_pos, y_pos), (80, 90))),
-            get_box(BoxStyles.FRAME, (80, 90)),
-            manager=MANAGER,
+            get_box(BoxStyles.Frame, (80, 90)),
+            manager=ui_manager,
             container=self.family_tree,
         )
         self.center_cat_frame.disable()
@@ -424,7 +426,7 @@ class ProfileFamilyScreen(BaseScreen):
             ui_scale(pygame.Rect((x_pos + 15, y_pos + 10), (50, 50))),
             self.the_cat.sprite,
             cat_id=self.the_cat.ID,
-            manager=MANAGER,
+            manager=ui_manager,
             container=self.family_tree,
         )
         name = str(self.the_cat.name)
@@ -434,7 +436,7 @@ class ProfileFamilyScreen(BaseScreen):
             ui_scale(pygame.Rect((5 + x_pos, 45 + y_pos), (72, 50))),
             short_name,
             object_id=get_text_box_theme("#text_box_22_horizcenter"),
-            manager=MANAGER,
+            manager=ui_manager,
             container=self.family_tree,
         )
 
@@ -443,7 +445,7 @@ class ProfileFamilyScreen(BaseScreen):
                 ui_scale(pygame.Rect((76 + x_pos, 32 + y_pos), (158, 30))),
                 "",
                 object_id="#siblings_button",
-                manager=MANAGER,
+                manager=ui_manager,
                 container=self.family_tree,
             )
             if self.siblings:
@@ -452,7 +454,7 @@ class ProfileFamilyScreen(BaseScreen):
                         ui_scale(pygame.Rect((232 + x_pos, 32 + y_pos), (209, 30))),
                         "",
                         object_id="#siblingmates_button",
-                        manager=MANAGER,
+                        manager=ui_manager,
                         container=self.family_tree,
                     )
                 if self.siblings_kits:
@@ -460,14 +462,14 @@ class ProfileFamilyScreen(BaseScreen):
                         ui_scale(pygame.Rect((203 + x_pos, 48 + y_pos), (126, 82))),
                         "",
                         object_id="#siblingkits_button",
-                        manager=MANAGER,
+                        manager=ui_manager,
                         container=self.family_tree,
                     )
             self.parents_button = UIImageButton(
                 ui_scale(pygame.Rect((68 + x_pos, -98 + y_pos), (88, 144))),
                 "",
                 object_id="#parents_button",
-                manager=MANAGER,
+                manager=ui_manager,
                 container=self.family_tree,
             )
             self.family_tree.add_element(self.parents_button)
@@ -476,7 +478,7 @@ class ProfileFamilyScreen(BaseScreen):
                     ui_scale(pygame.Rect((154 + x_pos, -98 + y_pos), (217, 30))),
                     "",
                     object_id="#parentsiblings_button",
-                    manager=MANAGER,
+                    manager=ui_manager,
                     container=self.family_tree,
                 )
                 if self.cousins:
@@ -484,7 +486,7 @@ class ProfileFamilyScreen(BaseScreen):
                         ui_scale(pygame.Rect((252 + x_pos, -69 + y_pos), (85, 82))),
                         "",
                         object_id="#cousins_button",
-                        manager=MANAGER,
+                        manager=ui_manager,
                         container=self.family_tree,
                     )
             if self.grandparents:
@@ -492,7 +494,7 @@ class ProfileFamilyScreen(BaseScreen):
                     ui_scale(pygame.Rect((47 + x_pos, -177 + y_pos), (130, 82))),
                     "",
                     object_id="#grandparents_button",
-                    manager=MANAGER,
+                    manager=ui_manager,
                     container=self.family_tree,
                 )
 
@@ -501,7 +503,7 @@ class ProfileFamilyScreen(BaseScreen):
                 ui_scale(pygame.Rect((-138 + x_pos, 32 + y_pos), (144, 30))),
                 "",
                 object_id="#mates_button",
-                manager=MANAGER,
+                manager=ui_manager,
                 container=self.family_tree,
             )
         if self.kits:
@@ -509,7 +511,7 @@ class ProfileFamilyScreen(BaseScreen):
                 ui_scale(pygame.Rect((-59 + x_pos, 48 + y_pos), (58, 82))),
                 "",
                 object_id="#kits_button",
-                manager=MANAGER,
+                manager=ui_manager,
                 container=self.family_tree,
             )
             if self.kits_mates or self.grandkits:
@@ -517,7 +519,7 @@ class ProfileFamilyScreen(BaseScreen):
                     ui_scale(pygame.Rect((-238 + x_pos, 99 + y_pos), (182, 30))),
                     "",
                     object_id="#kitsmates_button",
-                    manager=MANAGER,
+                    manager=ui_manager,
                     container=self.family_tree,
                 )
             if self.grandkits:
@@ -525,7 +527,7 @@ class ProfileFamilyScreen(BaseScreen):
                     ui_scale(pygame.Rect((-141 + x_pos, 116 + y_pos), (101, 82))),
                     "",
                     object_id="#grandkits_button",
-                    manager=MANAGER,
+                    manager=ui_manager,
                     container=self.family_tree,
                 )
 
@@ -541,7 +543,7 @@ class ProfileFamilyScreen(BaseScreen):
                 "screens.family_tree.no_cats",
                 ui_scale(pygame.Rect((275, 540), (450, 30))),
                 object_id=get_text_box_theme("#text_box_30_horizcenter"),
-                manager=MANAGER,
+                manager=ui_manager,
             )
         _current_group = self.chunks(self.current_group, 24)
 
@@ -583,7 +585,7 @@ class ProfileFamilyScreen(BaseScreen):
                 ui_scale(pygame.Rect((324 + pos_x, 485 + pos_y), (50, 50))),
                 _kitty.sprite,
                 cat_id=_kitty.ID,
-                manager=MANAGER,
+                manager=ui_manager,
                 tool_tip_text=info_text,
                 tool_tip_text_kwargs={"r_c": _kitty},
                 starting_height=2,
@@ -617,9 +619,9 @@ class ProfileFamilyScreen(BaseScreen):
             "label": UISurfaceImageButton(
                 ui_scale(pygame.Rect((561, 445), (148, 34))),
                 f"screens.family_tree.{self.current_group_name}",
-                get_button_dict(ButtonStyles.HORIZONTAL_TAB, (148, 34)),
+                get_button_dict(ButtonStyles.HorizontalTab, (148, 34)),
                 object_id="@buttonstyles_horizontal_tab",
-                manager=MANAGER,
+                manager=ui_manager,
                 tab_movement={"disabled": True},
             )
         }

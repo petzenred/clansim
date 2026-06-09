@@ -4,37 +4,46 @@ import i18n
 import pygame
 import pygame_gui
 
+from scripts._red.screens.screen_manager import screen_manager
+from scripts._red.sprite_manager import sprite_manager
+
 from definitions import (
+    BoxShape, ButtonStyle, Icon,
+    CLAN_EVENTS_SCREEN_NAME, PROFILE_SCREEN_NAME, CLAN_PATROL_SCREEN_NAME, CLAN_CAMP_SCREEN_NAME, ScreenName
+)
 
-    CLAN_EVENTS_SCREEN_NAME, PROFILE_SCREEN_NAME, CLAN_PATROL_SCREEN_NAME, CLAN_CAMP_SCREEN_NAME)
-
-from scripts.cat.cats import Cat
 from scripts.event_class import Single_Event
 from scripts.events import events_class
 from scripts.game_structure import image_cache
 from scripts.game_structure.game_essentials import game
-from scripts.game_structure.screen_settings import MANAGER
+
+# from scripts.ui.icon import Icon
+from scripts.cat.cats import Cat
+from scripts._red.utils.ui_utils import (
+    ui_scale,
+    ui_scale_dimensions,
+    ui_scale_value,
+    ui_scale_offset
+)
+from scripts.utility import (
+    clan_symbol_sprite,
+    get_text_box_theme,
+    shorten_text_to_fit,
+    get_living_clan_cat_count,
+)
+from scripts.game_structure.screen_settings import ui_manager
+from scripts._red.screens.screen_manager import screen_manager
+from scripts.screens.BaseScreen import BaseScreen
+
 from scripts.ui.ui_elements import (
     UIModifiedScrollingContainer,
     IDImageButton,
     UISurfaceImageButton,
     CatButton,
 )
-from scripts.game_structure.windows import GameOver
-from scripts.screens.BaseScreen import BaseScreen
+from scripts._red.screens.windows import GameOver
 from scripts.ui.generate_box import BoxStyles, get_box
 from scripts.ui.generate_button import get_button_dict, ButtonStyles
-from scripts.ui.icon import Icon
-from scripts.utility import (
-    ui_scale,
-    clan_symbol_sprite,
-    get_text_box_theme,
-    shorten_text_to_fit,
-    get_living_clan_cat_count,
-    ui_scale_dimensions,
-    ui_scale_value,
-    ui_scale_offset,
-)
 
 import logging
 logger = logging.getLogger(__name__)
@@ -65,8 +74,8 @@ class ClanEventsScreen(BaseScreen):
         "miscellaneous",
     ]
 
-    def __init__(self, name):
-        super().__init__(name)
+    def __init__(self):
+        super().__init__(ScreenName.Events)
 
         self.events_thread = None
         self.event_screen_container = None
@@ -246,18 +255,20 @@ class ClanEventsScreen(BaseScreen):
         self.event_screen_container = pygame_gui.core.UIContainer(
             ui_scale(pygame.Rect((0, 0), (800, 700))),
             starting_height=1,
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
+        clan_obj = game.cat_tracker.get_clan_object(clan_token=game.active_clan_token)
         self.clan_info["symbol"] = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((227, 105), (100, 100))),
             pygame.transform.scale(
-                clan_symbol_sprite(game.clan_obj), ui_scale_dimensions((100, 100))
+                surface=sprite_manager.get_clan_symbol(clan_obj=clan_obj),
+                size=ui_scale_dimensions(dim=(100, 100), scale=screen_manager.window_scale)
             ),
             object_id=f"clan_symbol",
             starting_height=1,
             container=self.event_screen_container,
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.clan_info["heading"] = pygame_gui.elements.UITextBox(
@@ -266,7 +277,7 @@ class ClanEventsScreen(BaseScreen):
             object_id=get_text_box_theme("#text_box_30_horizleft_spacing_95"),
             starting_height=1,
             container=self.event_screen_container,
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.clan_info["season"] = pygame_gui.elements.UITextBox(
@@ -275,7 +286,7 @@ class ClanEventsScreen(BaseScreen):
             object_id=get_text_box_theme("#text_box_30"),
             starting_height=1,
             container=self.event_screen_container,
-            manager=MANAGER,
+            manager=ui_manager,
             text_kwargs={
                 "season": i18n.t(game.clan_obj.current_season.lower()).capitalize()
             },
@@ -286,18 +297,18 @@ class ClanEventsScreen(BaseScreen):
             object_id=get_text_box_theme("#text_box_30"),
             starting_height=1,
             container=self.event_screen_container,
-            manager=MANAGER,
+            manager=ui_manager,
             text_kwargs={"count": game.clan_obj.age},
         )
 
         self.timeskip_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((310, 218), (180, 30))),
             "screens.events.timeskip_button",
-            get_button_dict(ButtonStyles.SQUOVAL, (180, 30)),
+            get_button_dict(ButtonStyles.SquOval, (180, 30)),
             object_id="@buttonstyles_squoval",
             starting_height=1,
             container=self.event_screen_container,
-            manager=MANAGER,
+            manager=ui_manager,
             sound_id="timeskip",
         )
 
@@ -305,14 +316,14 @@ class ClanEventsScreen(BaseScreen):
             ui_scale(pygame.Rect((45, 266), (700, 700))),
             starting_height=1,
             container=self.event_screen_container,
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.events_frame = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((161, 0), (534, 370))),
-            get_box(BoxStyles.FRAME, (534, 370)),
+            get_box(BoxStyles.Frame, (534, 370)),
             starting_height=8,
             container=self.full_event_display_container,
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         y_pos = 0
@@ -320,11 +331,11 @@ class ClanEventsScreen(BaseScreen):
             self.event_buttons[f"{event_type}"] = UISurfaceImageButton(
                 ui_scale(pygame.Rect((16, 19 + y_pos), (150, 30))),
                 f"screens.events.{event_type}",
-                get_button_dict(ButtonStyles.VERTICAL_TAB, (150, 30)),
+                get_button_dict(ButtonStyles.VerticalTab, (150, 30)),
                 object_id="@buttonstyles_vertical_tab",
                 starting_height=1,
                 container=self.full_event_display_container,
-                manager=MANAGER,
+                manager=ui_manager,
                 anchors={"right_target": self.events_frame},
             )
 
@@ -337,7 +348,7 @@ class ClanEventsScreen(BaseScreen):
                     ),
                     container=self.full_event_display_container,
                     object_id=f"alert_mark_{event_type.replace(' ', '_')}",
-                    manager=MANAGER,
+                    manager=ui_manager,
                     visible=False,
                 )
 
@@ -372,7 +383,7 @@ class ClanEventsScreen(BaseScreen):
                 continue
 
         self.handle_tab_switch(self.current_display, is_rescale=True)
-        MANAGER.update(1)
+        ui_manager.update(1)
 
         if game.switches["saved_scroll_positions"].get(self.current_display):
             self.event_display.vert_scroll_bar.set_scroll_from_start_percentage(
@@ -394,9 +405,10 @@ class ClanEventsScreen(BaseScreen):
             ),
         )
         self.event_display = UIModifiedScrollingContainer(
-            rect,
+            screen_manager=screen_manager,
+            relative_rect=rect,
             starting_height=1,
-            manager=MANAGER,
+            manager=screen_manager.uim,
             allow_scroll_y=True,
         )
         self.events_frame.join_focus_sets(self.event_display)
@@ -469,9 +481,10 @@ class ClanEventsScreen(BaseScreen):
         )
 
         self.involved_cat_container = UIModifiedScrollingContainer(
-            involved_cat_rect,
+            screen_manager=screen_manager,
+            relative_rect=involved_cat_rect,
             container=container,
-            manager=MANAGER,
+            manager=ui_manager,
             starting_height=3,
             allow_scroll_x=True,
             allow_scroll_y=False,
@@ -498,7 +511,7 @@ class ClanEventsScreen(BaseScreen):
                         container=self.involved_cat_container,
                         object_id="#events_cat_profile_button",
                         starting_height=1,
-                        manager=MANAGER,
+                        manager=ui_manager,
                         anchors=anchor,
                     )
                     self.cat_profile_buttons.append(cat_profile_button)
@@ -521,7 +534,7 @@ class ClanEventsScreen(BaseScreen):
                         container=self.involved_cat_container,
                         object_id="#events_cat_profile_button",
                         starting_height=1,
-                        manager=MANAGER,
+                        manager=ui_manager,
                         anchors=anchor,
                     )
                     self.cat_profile_buttons.append(cat_profile_button)
@@ -632,7 +645,7 @@ class ClanEventsScreen(BaseScreen):
             display_element_container = pygame_gui.elements.UIPanel(
                 default_rect,
                 5,
-                MANAGER,
+                ui_manager,
                 container=self.event_display,
                 element_id="event_panel",
                 object_id="#dark" if game.settings["dark mode"] else None,
@@ -653,7 +666,7 @@ class ClanEventsScreen(BaseScreen):
                 object_id=get_text_box_theme("#text_box_30_horizleft"),
                 starting_height=1,
                 container=display_element_container,
-                manager=MANAGER,
+                manager=ui_manager,
                 text_kwargs=getattr(event_object, "cat_dict"),
                 anchors={"left": "left", "right": "right"},
             )
@@ -664,13 +677,13 @@ class ClanEventsScreen(BaseScreen):
                 involved_cat_button = IDImageButton(
                     catbutton_rect,
                     Icon.CAT_HEAD,
-                    get_button_dict(ButtonStyles.ICON, (34, 34)),
+                    get_button_dict(ButtonStyles.Icon, (34, 34)),
                     ids=event_object.cats_involved,
                     layer_starting_height=3,
                     object_id="@buttonstyles_icon",
                     parent_element=display_element_container,
                     container=display_element_container,
-                    manager=MANAGER,
+                    manager=ui_manager,
                     anchors={
                         "right": "right",
                         "top_target": display_element_event,

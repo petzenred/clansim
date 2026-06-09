@@ -4,7 +4,9 @@ import i18n
 import pygame
 import pygame_gui
 
-from definitions import PROFILE_SCREEN_NAME
+from scripts._red.screens.screen_manager import screen_manager
+
+from definitions import ScreenName
 from scripts.cat.cats import Cat
 from scripts.game_structure.game_essentials import game
 from scripts.ui.ui_elements import UIImageButton, UISurfaceImageButton
@@ -15,19 +17,20 @@ from scripts.utility import (
     ui_scale_offset,
     get_text_box_theme, )
 from scripts.utility import ui_scale
-from .BaseScreen import BaseScreen
-from ..game_structure.screen_settings import MANAGER
-from ..game_structure.windows import SaveAsImage
-from ..ui.generate_button import get_button_dict, ButtonStyles
+from scripts.screens.BaseScreen import BaseScreen
+from scripts.game_structure.screen_settings import ui_manager
+from scripts._red.screens.windows import SaveAsImage
+from scripts.ui.generate_button import get_button_dict, ButtonStyles
 
 
 import logging
 logger = logging.getLogger(__name__)
 
-class ProfileSpriteInspectScreen(BaseScreen):
+class ProfileInspectSpriteScreen(BaseScreen):
     cat_life_stages = ["newborn", "kitten", "adolescent", "adult", "senior"]
 
-    def __init__(self, name=None):
+    def __init__(self):
+        super().__init__(ScreenName.InspectSprite)
         self.back_button = None
         self.previous_cat_button = None
         self.previous_cat = None
@@ -52,14 +55,13 @@ class ProfileSpriteInspectScreen(BaseScreen):
         self.acc_shown = True
         self.override_not_working = False
 
-        super().__init__(name)
 
     def handle_event(self, event):
         if event.type == pygame_gui.UI_BUTTON_START_PRESS:
             self.mute_button_pressed(event)
 
             if event.ui_element == self.back_button:
-                self.change_screen(PROFILE_SCREEN_NAME)
+                self.change_screen(ScreenName.Profile)
             elif event.ui_element == self.next_cat_button:
                 if isinstance(Cat.fetch_cat(self.next_cat), Cat):
                     game.switches["cat"] = self.next_cat
@@ -142,25 +144,25 @@ class ProfileSpriteInspectScreen(BaseScreen):
         self.next_cat_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((622, 25), (153, 30))),
             "buttons.next_cat",
-            get_button_dict(ButtonStyles.SQUOVAL, (153, 30)),
+            get_button_dict(ButtonStyles.SquOval, (153, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
             sound_id="page_flip",
         )
         self.previous_cat_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((25, 25), (153, 30))),
             "buttons.previous_cat",
-            get_button_dict(ButtonStyles.SQUOVAL, (153, 30)),
+            get_button_dict(ButtonStyles.SquOval, (153, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
             sound_id="page_flip",
         )
         self.back_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((25, 60), (105, 30))),
             "buttons.back",
-            get_button_dict(ButtonStyles.SQUOVAL, (105, 30)),
+            get_button_dict(ButtonStyles.SquOval, (105, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.previous_life_stage = UIImageButton(
@@ -180,7 +182,7 @@ class ProfileSpriteInspectScreen(BaseScreen):
         self.save_image_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((25, 95), (135, 30))),
             "screens.sprite_inspect.save_image",
-            get_button_dict(ButtonStyles.SQUOVAL, (135, 30)),
+            get_button_dict(ButtonStyles.SquOval, (135, 30)),
             object_id="@buttonstyles_squoval",
         )
 
@@ -236,7 +238,7 @@ class ProfileSpriteInspectScreen(BaseScreen):
             pygame.transform.scale(
                 self.get_platform(), ui_scale_dimensions((560, 350))
             ),
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.set_background_visibility()
 
@@ -250,7 +252,7 @@ class ProfileSpriteInspectScreen(BaseScreen):
             current_life_stage = self.the_cat.age
 
         self.valid_life_stages = []
-        for life_stage in ProfileSpriteInspectScreen.cat_life_stages:
+        for life_stage in ProfileInspectSpriteScreen.cat_life_stages:
             self.valid_life_stages.append(life_stage)
             if life_stage == current_life_stage:
                 break
@@ -276,7 +278,7 @@ class ProfileSpriteInspectScreen(BaseScreen):
         self.cat_elements["cat_name"] = pygame_gui.elements.UITextBox(
             cat_name,
             ui_scale(pygame.Rect((0, 0), (-1, 40))),
-            manager=MANAGER,
+            manager=ui_manager,
             object_id=get_text_box_theme("#text_box_34_horizcenter"),
             anchors={"centerx": "centerx"},
         )
@@ -288,7 +290,7 @@ class ProfileSpriteInspectScreen(BaseScreen):
             favorite_button_rect,
             "",
             object_id="#fav_star" if self.the_cat.favourite else "#not_fav_star",
-            manager=MANAGER,
+            manager=ui_manager,
             tool_tip_text="general.remove_favorite"
             if self.the_cat.favourite
             else "general.mark_favorite",
@@ -527,3 +529,8 @@ class ProfileSpriteInspectScreen(BaseScreen):
             return full_image
         else:
             return self.cat_image
+
+    def update_previous_next_cat_buttons(self):
+        """Updates disabled status of previous and next cat buttons. """
+        self.previous_cat_button.enable() if self.previous_cat else self.previous_cat_button.disable() # pylint: disable=no-member
+        self.next_cat_button.enable() if self.next_cat else self.next_cat_button.disable() # pylint: disable=no-member

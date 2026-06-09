@@ -9,8 +9,10 @@ from pygame_gui.core import ObjectID
 from definitions import (
     MED_DEN_SCREEN_NAME, MAIN_MENU_SCREEN_NAME, PROFILE_SCREEN_NAME, CLAN_FRESHKILL_SCREEN_NAME,
     WARRIOR_DEN_SCREEN_NAME, LEADER_DEN_SCREEN_NAME, CLAN_MEMBERS_SCREEN_NAME, CLAN_EVENTS_SCREEN_NAME,
-    AVAILABLE_BIOMES, cast_to_biome, Season, Rank,
+    AVAILABLE_BIOMES, cast_to_biome, Season, Rank, ScreenName,
 )
+
+from scripts._red.screens.screen_manager import screen_manager
 
 from scripts.cat.cats import Cat
 from scripts.game_structure import image_cache
@@ -22,14 +24,14 @@ from scripts.ui.ui_elements import (
     UIImageButton,
     UISurfaceImageButton,
 )
-from scripts.game_structure.windows import SaveError
+from scripts._red.screens.windows import SaveError
 from scripts.utility import (
     ui_scale,
     ui_scale_dimensions,
     get_current_season,
 )
-from .BaseScreen import BaseScreen
-from ..ui.generate_button import ButtonStyles, get_button_dict
+from scripts.screens.BaseScreen import BaseScreen
+from scripts.ui.generate_button import ButtonStyles, get_button_dict
 
 import logging
 logger = logging.getLogger(__name__)
@@ -41,8 +43,8 @@ class ClanCampScreen(BaseScreen):
     )
     cat_buttons = []
 
-    def __init__(self, name=None):
-        super().__init__(name)
+    def __init__(self):
+        super().__init__(ScreenName.Camp)
         self.show_den_labels_text = None
         self.show_den_labels = None
         self.show_den_text = None
@@ -201,35 +203,35 @@ class ClanCampScreen(BaseScreen):
         self.warrior_den_label = UISurfaceImageButton(
             ui_scale(pygame.Rect(self.layout["warrior den"], (121, 28))),
             "screens.core.warriors_den",
-            get_button_dict(ButtonStyles.ROUNDED_RECT, (121, 28)),
+            get_button_dict(ButtonStyles.RoundedRect, (121, 28)),
             object_id=ObjectID(class_id="@buttonstyles_rounded_rect", object_id=None),
             starting_height=2,
         )
         self.leader_den_label = UISurfaceImageButton(
             ui_scale(pygame.Rect(self.layout["leader den"], (112, 28))),
             "screens.core.leader_den",
-            get_button_dict(ButtonStyles.ROUNDED_RECT, (112, 28)),
+            get_button_dict(ButtonStyles.RoundedRect, (112, 28)),
             object_id=ObjectID(class_id="@buttonstyles_rounded_rect", object_id=None),
             starting_height=2,
         )
         self.med_den_label = UISurfaceImageButton(
             ui_scale(pygame.Rect(self.layout["medicine den"], (151, 28))),
             "screens.core.medicine_cat_den",
-            get_button_dict(ButtonStyles.ROUNDED_RECT, (151, 28)),
+            get_button_dict(ButtonStyles.RoundedRect, (151, 28)),
             object_id=ObjectID(class_id="@buttonstyles_rounded_rect", object_id=None),
             starting_height=2,
         )
         self.elder_den_label = UISurfaceImageButton(
             ui_scale(pygame.Rect(self.layout["elder den"], (103, 28))),
             "screens.core.elders_den",
-            get_button_dict(ButtonStyles.ROUNDED_RECT, (103, 28)),
+            get_button_dict(ButtonStyles.RoundedRect, (103, 28)),
             object_id=ObjectID(class_id="@buttonstyles_rounded_rect", object_id=None),
         )
         self.elder_den_label.disable()
         self.nursery_label = UISurfaceImageButton(
             ui_scale(pygame.Rect(self.layout["nursery"], (80, 28))),
             "screens.core.nursery",
-            get_button_dict(ButtonStyles.ROUNDED_RECT, (80, 28)),
+            get_button_dict(ButtonStyles.RoundedRect, (80, 28)),
             object_id=ObjectID(class_id="@buttonstyles_rounded_rect", object_id=None),
         )
         self.nursery_label.disable()
@@ -237,7 +239,7 @@ class ClanCampScreen(BaseScreen):
         self.clearing_label = UISurfaceImageButton(
             ui_scale(pygame.Rect(self.layout["clearing"], (81, 28))),
             "screens.core.clearing",
-            get_button_dict(ButtonStyles.ROUNDED_RECT, (81, 28)),
+            get_button_dict(ButtonStyles.RoundedRect, (81, 28)),
             object_id=ObjectID(class_id="@buttonstyles_rounded_rect", object_id=None),
         )
         if game.clan_obj.game_mode == "classic":
@@ -246,7 +248,7 @@ class ClanCampScreen(BaseScreen):
         self.app_den_label = UISurfaceImageButton(
             ui_scale(pygame.Rect(self.layout["apprentice den"], (147, 28))),
             "screens.core.apprentices_den",
-            get_button_dict(ButtonStyles.ROUNDED_RECT, (147, 28)),
+            get_button_dict(ButtonStyles.RoundedRect, (147, 28)),
             object_id=ObjectID(class_id="@buttonstyles_rounded_rect", object_id=None),
         )
         self.app_den_label.disable()
@@ -271,7 +273,7 @@ class ClanCampScreen(BaseScreen):
             object_id="@checked_checkbox",
         )
 
-        save_buttons = get_button_dict(ButtonStyles.SQUOVAL, (114, 30))
+        save_buttons = get_button_dict(ButtonStyles.SquOval, (114, 30))
         save_buttons["normal"] = image_cache.load_image(
             "resources/images/buttons/save_clan.png"
         )
@@ -299,7 +301,7 @@ class ClanCampScreen(BaseScreen):
         self.save_button_saving_state = UISurfaceImageButton(
             ui_scale(pygame.Rect((0, 643), (114, 30))),
             "buttons.saving",
-            {"normal": get_button_dict(ButtonStyles.SQUOVAL, (114, 30))["normal"]},
+            {"normal": get_button_dict(ButtonStyles.SquOval, (114, 30))["normal"]},
             object_id="@buttonstyles_squoval",
             anchors={"centerx": "centerx"},
         )
@@ -360,7 +362,7 @@ class ClanCampScreen(BaseScreen):
             game.clan_obj.biome = AVAILABLE_BIOMES[0]
 
         all_backgrounds = []
-        for season in [e for e in Season if e != Season.Any]:
+        for season in [e for e in Season if e != Season.NoSeason]:
             platform_dir = ( f"{camp_bg_base_dir}/{biome}/{season}_{camp_nr}_{light_dark}.png" )
             all_backgrounds.append(platform_dir)
 

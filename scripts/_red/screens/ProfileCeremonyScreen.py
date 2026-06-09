@@ -3,21 +3,23 @@
 import pygame
 import pygame_gui
 
-from definitions import PROFILE_SCREEN_NAME
+from scripts._red.screens.screen_manager import screen_manager
+
+from definitions import PROFILE_SCREEN_NAME, ScreenName
 from scripts.cat.cats import Cat
 from scripts.game_structure.game_essentials import game
 from scripts.ui.ui_elements import UISurfaceImageButton
 from scripts.utility import get_text_box_theme
 from scripts.utility import ui_scale
-from .BaseScreen import BaseScreen
-from ..cat.history import History
-from ..game_structure.screen_settings import MANAGER
-from ..ui.generate_button import ButtonStyles, get_button_dict
+from scripts.screens.BaseScreen import BaseScreen
+from scripts.cat.history import History
+from scripts.game_structure.screen_settings import ui_manager
+from scripts.ui.generate_button import ButtonStyles, get_button_dict
 
 
 class ProfileCeremonyScreen(BaseScreen):
-    def __init__(self, name=None):
-        super().__init__(name)
+    def __init__(self):
+        super().__init__(ScreenName.LeaderCeremony)
         self.back_button = None
         self.text = None
         self.scroll_container = None
@@ -36,7 +38,7 @@ class ProfileCeremonyScreen(BaseScreen):
                 "screens.ceremony.heading_leader",
                 ui_scale(pygame.Rect((100, 90), (600, -1))),
                 object_id=get_text_box_theme(),
-                manager=MANAGER,
+                manager=ui_manager,
                 text_kwargs={"m_c": self.the_cat},
             )
         else:
@@ -44,7 +46,7 @@ class ProfileCeremonyScreen(BaseScreen):
                 "screens.ceremony.heading_none",
                 ui_scale(pygame.Rect((100, 90), (600, -1))),
                 object_id=get_text_box_theme(),
-                manager=MANAGER,
+                manager=ui_manager,
                 text_kwargs={"m_c": self.the_cat},
             )
         if self.the_cat.status == "leader" and not self.the_cat.dead:
@@ -56,22 +58,22 @@ class ProfileCeremonyScreen(BaseScreen):
         self.scroll_container = pygame_gui.elements.UIScrollingContainer(
             ui_scale(pygame.Rect((50, 150), (700, 500))),
             allow_scroll_x=False,
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.text = pygame_gui.elements.UITextBox(
             self.life_text,
             ui_scale(pygame.Rect((0, 0), (650, -1))),
             object_id=get_text_box_theme("#text_box_30_horizleft"),
             container=self.scroll_container,
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.text.disable()
         self.back_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((25, 25), (105, 30))),
             "buttons.back",
-            get_button_dict(ButtonStyles.SQUOVAL, (105, 30)),
+            get_button_dict(ButtonStyles.SquOval, (105, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.scroll_container.set_scrollable_area_dimensions(
             (

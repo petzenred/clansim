@@ -4,7 +4,9 @@ import i18n
 import pygame.transform
 import pygame_gui.elements
 
-from definitions import PROFILE_SCREEN_NAME
+from scripts._red.screens.screen_manager import screen_manager
+
+from definitions import ScreenName
 from scripts.cat.cats import Cat
 from scripts.game_structure import image_cache
 from scripts.game_structure.game_essentials import (
@@ -21,11 +23,11 @@ from scripts.utility import (
     ui_scale_dimensions,
     shorten_text_to_fit,
 )
-from .BaseScreen import BaseScreen
-from ..game_structure.screen_settings import MANAGER
-from ..ui.generate_box import get_box, BoxStyles
-from ..ui.generate_button import get_button_dict, ButtonStyles
-from ..ui.icon import Icon
+from scripts.screens.BaseScreen import BaseScreen
+from scripts.game_structure.screen_settings import ui_manager
+from scripts.ui.generate_box import get_box, BoxStyles
+from scripts.ui.generate_button import get_button_dict, ButtonStyles
+from scripts.ui.icon import Icon
 
 import logging
 logger = logging.getLogger(__name__)
@@ -38,8 +40,8 @@ class ProfileMentorScreen(BaseScreen):
     selected_details = {}
     cat_list_buttons = {}
 
-    def __init__(self, name=None):
-        super().__init__(name)
+    def __init__(self):
+        super().__init__(ScreenName.ChooseMentor)
         self.list_frame = None
         self.list_page = None
         self.next_cat = None
@@ -86,7 +88,7 @@ class ProfileMentorScreen(BaseScreen):
                 self.update_buttons()
                 self.update_selected_cat()
             elif event.ui_element == self.back_button:
-                self.change_screen(PROFILE_SCREEN_NAME)
+                self.change_screen(ScreenName.Profile)
             elif event.ui_element == self.next_cat_button:
                 if isinstance(Cat.fetch_cat(self.next_cat), Cat):
                     game.switches["cat"] = self.next_cat
@@ -134,19 +136,19 @@ class ProfileMentorScreen(BaseScreen):
             "Choose a new mentor for " + str(self.the_cat.name),
             ui_scale(pygame.Rect((150, 25), (500, 40))),
             object_id=get_text_box_theme("#text_box_34_horizcenter"),
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.info = pygame_gui.elements.UITextBox(
             "screens.choose_mentor.info",
             ui_scale(pygame.Rect((180, 52), (440, 92))),
             object_id=get_text_box_theme("#text_box_22_horizcenter_spacing_95"),
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.current_mentor_text = pygame_gui.elements.UITextBox(
             "screens.choose_mentor.current_mentor",
             ui_scale(pygame.Rect((230, 130), (340, 30))),
             object_id=get_text_box_theme("#text_box_22_horizcenter"),
-            manager=MANAGER,
+            manager=ui_manager,
             text_kwargs={
                 "count": 1 if self.mentor is not None else 0,
                 "m_c": self.the_cat,
@@ -155,7 +157,7 @@ class ProfileMentorScreen(BaseScreen):
         )
 
         # Layout Images:
-        list_frame = get_box(BoxStyles.ROUNDED_BOX, (650, 226))
+        list_frame = get_box(BoxStyles.RoundedBox, (650, 226))
         self.list_frame = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((75, 360), (650, 226))), list_frame, starting_height=1
         )
@@ -168,7 +170,7 @@ class ProfileMentorScreen(BaseScreen):
                 ).convert_alpha(),
                 (562, 394),
             ),
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.app_frame = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((480, 113), (281, 197))),
@@ -178,7 +180,7 @@ class ProfileMentorScreen(BaseScreen):
                 ).convert_alpha(),
                 (562, 394),
             ),
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.mentor_icon = pygame_gui.elements.UIImage(
@@ -187,75 +189,75 @@ class ProfileMentorScreen(BaseScreen):
                 image_cache.load_image("resources/images/icon_mentor.png").convert_alpha(),
                 (343, 228),
             ),
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.next_cat_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((622, 25), (153, 30))),
             "buttons.next_cat",
-            get_button_dict(ButtonStyles.SQUOVAL, (153, 30)),
+            get_button_dict(ButtonStyles.SquOval, (153, 30)),
             object_id="@buttonstyles_squoval",
             sound_id="page_flip",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.previous_cat_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((25, 25), (153, 30))),
             "buttons.previous_cat",
-            get_button_dict(ButtonStyles.SQUOVAL, (153, 30)),
+            get_button_dict(ButtonStyles.SquOval, (153, 30)),
             object_id="@buttonstyles_squoval",
             sound_id="page_flip",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.back_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((25, 60), (105, 30))),
             "buttons.back",
-            get_button_dict(ButtonStyles.SQUOVAL, (105, 30)),
+            get_button_dict(ButtonStyles.SquOval, (105, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.confirm_mentor = UISurfaceImageButton(
             ui_scale(pygame.Rect((326, 310), (148, 30))),
             "screens.choose_mentor.set_mentor",
-            get_button_dict(ButtonStyles.SQUOVAL, (148, 30)),
+            get_button_dict(ButtonStyles.SquOval, (148, 30)),
             object_id="@buttonstyles_squoval",
         )
         self.remove_mentor = UISurfaceImageButton(
             ui_scale(pygame.Rect((326, 310), (148, 30))),
             "screens.choose_mentor.unset_mentor",
-            get_button_dict(ButtonStyles.SQUOVAL, (148, 30)),
+            get_button_dict(ButtonStyles.SquOval, (148, 30)),
             object_id="@buttonstyles_squoval",
         )
         self.current_mentor_warning = pygame_gui.elements.UITextBox(
             "screens.choose_mentor.current_mentor_warning",
             ui_scale(pygame.Rect((300, 335), (200, 30))),
             object_id=get_text_box_theme("#text_box_22_horizcenter_red"),
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.no_mentor_warning = pygame_gui.elements.UITextBox(
             "screens.choose_mentor.no_mentor_warning",
             ui_scale(pygame.Rect((300, 335), (200, 30))),
             object_id=get_text_box_theme("#text_box_22_horizcenter"),
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.previous_page_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((315, 579), (34, 34))),
             Icon.ARROW_LEFT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
             starting_height=0,
         )
         self.next_page_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((451, 579), (34, 34))),
             Icon.ARROW_RIGHT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
             starting_height=0,
         )
 
         # Create a container for the checkboxes
         self.filter_container = pygame_gui.core.UIContainer(
-            ui_scale(pygame.Rect((85, 360), (630, 226))), manager=MANAGER
+            ui_scale(pygame.Rect((85, 360), (630, 226))), manager=ui_manager
         )
 
         # Add a vertical separator
@@ -418,14 +420,14 @@ class ProfileMentorScreen(BaseScreen):
             pygame.transform.scale(
                 self.the_cat.sprite, ui_scale_dimensions((150, 150))
             ),
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         self.apprentice_details["apprentice_info"] = pygame_gui.elements.UITextBox(
             self.the_cat.get_info_block(),
             ui_scale(pygame.Rect((490, 162), (105, 125))),
             object_id="#text_box_22_horizcenter_vertcenter_spacing_95",
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         name = str(self.the_cat.name)
@@ -436,7 +438,7 @@ class ProfileMentorScreen(BaseScreen):
             ui_scale(pygame.Rect((620, 115), (117, 32))),
             short_name,
             object_id="#text_box_34_horizcenter",
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         (
@@ -509,7 +511,7 @@ class ProfileMentorScreen(BaseScreen):
                 pygame.transform.scale(
                     self.selected_mentor.sprite, ui_scale_dimensions((150, 150))
                 ),
-                manager=MANAGER,
+                manager=ui_manager,
             )
 
             info = self.selected_mentor.get_info_block()
@@ -525,7 +527,7 @@ class ProfileMentorScreen(BaseScreen):
                 info,
                 ui_scale(pygame.Rect((210, 162), (105, 125))),
                 object_id="#text_box_22_horizcenter_vertcenter_spacing_95",
-                manager=MANAGER,
+                manager=ui_manager,
             )
 
             name = str(self.selected_mentor.name)  # get name
@@ -534,7 +536,7 @@ class ProfileMentorScreen(BaseScreen):
                 ui_scale(pygame.Rect((65, 115), (117, 32))),
                 short_name,
                 object_id="#text_box_34_horizcenter",
-                manager=MANAGER,
+                manager=ui_manager,
             )
 
     def update_cat_list(self):
@@ -574,7 +576,7 @@ class ProfileMentorScreen(BaseScreen):
                 ui_scale(pygame.Rect((100 + pos_x, 365 + pos_y), (50, 50))),
                 cat.sprite,
                 cat_object=cat,
-                manager=MANAGER,
+                manager=ui_manager,
             )
             pos_x += 60
             if pos_x >= 450:

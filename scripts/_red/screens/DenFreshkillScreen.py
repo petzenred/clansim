@@ -5,6 +5,9 @@ import pygame
 import pygame_gui
 import ujson
 
+from scripts._red.screens.screen_manager import screen_manager
+
+from definitions import ScreenName
 from scripts.cat.cats import Cat
 from scripts.game_structure.game_essentials import game
 from scripts.ui.ui_elements import (
@@ -19,12 +22,12 @@ from scripts.utility import (
     shorten_text_to_fit,
     ui_scale_dimensions,
 )
-from .BaseScreen import BaseScreen
+from scripts.screens.BaseScreen import BaseScreen
 from scripts.events_module.short.condition_events import Condition_Events
-from ..game_structure.screen_settings import MANAGER
-from ..ui.generate_box import BoxStyles, get_box
-from ..ui.generate_button import ButtonStyles, get_button_dict
-from ..ui.icon import Icon
+from scripts.game_structure.screen_settings import ui_manager
+from scripts.ui.generate_box import BoxStyles, get_box
+from scripts.ui.generate_button import ButtonStyles, get_button_dict
+from scripts.ui.icon import Icon
 
 with open("resources/clansettings.json", "r", encoding="utf-8") as f:
     settings_dict = ujson.load(f)
@@ -35,8 +38,8 @@ class ClanFreshkillScreen(BaseScreen):
     conditions_hover = {}
     cat_names = []
 
-    def __init__(self, name=None):
-        super().__init__(name)
+    def __init__(self):
+        super().__init__(ScreenName.FreshkillPile)
         self.help_button = None
         self.log_box = None
         self.log_title = None
@@ -220,36 +223,36 @@ class ClanFreshkillScreen(BaseScreen):
         self.back_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((25, 25), (105, 30))),
             "buttons.back",
-            get_button_dict(ButtonStyles.SQUOVAL, (105, 30)),
+            get_button_dict(ButtonStyles.SquOval, (105, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.stop_focus_button = UIImageButton(
             ui_scale(pygame.Rect((755, 155), (22, 22))),
             "",
             object_id="#exit_window_button",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.feed_all_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((625, 300), (160, 30))),
             "screens.clearing.feed_all_hungry",
-            get_button_dict(ButtonStyles.SQUOVAL, (160, 30)),
+            get_button_dict(ButtonStyles.SquOval, (160, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.feed_one_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((650, 300), (111, 30))),
             "screens.clearing.feed_one",
-            get_button_dict(ButtonStyles.SQUOVAL, (115, 30)),
+            get_button_dict(ButtonStyles.SquOval, (115, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.feed_max_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((648, 335), (115, 30))),
             "screens.clearing.feed_max",
-            get_button_dict(ButtonStyles.SQUOVAL, (115, 30)),
+            get_button_dict(ButtonStyles.SquOval, (115, 30)),
             object_id="@buttonstyles_squoval",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.stop_focus_button.hide()
         self.feed_one_button.hide()
@@ -259,45 +262,45 @@ class ClanFreshkillScreen(BaseScreen):
             ui_scale(pygame.Rect((725, 25), (34, 34))),
             "",
             object_id="#help_button",
-            manager=MANAGER,
+            manager=ui_manager,
             tool_tip_text="screens.clearing.help_tooltip",
         )
         self.last_page = UISurfaceImageButton(
             ui_scale(pygame.Rect((330, 636), (34, 34))),
             Icon.ARROW_LEFT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
         )
         self.next_page = UISurfaceImageButton(
             ui_scale(pygame.Rect((476, 636), (34, 34))),
             Icon.ARROW_RIGHT,
-            get_button_dict(ButtonStyles.ICON, (34, 34)),
+            get_button_dict(ButtonStyles.Icon, (34, 34)),
             object_id="@buttonstyles_icon",
         )
         self.nutrition_title = pygame_gui.elements.UITextBox(
             "screens.clearing.nutrition_title",
             ui_scale(pygame.Rect((140, 405), (200, 40))),
             object_id=get_text_box_theme("#text_box_40_horizcenter"),
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.log_title = pygame_gui.elements.UITextBox(
             "screens.clearing.log_title",
             ui_scale(pygame.Rect((140, 405), (200, 40))),
             object_id=get_text_box_theme("#text_box_40_horizcenter"),
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.tactic_title = pygame_gui.elements.UITextBox(
             "screens.clearing.tactic_title",
             ui_scale(pygame.Rect((140, 405), (200, 40))),
             object_id=get_text_box_theme("#text_box_40_horizcenter"),
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.log_title.hide()
         self.tactic_title.hide()
         self.cat_bg = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((140, 440), (560, 200))),
-            get_box(BoxStyles.ROUNDED_BOX, (560, 200)),
-            manager=MANAGER,
+            get_box(BoxStyles.RoundedBox, (560, 200)),
+            manager=ui_manager,
         )
         self.cat_bg.disable()
         log_text = game.freshkill_event_list.copy()
@@ -305,44 +308,44 @@ class ClanFreshkillScreen(BaseScreen):
             f"{f'<br>-------------------------------<br>'.join(log_text)}<br>",
             ui_scale(pygame.Rect((150, 450), (540, 180))),
             object_id="#text_box_26_horizleft_verttop_pad_14_0_10",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.log_box.hide()
         self.cats_tab = UISurfaceImageButton(
             ui_scale(pygame.Rect((40, 460), (100, 30))),
             Icon.CAT_HEAD + i18n.t("screens.clearing.cats_tab"),
-            get_button_dict(ButtonStyles.VERTICAL_TAB, (100, 30)),
+            get_button_dict(ButtonStyles.VerticalTab, (100, 30)),
             object_id="@buttonstyles_vertical_tab",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.cats_tab.disable()
         self.log_tab = UISurfaceImageButton(
             ui_scale(pygame.Rect((40, 500), (100, 30))),
             Icon.NOTEPAD + i18n.t("screens.clearing.log_tab"),
-            get_button_dict(ButtonStyles.VERTICAL_TAB, (100, 30)),
+            get_button_dict(ButtonStyles.VerticalTab, (100, 30)),
             object_id="@buttonstyles_vertical_tab",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.tactic_tab = UISurfaceImageButton(
             ui_scale(pygame.Rect((40, 540), (100, 30))),
             Icon.MAGNIFY + i18n.t("screens.clearing.tactic_tab"),
-            get_button_dict(ButtonStyles.VERTICAL_TAB, (100, 30)),
+            get_button_dict(ButtonStyles.VerticalTab, (100, 30)),
             object_id="@buttonstyles_vertical_tab",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.hungry_tab = UISurfaceImageButton(
             ui_scale(pygame.Rect((490, 409), (80, 35))),
             "screens.clearing.hungry_tab",
-            get_button_dict(ButtonStyles.HORIZONTAL_TAB, (80, 35)),
+            get_button_dict(ButtonStyles.HorizontalTab, (80, 35)),
             object_id="@buttonstyles_horizontal_tab",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.satisfied_tab = UISurfaceImageButton(
             ui_scale(pygame.Rect((587, 409), (95, 35))),
             "screens.clearing.satisfied_tab",
-            get_button_dict(ButtonStyles.HORIZONTAL_TAB, (95, 35)),
+            get_button_dict(ButtonStyles.HorizontalTab, (95, 35)),
             object_id="@buttonstyles_horizontal_tab",
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.cat_tab_open = self.hungry_tab
         self.current_page = 1
@@ -482,20 +485,20 @@ class ClanFreshkillScreen(BaseScreen):
             ui_scale(pygame.Rect((585, 75), (225, 30))),
             short_name,
             object_id=get_text_box_theme("#text_box_30_horizcenter"),
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.focus_info = UITextBoxTweaked(
             "",
             ui_scale(pygame.Rect((625, 95), (150, 120))),
             object_id=get_text_box_theme("#text_box_22_horizcenter"),
             line_spacing=1,
-            manager=MANAGER,
+            manager=ui_manager,
         )
         self.focus_cat = UISpriteButton(
             ui_scale(pygame.Rect((625, 145), (150, 150))),
             self.focus_cat_object.sprite,
             cat_object=self.focus_cat_object,
-            manager=MANAGER,
+            manager=ui_manager,
         )
         info_list = [self.focus_cat_object.skills.skill_string(short=True)]
         nutrition_info = game.clan_obj.freshkill_pile.nutrition_info
@@ -581,7 +584,7 @@ class ClanFreshkillScreen(BaseScreen):
                 ui_scale(pygame.Rect((pos_x, pos_y), (50, 50))),
                 cat.sprite,
                 cat_object=cat,
-                manager=MANAGER,
+                manager=ui_manager,
                 tool_tip_text=conditions,
                 starting_height=2,
             )
@@ -593,7 +596,7 @@ class ClanFreshkillScreen(BaseScreen):
                     short_name,
                     ui_scale(pygame.Rect((pos_x - 30, pos_y + 50), (110, -1))),
                     object_id="#text_box_30_horizcenter",
-                    manager=MANAGER,
+                    manager=ui_manager,
                 )
             )
 
@@ -661,7 +664,7 @@ class ClanFreshkillScreen(BaseScreen):
             "",
             object_id=self.pile_size,
             tool_tip_text=hover_display,
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
     def exit_screen(self):
@@ -721,7 +724,7 @@ class ClanFreshkillScreen(BaseScreen):
         ] = pygame_gui.elements.UIScrollingContainer(
             ui_scale(pygame.Rect((140, 450), (230, 175))),
             allow_scroll_x=False,
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         n = 0
@@ -737,7 +740,7 @@ class ClanFreshkillScreen(BaseScreen):
                 ui_scale(pygame.Rect((x_val, n * 45), (160, 39))),
                 container=self.tactic_text["container_general"],
                 object_id="#text_box_30_horizleft_pad_0_8",
-                manager=MANAGER,
+                manager=ui_manager,
             )
             n += 1
 
@@ -750,7 +753,7 @@ class ClanFreshkillScreen(BaseScreen):
         ] = pygame_gui.elements.UIScrollingContainer(
             ui_scale(pygame.Rect((360, 450), (327, 175))),
             allow_scroll_x=False,
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         n = 0
@@ -766,7 +769,7 @@ class ClanFreshkillScreen(BaseScreen):
                     ui_scale(pygame.Rect((x_val, n * 30), (200, -1))),
                     container=self.additional_text["container_general"],
                     object_id="#text_box_30_horizleft_pad_0_8",
-                    manager=MANAGER,
+                    manager=ui_manager,
                 )
                 n += 1
 
@@ -776,7 +779,7 @@ class ClanFreshkillScreen(BaseScreen):
             ui_scale(pygame.Rect((x_val, n * 25 + 5), (250, 39))),
             container=self.additional_text["container_general"],
             object_id="#text_box_30_horizleft_pad_0_8",
-            manager=MANAGER,
+            manager=ui_manager,
         )
 
         prey_requirement = game.prey_config["prey_requirement"]
@@ -790,7 +793,7 @@ class ClanFreshkillScreen(BaseScreen):
                 ui_scale(pygame.Rect((x_val, 0), (250, -1))),
                 container=self.additional_text["container_general"],
                 object_id="#text_box_30_horizleft_pad_0_8",
-                manager=MANAGER,
+                manager=ui_manager,
                 text_kwargs={
                     "number": str(n),
                     "status": i18n.t(
