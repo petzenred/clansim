@@ -1,7 +1,7 @@
 # TODO
 
-- [ ] seperate ClanGen base and ClanSim versions
+- [ ] separate ClanGen and ClanSim versions
 - [x] give logger functions their own module
-- [ ] test logger module
+- [x] test logger module
 - [ ] give loading functions their own module
 - [ ] test loading module
